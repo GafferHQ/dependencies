@@ -1,0 +1,29 @@
+{#
+    basic/page.html
+    ~~~~~~~~~~~~~~~
+
+    Master template for simple pages.
+
+    :copyright: Copyright 2007-2010 by the Sphinx team, see AUTHORS.
+    :license: BSD, see LICENSE for details.
+#}
+{% extends "layout.html" %}
+{% block body %}
+{{ body }}
+    {% if pagename == "index" %}
+    <td width="275">
+        <div class="imageBar">
+        <p style="text-align: center; font-size: small;"><b>Color Transform Example</b></p>
+            <img src="{{ pathto('_static/clo_res19_vd16.0101.jpg', 1) }}">
+            <div class="caption">Final Image: sRGB</div>
+            <img src="{{ pathto('_static/clo_res19_lm10.0101.jpg', 1) }}">  
+            <div class="caption">Digital Intermediate (DI): log dpx</div>
+            <img src="{{ pathto('_static/clo_res19_lnf.0101.jpg', 1) }}">
+            <div class="caption">Render: scene-linear exr</div>
+        <p style="text-align: right">Images from "Cloudy With A Chance of Meatballs"</p>
+        <p style="text-align: right">Copyright 2011 Sony Pictures Inc. All Rights Reserved.</p>
+        <p style="text-align: right">spi-animation profile, available here.</p>
+        </div>
+    </td>
+    {% endif %}
+{% endblock %}

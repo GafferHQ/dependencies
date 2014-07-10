@@ -1,0 +1,85 @@
+# SPI-specific settings
+
+OSL_NAMESPACE ?= 'OSL_Arnold'
+OPENIMAGEIO_NAMESPACE ?= 'OpenImageIO_Arnold'
+
+ifeq (${platform}, macosx)
+    MY_CMAKE_FLAGS += \
+        -DBUILD_WITH_INSTALL_RPATH=1 \
+        -DCMAKE_INSTALL_NAME_DIR="${working_dir}/dist/${platform}${variant}/lib"
+    ifeq (${COMPILER}, clang)
+	MY_CMAKE_FLAGS += \
+	    -DCMAKE_C_COMPILER=clang \
+	    -DCMAKE_CXX_COMPILER=clang++
+    endif
+endif
+
+
+
+ifeq ($(SP_OS), spinux1)
+    platform=spinux1
+    # put any gcc-4.4/spinux1 specific stuff here
+    ifeq (${LLVM_DIRECTORY},)
+	LLVM_DIRECTORY := /shots/spi/home/lib/arnold/spinux1/llvm_3.3
+    endif
+
+    ifneq (,$(wildcard /usr/include/OpenEXR2))
+        MY_CMAKE_FLAGS += \
+	  -DILMBASE_CUSTOM=1 \
+	  -DILMBASE_CUSTOM_INCLUDE_DIR=/usr/include/OpenEXR2 \
+          -DILMBASE_CUSTOM_LIB_DIR=/usr/lib64/OpenEXR2 \
+	  -DILMBASE_CUSTOM_LIBRARIES="Imath Half IlmThread Iex"
+    else
+        MY_CMAKE_FLAGS += \
+	  -DILMBASE_CUSTOM=1 \
+          -DILMBASE_CUSTOM_LIB_DIR=/usr/lib64 \
+	  -DILMBASE_CUSTOM_LIBRARIES="SpiImath SpiHalf SpiIlmThread SpiIex"
+    endif
+
+    MY_CMAKE_FLAGS += \
+        -DLLVM_CUSTOM=1 \
+	-DLLVM_STATIC=1 \
+	-DEXTRA_OSLEXEC_LIBRARIES="/usr/lib64/libpthread.so" \
+        -DLLVM_VERSION=${LLVM_VERSION} \
+        -DLLVM_DIRECTORY=${LLVM_DIRECTORY}
+
+    # default compiler is clang
+    ifeq (${COMPILER},)
+	 MY_CMAKE_FLAGS += \
+	    -DCMAKE_C_COMPILER=${LLVM_DIRECTORY}/bin/clang \
+	    -DCMAKE_CXX_COMPILER=${LLVM_DIRECTORY}/bin/clang++
+    endif
+    ifeq (${COMPILER}, gcc463)
+    MY_CMAKE_FLAGS += \
+         -DCMAKE_C_COMPILER=/net/soft_scratch/apps/arnold/tools/gcc-4.6.3-test/bin/gcc \
+         -DCMAKE_CXX_COMPILER=/net/soft_scratch/apps/arnold/tools/gcc-4.6.3-test/bin/g++
+    endif
+    ifeq (${COMPILER}, gcc470)
+    MY_CMAKE_FLAGS += \
+         -DCMAKE_C_COMPILER=/net/soft_scratch/apps/arnold/tools/gcc-4.7.0-test/bin/gcc \
+         -DCMAKE_CXX_COMPILER=/net/soft_scratch/apps/arnold/tools/gcc-4.7.0-test/bin/g++
+    endif
+
+    ifneq (${SPCOMP2_USE_BOOSTVERS}, 1)
+	BOOSTVERS=1.51
+    endif
+    BOOSTVERS_SUFFIX = -${shell echo ${BOOSTVERS} | sed "s/\\./_/"}
+    MY_CMAKE_FLAGS += \
+	-DBOOST_CUSTOM=1 \
+	-DBoost_INCLUDE_DIRS=/usr/include/boost_${BOOSTVERS} \
+	-DBoost_LIBRARY_DIRS=/usr/lib64/boost_${BOOSTVERS} \
+	-DBoost_LIBRARIES:STRING="/usr/lib64/boost_${BOOSTVERS}/libboost_filesystem-gcc44-mt${BOOSTVERS_SUFFIX}.so;/usr/lib64/boost_${BOOSTVERS}/libboost_filesystem-gcc44-mt${BOOSTVERS_SUFFIX}.so;/usr/lib64/boost_${BOOSTVERS}/libboost_regex-gcc44-mt${BOOSTVERS_SUFFIX}.so;/usr/lib64/boost_${BOOSTVERS}/libboost_system-gcc44-mt${BOOSTVERS_SUFFIX}.so;/usr/lib64/boost_${BOOSTVERS}/libboost_thread-gcc44-mt${BOOSTVERS_SUFFIX}.so"
+
+endif  # endif spinux1
+
+# set up OpenImageIO distribution environment
+ifeq (${OPENIMAGEIOHOME},)
+    MY_CMAKE_FLAGS += -DOPENIMAGEIOHOME:STRING=${working_dir}/../OpenImageIO_local/dist/${platform}${variant}/ \
+                      -DOSL_NAMESPACE:STRING=${OSL_NAMESPACE}
+else
+    MY_CMAKE_FLAGS += -DOPENIMAGEIOHOME:STRING=${IMAGEIOHOME} \
+                      -DOSL_NAMESPACE:STRING=${OSL_NAMESPACE}
+endif
+
+
+$(info MY_CMAKE_FLAGS: $(MY_CMAKE_FLAGS))

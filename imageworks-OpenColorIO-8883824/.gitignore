@@ -1,0 +1,6 @@
+.DS_Store
+attic
+build*
+dist*
+mastercopy
+*.pyc

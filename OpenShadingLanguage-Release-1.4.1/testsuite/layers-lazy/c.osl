@@ -1,0 +1,8 @@
+shader c (float f_in = 41,
+          color c_in = 42,
+          float unused = 0
+    )
+{
+    printf ("Running layer C\n");
+    printf ("c: f_in = %g, c_in = %g\n", f_in, c_in);
+}
