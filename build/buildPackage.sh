@@ -110,6 +110,17 @@ manifest="
 
 	renderMan
 	arnold
+	
+	appleseedDisplays
+	
+	appleseed/bin/appleseed.cli
+	appleseed/include
+	appleseed/lib
+	appleseed/samples
+	appleseed/schemas
+	appleseed/settings
+	appleseed/shaders
+	
 "
 
 # need to include this once you've done appleseed! and xerces too

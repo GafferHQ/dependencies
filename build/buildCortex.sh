@@ -28,5 +28,7 @@ scons install installDoc \
 	RMAN_ROOT=$RMAN_ROOT \
 	NUKE_ROOT= \
 	ARNOLD_ROOT=$ARNOLD_ROOT \
+	APPLESEED_INCLUDE_PATH=$BUILD_DIR/appleseed/include \
+	APPLESEED_LIB_PATH=$BUILD_DIR/appleseed/lib \
 	OPTIONS='' \
 	SAVE_OPTIONS=gaffer.options

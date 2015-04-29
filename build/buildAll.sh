@@ -27,6 +27,8 @@ buildLLVM.sh
 buildOSL.sh
 buildHDF5.sh
 buildAlembic.sh
+buildXerces.sh
+buildAppleseed.sh
 buildCortex.sh
 buildPyOpenGL.sh
 buildQt.sh
