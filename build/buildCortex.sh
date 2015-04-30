@@ -4,6 +4,8 @@ set -e
 
 cd `dirname $0`/../cortex-9.0.0-b4
 
+export LD_LIBRARY_PATH=$BUILD_DIR/lib
+
 rm -rf .sconsign.dblite .sconf_temp
 
 scons install installDoc \
@@ -28,7 +30,9 @@ scons install installDoc \
 	RMAN_ROOT=$RMAN_ROOT \
 	NUKE_ROOT= \
 	ARNOLD_ROOT=$ARNOLD_ROOT \
+	APPLESEED_ROOT=$BUILD_DIR/appleseed \
 	APPLESEED_INCLUDE_PATH=$BUILD_DIR/appleseed/include \
 	APPLESEED_LIB_PATH=$BUILD_DIR/appleseed/lib \
+	ENV_VARS_TO_IMPORT=LD_LIBRARY_PATH \
 	OPTIONS='' \
 	SAVE_OPTIONS=gaffer.options

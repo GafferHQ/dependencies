@@ -1,6 +1,8 @@
 #!/bin/sh
 
-pushd `dirname $0`/../OpenShadingLanguage-Release-1.6.3dev
+set -e
+
+cd `dirname $0`/../OpenShadingLanguage-Release-1.6.3dev
 
 # needed because the build process runs oslc, which
 # needs to link to the oiio libraries
@@ -10,7 +12,13 @@ export LD_LIBRARY_PATH=$BUILD_DIR/lib
 mkdir -p gafferBuild
 cd gafferBuild
 
-cmake -DENABLERTTI=1 -DCMAKE_INSTALL_PREFIX=$BUILD_DIR ..
-make && make install
+rm -f CMakeCache.txt
 
-popd
+cmake \
+	-D ENABLERTTI=1 \
+	-D CMAKE_INSTALL_PREFIX=$BUILD_DIR \
+	-D CMAKE_PREFIX_PATH=$BUILD_DIR \
+	-D STOP_ON_WARNING=0 \
+	..
+
+make && make install

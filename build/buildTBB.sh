@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 cd `dirname $0`/../tbb42_20140601oss
 
 if [[ -z $CXX ]] ; then
@@ -7,8 +9,6 @@ if [[ -z $CXX ]] ; then
 	# but fails to build with clang 2.1 on OS X 10.7.
 	export CXX=gcc
 fi
-
-echo $CXX
 
 make clean && make compiler=$CXX
 

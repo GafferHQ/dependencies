@@ -1,6 +1,8 @@
 #!/bin/sh
 
-pushd `dirname $0`/../Python-2.7.5
+set -e
+
+cd `dirname $0`/../Python-2.7.5
 
 if [[ `uname` = "Linux" ]] ; then
 
@@ -15,5 +17,3 @@ else
 	cd $BUILD_DIR/bin && ln -fsh ../lib/Python.framework/Versions/Current/bin/python python
 
 fi
-
-popd

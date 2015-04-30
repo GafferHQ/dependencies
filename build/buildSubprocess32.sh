@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 cd `dirname $0`/../subprocess32-3.2.6
 
 # ensure that we use the right python to do the install

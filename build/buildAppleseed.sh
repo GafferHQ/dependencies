@@ -3,10 +3,10 @@
 set -e
 
 cd `dirname $0`/../appleseed-d3f996b
-rm -f CMakeCache.txt
 
 mkdir -p build
 cd build
+rm -f CMakeCache.txt
 
 cmake \
 	-D WITH_CLI=ON \
@@ -28,5 +28,6 @@ cmake \
 	-D CMAKE_INSTALL_PREFIX=$BUILD_DIR/appleseed \
 	..
 
-make
+make clean
+make -j 4
 make install
