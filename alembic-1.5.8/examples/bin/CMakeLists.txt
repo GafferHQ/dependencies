@@ -33,7 +33,10 @@
 ##
 ##-*****************************************************************************
 
-ADD_SUBDIRECTORY( SimpleAbcViewer )
+IF( NOT ALEMBIC_NO_OPENGL )
+	ADD_SUBDIRECTORY( SimpleAbcViewer )
+ENDIF()
+
 ADD_SUBDIRECTORY( AbcConvert )
 ADD_SUBDIRECTORY( AbcEcho )
 ADD_SUBDIRECTORY( AbcStitcher )
