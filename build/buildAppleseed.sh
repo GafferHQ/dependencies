@@ -2,7 +2,7 @@
 
 set -e
 
-cd `dirname $0`/../appleseed-d3f996b
+cd `dirname $0`/../appleseed-9ea4d29
 
 mkdir -p build
 cd build
