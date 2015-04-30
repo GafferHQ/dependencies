@@ -2,7 +2,7 @@
 
 set -e
 
-cd `dirname $0`/../cortex-9.0.0-b4
+cd `dirname $0`/../cortex-9.0.0-b6
 
 export LD_LIBRARY_PATH=$BUILD_DIR/lib
 
