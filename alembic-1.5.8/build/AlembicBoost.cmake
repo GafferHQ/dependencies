@@ -107,7 +107,7 @@ ENDIF()
 # Find the static and multi-threaded version only
 #-******************************************************************************
 #-******************************************************************************
-SET( Boost_USE_STATIC_LIBS TRUE )
+SET( Boost_USE_STATIC_LIBS FALSE )
 SET( Boost_USE_MULTITHREADED TRUE )
 SET( Boost_NO_BOOST_CMAKE TRUE ) 
 
