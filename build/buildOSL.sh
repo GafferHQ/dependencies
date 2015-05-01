@@ -4,6 +4,9 @@ set -e
 
 cd `dirname $0`/../OpenShadingLanguage-Release-1.6.3dev
 
+mkdir -p $BUILD_DIR/doc/licenses
+cp LICENSE $BUILD_DIR/doc/licenses/osl
+
 # needed because the build process runs oslc, which
 # needs to link to the oiio libraries
 export DYLD_LIBRARY_PATH=$BUILD_DIR/lib

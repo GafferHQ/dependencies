@@ -4,6 +4,9 @@ set -e
 
 cd `dirname $0`/../tbb42_20140601oss
 
+mkdir -p $BUILD_DIR/doc/licenses
+cp COPYING $BUILD_DIR/doc/licenses/tbb
+
 if [[ -z $CXX ]] ; then
 	# tbb will prefer gcc over clang unless explicitly told otherwise,
 	# but fails to build with clang 2.1 on OS X 10.7.

@@ -69,6 +69,8 @@ manifest="
 	lib/QtGui.framework
 	lib/QtOpenGL.framework
 
+	lib/libxerces-c*$SHLIBSUFFIX*
+
 	fonts
 	ops
 	procedurals
@@ -122,9 +124,6 @@ manifest="
 	appleseed/shaders
 	
 "
-
-# need to include this once you've done appleseed! and xerces too
-#appleseed
 
 tar -c -f ../`basename $BUILD_DIR`.tar.gz $manifest
 

@@ -4,6 +4,9 @@ set -e
 
 cd `dirname $0`/../qt-everywhere-opensource-src-4.8.5
 
+mkdir -p $BUILD_DIR/doc/licenses
+cp LICENSE.LGPL $BUILD_DIR/doc/licenses/qt
+
 ./configure \
 	-prefix $BUILD_DIR \
 	-opensource -confirm-license \

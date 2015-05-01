@@ -32,6 +32,9 @@ popd
 
 cd `dirname $0`/../pyside-qt4.8+1.2.2
 
+mkdir -p $BUILD_DIR/doc/licenses
+cp COPYING $BUILD_DIR/doc/licenses/pySide
+
 rm -rf build && mkdir build && cd build
 cmake \
 	-D CMAKE_BUILD_TYPE=Release \

@@ -4,6 +4,9 @@ set -e
 
 cd `dirname $0`/../oiio-Release-1.5.13
 
+mkdir -p $BUILD_DIR/doc/licenses
+cp LICENSE $BUILD_DIR/doc/licenses/openImageIO
+
 rm -f CMakeCache.txt
 
 cmake \

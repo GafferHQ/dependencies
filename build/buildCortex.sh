@@ -4,6 +4,9 @@ set -e
 
 cd `dirname $0`/../cortex-9.0.0-b6
 
+mkdir -p $BUILD_DIR/doc/licenses
+cp LICENSE $BUILD_DIR/doc/licenses/cortex
+
 export LD_LIBRARY_PATH=$BUILD_DIR/lib
 
 rm -rf .sconsign.dblite .sconf_temp

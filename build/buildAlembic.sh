@@ -4,6 +4,9 @@ set -e
 
 cd `dirname $0`/../alembic-1.5.8
 
+mkdir -p $BUILD_DIR/doc/licenses
+cp LICENSE.txt $BUILD_DIR/doc/licenses/alembic
+
 # may need to hand edit build/AlembicBoost.cmake in the alembic distribution to remove Boost_USE_STATIC_LIBS.
 # may also need to set ALEMBIC_NO_TESTS=TRUE on OSX (in CMakeLists.txt).
 
