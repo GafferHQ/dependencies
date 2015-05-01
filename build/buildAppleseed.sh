@@ -4,6 +4,16 @@ set -e
 
 cd `dirname $0`/../appleseed-9ea4d29
 
+# I don't know what the sandbox is or why things are copied there
+# when we're installing somewhere else, but if the directories
+# don't exist, the install fails. It seems that the directories do
+# exist in the appleseed repository, but the process of downloading
+# a tarball and committing them to the gafferDependencies
+# repository loses it. It's easier to fix that here than to remember
+# every time.
+mkdir -p sandbox/bin
+mkdir -p sandbox/schemas
+
 mkdir -p build
 cd build
 rm -f CMakeCache.txt
