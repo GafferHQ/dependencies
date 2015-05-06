@@ -3,6 +3,8 @@
 set -e
 shopt -s nullglob
 
+PYTHON_VERSION=2.7
+
 if [[ `uname` = "Linux" ]] ; then
 	SHLIBSUFFIX=".so"
 	PLATFORM="linux"
@@ -53,7 +55,7 @@ manifest="
 	lib/libosl*
 
 	lib/libpython*$SHLIBSUFFIX*
-	lib/Python.framework
+	lib/Python.framework*
 	lib/python$PYTHON_VERSION
 
 	lib/libGLEW*$SHLIBSUFFIX*
@@ -67,14 +69,13 @@ manifest="
 	lib/libQtCore*
 	lib/libQtGui*
 	lib/libQtOpenGL*
-	lib/QtCore.framework
-	lib/QtGui.framework
-	lib/QtOpenGL.framework
+	lib/QtCore.framework*
+	lib/QtGui.framework*
+	lib/QtOpenGL.framework*
 
 	lib/libxerces-c*$SHLIBSUFFIX*
 
 	fonts
-	ops
 	procedurals
 	resources
 	shaders
@@ -127,7 +128,17 @@ manifest="
 	
 "
 
-archiveName=`basename $BUILD_DIR`-$PLATFORM.tar.gz
+packageName=gafferDependencies-$VERSION-$PLATFORM
+archiveName=$packageName.tar.gz
 
-tar -c -z -f ../$archiveName $manifest
+# Longwinded method for putting a prefix on the filenames
+# in the archive - there is an option for this in GNU tar
+# but that's not available on OS X.
 
+tar -c -z -f /tmp/intermediate.tar $manifest
+rm -rf /tmp/$packageName
+mkdir /tmp/$packageName
+cd /tmp/$packageName
+tar -x -f /tmp/intermediate.tar
+cd /tmp
+tar -c -z -f `dirname $BUILD_DIR`/$archiveName $packageName
