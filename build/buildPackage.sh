@@ -5,8 +5,10 @@ shopt -s nullglob
 
 if [[ `uname` = "Linux" ]] ; then
 	SHLIBSUFFIX=".so"
+	PLATFORM="linux"
 else
 	SHLIBSUFFIX=".dylib"
+	PLATFORM="osx"
 fi
 
 cd $BUILD_DIR
@@ -125,5 +127,7 @@ manifest="
 	
 "
 
-tar -c -f ../`basename $BUILD_DIR`.tar.gz $manifest
+archiveName=`basename $BUILD_DIR`-$PLATFORM.tar.gz
+
+tar -c -z -f ../$archiveName $manifest
 
