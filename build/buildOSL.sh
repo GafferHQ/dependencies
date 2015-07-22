@@ -2,7 +2,7 @@
 
 set -e
 
-cd `dirname $0`/../OpenShadingLanguage-Release-1.6.3dev
+cd `dirname $0`/../OpenShadingLanguage-Release-1.6.8
 
 mkdir -p $BUILD_DIR/doc/licenses
 cp LICENSE $BUILD_DIR/doc/licenses/osl
