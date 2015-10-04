@@ -36,7 +36,7 @@ manifest="
 	lib/libboost_chrono*$SHLIBSUFFIX*
 
 	lib/libIECore*$SHLIBSUFFIX
-	
+
 	lib/libIex*$SHLIBSUFFIX*
 	lib/libHalf*$SHLIBSUFFIX*
 	lib/libImath*$SHLIBSUFFIX*
@@ -74,6 +74,8 @@ manifest="
 	lib/QtOpenGL.framework*
 
 	lib/libxerces-c*$SHLIBSUFFIX*
+
+	lib/libopenvdb*$SHLIBSUFFIX*
 
 	fonts
 	procedurals
@@ -114,13 +116,14 @@ manifest="
 	include/QtOpenGL
 	include/ft2build.h
 	include/freetype2
-	include/Alembic	
+	include/Alembic
+	include/openvdb
 
 	renderMan
 	arnold
-	
+
 	appleseedDisplays
-	
+
 	appleseed/bin/appleseed.cli
 	appleseed/include
 	appleseed/lib
@@ -128,7 +131,7 @@ manifest="
 	appleseed/schemas
 	appleseed/settings
 	appleseed/shaders
-	
+
 "
 
 packageName=gafferDependencies-$VERSION-$PLATFORM
