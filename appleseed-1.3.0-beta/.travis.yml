@@ -1,0 +1,17 @@
+sudo: false
+
+language: cpp
+
+compiler:
+  - gcc
+
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - libxerces-c-dev
+      - gcc-4.8
+      - g++-4.8
+
+script: ./travis-ci-build.sh
