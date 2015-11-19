@@ -112,6 +112,9 @@ manifest="
 	include/QtCore
 	include/QtGui
 	include/QtOpenGL
+	include/ft2build.h
+	include/freetype2
+	include/Alembic	
 
 	renderMan
 	arnold
