@@ -2,7 +2,7 @@
 
 set -e
 
-pushd `dirname $0`/../ilmbase-2.1.0
+pushd `dirname $0`/../ilmbase-2.2.0
 
 mkdir -p $BUILD_DIR/doc/licenses
 cp COPYING $BUILD_DIR/doc/licenses/ilmbase
@@ -13,7 +13,7 @@ popd
 
 export LD_LIBRARY_PATH=$BUILD_DIR/lib
 
-pushd `dirname $0`/../openexr-2.1.0
+pushd `dirname $0`/../openexr-2.2.0
 
 cp LICENSE $BUILD_DIR/doc/licenses/openexr
 
