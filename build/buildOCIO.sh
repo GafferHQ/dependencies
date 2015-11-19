@@ -2,7 +2,7 @@
 
 set -e
 
-pushd `dirname $0`/../imageworks-OpenColorIO-8883824
+pushd `dirname $0`/../OpenColorIO-1.0.9
 
 mkdir -p $BUILD_DIR/doc/licenses
 cp LICENSE $BUILD_DIR/doc/licenses/openColorIO
