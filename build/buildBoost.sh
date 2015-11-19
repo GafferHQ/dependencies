@@ -2,7 +2,7 @@
 
 set -e
 
-cd `dirname $0`/../boost_1_51_0
+cd `dirname $0`/../boost_1_55_0
 
 mkdir -p $BUILD_DIR/doc/licenses
 cp LICENSE_1_0.txt $BUILD_DIR/doc/licenses/boost
