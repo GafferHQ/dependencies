@@ -15,5 +15,5 @@ export DYLD_FALLBACK_FRAMEWORK_PATH=$BUILD_DIR/lib
 # always seem to get it right.
 export CPLUS_INCLUDE_PATH=$BUILD_DIR/include/python2.7
 
-./bootstrap.sh --prefix=$BUILD_DIR --with-python=$BUILD_DIR/bin/python --with-python-root=$BUILD_DIR
+./bootstrap.sh --prefix=$BUILD_DIR --with-python=$BUILD_DIR/bin/python --with-python-root=$BUILD_DIR --without-libraries=log
 ./bjam -d+2 variant=release link=shared threading=multi install
