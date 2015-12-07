@@ -1,0 +1,80 @@
+#!/usr/bin/env iePython2.6
+
+import IEEnv
+import subprocess
+import sys
+import os
+import os.path
+import shutil
+
+def build( extraArgs = [] ) :
+	
+	sysArgs = sys.argv[1:]
+	
+	install = False
+	if "install" in sysArgs :
+		install = True
+		sysArgs.remove( "install" )
+	
+	release = False
+	if "RELEASE=1" in sysArgs :
+		release = True
+		sysArgs.remove( "RELEASE=1" )
+	
+	if "J=" in " ".join( sysArgs ) :
+		sysArgs = " ".join( sysArgs ).replace( "J=", "-j " ).split( " " )
+	
+	installPrefix = "/software" if release else os.path.expanduser( "~" )
+	buildArgs = [ "INSTALL_PREFIX=" + installPrefix ]
+	buildArgs.extend( extraArgs )
+	buildArgs.extend( sysArgs )
+	
+	print " ".join( [ "scons" ] + buildArgs )
+	if subprocess.call( [ "scons" ] + buildArgs ) != 0 :
+	
+		raise RuntimeError("Error : scons " + str( " ".join( buildArgs ) ) )
+	
+	if install or release :
+	
+		print " ".join( [ "scons", "install" ] + buildArgs )
+		if subprocess.call( [ "scons", "install" ] + buildArgs ) != 0 :
+		
+			raise RuntimeError("Error : scons install " + str( " ".join( buildArgs ) ) )
+
+def installDocs() :
+	
+	if "RELEASE=1" not in sys.argv :
+		return
+	
+	buildArgs = [ "INSTALL_PREFIX=/software" ]
+	
+	if subprocess.call( [ "scons", "installDoc" ] + buildArgs ) != 0 :
+	
+		raise RuntimeError("Error : scons installDoc " + str( " ".join( buildArgs ) ) )
+
+if IEEnv.platform() in ( "cent6.x86_64", "cent7.x86_64" ) :
+	
+	for compilerVersion in IEEnv.activeVersions(IEEnv.registry["compilers"]["gcc"]): 
+		for pythonVersion in IEEnv.activeVersions( IEEnv.registry["apps"]["python"] ) :
+			build( [ "COMPILER_VERSION="+compilerVersion, "DL_VERSION=UNDEFINED", "PYTHON_VERSION="+pythonVersion, "ARNOLD_VERSION=4.0.9.1" ] )
+	
+	for dlVersion in IEEnv.activeVersions( IEEnv.registry["apps"]["3delight"] ):
+		for compilerVersion in IEEnv.activeVersions(IEEnv.registry["compilers"]["gcc"]): 
+			for pythonVersion in IEEnv.activeVersions( IEEnv.registry["apps"]["python"] ) :
+				build( [ "COMPILER_VERSION="+compilerVersion, "DL_VERSION="+dlVersion, "PYTHON_VERSION="+pythonVersion, "ARNOLD_VERSION=UNDEFINED" ] )
+	
+	for mayaVersion in IEEnv.activeAppVersions( "maya" ) :
+		build( [ "APP=maya", "APP_VERSION="+mayaVersion ] )
+	
+	for nukeVersion in IEEnv.activeAppVersions( "nuke" ) :
+		build( [ "APP=nuke", "APP_VERSION="+nukeVersion ] )
+	
+	for houdiniVersion in IEEnv.activeAppVersions( "houdini" ) :
+		build( [ "APP=houdini", "APP_VERSION="+houdiniVersion ] )
+	
+	installDocs()
+	
+else :
+
+	raise RuntimeError( "Unknown platform" )
+
