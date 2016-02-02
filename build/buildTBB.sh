@@ -2,7 +2,7 @@
 
 set -e
 
-cd `dirname $0`/../tbb42_20140601oss
+cd `dirname $0`/../tbb43_20150611oss
 
 mkdir -p $BUILD_DIR/doc/licenses
 cp COPYING $BUILD_DIR/doc/licenses/tbb
@@ -22,7 +22,7 @@ if [[ `uname` = "Linux" ]] ; then
 	cp build/*_release/*.so* $BUILD_DIR/lib
 
 else
-	
+
 	cp build/macos_*_release/*.dylib $BUILD_DIR/lib
-	
+
 fi
