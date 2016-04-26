@@ -23,6 +23,7 @@ cd `dirname $0`
 ./buildGLEW.sh
 ./buildOCIO.sh
 ./buildOIIO.sh
+./buildVDB.sh
 ./buildLLVM.sh
 ./buildOSL.sh
 ./buildHDF5.sh
