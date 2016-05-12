@@ -29,5 +29,6 @@ make clean
 make
 make install
 
-mv $BUILD_DIR/alembic-*/include/* $BUILD_DIR/include
+rm -rf $BUILD_DIR/include/Alembic
+mv $BUILD_DIR/alembic-*/include/Alembic $BUILD_DIR/include
 mv $BUILD_DIR/alembic-*/lib/static/* $BUILD_DIR/lib
