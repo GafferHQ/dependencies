@@ -11,8 +11,8 @@ cp LICENSE.LGPL $BUILD_DIR/doc/licenses/qt
 	-prefix $BUILD_DIR \
 	-opensource -confirm-license \
 	-no-rpath -no-declarative -no-gtkstyle -no-qt3support \
-	-no-multimedia -no-audio-backend -no-webkit -no-script -no-dbus -no-declarative -no-svg \
-	-nomake examples -nomake demos -nomake tools \
+	-no-multimedia -no-audio-backend -no-webkit -no-script -no-dbus \
+	-nomake examples -nomake demos -nomake tools -nomake tests \
 	-I $BUILD_DIR/include -L $BUILD_DIR/lib
 
 make -j 4 && make install

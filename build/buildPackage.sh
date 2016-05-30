@@ -69,9 +69,13 @@ manifest="
 	lib/libQtCore*
 	lib/libQtGui*
 	lib/libQtOpenGL*
+	lib/libQtSvg*
+	lib/libQtXml*
 	lib/QtCore.framework*
 	lib/QtGui.framework*
 	lib/QtOpenGL.framework*
+	lib/QtSvg.framework*
+	lib/QtXml*.framework*
 
 	lib/libxerces-c*$SHLIBSUFFIX*
 
@@ -98,6 +102,8 @@ manifest="
 	python/PySide/QtCore.so
 	python/PySide/QtGui.so
 	python/PySide/QtOpenGL.so
+	python/PySide/QtSvg.so
+	python/PySide/QtXml*.so
 	python/PyQt*
 	python/OpenGL
 	python/PyOpenColorIO*
@@ -114,6 +120,8 @@ manifest="
 	include/QtCore
 	include/QtGui
 	include/QtOpenGL
+	include/QtSvg
+	include/QtXml*
 	include/ft2build.h
 	include/freetype2
 	include/Alembic

@@ -1,0 +1,82 @@
+AC_INIT(src/svg.h)
+
+dnl ===========================================================================
+
+# Package version number, (as distinct from shared library version)
+LIBSVG_VERSION=0.1.4
+
+# libtool shared library version
+
+# Increment if the interface has additions, changes, removals.
+LT_CURRENT=1
+
+# Increment any time the source changes; set to
+# 0 if you increment CURRENT
+LT_REVISION=0
+
+# Increment if any interfaces have been added; set to 0
+# if any interfaces have been removed. removal has
+# precedence over adding, so set to 0 if both happened.
+LT_AGE=0
+
+VERSION_INFO="$LT_CURRENT:$LT_REVISION:$LT_AGE"
+AC_SUBST(VERSION_INFO)
+
+dnl ===========================================================================
+
+AM_INIT_AUTOMAKE(libsvg, $LIBSVG_VERSION)
+AM_CONFIG_HEADER(config.h)
+
+AM_MAINTAINER_MODE
+
+AC_ISC_POSIX
+AC_PROG_CC
+AC_PROG_CPP
+AC_PROG_AWK
+AM_PROG_LIBTOOL
+AC_STDC_HEADERS
+
+dnl ===========================================================================
+
+AC_MSG_CHECKING(whether libexpat is requested)
+AC_ARG_WITH(expat, [AC_HELP_STRING([--with-expat], [use expat XML parser])],
+	[with_expat="$withval"], [with_expat=no])
+AC_MSG_RESULT($with_expat)
+
+dnl ===========================================================================
+
+if test $with_expat = "yes"; then
+  LIBSVG_CFLAGS="-DLIBSVG_EXPAT"
+  LIBSVG_LIBS="-lexpat"
+  LIBSVG_PARSER_BACKEND="expat"
+  LIBSVG_REQUIRES=""
+else
+  PKG_CHECK_MODULES(LIBSVG, libxml-2.0 >= 2.4.7 )
+  LIBSVG_PARSER_BACKEND="libxml"
+  LIBSVG_REQUIRES="libxml-2.0"
+fi
+AC_SUBST(LIBSVG_CFLAGS)
+AC_SUBST(LIBSVG_LIBS)
+AC_SUBST(LIBSVG_REQUIRES)
+AM_CONDITIONAL(EXPAT, test $LIBSVG_PARSER_BACKEND = "expat")
+
+dnl ===========================================================================
+dnl Use lots of warning flags with GCC
+
+WARN_CFLAGS=""
+if test "x$GCC" = "xyes"; then
+	WARN_CFLAGS="-Wall -Wpointer-arith -Wstrict-prototypes \
+	-Wmissing-prototypes -Wmissing-declarations \
+	-Wnested-externs -fno-strict-aliasing"
+fi
+AC_SUBST(WARN_CFLAGS)
+
+dnl ===========================================================================
+
+AC_OUTPUT([
+libsvg.spec
+libsvg.pc
+src/svg_version.h
+Makefile
+src/Makefile
+])

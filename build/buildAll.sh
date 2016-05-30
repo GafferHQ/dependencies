@@ -16,6 +16,8 @@ cd `dirname $0`
 ./buildJPEG.sh
 ./buildTIFF.sh
 ./buildPNG.sh
+./buildXML2.sh
+./buildSVG.sh
 ./buildFreeType.sh
 ./buildTBB.sh
 ./buildEXR.sh
