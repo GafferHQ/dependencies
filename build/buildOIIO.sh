@@ -16,6 +16,7 @@ cmake \
 	-D CMAKE_INSTALL_PREFIX=$BUILD_DIR \
 	-D CMAKE_PREFIX_PATH=$BUILD_DIR \
 	-D USE_FFMPEG=OFF \
+	-D USE_QT=OFF \
 	..
 
 make && make install
