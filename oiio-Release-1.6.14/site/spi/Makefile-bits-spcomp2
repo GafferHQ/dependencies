@@ -1,0 +1,411 @@
+# SPI-specific settings
+ifneq (${VERBOSE},)
+$(info Including spi/Makefile-bits-spcomp2)
+endif
+
+# READ THIS FIRST
+#
+# If you are building for installation as an SpComp2, make like this:
+# 1) On Linux, you must be setshot, for patchelf to be found; on
+#    Mac OS X, no need to be setshot, just make sure SP_OS=lion and
+#    COMPILER=clang.
+# 2) make spcomp2_install_local
+# or 2) make spcomp2_install
+#
+# Other notes about the SpComp2:
+# - it also tries to install OIIO's binaries alongside the libs. It would
+#   be really nice if somebody would either appwrap those binaries or
+#   symlink them to an spi show path on each install. For the moment
+#   though, they are just there for people who know.
+# - it would also be nice if we had a convention for tagging SpComp2
+#   release versions on the svn server.
+#
+
+OPENIMAGEIO_SPCOMP2_VERSION=39
+
+# Default namespace
+NAMESPACE ?= 'OpenImageIO_SPI'
+MY_CMAKE_FLAGS += -DEXTRA_CPP_ARGS:STRING="-DOIIO_SPI=1"
+SOVERSION ?= ${OPENIMAGEIO_SPCOMP2_VERSION}
+SPCOMP2_SHOTTREE_LOCATION = /shots/spi/home/lib/SpComp2
+INSTALL_SPCOMP2_LOCATION = /shots/spi/home/lib/SpComp2
+PYLIB_LIB_PREFIX ?= 1
+PYLIB_INCLUDE_SONAME ?= 1
+
+## Detect which SPI platform and set $platform, $COMPILER, $SPCOMP2_COMPILER,
+## and PYVER. Lots of other decisions are based on these.
+ifeq ($(SP_OS), rhel7)
+    # Rhel7 (current)
+    platform := rhel7
+    SPCOMP2_COMPILER=gcc48m64
+else ifeq ($(SP_OS), spinux1)
+    # Spinux (current)
+    #COMPILER=gcc44m64
+    platform := spinux1
+    SPCOMP2_COMPILER := gcc44m64
+    PYVER ?= 2.6
+else ifeq (${SP_OS}, lion)
+    # Official OS X build machines with special conventions
+    platform := lion
+    COMPILER ?= clang
+    SPCOMP2_COMPILER ?= clang
+else ifeq (${platform}, macosx)
+    # Generic OSX machines (including LG's laptop)
+    COMPILER ?= clang
+    SPCOMP2_COMPILER ?= clang
+    PYVER ?= 2.6
+else
+    $(error Unknown SP_OS)
+endif  # endif $(SP_OS)
+
+PYVER ?= 2.7
+OCIO_SPCOMP_VERSION ?= 2
+OIIO_SPCOMP2_PATH ?= ${SPCOMP2_SHOTTREE_LOCATION}/OpenImageIO/${SP_OS}-${SPCOMP2_COMPILER}/v${OPENIMAGEIO_SPCOMP2_VERSION}
+
+
+
+## Rhel7 (current)
+ifeq ($(SP_OS), rhel7)
+    USE_CPP11 ?= 1
+    USE_SIMD = sse4.1
+    USE_NINJA := 1
+    NINJA := /net/soft_scratch/apps/arnold/tools/spinux1/bin/ninja
+    CMAKE := /net/soft_scratch/apps/arnold/tools/spinux1/bin/cmake
+    MY_CMAKE_FLAGS += -DCMAKE_MAKE_PROGRAM=${NINJA}
+    BOOSTVERS ?= 1.55
+    SPCOMP2_USE_BOOSTVERS ?= 1
+    BOOSTSPSUFFIX ?= sp
+    BOOSTVERSSP=${BOOSTVERS}${BOOSTSPSUFFIX}
+    BOOSTVERS_SUFFIX = -${shell echo ${BOOSTVERS} | sed "s/\\./_/"}
+    BOOSTVERS_PREFIX = ${shell echo ${BOOSTVERS} | sed "s/\\./_/"}_0
+    CONSTRUCTED_BOOSTVERS = ${shell echo ${BOOSTVERS} | sed "s/\\./0/"}00
+    SPCOMP2_BOOSTVERS_SUFFIX = ${shell echo ${BOOSTVERSSP} | sed "s/\\.//"}
+    # $(info BOOSTVERSSP ${BOOSTVERSSP})
+    # $(info BOOSTVERS_SUFFIX ${BOOSTVERS_SUFFIX})
+    # $(info BOOSTVERS_PREFIX ${BOOSTVERS_PREFIX})
+    # $(info CONSTRUCTED_BOOSTVERS ${CONSTRUCTED_BOOSTVERS})
+    # $(info SPCOMP2_BOOSTVERS_SUFFIX ${SPCOMP2_BOOSTVERS_SUFFIX})
+    OCIO_PATH ?= ${SPCOMP2_SHOTTREE_LOCATION}/OpenColorIO/${SP_OS}-${SPCOMP2_COMPILER}/v${OCIO_SPCOMP_VERSION}
+    FIELD3D_HOME ?= ${SPCOMP2_SHOTTREE_LOCATION}/Field3D/${SP_OS}-${SPCOMP2_COMPILER}-boost155${BOOSTSPSUFFIX}/v406
+    OIIO_SPCOMP2_PATH := ${SPCOMP2_SHOTTREE_LOCATION}/OpenImageIO/${SP_OS}-${SPCOMP2_COMPILER}-boost${SPCOMP2_BOOSTVERS_SUFFIX}/v${OPENIMAGEIO_SPCOMP2_VERSION}
+    $(info New rhel7 OIIO_SPCOMP2_PATH is ${OIIO_SPCOMP2_PATH})
+
+    ## If not overridden, here is our preferred LLVM installation
+    ## (may be changed as new versions are rolled out to the facility)
+    LLVM_DIRECTORY ?= /shots/spi/home/lib/arnold/spinux1/llvm_3.4.2
+
+    # default compiler is clang, taken from the LLVM directory
+    ifeq (${COMPILER},)
+        MY_CMAKE_FLAGS += \
+           -DCMAKE_C_COMPILER=${LLVM_DIRECTORY}/bin/clang \
+           -DCMAKE_CXX_COMPILER=${LLVM_DIRECTORY}/bin/clang++
+    endif
+
+    # requesting 'clang' or 'gcc' (no version) means the first clang or
+    # gcc in your path
+    ifeq (${COMPILER},clang)
+        MY_CMAKE_FLAGS += -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
+    endif
+    ifeq (${COMPILER},gcc)
+        MY_CMAKE_FLAGS += -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++
+    endif
+
+    # A variety of tags can be used to try specific versions of gcc or
+    # clang from the site-specific places we have installed them.
+    ifeq (${COMPILER}, clang342)
+        MY_CMAKE_FLAGS += \
+           -DCMAKE_C_COMPILER=/shots/spi/home/lib/arnold/spinux1/llvm_3.4.2/bin/clang \
+           -DCMAKE_CXX_COMPILER=/shots/spi/home/lib/arnold/spinux1/llvm_3.4.2/bin/clang++
+    endif
+    ifeq (${COMPILER}, gcc472)
+      MY_CMAKE_FLAGS += \
+         -DCMAKE_C_COMPILER=/net/soft_scratch/apps/arnold/tools/gcc-4.7.2-test/bin/gcc \
+         -DCMAKE_CXX_COMPILER=/net/soft_scratch/apps/arnold/tools/gcc-4.7.2-test/bin/g++
+    endif
+    ifeq (${COMPILER}, gcc490)
+      MY_CMAKE_FLAGS += \
+         -DCMAKE_C_COMPILER=/net/soft_scratch/apps/arnold/tools/gcc-4.9-20130512-test/bin/gcc \
+         -DCMAKE_CXX_COMPILER=/net/soft_scratch/apps/arnold/tools/gcc-4.9-20130512-test/bin/g++
+    endif
+
+    MY_CMAKE_FLAGS += \
+        -DOPENEXR_CUSTOM_INCLUDE_DIR=/usr/include/OpenEXR2 \
+        -DOPENEXR_CUSTOM_LIB_DIR=/usr/lib64/OpenEXR2 \
+        -DOCIO_PATH=${OCIO_PATH} \
+        -DFIELD3D_HOME=${FIELD3D_HOME} \
+        -DHDF5_CUSTOM=1 \
+        -DHDF5_LIBRARIES=/usr/lib64/libhdf5.so \
+        -DNuke_ROOT=/net/apps/$(SP_OS)/foundry/nuke${NUKE_VERSION}
+    MY_CMAKE_FLAGS += \
+	-DBOOST_CUSTOM=1 \
+	-DBoost_VERSION=${CONSTRUCTED_BOOSTVERS} \
+	-DBoost_INCLUDE_DIRS=/usr/include/boost_${BOOSTVERSSP} \
+	-DBoost_LIBRARY_DIRS=/usr/lib64/boost_${BOOSTVERSSP} \
+	-Doiio_boost_PYTHON_FOUND=1 -DPYTHONLIBS_FOUND=1 \
+	-DPYTHON_LIBRARIES:STRING="/usr/lib64/libpython${PYVER}.so"
+    ifeq (${BOOSTSPSUFFIX}, sp)
+      MY_CMAKE_FLAGS += \
+	-DBoost_LIBRARIES:STRING="/usr/lib64/boost_${BOOSTVERSSP}/lib${BOOSTSPSUFFIX}boost_${BOOSTVERS_PREFIX}_filesystem-gcc48-mt${BOOSTVERS_SUFFIX}.so;/usr/lib64/boost_${BOOSTVERSSP}/lib${BOOSTSPSUFFIX}boost_${BOOSTVERS_PREFIX}_filesystem-gcc48-mt${BOOSTVERS_SUFFIX}.so;/usr/lib64/boost_${BOOSTVERSSP}/lib${BOOSTSPSUFFIX}boost_${BOOSTVERS_PREFIX}_regex-gcc48-mt${BOOSTVERS_SUFFIX}.so;/usr/lib64/boost_${BOOSTVERSSP}/lib${BOOSTSPSUFFIX}boost_${BOOSTVERS_PREFIX}_system-gcc48-mt${BOOSTVERS_SUFFIX}.so;/usr/lib64/boost_${BOOSTVERSSP}/lib${BOOSTSPSUFFIX}boost_${BOOSTVERS_PREFIX}_thread-gcc48-mt${BOOSTVERS_SUFFIX}.so" \
+	-DBoost_PYTHON_LIBRARIES:STRING="/usr/lib64/boost_${BOOSTVERSSP}/lib${BOOSTSPSUFFIX}boost_${BOOSTVERS_PREFIX}_python-gcc48-mt${BOOSTVERS_SUFFIX}.so"
+    else
+      MY_CMAKE_FLAGS += \
+	-DBoost_LIBRARIES:STRING="/usr/lib64/boost_${BOOSTVERSSP}/lib${BOOSTSPSUFFIX}boost_filesystem-gcc48-mt${BOOSTVERS_SUFFIX}.so;/usr/lib64/boost_${BOOSTVERSSP}/lib${BOOSTSPSUFFIX}boost_filesystem-gcc48-mt${BOOSTVERS_SUFFIX}.so;/usr/lib64/boost_${BOOSTVERSSP}/lib${BOOSTSPSUFFIX}boost_regex-gcc48-mt${BOOSTVERS_SUFFIX}.so;/usr/lib64/boost_${BOOSTVERSSP}/lib${BOOSTSPSUFFIX}boost_system-gcc48-mt${BOOSTVERS_SUFFIX}.so;/usr/lib64/boost_${BOOSTVERSSP}/lib${BOOSTSPSUFFIX}boost_thread-gcc48-mt${BOOSTVERS_SUFFIX}.so" \
+	-DBoost_PYTHON_LIBRARIES:STRING="/usr/lib64/boost_${BOOSTVERSSP}/lib${BOOSTSPSUFFIX}boost_python-gcc48-mt${BOOSTVERS_SUFFIX}.so"
+    endif
+    # end rhel7
+
+## Spinux (current)
+else ifeq ($(SP_OS), spinux1)
+    USE_SIMD = sse4.1
+#    USE_NINJA := 1
+#    NINJA := /net/soft_scratch/apps/arnold/tools/spinux1/bin/ninja
+#    CMAKE := /net/soft_scratch/apps/arnold/tools/spinux1/bin/cmake
+#    MY_CMAKE_FLAGS += -DCMAKE_MAKE_PROGRAM=${NINJA}
+    OCIO_PATH ?= ${SPCOMP2_SHOTTREE_LOCATION}/OpenColorIO/${SP_OS}-${SPCOMP2_COMPILER}/v${OCIO_SPCOMP_VERSION}
+#    FIELD3D_HOME ?= ${SPCOMP2_SHOTTREE_LOCATION}/Field3D/${SP_OS}-${SPCOMP2_COMPILER}-boost151/v406
+    # At SPI, we have two "flavors" of spinux.  One is based on Foresight, which
+    # uses a special libGL (below).  The other is based on Fedora which uses
+    # the standard libGL.  This attempts to detect which libGL to use.
+    SPINUX_GL_LIB = /usr/lib64/xorg.nvidia.3d/libGL.so
+    MY_CMAKE_FLAGS += $(if $(wildcard ${SPINUX_GL_LIB}), -DOPENGL_gl_LIBRARY=${SPINUX_GL_LIB})
+
+    ## If not overridden, here is our preferred LLVM installation
+    ## (may be changed as new versions are rolled out to the facility)
+    LLVM_DIRECTORY ?= /shots/spi/home/lib/arnold/spinux1/llvm_3.4.2
+
+    # default compiler is clang, taken from the LLVM directory
+    ifeq (${COMPILER},)
+        MY_CMAKE_FLAGS += \
+           -DCMAKE_C_COMPILER=${LLVM_DIRECTORY}/bin/clang \
+           -DCMAKE_CXX_COMPILER=${LLVM_DIRECTORY}/bin/clang++
+    endif
+
+    # requesting 'clang' or 'gcc' (no version) means the first clang or
+    # gcc in your path
+    ifeq (${COMPILER},clang)
+        MY_CMAKE_FLAGS += -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
+    endif
+    ifeq (${COMPILER},gcc)
+        MY_CMAKE_FLAGS += -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++
+    endif
+
+    # A variety of tags can be used to try specific versions of gcc or
+    # clang from the site-specific places we have installed them.
+    ifeq (${COMPILER}, clang341)
+        MY_CMAKE_FLAGS += \
+           -DCMAKE_C_COMPILER=/shots/spi/home/lib/arnold/spinux1/llvm_3.4.1/bin/clang \
+           -DCMAKE_CXX_COMPILER=/shots/spi/home/lib/arnold/spinux1/llvm_3.4.1/bin/clang++
+    endif
+    ifeq (${COMPILER}, clang342)
+        MY_CMAKE_FLAGS += \
+           -DCMAKE_C_COMPILER=/shots/spi/home/lib/arnold/spinux1/llvm_3.4.2/bin/clang \
+           -DCMAKE_CXX_COMPILER=/shots/spi/home/lib/arnold/spinux1/llvm_3.4.2/bin/clang++
+    endif
+    ifeq (${COMPILER}, gcc463)
+      MY_CMAKE_FLAGS += \
+         -DCMAKE_C_COMPILER=/net/soft_scratch/apps/arnold/tools/gcc-4.6.3-test/bin/gcc \
+         -DCMAKE_CXX_COMPILER=/net/soft_scratch/apps/arnold/tools/gcc-4.6.3-test/bin/g++
+    endif
+    ifeq (${COMPILER}, gcc470)
+      MY_CMAKE_FLAGS += \
+         -DCMAKE_C_COMPILER=/net/soft_scratch/apps/arnold/tools/gcc-4.7.0-test/bin/gcc \
+         -DCMAKE_CXX_COMPILER=/net/soft_scratch/apps/arnold/tools/gcc-4.7.0-test/bin/g++
+    endif
+    ifeq (${COMPILER}, gcc472)
+      MY_CMAKE_FLAGS += \
+         -DCMAKE_C_COMPILER=/net/soft_scratch/apps/arnold/tools/gcc-4.7.2-test/bin/gcc \
+         -DCMAKE_CXX_COMPILER=/net/soft_scratch/apps/arnold/tools/gcc-4.7.2-test/bin/g++
+    endif
+    ifeq (${COMPILER}, gcc490)
+      MY_CMAKE_FLAGS += \
+         -DCMAKE_C_COMPILER=/net/soft_scratch/apps/arnold/tools/gcc-4.9-20130512-test/bin/gcc \
+         -DCMAKE_CXX_COMPILER=/net/soft_scratch/apps/arnold/tools/gcc-4.9-20130512-test/bin/g++
+    endif
+
+    MY_CMAKE_FLAGS += \
+	  -DOPENEXR_CUSTOM_INCLUDE_DIR=/usr/include/OpenEXR2 \
+	  -DOPENEXR_CUSTOM_LIB_DIR=/usr/lib64/OpenEXR2 \
+	  -DOCIO_PATH=${OCIO_PATH} \
+	  -DFIELD3D_HOME=${FIELD3D_HOME} \
+          -DHDF5_CUSTOM=1 \
+	  -DHDF5_LIBRARIES=/usr/lib64/libhdf5.so \
+	  -DNuke_ROOT=/net/apps/$(SP_OS)/foundry/nuke${NUKE_VERSION}
+    ifeq (${SPCOMP2_USE_BOOSTVERS}, 1)
+	BOOSTVERS_SUFFIX = -${shell echo ${BOOSTVERS} | sed "s/\\./_/"}
+	MY_CMAKE_FLAGS += \
+		-DBOOST_CUSTOM=1 \
+		-DBoost_INCLUDE_DIRS=/usr/include/boost_${BOOSTVERS} \
+		-DBoost_LIBRARY_DIRS=/usr/lib64/boost_${BOOSTVERS} \
+		-Doiio_boost_PYTHON_FOUND=1 -DPYTHONLIBS_FOUND=1 \
+	        -DBoost_LIBRARIES:STRING="/usr/lib64/boost_${BOOSTVERS}/libboost_filesystem-gcc44-mt${BOOSTVERS_SUFFIX}.so;/usr/lib64/boost_${BOOSTVERS}/libboost_filesystem-gcc44-mt${BOOSTVERS_SUFFIX}.so;/usr/lib64/boost_${BOOSTVERS}/libboost_regex-gcc44-mt${BOOSTVERS_SUFFIX}.so;/usr/lib64/boost_${BOOSTVERS}/libboost_system-gcc44-mt${BOOSTVERS_SUFFIX}.so;/usr/lib64/boost_${BOOSTVERS}/libboost_thread-gcc44-mt${BOOSTVERS_SUFFIX}.so" \
+                -DBoost_PYTHON_LIBRARIES:STRING="/usr/lib64/boost_${BOOSTVERS}/libboost_python-gcc44-mt${BOOSTVERS_SUFFIX}.so" \
+               -DPYTHON_LIBRARIES:STRING="/usr/lib64/libpython${PYVER}.so"
+    endif
+
+    # end spinux1
+
+## Official OS X build machines with special conventions
+else ifeq ($(SP_OS), lion)
+    USE_SIMD = sse4.2
+    MACPORTS_PREFIX=/opt/local-10.7-2012-08
+    OCIO_PATH ?= ${SPCOMP2_SHOTTREE_LOCATION}/OpenColorIO/${SP_OS}-${SPCOMP2_COMPILER}/v${OCIO_SPCOMP_VERSION}
+    FIELD3D_HOME ?= ${INSTALL_SPCOMP2_LOCATION}/Field3D/${SP_OS}-${SPCOMP2_COMPILER}-boost151/v306
+    # CMAKE_CXX_COMPILER:
+    #   otherwise g++ is used and SPI standardized on clang.
+    # CMAKE_INSTALL_NAME_DIR:
+    #   without libraries and applications linking against this
+    #   library will not be able to find it at run time; prepends
+    #   "@rpath/" to the internal ID
+    # OPENJPEG_HOME:
+    #   Setting THIRD_PARTY_TOOLS_HOME isn't sufficient
+    # OVERRIDE_SHARED_LIBRARY_SUFFIX:
+    #   Set to .so so that shared libraries end in .so to be consistent
+    #   with Linux SpComp2 shared libraries
+    # PYTHON_EXECUTABLE:
+    # PYTHON_INCLUDE_DIR:
+    # PYTHON_LIBRARY:
+    #   Use MacPorts' Python
+    # THIRD_PARTY_TOOLS_HOME:
+    #   Find everything in SPI's MacPorts.
+    # ZLIB_ROOT:
+    #   Needed to use SPI's MacPorts' zlib.
+    MY_CMAKE_FLAGS += \
+      -DOCIO_PATH="${OCIO_PATH}" \
+      -DFIELD3D_HOME=${FIELD3D_HOME} \
+      -DOPENJPEG_HOME=${MACPORTS_PREFIX} \
+      -DOVERRIDE_SHARED_LIBRARY_SUFFIX=.so \
+      -DPYTHON_EXECUTABLE=${MACPORTS_PREFIX}/bin/python${PYVER} \
+      -DPYTHON_INCLUDE_DIR=${MACPORTS_PREFIX}/Library/Frameworks/Python.framework/Versions/2.7/Headers \
+      -DPYTHON_LIBRARIES=${MACPORTS_PREFIX}/Library/Frameworks/Python.framework/Versions/2.7/Python \
+      -DTHIRD_PARTY_TOOLS_HOME=${MACPORTS_PREFIX} \
+      -DZLIB_ROOT=${MACPORTS_PREFIX}
+    MY_CMAKE_FLAGS += \
+      -DCMAKE_CXX_COMPILER=/usr/bin/clang++ \
+      -DCMAKE_INSTALL_NAME_DIR=@rpath
+    ifeq (${SPCOMP2_USE_BOOSTVERS}, 1)
+	BOOSTVERS_UNDERSCORE = ${shell echo ${BOOSTVERS} | sed "s/\\./_/"}
+	MY_CMAKE_FLAGS += \
+            -DBOOST_CUSTOM=1 \
+            -DBoost_INCLUDE_DIRS=/usr/include/boost_${BOOSTVERS} \
+            -DBoost_LIBRARY_DIRS=/usr/lib64/boost_${BOOSTVERS} \
+            -DBoost_LIBRARIES=optimized;/usr/lib64/boost_${BOOSTVERS}/libboost_filesystem-gcc44-mt-${BOOSTVERS_UNDERSCORE}.so;optimized;/usr/lib64/boost_${BOOSTVERS}/libboost_filesystem-gcc44-mt-${BOOSTVERS_UNDERSCORE}.so;optimized;/usr/lib64/boost_${BOOSTVERS}/libboost_regex-gcc44-mt-${BOOSTVERS_UNDERSCORE}.so;optimized;/usr/lib64/boost_${BOOSTVERS}/libboost_system-gcc44-mt-${BOOSTVERS_UNDERSCORE}.so;optimized;/usr/lib64/boost_${BOOSTVERS}/libboost_thread-gcc44-mt-${BOOSTVERS_UNDERSCORE}.so
+    endif
+
+    # end SPI lion
+
+## Generic OSX machines (including LG's laptop)
+else ifeq (${platform}, macosx)
+    USE_SIMD = sse4.2
+    MY_CMAKE_FLAGS += \
+        -DCMAKE_INSTALL_NAME_DIR="${working_dir}/dist/${platform}${variant}/lib"
+    # don't need this? -DBUILD_WITH_INSTALL_RPATH=1
+
+    # end generic OSX
+
+else
+    $(error Unknown SP_OS)
+endif  # endif $(SP_OS)
+
+
+SPARCH=$(SP_OS)-$(SPCOMP2_COMPILER)
+BOOSTVERSSP?=${BOOSTVERS}${BOOSTSPSUFFIX}
+
+ifdef SPCOMP2_USE_BOOSTVERS
+	ifneq ($(BOOSTVERS),1.42)
+		SPARCH=$(SP_OS)-$(SPCOMP2_COMPILER)-boost$(subst .,,$(BOOSTVERSSP))
+	endif
+endif
+
+
+PYVERNOSPACE=${shell echo ${PYVER} | sed "s/\\.//"}
+SPPYARCH=$(SPARCH)-py$(PYVERNOSPACE)
+
+
+
+all: dist
+
+.PHONY: spcomp2_install spcomp2_install_local clean all
+
+comma:= ,
+empty:=
+space:= $(empty) $(empty)
+
+INSTALL_BIN_LOCATION = /shots/spi/home/bin/$(SP_OS)
+INSTALL_SPCOMP2_CURRENT = $(INSTALL_SPCOMP2_LOCATION)/OpenImageIO/$(SPARCH)/v$(OPENIMAGEIO_SPCOMP2_VERSION)
+
+SPCOMP2_RPATH_OPT ?= ${OCIO_PATH}/lib:${FIELD3D_HOME}/lib
+SPCOMP2_RPATH_DEBUG ?= ${OCIO_PATH}/lib/debug:${FIELD3D_HOME}/lib/debug
+PYSPCOMP2_RPATH_OPT ?= ${SPCOMP2_RPATH_OPT}:${OIIO_SPCOMP2_PATH}/lib
+PYSPCOMP2_RPATH_DEBUG ?= ${SPCOMP2_RPATH_DEBUG}:${OIIO_SPCOMP2_PATH}/lib/debug
+
+
+spcomp2_install_local: INSTALL_SPCOMP2_LOCATION = $(SPCOMP2_LOCAL_PATH)
+spcomp2_install_local: INSTALL_BIN_LOCATION = $(INSTALL_SPCOMP2_CURRENT)/bin
+spcomp2_install_local: spcomp2_install
+
+local: dist
+
+spcomp2: MY_CMAKE_FLAGS += \
+		-DCMAKE_SKIP_BUILD_RPATH:BOOL=ON \
+		-DCMAKE_INSTALL_RPATH=$(INSTALL_SPCOMP2_LOCATION)/OpenImageIO/$(SPARCH)/v$(OPENIMAGEIO_SPCOMP2_VERSION)/lib \
+		-DCMAKE_INSTALL_RPATH_USE_LINK_PATH:BOOL=ON \
+		-DPYLIB_INCLUDE_SONAME:BOOL=ON \
+		-DPYLIB_LIB_PREFIX:BOOL=ON
+
+spcomp2: dist
+
+spcomp2_debug: MY_CMAKE_FLAGS += \
+		-DCMAKE_SKIP_BUILD_RPATH:BOOL=ON \
+		-DCMAKE_INSTALL_RPATH=$(INSTALL_SPCOMP2_LOCATION)/OpenImageIO/$(SPARCH)/v$(OPENIMAGEIO_SPCOMP2_VERSION)/lib \
+		-DCMAKE_INSTALL_RPATH_USE_LINK_PATH:BOOL=ON \
+		-DPYLIB_INCLUDE_SONAME:BOOL=ON \
+		-DPYLIB_LIB_PREFIX:BOOL=ON
+
+spcomp2_debug: debug
+
+spcomp2_install_fixup_lion: spcomp2 spcomp2_debug
+	echo $(INSTALL_SPCOMP2_LOCATION)
+	install_name_tool -add_rpath ${OCIO_PATH}/lib ${dist_dir}/python/libPyOpenImageIO.so
+	install_name_tool -add_rpath ${OIIO_SPCOMP2_PATH}/lib ${dist_dir}/python/libPyOpenImageIO.so
+	install_name_tool -add_rpath ${OCIO_PATH}/lib/debug ${dist_dir}.debug/python/libPyOpenImageIO.so
+	install_name_tool -add_rpath ${OIIO_SPCOMP2_PATH}/lib/debug ${dist_dir}.debug/python/libPyOpenImageIO.so
+
+spcomp2_install_fixup_spinux1: spcomp2 spcomp2_debug
+	echo $(INSTALL_SPCOMP2_LOCATION)
+	patchelf --set-rpath ${SPCOMP2_RPATH_OPT} ${dist_dir}/lib/libOpenImageIO.so
+	patchelf --set-rpath ${SPCOMP2_RPATH_DEBUG} ${dist_dir}.debug/lib/libOpenImageIO.so
+	patchelf --set-rpath ${PYSPCOMP2_RPATH_OPT} ${dist_dir}/python/libPyOpenImageIO.so
+	patchelf --set-rpath ${PYSPCOMP2_RPATH_DEBUG} ${dist_dir}.debug/python/libPyOpenImageIO.so
+
+spcomp2_install_fixup_rhel7: spcomp2 spcomp2_debug
+	echo $(INSTALL_SPCOMP2_LOCATION)
+	patchelf --set-rpath ${SPCOMP2_RPATH_OPT} ${dist_dir}/lib/libOpenImageIO.so
+	patchelf --set-rpath ${SPCOMP2_RPATH_DEBUG} ${dist_dir}.debug/lib/libOpenImageIO.so
+	patchelf --set-rpath ${PYSPCOMP2_RPATH_OPT} ${dist_dir}/python/libPyOpenImageIO.so
+	patchelf --set-rpath ${PYSPCOMP2_RPATH_DEBUG} ${dist_dir}.debug/python/libPyOpenImageIO.so
+
+# This goal can't start with 'install' because something elsewhere picks
+# it up and starts doing bad things
+spcomp2_install: spcomp2_install_fixup_$(SP_OS)
+	perl -I/usr/local/spi/lib/make /usr/local/spi/bin/spcomp_install.pl -m installhost \
+	--project=OpenImageIO \
+	--version=$(OPENIMAGEIO_SPCOMP2_VERSION) \
+	--root=$(INSTALL_SPCOMP2_LOCATION) \
+	--arch=$(SPARCH) \
+	--headers=$(subst $(space),$(comma),$(wildcard ${dist_dir}/include/OpenImageIO/*)) \
+	--cflags= --static_lflags="$(LINK_BOOST) $(LINK_OPENEXR) -lpthread" \
+	--namespace=${NAMESPACE} \
+	--srcdir=${dist_dir}/lib \
+	--builddir_o=${dist_dir}/lib \
+	--builddir_d=${dist_dir}.debug/lib
+	perl -I/usr/local/spi/lib/make /usr/local/spi/bin/spcomp_install.pl -m installhost \
+	--project=PyOpenImageIO \
+	--version=$(OPENIMAGEIO_SPCOMP2_VERSION) \
+	--root=$(INSTALL_SPCOMP2_LOCATION) \
+	--arch=$(SPPYARCH) \
+	--cflags= --static_lflags="$(LINK_BOOST) $(LINK_OPENEXR) -lpthread"\
+	--namespace=${NAMESPACE} \
+	--srcdir=${dist_dir}/python \
+	--builddir_o=${dist_dir}/python \
+	--builddir_d=${dist_dir}.debug/python
+
