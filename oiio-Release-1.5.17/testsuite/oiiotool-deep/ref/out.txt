@@ -1,4 +1,0 @@
-Comparing "flat.exr" and "ref/flat.exr"
-PASS
-Comparing "ch.exr" and "ref/ch.exr"
-PASS
