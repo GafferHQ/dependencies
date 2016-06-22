@@ -21,8 +21,8 @@ scons install installDoc \
 	INSTALL_RMANPROCEDURAL_NAME=$BUILD_DIR/renderMan/procedurals/iePython \
 	INSTALL_RMANDISPLAY_NAME=$BUILD_DIR/renderMan/displayDrivers/ieDisplay \
 	INSTALL_PYTHON_DIR=$BUILD_DIR/python \
-	INSTALL_ARNOLDPROCEDURAL_NAME=$BUILD_DIR/arnold/procedurals/ieProcedural.so \
-	INSTALL_ARNOLDOUTPUTDRIVER_NAME=$BUILD_DIR/arnold/outputDrivers/ieOutputDriver.so \
+	INSTALL_ARNOLDPROCEDURAL_NAME=/tmp/unusedGafferDependencies/ieProcedural.so \
+	INSTALL_ARNOLDOUTPUTDRIVER_NAME=$BUILD_DIR/arnold/plugins/ieOutputDriver.so \
 	INSTALL_IECORE_OPS='' \
 	PYTHON_CONFIG=$BUILD_DIR/bin/python-config \
 	BOOST_INCLUDE_PATH=$BUILD_DIR/include/boost \
