@@ -5,7 +5,7 @@ set -e
 mkdir -p $BUILD_DIR/resources/cortex
 cp `dirname $0`/../tileset_2048.dat $BUILD_DIR/resources/cortex
 
-cd `dirname $0`/../cortex-9.11.1
+cd `dirname $0`/../cortex-9.11.2
 
 mkdir -p $BUILD_DIR/doc/licenses
 cp LICENSE $BUILD_DIR/doc/licenses/cortex
