@@ -10,6 +10,7 @@ for n in "BUILD_DIR" "VERSION" "ARNOLD_ROOT" "RMAN_ROOT" ; do
 done
 
 cd `dirname $0`
+./buildOpenSSL.sh
 ./buildPython.sh
 ./buildSubprocess32.sh
 ./buildBoost.sh
