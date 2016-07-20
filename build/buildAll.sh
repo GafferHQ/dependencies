@@ -31,6 +31,7 @@ cd `dirname $0`
 ./buildAlembic.sh
 ./buildXerces.sh
 ./buildAppleseed.sh
+./buildResources.sh
 ./buildCortex.sh
 ./buildPyOpenGL.sh
 ./buildQt.sh
