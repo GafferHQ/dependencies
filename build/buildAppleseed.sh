@@ -2,7 +2,7 @@
 
 set -e
 
-cd `dirname $0`/../appleseed-2cc61e0
+cd `dirname $0`/../appleseed-1.5.0-beta
 
 # I don't know what the sandbox is or why things are copied there
 # when we're installing somewhere else, but if the directories
