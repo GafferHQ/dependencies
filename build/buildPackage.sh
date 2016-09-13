@@ -62,6 +62,7 @@ manifest="
 	lib/libtbb*$SHLIBSUFFIX*
 
 	lib/libhdf5*$SHLIBSUFFIX*
+	lib/libAlembic*
 
 	lib/libpyside*$SHLIBSUFFIX*
 	lib/libshiboken*$SHLIBSUFFIX*
@@ -118,6 +119,12 @@ manifest="
 	include/freetype2
 	include/Alembic
 	include/openvdb
+	include/tiff*
+	include/png*
+	include/jconfig.h
+	include/jerror.h
+	include/jmorecfg.h
+	include/jpeglib.h
 
 	renderMan
 	arnold

@@ -2,7 +2,7 @@
 
 set -e
 
-cd `dirname $0`/../cortex-9.11.3
+cd `dirname $0`/../cortex-9.13.0
 
 mkdir -p $BUILD_DIR/doc/licenses
 cp LICENSE $BUILD_DIR/doc/licenses/cortex
