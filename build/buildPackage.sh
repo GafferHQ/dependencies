@@ -121,6 +121,7 @@ manifest="
 	include/openvdb
 	include/tiff*
 	include/png*
+	include/libpng*
 	include/jconfig.h
 	include/jerror.h
 	include/jmorecfg.h
