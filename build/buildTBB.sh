@@ -13,6 +13,15 @@ if [[ -z $CXX ]] ; then
 	export CXX=gcc
 fi
 
+# If our default shell is not Bash, TBB's own build system
+# may not be able to properly figure out which OS we're on,
+# so set it manually here.
+if [[ `uname` = "Linux" ]] ; then
+    export tbb_os=linux
+else
+    export tbb_os=macos
+fi
+
 make clean && make compiler=$CXX
 
 cp -r include/tbb $BUILD_DIR/include
