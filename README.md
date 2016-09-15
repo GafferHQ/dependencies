@@ -6,7 +6,7 @@ This project contains the source code for all the 3rd party libraries required t
 Usage
 -----
 
-We provide prebuilt binary [releases](GafferHQ/dependencies/releases), which should be used in conjunction with Gaffer's [build instructions][Gaffer](https://github.com/ImageEngine/gaffer#building).
+We provide prebuilt binary [releases](GafferHQ/dependencies/releases), which should be used in conjunction with Gaffer's [build instructions](https://github.com/ImageEngine/gaffer#building).
 
 Building
 --------
