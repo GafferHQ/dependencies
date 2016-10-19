@@ -1,12 +1,12 @@
 Gaffer Dependencies
 ===================
 
-This project contains the source code for all the 3rd party libraries required to build [Gaffer](ImageEngine/gaffer). It is intended to help Gaffer developers get up and running as quickly as possible, and secondarily to provide a record of exactly which dependencies were used for each release of Gaffer, and how they were built.
+This project contains the source code for all the 3rd party libraries required to build [Gaffer](https://github.com/GafferHQ/gaffer). It is intended to help Gaffer developers get up and running as quickly as possible, and secondarily to provide a record of exactly which dependencies were used for each release of Gaffer, and how they were built.
 
 Usage
 -----
 
-We provide prebuilt binary [releases](GafferHQ/dependencies/releases), which should be used in conjunction with Gaffer's [build instructions](https://github.com/ImageEngine/gaffer#building).
+We provide prebuilt binary [releases](https://github.com/GafferHQ/dependencies/releases), which should be used in conjunction with Gaffer's [build instructions](https://github.com/GafferHQ/gaffer#building).
 
 Building
 --------
