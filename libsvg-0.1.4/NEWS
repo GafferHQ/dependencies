@@ -1,0 +1,89 @@
+Snapshot 0.1.4 (2005-06-15 Carl Worth <cworth@cworth.org>)
+==========================================================
+- Add support to use expat rather than libxml2 for XML parsing.
+  Use the "--with-expat" argument to configure or autogen.sh.
+  (Thanks to Phil Blundell)
+
+Bug fixes
+---------
+- Fix autogen.sh to call all commands through environment variables.
+
+- Use getcwd in POSIX-compliant way, (rather than a Linux-specific way)
+
+- Fix code to compile cleanly with gcc version 4.
+
+- Fix several memory leaks and other memory mismanagement.
+
+Snapshot 0.1.3 (2005-02-13 Carl Worth <cworth@cworth.org>)
+==========================================================
+Add extern "C" stuff to svg.h for easier use from C++.
+
+Add whitespace compaction following the specification for
+xml:space="default".
+
+Various minor bug fixes.
+
+Initial version of libsvg
+=========================
+
+- Rewrote everything as libsvg, independent of libart, glib, pango, etc.
+
+This is old news from librsvg
+-----------------------------
+
+Version 2.1.0
+
+- New comaintainer Dom Lachowicz
+
+- Added new svg based gtk+ engine
+
+- Handles SVGs a lot better. Especially with regards to units.
+
+Version 2.0.1
+
+- Fixed misrender of the ScalableGorilla trashcan.
+
+Version 2.0.0
+
+- Fixed crash when trying to open empty files (Anders)
+
+Version 1.1.6
+
+- Fix division by zero crashes when scaling an .svg without dimensions (Darin)
+
+Version 1.1.5
+
+- Add another new function for use in Nautilus icons (Alex Larsson)
+
+Version 1.1.4
+
+- Add new function for auto-scaling svg for use in Nautilus icons (Alex Larsson)
+- Fix xml parsing to read much faster and work around libxml bug (Michael Meeks)
+- Add back handling for .svg file without width and height (Darin)
+- Improved internal error handling (Darin)
+
+Version 1.1.3
+
+- Fix major storage leaks (Anders)
+
+Version 1.1.2
+
+- Use the new intersector (Alex)
+
+Version 1.1.1
+
+- Ported to Gnome 2 (Ramiro, Darin)
+- Ported to Pango instead of using FreeType directly (Darin)
+- Replace FILE-based API with data pushing API (Jonathan)
+
+- Use pkgconfig rather than config scripts or .m4 files (Ramiro)
+- Use stuff from libart rather than having our own copies (Darin)
+- Move art_render_mask into libart (Darin)
+- Use locale-independent functions for parsing the XML files,
+  not <ctype.h>, which is locale dependent (Darin)
+- Other misc. API cleanups (Jonathan).
+- Fix NULL-dereference bugs in gradient code (Darin)
+- Fix handling of empty .svg files (Darin)
+- Measures strings propertly taking affine into account (Darin)
+- Fix empty struct portability problem (Darin)
+- Other build fixes (Owen, Jacob, Anders)
