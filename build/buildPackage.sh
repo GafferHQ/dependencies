@@ -67,12 +67,7 @@ manifest="
 	lib/libpyside*$SHLIBSUFFIX*
 	lib/libshiboken*$SHLIBSUFFIX*
 
-	lib/libQtCore*
-	lib/libQtGui*
-	lib/libQtOpenGL*
-	lib/QtCore.framework*
-	lib/QtGui.framework*
-	lib/QtOpenGL.framework*
+	lib/libQt*
 
 	lib/libxerces-c*$SHLIBSUFFIX*
 
@@ -95,11 +90,7 @@ manifest="
 
 	python/IECore*
 	python/shiboken.so
-	python/PySide/*.py
-	python/PySide/QtCore.so
-	python/PySide/QtGui.so
-	python/PySide/QtOpenGL.so
-	python/PyQt*
+	python/PySide
 	python/OpenGL
 	python/PyOpenColorIO*
 
@@ -112,9 +103,7 @@ manifest="
 	include/OSL
 	include/OpenImageIO
 	include/OpenColorIO
-	include/QtCore
-	include/QtGui
-	include/QtOpenGL
+	include/Qt*
 	include/ft2build.h
 	include/freetype2
 	include/Alembic
