@@ -17,6 +17,11 @@ cd $BUILD_DIR
 
 manifest="
 
+	bin/moc
+	bin/qmake
+	bin/rcc
+	bin/uic
+	
 	bin/python
 	bin/python*[0-9]
 
