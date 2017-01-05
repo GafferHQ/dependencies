@@ -9,6 +9,20 @@ for n in "BUILD_DIR" "VERSION" "ARNOLD_ROOT" "RMAN_ROOT" ; do
 	fi
 done
 
+if [[ `uname` = "Darwin" ]] ; then
+	if csrutil status | grep -q enabled ; then
+		# SIP prevents DYLD_* environment variables
+		# being inherited by protected processes, which
+		# breaks the builds for OSL, PySide and Appleseed.
+		# These each try to run a binary they create during
+		# the build, and cmake/make run that binary via a
+		# shell which throws away the library path, preventing
+		# runtime linking from working.
+		echo "ERROR : SIP not disabled"
+		exit 1
+	fi
+fi
+
 cd `dirname $0`
 ./buildOpenSSL.sh
 ./buildPython.sh
