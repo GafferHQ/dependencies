@@ -11,6 +11,8 @@ cp LICENSE_1_0.txt $BUILD_DIR/doc/licenses/boost
 # even though we tell it quite explicitly to use the one in $BUILD_DIR.
 export DYLD_FALLBACK_FRAMEWORK_PATH=$BUILD_DIR/lib
 
+export MACOSX_DEPLOYMENT_TARGET=10.9
+
 # give a helping hand to find the python headers, since the bootstrap below doesn't
 # always seem to get it right.
 export CPLUS_INCLUDE_PATH=$BUILD_DIR/include/python2.7
