@@ -5,7 +5,7 @@ set -e
 # Needed so that `oslc` can be run to compile
 # shaders during the build.
 export LD_LIBRARY_PATH=$BUILD_DIR/lib
-export DYLD_LIBRARY_PATH=$BUILD_DIR/lib
+export DYLD_FALLBACK_LIBRARY_PATH=$BUILD_DIR/lib
 
 cd `dirname $0`/../appleseed-1.6.0-beta
 
