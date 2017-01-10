@@ -21,7 +21,7 @@ manifest="
 	bin/qmake
 	bin/rcc
 	bin/uic
-	
+
 	bin/python
 	bin/python*[0-9]
 
@@ -109,7 +109,6 @@ manifest="
 	include/OpenImageIO
 	include/OpenColorIO
 	include/Qt*
-	include/ft2build.h
 	include/freetype2
 	include/Alembic
 	include/openvdb
