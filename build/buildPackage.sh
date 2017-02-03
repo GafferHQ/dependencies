@@ -73,6 +73,7 @@ manifest="
 	lib/libshiboken*$SHLIBSUFFIX*
 
 	lib/libQt*
+	lib/Qt*.framework
 
 	lib/libxerces-c*$SHLIBSUFFIX*
 
