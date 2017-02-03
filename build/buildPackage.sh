@@ -29,16 +29,7 @@ manifest="
 	bin/oslc
 	bin/oslinfo
 
-	lib/libboost_signals*$SHLIBSUFFIX*
-	lib/libboost_thread*$SHLIBSUFFIX*
-	lib/libboost_wave*$SHLIBSUFFIX*
-	lib/libboost_regex*$SHLIBSUFFIX*
-	lib/libboost_python*$SHLIBSUFFIX*
-	lib/libboost_date_time*$SHLIBSUFFIX*
-	lib/libboost_filesystem*$SHLIBSUFFIX*
-	lib/libboost_iostreams*$SHLIBSUFFIX*
-	lib/libboost_system*$SHLIBSUFFIX*
-	lib/libboost_chrono*$SHLIBSUFFIX*
+	lib/libboost_*$SHLIBSUFFIX*
 
 	lib/libIECore*$SHLIBSUFFIX
 
