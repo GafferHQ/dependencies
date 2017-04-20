@@ -18,7 +18,7 @@ fi
 	-opensource -confirm-license \
 	-no-rpath -no-declarative -no-gtkstyle -no-qt3support \
 	-no-phonon -no-multimedia -no-audio-backend -no-dbus -no-svg \
-	-nomake examples -nomake demos -nomake tools -nomake docs -nomake translations \
+	-nomake examples -nomake demos -nomake docs -nomake translations \
 	$extraArgs \
 	-v \
 	-I $BUILD_DIR/include -L $BUILD_DIR/lib
