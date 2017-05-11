@@ -1,0 +1,8 @@
+*.egg-info
+*.pyc
+build
+dist
+test_caveats.py
+
+# Development
+.vscode
