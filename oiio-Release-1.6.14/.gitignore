@@ -1,8 +1,0 @@
-*~
-branches/
-build/
-dist/
-testsuite/runtest.pyc
-
-.cproject
-.project

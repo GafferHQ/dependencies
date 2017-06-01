@@ -2,7 +2,7 @@
 
 set -e
 
-cd `dirname $0`/../oiio-Release-1.6.14
+cd `dirname $0`/../oiio-Release-1.7.15
 
 mkdir -p $BUILD_DIR/doc/licenses
 cp LICENSE $BUILD_DIR/doc/licenses/openImageIO

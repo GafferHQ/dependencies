@@ -1,2 +1,0 @@
-Comparing "../../../../../oiio-images/grid.tif" and "grid.iff"
-PASS
