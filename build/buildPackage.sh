@@ -114,7 +114,6 @@ manifest="
 	include/jmorecfg.h
 	include/jpeglib.h
 
-	renderMan
 	arnold
 
 	appleseedDisplays
@@ -128,6 +127,15 @@ manifest="
 	appleseed/shaders
 
 "
+
+if [ "$#" -lt "1" ]; then
+	if [ "$1" = "--renderman" ]; then
+		manifest = "$manifest
+
+	renderMan
+"
+	fi
+fi
 
 packageName=gafferDependencies-$VERSION-$PLATFORM
 archiveName=$packageName.tar.gz
