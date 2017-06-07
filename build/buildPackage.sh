@@ -25,7 +25,9 @@ manifest="
 	bin/python
 	bin/python*[0-9]
 
+	bin/exrheader
 	bin/maketx
+	bin/oiiotool
 	bin/oslc
 	bin/oslinfo
 
