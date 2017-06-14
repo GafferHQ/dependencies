@@ -1,0 +1,758 @@
+--- sources_qt4/pyside-qt+1.0.9/PySide/QtCore/typesystem_core.xml	2011-11-29 15:13:14 +0100
++++ sources_qt5/pyside-qt+1.0.9/PySide/QtCore/typesystem_core.xml	2015-03-02 11:57:13 +0100
+@@ -105,9 +105,6 @@
+   <rejection class="*" function-name="qFreeAligned"/>
+   <rejection class="QMetaMethod" enum-name="Attributes" />
+ 
+-  <enum-type name="QtValidLicenseForOpenVGModule"/>
+-  <enum-type name="QtValidLicenseForMultimediaModule"/>
+-  <enum-type name="QtValidLicenseForDeclarativeModule" />
+   <!-- From Qt4.6 ^^^ -->
+ 
+ 
+@@ -120,6 +117,8 @@
+   <primitive-type name="quint16"/>
+   <primitive-type name="quint32"/>
+   <primitive-type name="quint64"/>
++  <primitive-type name="qintptr"/>
++  <primitive-type name="quintptr"/>
+   <primitive-type name="bool"/>
+   <primitive-type name="double"/>
+   <primitive-type name="qreal"/>
+@@ -146,8 +145,14 @@
+   <primitive-type name="unsigned int"/>
+   <primitive-type name="signed long"/>
+   <primitive-type name="signed long int"/>
+-  <primitive-type name="long"/>
+-  <primitive-type name="unsigned long int" />
++  <primitive-type name="long">
++    <!-- FIXME APIExtractor or shiboken do not support multiple includes by primitive type -->
++    <include file-name="QDebug" location="global"/>
++  </primitive-type>
++  <primitive-type name="unsigned long int" >
++    <!-- FIXME APIExtractor or shiboken do not support multiple includes by primitive type -->
++    <include file-name="typeresolver.h" location="global"/>
++  </primitive-type>
+   <primitive-type name="unsigned long">
+     <!-- FIXME APIExtractor or shiboken do not support multiple includes by primitive type -->
+     <include file-name="signalmanager.h" location="global"/>
+@@ -156,11 +161,11 @@
+     <!-- FIXME APIExtractor or shiboken do not support multiple includes by primitive type -->
+     <include file-name="QTextDocument" location="global"/>
+   </primitive-type>
+-  <primitive-type name="QBool" target-lang-api-name="PyBool">
+-    <conversion-rule file="qbool_conversions.h"/>
++  <!-- <primitive-type name="QBool" target-lang-api-name="PyBool"> -->
++    <!-- <conversion-rule file="qbool_conversions.h"/> -->
+     <!-- FIXME This is a workaround to include some headers needed by some includes (nothing to do with QBool) -->
+-    <include file-name="QtConcurrentFilter" location="global"/>
+-  </primitive-type>
++    <!-- <include file-name="QtConcurrentFilter" location="global"/> -->
++  <!-- </primitive-type> -->
+ 
+   <primitive-type name="QString">
+     <include file-name="QString" location="global"/>
+@@ -171,15 +176,16 @@
+     <conversion-rule file="qstringlist_conversions.h" />
+   </primitive-type>
+   <primitive-type name="QStringRef">
+-    <include file-name="datetime.h" location="global"/>
++    <include file-name="QStringRef" location="global"/>
+     <conversion-rule file="qstringref_conversions.h" />
+   </primitive-type>
+   <primitive-type name="QChar">
++    <include file-name="QChar" location="global"/>
+     <conversion-rule file="qchar_conversions.h" />
+   </primitive-type>
+   <primitive-type name="QVariant">
++    <include file-name="QVariant" location="global"/>
+     <conversion-rule file="qvariant_conversions.h" />
+-    <include file-name="typeresolver.h" location="global"/>
+   </primitive-type>
+ 
+   <primitive-type name="QVariant::Type" default-constructor="QVariant::Invalid">
+@@ -260,12 +266,13 @@
+   <rejection class="" enum-name="QtValidLicenseForGuiModule"/>
+   <rejection class="" enum-name="QtValidLicenseForScriptModule"/>
+   <rejection class="" enum-name="QtValidLicenseForHelpModule"/>
++  <rejection class="" enum-name="QtValidLicenseForMultimediaModule"/>
++  <rejection class="" enum-name="QtValidLicenseForDeclarativeModule"/>
++  <rejection class="" enum-name="QtValidLicenseForOpenVGModule"/>
+   <rejection class="QtConcurrent" enum-name="enum_1"/>
+   <rejection class="QAbstractEventDispatcher" function-name="filterEvent"/>
+   <rejection class="QAbstractEventDispatcher" function-name="setEventFilter"/>
+   <!-- Internal -->
+-  <rejection class="QAbstractFileEngine" function-name="endEntryList"/>
+-  <rejection class="QAbstractFileEngine" function-name="extension"/>
+   <rejection class="QCoreApplication" function-name="compressEvent"/>
+   <rejection class="QCoreApplication" function-name="eventFilter"/>
+   <rejection class="QCoreApplication" function-name="filterEvent"/>
+@@ -274,13 +281,12 @@
+   <rejection class="QFile" function-name="setEncodingFunction"/>
+   <rejection class="QRegion" function-name="cleanUp"/>
+   <rejection class="QSettings" function-name="registerFormat"/>
+-  <rejection class="QAbstractFileEngineIterator" function-name="entryInfo"/>
+-  <rejection class="QAbstractFileEngineIterator" enum-name="EntryInfoType"/>
+   <namespace-type name="Qt">
+     <enum-type name="AlignmentFlag" flags="Alignment" />
+-    <enum-type name="AnchorAttribute"/>
++    <!-- <enum-type name="AnchorAttribute"/> Qt5 removed -->
+     <enum-type name="AnchorPoint" since="4.6" />
+     <enum-type name="ApplicationAttribute"/>
++    <enum-type name="ApplicationState" flags="ApplicationStates" since="5.1"/> 
+     <enum-type name="ArrowType"/>
+     <enum-type name="AspectRatioMode"/>
+     <enum-type name="Axis"/>
+@@ -299,8 +305,10 @@
+     <enum-type name="DockWidgetArea" flags="DockWidgetAreas" />
+     <enum-type name="DockWidgetAreaSizes"/>
+     <enum-type name="DropAction" flags="DropActions"/>
++    <enum-type name="Edge" flags="Edges" since="5.1"/>
+     <enum-type name="EventPriority"/>
+     <enum-type name="FillRule"/>
++    <enum-type name="FindChildOption" flags="FindChildOptions" since="5.0"/>
+     <enum-type name="FocusPolicy"/>
+     <enum-type name="FocusReason"/>
+     <enum-type name="GestureFlag" flags="GestureFlags" since="4.6"/>
+@@ -321,12 +329,17 @@
+     <enum-type name="MatchFlag" flags="MatchFlags"/>
+     <enum-type name="Modifier"/>
+     <enum-type name="MouseButton" flags="MouseButtons"/>
++    <enum-type name="MouseEventFlag" lags="MouseEventFlags" since="5.3"/>
++    <enum-type name="MouseEventSource" since="5.3"/>
++    <enum-type name="NativeGestureType" since="5.0"/>
+     <enum-type name="NavigationMode" since="4.6"/>
+     <enum-type name="Orientation" flags="Orientations"/>
+     <enum-type name="PenCapStyle"/>
+     <enum-type name="PenJoinStyle"/>
+     <enum-type name="PenStyle"/>
++    <enum-type name="ScreenOrientation" flags="ScreenOrientations" since="5.0"/>
+     <enum-type name="ScrollBarPolicy"/>
++    <enum-type name="ScrollPhase" since="5.2"/>
+     <enum-type name="ShortcutContext"/>
+     <enum-type name="SizeHint"/>
+     <enum-type name="SizeMode"/>
+@@ -337,6 +350,7 @@
+     <enum-type name="TextInteractionFlag" flags="TextInteractionFlags"/>
+     <enum-type name="TileRule" since="4.6"/>
+     <enum-type name="TimeSpec"/>
++    <enum-type name="TimerType" since="5.0"/>
+     <enum-type name="ToolBarArea" flags="ToolBarAreas" />
+     <enum-type name="ToolBarAreaSizes"/>
+     <enum-type name="ToolButtonStyle"/>
+@@ -421,10 +435,10 @@
+   </inject-code>
+ 
+   <inject-code class="native" position="beginning">
+-    // Define a global variable to handle qInstallMsgHandler callback
++    // Define a global variable to handle qInstallMesssageHandler callback
+     static PyObject* qtmsghandler = 0;
+ 
+-    static void msgHandlerCallback(QtMsgType type, const char* msg)
++    static void messsageHandlerCallback(QtMsgType type, const QMessageLogContext&amp; ctx, const QString&amp; msg)
+     {
+         Shiboken::GilState state;
+         Shiboken::AutoDecRef arglist(Shiboken::makeTuple(type, msg));
+@@ -435,10 +449,10 @@
+         PySide::SignalManager::instance().clear();
+     }
+   </inject-code>
+-  <add-function signature="qInstallMsgHandler(PyObject)" return-type="PyObject">
++  <add-function signature="qInstallMessageHandler(PyObject)" return-type="PyObject">
+     <inject-code class="target" position="beginning">
+       if (%PYARG_1 == Py_None) {
+-        qInstallMsgHandler(0);
++        qInstallMessageHandler(0);
+         %PYARG_0 = qtmsghandler ? qtmsghandler : Py_None;
+         qtmsghandler = 0;
+       } else if (!PyCallable_Check(%PYARG_1)) {
+@@ -447,7 +461,7 @@
+         %PYARG_0 = qtmsghandler ? qtmsghandler : Py_None;
+         Py_INCREF(%PYARG_1);
+         qtmsghandler = %PYARG_1;
+-        qInstallMsgHandler(msgHandlerCallback);
++        qInstallMessageHandler(messsageHandlerCallback);
+       }
+ 
+       if (%PYARG_0 == Py_None)
+@@ -653,9 +667,7 @@
+   </value-type>
+   <value-type name="QDateTime" hash-function="PySide::hash">
+     <conversion-rule file="qdatetime_conversions.h"/>
+-    <extra-includes>
+       <include file-name="datetime.h" location="global"/>
+-    </extra-includes>
+     <!-- Somewhat internal constructor used to pickle QDateTime -->
+     <add-function signature="QDateTime(int, int, int, int, int, int, int, int)">
+         <modify-argument index="8">
+@@ -1037,7 +1049,8 @@
+         </modify-argument>
+     </modify-function>
+   </value-type>
+-  <value-type name="QUuid">
++  <!-- FIXME QT5: Remove QUuid because cyclic dependency found on overloaddata QUuid(), this lead to cyclic dependency in <<(QDataStream &, QUUid) and incorrect QDataStream code generation -->
++  <!-- <value-type name="QUuid">
+     <enum-type name="Variant"/>
+     <enum-type name="Version"/>
+     <add-function signature="__repr__" return-type="PyObject*">
+@@ -1056,7 +1069,7 @@
+             </insert-template>
+         </inject-code>
+     </add-function>
+-  </value-type>
++  </value-type> -->
+ 
+   <value-type name="QLocale">
+     <enum-type name="Country" />
+@@ -1085,30 +1098,23 @@
+             <rename to="format" />
+         </modify-argument>
+     </modify-function>
+-    <modify-function signature="toUInt(QString,bool*,int)const">
+-        <modify-argument index="2">
+-            <remove-argument />
+-            <remove-default-expression />
+-        </modify-argument>
++    <modify-function signature="toUInt(QString,bool*)const">
+         <modify-argument index="return">
+             <replace-type modified-type="(int, bool ok)"/>
+         </modify-argument>
+         <inject-code class="target" position="beginning">
+-            <insert-template name="fix_arg,bool*,arg" />
++            <insert-template name="fix_arg,bool*" />
+         </inject-code>
+     </modify-function>
+-    <modify-function signature="toULongLong(QString,bool*,int)const">
+-        <modify-argument index="2">
+-            <remove-argument />
+-            <remove-default-expression />
+-        </modify-argument>
++    <modify-function signature="toULongLong(QString,bool*)const">
+         <modify-argument index="return">
+             <replace-type modified-type="(int, bool ok)"/>
+         </modify-argument>
+         <inject-code class="target" position="beginning">
+-            <insert-template name="fix_arg,bool*,arg" />
++            <insert-template name="fix_arg,bool*" />
+         </inject-code>
+     </modify-function>
++    <modify-function signature="toDouble(QStringRef,bool*) const" remove="all"/>
+     <modify-function signature="toDouble(QString,bool*)const">
+         <modify-argument index="2">
+             <remove-argument />
+@@ -1121,6 +1127,7 @@
+             <insert-template name="fix_args,bool*" />
+         </inject-code>
+     </modify-function>
++    <modify-function signature="toFloat(QStringRef,bool*) const" remove="all"/>
+     <modify-function signature="toFloat(QString,bool*)const">
+         <modify-argument index="2">
+             <remove-argument />
+@@ -1133,48 +1140,40 @@
+             <insert-template name="fix_args,bool*" />
+         </inject-code>
+     </modify-function>
+-    <modify-function signature="toInt(QString,bool*,int)const">
+-        <modify-argument index="2">
+-            <remove-argument />
+-        </modify-argument>
++    <modify-function signature="toInt(QStringRef,bool*) const" remove="all"/>
++    <modify-function signature="toInt(QString,bool*)const">
+         <modify-argument index="return">
+             <replace-type modified-type="(int, bool ok)"/>
+         </modify-argument>
+         <inject-code class="target" position="beginning">
+-            <insert-template name="fix_arg,bool*,arg" />
++            <insert-template name="fix_arg,bool*" />
+         </inject-code>
+     </modify-function>
+-    <modify-function signature="toLongLong(QString,bool*,int)const">
+-        <modify-argument index="2">
+-            <remove-argument />
+-        </modify-argument>
++    <modify-function signature="toLongLong(QStringRef,bool*) const" remove="all"/>
++    <modify-function signature="toLongLong(QString,bool*)const">
+         <modify-argument index="return">
+             <replace-type modified-type="(int, bool ok)"/>
+         </modify-argument>
+         <inject-code class="target" position="beginning">
+-            <insert-template name="fix_arg,bool*,arg" />
++            <insert-template name="fix_arg,bool*" />
+         </inject-code>
+     </modify-function>
+-    <modify-function signature="toShort(QString,bool*,int)const">
+-        <modify-argument index="2">
+-            <remove-argument />
+-        </modify-argument>
++    <modify-function signature="toShort(QStringRef,bool*) const" remove="all"/>
++    <modify-function signature="toShort(QString,bool*)const">
+         <modify-argument index="return">
+             <replace-type modified-type="(int, bool ok)"/>
+         </modify-argument>
+         <inject-code class="target" position="beginning">
+-            <insert-template name="fix_arg,bool*,arg" />
++            <insert-template name="fix_arg,bool*" />
+         </inject-code>
+     </modify-function>
+-    <modify-function signature="toUShort(QString,bool*,int)const">
+-        <modify-argument index="2">
+-            <remove-argument />
+-        </modify-argument>
++    <modify-function signature="toUShort(QStringRef,bool*) const" remove="all"/>
++    <modify-function signature="toUShort(QString,bool*)const">
+         <modify-argument index="return">
+             <replace-type modified-type="(int, bool ok)"/>
+         </modify-argument>
+         <inject-code class="target" position="beginning">
+-            <insert-template name="fix_arg,bool*,arg" />
++            <insert-template name="fix_arg,bool*" />
+         </inject-code>
+     </modify-function>
+   </value-type>
+@@ -1258,17 +1257,17 @@
+     </modify-function>
+     <modify-function signature="exit(int)" allow-thread="yes" />
+   </object-type>
+-  <object-type name="QAbstractFileEngineIterator"/>
+   <object-type name="QAbstractItemModel">
++    <enum-type name="LayoutChangeHint"/>
+     <!-- This function was replaced by a added function -->
+     <modify-function signature="createIndex(int, int, void*) const" remove="all"/>
+     <!-- This function is the same as createIndex(int, int, int) const -->
+-    <modify-function signature="createIndex(int,int, quint32)const" remove="all" />
+-    <modify-function signature="createIndex(int, int, int)const">
++    <!-- <modify-function signature="createIndex(int,int, quintptr)const" remove="all" /> -->
++    <!-- <modify-function signature="createIndex(int, int, int)const">
+         <modify-argument index="3">
+             <replace-default-expression with="0" />
+         </modify-argument>
+-    </modify-function>
++    </modify-function> -->
+     <add-function signature="createIndex(int, int, PyObject*)const" return-type="QModelIndex">
+         <modify-argument index="1">
+             <rename to="row"/>
+@@ -1303,6 +1302,41 @@
+       </modify-argument>
+     </modify-function>
+   </object-type>
++  <object-type name="QItemSelectionModel">
++    <enum-type name="SelectionFlag" flags="SelectionFlags"/>
++  </object-type>
++  <primitive-type name="QModelIndexList"/>
++  <object-type name="QAbstractProxyModel" polymorphic-id-expression="qobject_cast&lt;QAbstractProxyModel*&gt;(%1)">
++    <extra-includes>
++      <include file-name="QItemSelection" location="global"/>
++      <include file-name="QStringList" location="global"/>
++      <include file-name="QSize" location="global"/>
++    </extra-includes>
++    <modify-function signature="setSourceModel(QAbstractItemModel *)">
++      <modify-argument index="1">
++        <parent index="this" action="add"/>
++      </modify-argument>
++    </modify-function>
++  </object-type>
++  <object-type name="QSortFilterProxyModel">
++    <!-- ### This reimplementation of "QObject::parent()" is used in C++ only
++         when "using QObject::parent;" is not available. It's useless in Python. -->
++    <modify-function signature="parent()const" remove="all"/>
++    <extra-includes>
++      <include file-name="QItemSelection" location="global"/>
++      <include file-name="QStringList" location="global"/>
++      <include file-name="QSize" location="global"/>
++    </extra-includes>
++    <modify-function signature="setSourceModel(QAbstractItemModel *)">
++      <modify-argument index="1">
++        <reference-count action="set"/>
++      </modify-argument>
++    </modify-function>
++    <!--### Obsolete in 4.3-->
++    <modify-function signature="clear()" remove="all"/>
++    <modify-function signature="filterChanged()" remove="all"/>
++    <!--### End of obsolete section -->
++  </object-type>
+   <!-- QObject is created manually -->
+   <object-type name="QObject">
+     <extra-includes>
+@@ -1477,7 +1511,7 @@
+             if (QCoreApplication::instance()) {
+                 PyObject *klass = PyObject_GetAttrString(%PYSELF, "__class__");
+                 PyObject *cname = PyObject_GetAttrString(klass, "__name__");
+-                result = QString(QCoreApplication::instance()->translate(Shiboken::String::toCString(cname), %1, %2, QCoreApplication::CodecForTr, %3));
++                result = QString(QCoreApplication::instance()->translate(Shiboken::String::toCString(cname), %1, %2, %3));
+ 
+                 Py_DECREF(klass);
+                 Py_DECREF(cname);
+@@ -1493,7 +1527,7 @@
+         Shiboken::AutoDecRef klass(PyObject_GetAttrString(%PYSELF, "__class__"));
+         Shiboken::AutoDecRef cname(PyObject_GetAttrString(klass, "__name__"));
+         $DEFINE_SECOND_VAR
+-        QString result = QCoreApplication::instance()->translate(Shiboken::String::toCString(cname.object()), $SECOND_VAR, %2, QCoreApplication::UnicodeUTF8, %3);
++        QString result = QCoreApplication::instance()->translate(Shiboken::String::toCString(cname.object()), $SECOND_VAR, %2, %3);
+         %PYARG_0 = %CONVERTTOPYTHON[QString](result);
+     } else {
+         Py_INCREF(%PYARG_1);
+@@ -1572,8 +1606,12 @@
+     </extra-includes>
+   </object-type>
+   <value-type name="QUrl" hash-function="PySide::hash">
+-    <enum-type name="FormattingOption" flags="FormattingOptions"/>
++    <enum-type name="ComponentFormattingOption" flags="ComponentFormattingOptions" since="5.0"/>
+     <enum-type name="ParsingMode"/>
++    <enum-type name="UserInputResolutionOption" flags="UserInputResolutionOptions" since="5.4"/>
++    <!-- <enum-type name="UrlFormattingOption" flags="FormattingOptions"/> -->
++    <!-- FIXME Qt5: Issue here, cause FormattingOptions is actually typedef QUrlTwoFlags<UrlFormattingOption, ComponentFormattingOption> FormattingOptions; and the Flags are define only when Q_QDOC is defined.. -->
++    <enum-type name="UrlFormattingOption" />
+     <modify-documentation xpath='description/para[3]'>
+         &lt;para>URLs can be represented in two forms: encoded or unencoded. The unencoded representation is suitable for showing to users, but the encoded representation is typically what you would send to a web server. For example, the unencoded URL &quot;http://bühler.example.com&quot; would be sent to the server as &quot;http://xn--bhler-kva.example.com/List%20of%20applicants.xml&quot;.&lt;/para>
+     </modify-documentation>
+@@ -1597,6 +1635,39 @@
+             </insert-template>
+         </inject-code>
+     </add-function>
++    
++    <!-- Qt5: issue with default argument type not matching the enum type -->
++    <modify-function signature="toEncoded(QFlags&lt;QUrl::UrlFormattingOption&gt;) const" since="5.0">
++        <modify-argument index="1">
++            <remove-default-expression />
++        </modify-argument>
++    </modify-function>
++    <modify-function signature="toDisplayString(QFlags&lt;QUrl::UrlFormattingOption&gt;) const" since="5.0">
++        <modify-argument index="1">
++            <remove-default-expression />
++        </modify-argument>
++    </modify-function>
++    <modify-function signature="toString(QFlags&lt;QUrl::UrlFormattingOption&gt;) const" since="5.0">
++        <modify-argument index="1">
++            <remove-default-expression />
++        </modify-argument>
++    </modify-function>
++    <modify-function signature="url(QFlags&lt;QUrl::UrlFormattingOption&gt;) const" since="5.0">
++        <modify-argument index="1">
++            <remove-default-expression />
++        </modify-argument>
++    </modify-function>
++    <modify-function signature="url(QFlags&lt;QUrl::UrlFormattingOption&gt;) const" since="5.0">
++        <modify-argument index="1">
++            <remove-argument />
++            <remove-default-expression />
++        </modify-argument>
++        <inject-code class="target" position="beginning">
++            QUrl url = %CONVERTTOCPP[Qurl](%PYARG_1);
++            %CPPSELF.%FUNCTION_NAME(url, QUrl::FormattingOptions(PrettyDecoded));
++        </inject-code>
++    </modify-function>
++    
+   </value-type>
+   <value-type name="QRegExp">
+     <enum-type name="CaretMode"/>
+@@ -1672,12 +1743,10 @@
+     </add-function>
+   </value-type>
+   <value-type name="QByteArray" hash-function="qHash">
++    <enum-type name="Base64Option" flags="Base64Options" since="5.2"/>
++    
+     <conversion-rule file="qbytearray_conversions.h"/>
+-
+-    <extra-includes>
+-      <include file-name="QNoImplicitBoolCast" location="global"/>
+-    </extra-includes>
+-
++    
+     <!-- ### These overloads must be removed accept strings with \x00 in their contents -->
+     <modify-function signature="append(const char*,int)" remove="all" />
+     <modify-function signature="append(const char*)" remove="all" />
+@@ -1783,8 +1852,12 @@
+             </insert-template>
+         </inject-code>
+     </add-function>
+-    <modify-function signature="QByteArray(const char *)">
++    <modify-function signature="QByteArray(const char *,int)">
+         <!-- Keep \x00 bytes passed in python strings -->
++        <modify-argument index="2">
++            <remove-argument />
++        </modify-argument>
++        <!-- TODO Qt5: handle the size argument when not negative -->
+         <inject-code class="target" position="beginning">
+             if (PyBytes_Check(%PYARG_1)) {
+                 %0 = new QByteArray(PyBytes_AsString(%PYARG_1), PyBytes_GET_SIZE(%PYARG_1));
+@@ -1919,8 +1992,6 @@
+         <insert-template name="fix_bool*,arg"/>
+       </inject-code>
+     </modify-function>
+-    <!-- QByteArray(const char *) do the job of this constructor -->
+-    <modify-function signature="QByteArray(const char*,int)" remove="all"/>
+     <modify-function signature="fromRawData(const char*,int)">
+         <modify-argument index="1">
+             <replace-type modified-type="PyBytes"/>
+@@ -2001,7 +2072,9 @@
+     <modify-function signature="QTextBoundaryFinder(QTextBoundaryFinder::BoundaryType,const QChar*,int,unsigned char*,int)" remove="all"/>
+   </value-type>
+   <object-type name="QXmlStreamEntityResolver"/>
++  <object-type name="QWinEventNotifier" since="5.0"/>
+   <object-type name="QAbstractEventDispatcher">
++    <value-type name="TimerInfo" since="5.0"/>
+     <extra-includes>
+       <include file-name="QPair" location="global"/>
+     </extra-includes>
+@@ -2013,14 +2086,11 @@
+       <modify-function signature="processEvents(QFlags&lt;QEventLoop::ProcessEventsFlag>)" allow-thread="yes" />
+       <modify-function signature="processEvents(QFlags&lt;QEventLoop::ProcessEventsFlag>, int)" allow-thread="yes" />
+   </object-type>
+-  <object-type name="QFile">
++  <object-type name="QFileDevice" since="5.0">
+     <enum-type name="FileError"/>
+     <enum-type name="MemoryMapFlags"/>
+     <enum-type name="Permission" flags="Permissions"/>
+-    <enum-type name="FileHandleFlag" flags="FileHandleFlags" since="4.8" revision="4800"/>
+-    <extra-includes>
+-      <include file-name="QAbstractFileEngine" location="global"/>
+-    </extra-includes>
++    <enum-type name="FileHandleFlag" flags="FileHandleFlags"/>
+     <modify-function signature="unmap(uchar*)">
+         <modify-argument index="1">
+             <replace-type modified-type="PyBuffer"/>
+@@ -2036,6 +2106,9 @@
+             %PYARG_0 = Shiboken::Buffer::newObject(%CPPSELF.%FUNCTION_NAME(%1, %2, %3), %2, Shiboken::Buffer::ReadWrite);
+         </inject-code>
+     </modify-function>
++    <modify-function signature="flush()" allow-thread="yes"/>
++  </object-type>
++  <object-type name="QFile">
+     <modify-function signature="remove()" allow-thread="yes"/>
+     <modify-function signature="remove(const QString&amp;)" allow-thread="yes"/>
+     <modify-function signature="rename(const QString&amp;)" allow-thread="yes"/>
+@@ -2044,7 +2117,6 @@
+     <modify-function signature="link(const QString&amp;, const QString&amp;)" allow-thread="yes"/>
+     <modify-function signature="copy(const QString&amp;)" allow-thread="yes"/>
+     <modify-function signature="copy(const QString&amp;, const QString&amp;)" allow-thread="yes"/>
+-    <modify-function signature="flush()" allow-thread="yes"/>
+   </object-type>
+   <object-type name="QIODevice">
+     <enum-type name="OpenModeFlag" flags="OpenMode"/>
+@@ -2160,12 +2232,15 @@
+         </inject-code>
+     </add-function>
+   </object-type>
+-
++  
++  <object-type name="QBasicMutex" since="5.0">
++    <modify-function signature="lock()" allow-thread="yes"/>
++    <modify-function signature="tryLock()" allow-thread="yes"/>
++  </object-type>
+   <object-type name="QMutex">
+     <enum-type name="RecursionMode"/>
+     <modify-function signature="lock()" allow-thread="yes"/>
+     <modify-function signature="tryLock(int)" allow-thread="yes"/>
+-    <modify-function signature="tryLock()" allow-thread="yes"/>
+   </object-type>
+   <object-type name="QSemaphore">
+     <modify-function signature="acquire(int)" allow-thread="yes"/>
+@@ -2190,17 +2265,18 @@
+         </inject-code>
+     </add-function>
+   </object-type>
+-  <object-type name="QSystemLocale">
++  <!-- Qt5: no longer public -->
++  <!-- <object-type name="QSystemLocale">
+     <enum-type name="QueryType"/>
+-  </object-type>
++  </object-type> -->
+   <object-type name="QSysInfo">
+     <enum-type name="Endian"/>
+     <enum-type name="Sizes"/>
+   </object-type>
+   <object-type name="QTemporaryFile">
+-    <extra-includes>
++<!--     <extra-includes>
+       <include file-name="QAbstractFileEngine" location="global"/>
+-    </extra-includes>
++    </extra-includes> -->
+     <modify-function signature="createLocalFile(const QString&amp;)" allow-thread="yes"/>
+   </object-type>
+   <object-type name="QMimeData">
+@@ -2221,11 +2297,6 @@
+       </modify-function>
+     </object-type>
+ 
+-    <modify-function signature="setCodecForTr(QTextCodec*)">
+-      <modify-argument index="1">
+-        <parent index="this" action="add"/>
+-      </modify-argument>
+-    </modify-function>
+     <modify-function signature="setCodecForCStrings(QTextCodec*)">
+       <modify-argument index="1">
+         <parent index="this" action="add"/>
+@@ -2282,7 +2353,7 @@
+     <modify-function signature="setData(const char*,int)" remove="all"/>
+   </object-type>
+   <object-type name="QTimer">
+-    <modify-function signature="singleShot(int,QObject*,const char*)">
++    <modify-function signature="singleShot(int,const QObject*,const char*)">
+       <inject-code class="target" position="beginning">
+         // %FUNCTION_NAME() - disable generation of c++ function call
+         (void) %2; // remove warning about unused variable
+@@ -2307,6 +2378,14 @@
+         timer->start(%1);
+       </inject-code>
+     </modify-function>
++    <modify-function signature="singleShot(int,Qt::TimerType, const QObject*,const char*)" remove="all"/>
++    <modify-function signature="singleShot(int, const QObject*,const char*)" remove="all"/>
++    <modify-function signature="singleShot(int,Qt::TimerType, PointerToMemberFunction)" remove="all"/>
++    <modify-function signature="singleShot(int,Qt::TimerType, const QObject*,PointerToMemberFunction)" remove="all"/>
++    <modify-function signature="singleShot(int,Functor)" remove="all"/>
++    <modify-function signature="singleShot(int,Qt::TimerType, Functor)" remove="all"/>
++    <modify-function signature="singleShot(int,const QObject*, Functor)" remove="all"/>
++    <modify-function signature="singleShot(int,Qt::TimerType, const QObject*,Functor)" remove="all"/>
+     <add-function signature="singleShot(int, PyCallable*)" static="yes">
+         <inject-code class="target" position="beginning">
+         // %FUNCTION_NAME() - disable generation of c++ function call
+@@ -2346,17 +2425,18 @@
+         </inject-code>
+     </add-function>
+   </object-type>
+-  <object-type name="QAbstractFileEngineHandler">
++  <!-- Qt5: no longer public -->
++<!--   <object-type name="QAbstractFileEngineHandler">
+       <modify-function signature="create(const QString&map;)const">
+         <modify-argument index="return">
+             <define-ownership owner="c++"/>
+         </modify-argument>
+       </modify-function>
+-  </object-type>
++  </object-type> -->
+   <!-- <object-type name="QAbstractFileEngine::MapExtensionOption" /> -->
+   <!-- <object-type name="QAbstractFileEngine::MapExtensionReturn" /> -->
+   <!-- <object-type name="QAbstractFileEngine::UnMapExtensionOption" /> -->
+-  <object-type name="QAbstractFileEngine">
++  <!-- <object-type name="QAbstractFileEngine">
+     <enum-type name="Extension" extensible="yes"/>
+     <enum-type name="FileFlag" flags="FileFlags"/>
+     <enum-type name="FileName"/>
+@@ -2446,9 +2526,10 @@
+             </conversion-rule>
+         </modify-argument>
+     </modify-function>
+-  </object-type>
++  </object-type> -->
+   <object-type name="QProcess">
+     <enum-type name="ExitStatus"/>
++    <enum-type name="InputChannelMode"/>
+     <enum-type name="ProcessChannel"/>
+     <enum-type name="ProcessChannelMode"/>
+     <enum-type name="ProcessError"/>
+@@ -2496,7 +2577,6 @@
+   <object-type name="QSignalMapper" />
+ 
+   <object-type name="QCoreApplication">
+-    <enum-type name="Encoding" />
+     <enum-type identified-by-value="ApplicationFlags" since="4.8" revision="4800"/>
+     <extra-includes>
+       <include file-name="QStringList" location="global"/>
+@@ -2525,7 +2605,7 @@
+     <modify-function signature="flush()" allow-thread="yes"/>
+     <modify-function signature="sendEvent(QObject*, QEvent*)" allow-thread="yes"/>
+     <modify-function signature="sendPostedEvents(QObject*, int)" allow-thread="yes"/>
+-    <modify-function signature="sendPostedEvents()" allow-thread="yes"/>
++    <!-- <modify-function signature="sendPostedEvents()" allow-thread="yes"/> Qt5 removed -->
+     <modify-function signature="instance()">
+       <inject-code class="target">
+         QCoreApplication* app = QCoreApplication::instance();
+@@ -2550,17 +2630,12 @@
+     </modify-function>
+     <modify-function signature="QCoreApplication(int &amp;, char  **)" access="private"/>
+     <inject-code class="native" file="glue/qcoreapplication_init.cpp" position="beginning" />
+-    <modify-function signature="postEvent(QObject*,QEvent*)">
+-      <modify-argument index="2">
+-        <define-ownership owner="c++"/>
+-      </modify-argument>
+-    </modify-function>
+     <modify-function signature="postEvent(QObject*,QEvent*, int)">
+       <modify-argument index="2">
+         <define-ownership owner="c++"/>
+       </modify-argument>
+     </modify-function>
+-    <modify-function signature="winEventFilter(MSG*, long*)">
++    <!-- <modify-function signature="winEventFilter(MSG*, long*)">
+       <modify-argument index="2">
+         <remove-argument />
+         <conversion-rule class="native">
+@@ -2582,7 +2657,7 @@
+             %PYARG_0 = Shiboken::makeTuple(%0, *result_out);
+             delete result_out;
+       </inject-code>
+-    </modify-function>
++    </modify-function> -->
+   </object-type>
+   <object-type name="QSettings">
+     <enum-type name="Format"/>
+@@ -2876,11 +2951,6 @@
+     <modify-function signature="readBytes(char*&amp;,uint&amp;)" remove="all"/>
+     <modify-function signature="writeBytes(const char*,uint)" remove="all" />
+   </object-type>
+-  <object-type name="QFSFileEngine">
+-    <extra-includes>
+-      <include file-name="QDateTime" location="global"/>
+-    </extra-includes>
+-  </object-type>
+   <value-type name="QTextStreamManipulator">
+     <modify-function signature="exec(QTextStream &amp;)" rename="exec_"/>
+   </value-type>
+@@ -2891,7 +2961,7 @@
+     <enum-type name="Status"/>
+     <!-- Removed because it expect QString to be mutable -->
+     <modify-function signature="QTextStream(QString*,QFlags&lt;QIODevice::OpenModeFlag&gt;)" />
+-    <!-- Remvoed because we use the non-const version -->
++    <!-- Removed because we use the non-const version -->
+     <modify-function signature="QTextStream(const QByteArray&amp;, QFlags&lt;QIODevice::OpenModeFlag&gt;)" remove="all"/>
+     <!-- Removed because it expect QString to be mutable -->
+     <modify-function signature="setString(QString*,QFlags&lt;QIODevice::OpenModeFlag&gt;)" remove="all"/>
+@@ -2902,7 +2972,6 @@
+     <modify-function signature="operator&lt;&lt;(qulonglong)" remove="all"/>
+     <modify-function signature="operator&lt;&lt;(signed short)" remove="all"/>
+     <modify-function signature="operator&lt;&lt;(signed int)" remove="all"/>
+-    <modify-function signature="operator&lt;&lt;(QBool)" remove="all"/>
+     <modify-function signature="operator&lt;&lt;(unsigned int)" remove="all"/>
+     <modify-function signature="operator&lt;&lt;(unsigned short)" remove="all"/>
+ 
+@@ -2933,13 +3002,13 @@
+     <enum-type name="AccessMode"/>
+     <enum-type name="SystemSemaphoreError"/>
+   </object-type>
+-  <namespace-type name="QtConcurrent" target-type="class">
++  <!-- <namespace-type name="QtConcurrent" target-type="class">
+     <enum-type name="ReduceOption" flags="ReduceOptions"/>
+     <extra-includes>
+       <include file-name="qtconcurrentreducekernel.h" location="global"/>
+       <include file-name="qtconcurrentthreadengine.h" location="global"/>
+     </extra-includes>
+-  </namespace-type>
++  </namespace-type> -->
+   <object-type name="QThreadPool">
+     <modify-function signature="start(QRunnable*, int)">
+       <modify-argument index="1">
+@@ -3233,6 +3302,7 @@
+ 
+   <object-type name="QState" since="4.6">
+     <enum-type name="ChildMode"/>
++    <enum-type name="RestorePolicy"/>
+     <modify-function signature="addTransition(QAbstractTransition*)">
+       <modify-argument index="1">
+         <parent index="this" action="add"/>
+@@ -3245,7 +3315,7 @@
+       </modify-argument>
+       <inject-code class="target" position="beginning">
+       QString signalName(%2);
+-      if (PySide::SignalManager::registerMetaMethod(%1, signalName.mid(1).toAscii().data(), QMetaMethod::Signal)) {
++      if (PySide::SignalManager::registerMetaMethod(%1, signalName.mid(1).toLatin1().data(), QMetaMethod::Signal)) {
+           QSignalTransition* %0 = %CPPSELF->addTransition(%1, %2, %3);
+           %PYARG_0 = %CONVERTTOPYTHON[QSignalTransition*](%0);
+       } else {
+@@ -3291,7 +3361,6 @@
+   <object-type name="QStateMachine" since="4.6">
+     <enum-type name="Error"/>
+     <enum-type name="EventPriority"/>
+-    <enum-type name="RestorePolicy"/>
+ 
+     <value-type name="SignalEvent" since="4.6"/>
+     <value-type name="WrappedEvent" since="4.6"/>
+Only in sources_qt5/pyside-qt+1.0.9/PySide/QtGui: CMakeLists - Copie.txt

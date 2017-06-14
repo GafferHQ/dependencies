@@ -1,0 +1,74 @@
+--- a/PySide2/QtCore/glue/qobject_connect.cpp	2011-11-29 15:13:14 +0100
++++ b/PySide2/QtCore/glue/qobject_connect.cpp	2015-02-27 15:16:56 +0100
+@@ -30,7 +30,7 @@
+
+     // Check if this callback is a overwrite of a non-virtual Qt slot.
+     if (!usingGlobalReceiver && receiver && self) {
+-        *callbackSig = PySide::Signal::getCallbackSignature(signal, *receiver, callback, usingGlobalReceiver).toAscii();
++        *callbackSig = PySide::Signal::getCallbackSignature(signal, *receiver, callback, usingGlobalReceiver).toLatin1();
+         const QMetaObject* metaObject = (*receiver)->metaObject();
+         int slotIndex = metaObject->indexOfSlot(callbackSig->constData());
+         if (slotIndex != -1 && slotIndex < metaObject->methodOffset() && PyMethod_Check(callback))
+@@ -40,7 +40,7 @@
+     if (usingGlobalReceiver) {
+         PySide::SignalManager& signalManager = PySide::SignalManager::instance();
+         *receiver = signalManager.globalReceiver(source, callback);
+-        *callbackSig = PySide::Signal::getCallbackSignature(signal, *receiver, callback, usingGlobalReceiver).toAscii();
++        *callbackSig = PySide::Signal::getCallbackSignature(signal, *receiver, callback, usingGlobalReceiver).toLatin1();
+     }
+
+     return usingGlobalReceiver;
+@@ -87,7 +87,8 @@
+     const QMetaObject* metaObject = receiver->metaObject();
+     const char* slot = callbackSig.constData();
+     int slotIndex = metaObject->indexOfSlot(slot);
+-
++    QMetaMethod signalMethod = metaObject->method(signalIndex);
++
+     if (slotIndex == -1) {
+         if (!usingGlobalReceiver && self && !Shiboken::Object::hasCppWrapper((SbkObject*)self)) {
+             qWarning() << "You can't add dynamic slots on an object originated from C++.";
+@@ -113,11 +114,11 @@
+         if (usingGlobalReceiver)
+             signalManager.notifyGlobalReceiver(receiver);
+         #ifndef AVOID_PROTECTED_HACK
+-            source->connectNotify(signal - 1);
++            source->connectNotify(signalMethod); //Qt5: QMetaMethod instead of char*
+         #else
+             // Need to cast to QObjectWrapper* and call the public version of
+             // connectNotify when avoiding the protected hack.
+-            reinterpret_cast<QObjectWrapper*>(source)->connectNotify(signal - 1);
++            reinterpret_cast<QObjectWrapper*>(source)->connectNotify(signalMethod); //Qt5: QMetaMethod instead of char*
+         #endif
+
+         return true;
+@@ -141,6 +142,7 @@
+     QObject* receiver = 0;
+     PyObject* self = 0;
+     QByteArray callbackSig;
++    QMetaMethod slotMethod;
+     bool usingGlobalReceiver = getReceiver(NULL, signal, callback, &receiver, &self, &callbackSig);
+     if (receiver == 0 && self == 0)
+         return false;
+@@ -150,17 +152,18 @@
+     int slotIndex = -1;
+
+     slotIndex = metaObject->indexOfSlot(callbackSig);
+-
++    slotMethod = metaObject->method(slotIndex);
++
+     if (QMetaObject::disconnectOne(source, signalIndex, receiver, slotIndex)) {
+         if (usingGlobalReceiver)
+             signalManager.releaseGlobalReceiver(source, receiver);
+
+         #ifndef AVOID_PROTECTED_HACK
+-            source->disconnectNotify(callbackSig);
++            source->disconnectNotify(slotMethod); //Qt5: QMetaMethod instead of char*
+         #else
+             // Need to cast to QObjectWrapper* and call the public version of
+             // connectNotify when avoiding the protected hack.
+-            reinterpret_cast<QObjectWrapper*>(source)->disconnectNotify(callbackSig);
++            reinterpret_cast<QObjectWrapper*>(source)->disconnectNotify(slotMethod); //Qt5: QMetaMethod instead of char*
+         #endif
+         return true;
+     }

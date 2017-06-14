@@ -1,0 +1,32 @@
+From 56ab4d0d8c4d5331c7019934b71f5b188c95f51f Mon Sep 17 00:00:00 2001
+From: Christian Tismer <ctismer@gmail.com>
+Date: Wed, 21 Oct 2015 22:47:36 +0200
+Subject: [PATCH] applied a simple patch from Romain, this obe seems to be of
+ no effect.
+
+---
+ PySide2/global.h.in | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/PySide2/global.h.in b/PySide2/global.h.in
+index 3a734aa..67ac7f1 100644
+--- a/PySide2/global.h.in
++++ b/PySide2/global.h.in
+@@ -141,6 +141,14 @@ public:
+         : QGenericArgument(aName, static_cast<const void *>(&aData))
+         {}
+ };
++template <class T>
++class QArgument<T &>: public QGenericArgument
++{
++public:
++    inline QArgument(const char *aName, T &aData)
++        : QGenericArgument(aName, static_cast<const void *>(&aData))
++        {}
++};
+ 
+ 
+ template <typename T>
+-- 
+2.2.1
+

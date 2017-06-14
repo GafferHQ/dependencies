@@ -1,0 +1,11 @@
+--- a/libpyside/pysidemetafunction.cpp	2011-11-29 15:13:14 +0100
++++ b/libpyside/pysidemetafunction.cpp	2015-02-23 14:30:57 +0100
+@@ -146,7 +146,7 @@
+     int numArgs = PySequence_Fast_GET_SIZE(sequence.object()) + 1;
+
+     if (numArgs - 1 != argTypes.count()) {
+-        PyErr_Format(PyExc_TypeError, "%s only accepts %d arguments, %d given!", method.signature(), argTypes.count(), numArgs);
++        PyErr_Format(PyExc_TypeError, "%s only accepts %d arguments, %d given!", method.methodSignature().constData(), argTypes.count(), numArgs);
+         return false;
+     }
+

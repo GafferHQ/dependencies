@@ -1,0 +1,61 @@
+[pysidetest::delegatecreateseditor_test]
+    qt5.6
+[pysidetest::modelview_test]
+    darwin py3
+[pysidetest::qvariant_test]
+    darwin py3
+[pysidetest::utils_test]
+    win32
+[signals::signal_signature_test]
+    linux
+    darwin
+    win32
+[QtCore::bug_829]
+    win32
+[QtCore::qfile_test]
+    win32
+    darwin py3
+#  Nested exception in Python 3
+[QtCore::qflags_test]
+    py3
+[QtCore::qobject_connect_notify_test]
+    linux
+    darwin
+    win32
+[QtGui::qmatrix_test]
+    win32
+[QtWidgets::bug_576]
+    linux
+    win32
+    darwin py3
+[QtWidgets::returnquadruplesofnumbers_test]
+    linux
+    darwin
+    win32
+[QtWidgets::qstandarditemmodel_test]
+    py2
+    py3
+[QtTest::touchevent_test]
+    linux
+    darwin
+    win32
+[QtMultimedia::audio_test]
+    linux
+    darwin
+    win32
+[QtQml::bug_951]
+    py3
+[QtQml::javascript_exceptions]
+    py3
+[QtScript::qscriptvalue_test]
+    linux
+    darwin
+    win32
+[QtScriptTools::debugger_test]
+    linux
+    darwin
+    win32
+# AttributeError: 'PySide2.QtQuick.QQuickItem' object has no attribute 'simpleFunction'
+[QtQml::bug_451]
+    py2
+    py3
