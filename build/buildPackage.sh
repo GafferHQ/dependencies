@@ -64,9 +64,6 @@ manifest="
 	lib/libhdf5*$SHLIBSUFFIX*
 	lib/libAlembic*
 
-	lib/libpyside*$SHLIBSUFFIX*
-	lib/libshiboken*$SHLIBSUFFIX*
-
 	lib/libQt*
 	lib/Qt*.framework
 
@@ -90,10 +87,9 @@ manifest="
 	doc/osl*
 
 	python/IECore*
-	python/shiboken.so
-	python/PySide
 	python/OpenGL
 	python/PyOpenColorIO*
+	python/Qt.py
 
 	include/IECore*
 	include/boost

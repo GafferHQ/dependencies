@@ -50,4 +50,5 @@ cd `dirname $0`
 ./buildPyOpenGL.sh
 ./buildQt.sh
 ./buildPySide.sh
+./buildQtPy.sh
 ./buildPackage.sh
