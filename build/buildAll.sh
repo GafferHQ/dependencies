@@ -2,7 +2,7 @@
 
 set -e
 
-for n in "BUILD_DIR" "VERSION" "ARNOLD_ROOT" "RMAN_ROOT" ; do
+for n in "BUILD_DIR" "ARNOLD_ROOT" "RMAN_ROOT" ; do
 	if [ -z "${!n}" ]; then
 		echo "ERROR : $n environment variable not set"
 		exit 1
