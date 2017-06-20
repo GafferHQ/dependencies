@@ -11,13 +11,14 @@ export LD_LIBRARY_PATH=$BUILD_DIR/lib
 
 if [[ `uname` = "Darwin" ]] ; then
 	extraArgs=-no-freetype
+else
+	extraArgs=-qt-xcb
 fi
 
 ./configure \
 	-prefix $BUILD_DIR \
 	-release \
 	-opensource -confirm-license \
-	-qt-xcb \
 	-no-rpath -no-gtkstyle \
 	-no-audio-backend -no-dbus \
 	-skip qtconnectivity \
