@@ -17,6 +17,7 @@ fi
 
 ./configure \
 	-prefix $BUILD_DIR \
+	-plugindir $BUILD_DIR/qt/plugins \
 	-release \
 	-opensource -confirm-license \
 	-no-rpath -no-gtkstyle \

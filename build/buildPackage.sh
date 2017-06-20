@@ -75,6 +75,7 @@ manifest="
 	procedurals
 	resources
 	shaders
+	qt
 
 	openColorIO
 
