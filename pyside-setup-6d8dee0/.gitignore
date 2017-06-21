@@ -1,0 +1,15 @@
+/build
+/dist
+/pyside*_build
+/pyside*_package
+/pyside*_install
+/PySide
+/PySide-*.*.*
+/SciTE.*
+/pysideuic
+*.egg-info
+*.pyc
+distribute-*.egg
+distribute-*.tar.gz
+explore2
+build_history/2*

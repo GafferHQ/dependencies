@@ -1,0 +1,13 @@
+osx
+[ioGetFromBuiltinHttp:http+limited]
+ubuntu-14.04
+[ioGetFromBuiltinHttp:https+limited]
+ubuntu-14.04
+[httpAbort]
+*
+[backgroundRequestInterruption:ftp, bg, nobg]
+*
+[authenticationCacheAfterCancel:http+socksauth]
+rhel-7.1
+[authenticationCacheAfterCancel:https+socksauth]
+rhel-7.1

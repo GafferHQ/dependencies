@@ -2,25 +2,35 @@
 
 set -e
 
-cd `dirname $0`/../qt-everywhere-opensource-src-4.8.7
+cd `dirname $0`/../qt-adsk-5.6.1
 
 mkdir -p $BUILD_DIR/doc/licenses
-cp LICENSE.LGPL $BUILD_DIR/doc/licenses/qt
+cp LICENSE.LGPLv21 $BUILD_DIR/doc/licenses/qt
 
 export LD_LIBRARY_PATH=$BUILD_DIR/lib
 
 if [[ `uname` = "Darwin" ]] ; then
-	extraArgs="-arch x86_64 -platform unsupported/macx-clang"
+	extraArgs=-no-freetype
+else
+	extraArgs=-qt-xcb
 fi
 
 ./configure \
 	-prefix $BUILD_DIR \
+	-plugindir $BUILD_DIR/qt/plugins \
+	-release \
 	-opensource -confirm-license \
-	-no-rpath -no-declarative -no-gtkstyle -no-qt3support \
-	-no-phonon -no-multimedia -no-audio-backend -no-dbus -no-svg \
-	-nomake examples -nomake demos -nomake docs -nomake translations \
+	-no-rpath -no-gtkstyle \
+	-no-audio-backend -no-dbus \
+	-skip qtconnectivity \
+	-skip qtwebengine \
+	-skip qt3d \
+	-skip qtdeclarative \
+	-no-libudev \
+	-nomake examples \
+	-nomake tests \
 	$extraArgs \
-	-v \
-	-I $BUILD_DIR/include -L $BUILD_DIR/lib
+	-I $BUILD_DIR/include -I $BUILD_DIR/include/freetype2 \
+	-L $BUILD_DIR/lib
 
 make -j 4 && make install

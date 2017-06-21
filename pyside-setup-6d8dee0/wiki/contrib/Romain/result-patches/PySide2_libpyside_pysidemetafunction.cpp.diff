@@ -1,0 +1,2309 @@
+From 31641f6c4bb48859e97043b47bf98e38290e482a Mon Sep 17 00:00:00 2001
+From: Christian Tismer <ctismer@gmail.com>
+Date: Thu, 22 Oct 2015 01:38:55 +0200
+Subject: [PATCH] remove QtDeclarative, which is deprecated
+
+---
+ PySide2/QtCore/typesystem_core_common.xml        |   2 -
+ PySide2/QtDeclarative/CMakeLists.txt             |  66 ----
+ PySide2/QtDeclarative/pysideqmlregistertype.cpp  | 366 -----------------------
+ PySide2/QtDeclarative/pysideqmlregistertype.h    |  57 ----
+ PySide2/QtDeclarative/typesystem_declarative.xml | 169 -----------
+ PySide2/global.h.in                              |   1 -
+ cmake/Macros/FindQt5Extra.cmake                  |  21 +-
+ doc/CMakeLists.txt                               |   2 +-
+ doc/_templates/index.html                        |   2 -
+ doc/extras/PySide.QtDeclarative.ListProperty.rst |  46 ---
+ doc/extras/PySide.QtDeclarative.rst              |   5 -
+ doc/modules.rst                                  |   1 -
+ doc/typesystem_doc.xml.in                        |   4 -
+ libpyside/pysidemetafunction.cpp                 |   2 +-
+ tests/CMakeLists.txt                             |   1 -
+ tests/QtDeclarative/CMakeLists.txt               |  17 --
+ tests/QtDeclarative/bug_1029.py                  |  29 --
+ tests/QtDeclarative/bug_1029.qml                 |  15 -
+ tests/QtDeclarative/bug_451.py                   |  65 ----
+ tests/QtDeclarative/bug_451.qml                  |  26 --
+ tests/QtDeclarative/bug_456.py                   |  40 ---
+ tests/QtDeclarative/bug_456.qml                  |  71 -----
+ tests/QtDeclarative/bug_557.py                   |  14 -
+ tests/QtDeclarative/bug_726.py                   |  41 ---
+ tests/QtDeclarative/bug_726.qml                  |  71 -----
+ tests/QtDeclarative/bug_814.py                   |  39 ---
+ tests/QtDeclarative/bug_814.qml                  |   9 -
+ tests/QtDeclarative/bug_825.py                   |  55 ----
+ tests/QtDeclarative/bug_825.qml                  |  10 -
+ tests/QtDeclarative/bug_847.py                   |  42 ---
+ tests/QtDeclarative/bug_847.qml                  |  26 --
+ tests/QtDeclarative/bug_915.py                   |  28 --
+ tests/QtDeclarative/bug_926.py                   |  38 ---
+ tests/QtDeclarative/bug_926.qml                  |  17 --
+ tests/QtDeclarative/bug_951.py                   |  31 --
+ tests/QtDeclarative/bug_951.qml                  |   7 -
+ tests/QtDeclarative/bug_995.py                   |  13 -
+ tests/QtDeclarative/bug_995.qml                  |  12 -
+ tests/QtDeclarative/bug_997.py                   |  24 --
+ tests/QtDeclarative/bug_997.qml                  |   6 -
+ tests/QtDeclarative/connect_python_qml.py        |  30 --
+ tests/QtDeclarative/connect_python_qml.qml       |  20 --
+ tests/QtDeclarative/hw.qml                       |  55 ----
+ tests/QtDeclarative/qdeclarativenetwork_test.py  |  29 --
+ tests/QtDeclarative/qdeclarativeview_test.py     |  58 ----
+ tests/QtDeclarative/registertype.py              |  92 ------
+ tests/QtDeclarative/registertype.qml             |  29 --
+ tests/QtDeclarative/view.qml                     |  55 ----
+ tests/QtDeclarative/viewmodel.qml                |  14 -
+ 49 files changed, 3 insertions(+), 1870 deletions(-)
+ delete mode 100644 PySide2/QtDeclarative/CMakeLists.txt
+ delete mode 100644 PySide2/QtDeclarative/pysideqmlregistertype.cpp
+ delete mode 100644 PySide2/QtDeclarative/pysideqmlregistertype.h
+ delete mode 100644 PySide2/QtDeclarative/typesystem_declarative.xml
+ delete mode 100644 doc/extras/PySide.QtDeclarative.ListProperty.rst
+ delete mode 100644 doc/extras/PySide.QtDeclarative.rst
+ delete mode 100644 tests/QtDeclarative/CMakeLists.txt
+ delete mode 100644 tests/QtDeclarative/bug_1029.py
+ delete mode 100644 tests/QtDeclarative/bug_1029.qml
+ delete mode 100644 tests/QtDeclarative/bug_451.py
+ delete mode 100644 tests/QtDeclarative/bug_451.qml
+ delete mode 100644 tests/QtDeclarative/bug_456.py
+ delete mode 100644 tests/QtDeclarative/bug_456.qml
+ delete mode 100644 tests/QtDeclarative/bug_557.py
+ delete mode 100644 tests/QtDeclarative/bug_726.py
+ delete mode 100644 tests/QtDeclarative/bug_726.qml
+ delete mode 100644 tests/QtDeclarative/bug_814.py
+ delete mode 100644 tests/QtDeclarative/bug_814.qml
+ delete mode 100644 tests/QtDeclarative/bug_825.py
+ delete mode 100644 tests/QtDeclarative/bug_825.qml
+ delete mode 100644 tests/QtDeclarative/bug_847.py
+ delete mode 100644 tests/QtDeclarative/bug_847.qml
+ delete mode 100644 tests/QtDeclarative/bug_915.py
+ delete mode 100644 tests/QtDeclarative/bug_926.py
+ delete mode 100644 tests/QtDeclarative/bug_926.qml
+ delete mode 100644 tests/QtDeclarative/bug_951.py
+ delete mode 100644 tests/QtDeclarative/bug_951.qml
+ delete mode 100644 tests/QtDeclarative/bug_995.py
+ delete mode 100644 tests/QtDeclarative/bug_995.qml
+ delete mode 100644 tests/QtDeclarative/bug_997.py
+ delete mode 100644 tests/QtDeclarative/bug_997.qml
+ delete mode 100644 tests/QtDeclarative/connect_python_qml.py
+ delete mode 100644 tests/QtDeclarative/connect_python_qml.qml
+ delete mode 100644 tests/QtDeclarative/hw.qml
+ delete mode 100644 tests/QtDeclarative/qdeclarativenetwork_test.py
+ delete mode 100644 tests/QtDeclarative/qdeclarativeview_test.py
+ delete mode 100644 tests/QtDeclarative/registertype.py
+ delete mode 100644 tests/QtDeclarative/registertype.qml
+ delete mode 100644 tests/QtDeclarative/view.qml
+ delete mode 100644 tests/QtDeclarative/viewmodel.qml
+
+diff --git a/PySide2/QtCore/typesystem_core_common.xml b/PySide2/QtCore/typesystem_core_common.xml
+index 445878e..c164416 100644
+--- a/PySide2/QtCore/typesystem_core_common.xml
++++ b/PySide2/QtCore/typesystem_core_common.xml
+@@ -4229,8 +4229,6 @@ s1.addTransition(button.clicked, s1h)&lt;/code>
+   <suppress-warning text="enum 'enum_5' does not have a type entry or is not an enum" />
+   <suppress-warning text="enum 'FP_NORMAL' does not have a type entry or is not an enum" />
+   <suppress-warning text="Shadowing: *" />
+-  <!-- this enum is defined on Qt global header but only used in QtDeclarative module -->
+-  <suppress-warning text="enum 'QML_HAS_ATTACHED_PROPERTIES' does not have a type entry or is not an enum" />
+ 
+   <!-- this enum is defined on Qt global header but only used in QtGui module -->
+   <suppress-warning text="enum 'PM_MessageBoxHeight' does not have a type entry or is not an enum" />
+diff --git a/PySide2/QtDeclarative/CMakeLists.txt b/PySide2/QtDeclarative/CMakeLists.txt
+deleted file mode 100644
+index 223798b..0000000
+--- a/PySide2/QtDeclarative/CMakeLists.txt
++++ /dev/null
+@@ -1,66 +0,0 @@
+-project(QtDeclarative)
+-
+-set(QtDeclarative_registerType "${QtDeclarative_SOURCE_DIR}/pysideqmlregistertype.cpp")
+-
+-set(QtDeclarative_SRC
+-${QtDeclarative_GEN_DIR}/qdeclarativecomponent_wrapper.cpp
+-${QtDeclarative_GEN_DIR}/qdeclarativecontext_wrapper.cpp
+-${QtDeclarative_GEN_DIR}/qdeclarativeengine_wrapper.cpp
+-${QtDeclarative_GEN_DIR}/qdeclarativeerror_wrapper.cpp
+-${QtDeclarative_GEN_DIR}/qdeclarativeexpression_wrapper.cpp
+-${QtDeclarative_GEN_DIR}/qdeclarativeextensioninterface_wrapper.cpp
+-${QtDeclarative_GEN_DIR}/qdeclarativeextensionplugin_wrapper.cpp
+-${QtDeclarative_GEN_DIR}/qdeclarativeimageprovider_wrapper.cpp
+-${QtDeclarative_GEN_DIR}/qdeclarativeitem_wrapper.cpp
+-${QtDeclarative_GEN_DIR}/qdeclarativelistreference_wrapper.cpp
+-${QtDeclarative_GEN_DIR}/qdeclarativenetworkaccessmanagerfactory_wrapper.cpp
+-${QtDeclarative_GEN_DIR}/qdeclarativeparserstatus_wrapper.cpp
+-${QtDeclarative_GEN_DIR}/qdeclarativepropertymap_wrapper.cpp
+-${QtDeclarative_GEN_DIR}/qdeclarativepropertyvaluesource_wrapper.cpp
+-${QtDeclarative_GEN_DIR}/qdeclarativeproperty_wrapper.cpp
+-${QtDeclarative_GEN_DIR}/qdeclarativescriptstring_wrapper.cpp
+-${QtDeclarative_GEN_DIR}/qdeclarativeview_wrapper.cpp
+-# module is always needed
+-${QtDeclarative_GEN_DIR}/qtdeclarative_module_wrapper.cpp
+-)
+-
+-make_path(QtDeclarative_typesystem_path ${QtCore_SOURCE_DIR} ${QtGui_SOURCE_DIR} ${QtWidgets_SOURCE_DIR} ${QtNetwork_SOURCE_DIR}
+-                                        ${QtCore_BINARY_DIR} ${QtGui_BINARY_DIR} ${QtWidgets_BINARY_DIR} ${QtNetwork_BINARY_DIR}
+-                                        ${QtDeclarative_SOURCE_DIR})
+-
+-set(QtDeclarative_include_dirs  ${QtDeclarative_SOURCE_DIR}
+-                                ${Qt5Core_INCLUDE_DIRS}
+-                                ${Qt5Gui_INCLUDE_DIRS}
+-                                ${Qt5Network_INCLUDE_DIRS}
+-                                ${Qt5Declarative_INCLUDE_DIRS}
+-                                ${SHIBOKEN_PYTHON_INCLUDE_DIR}
+-                                ${SHIBOKEN_INCLUDE_DIR}
+-                                ${libpyside_SOURCE_DIR}
+-                                ${QtWidgets_GEN_DIR}
+-                                ${QtGui_GEN_DIR}
+-                                ${QtCore_GEN_DIR}
+-                                ${QtNetwork_GEN_DIR}
+-                                ${QtDeclarative_GEN_DIR})
+-
+-set(QtDeclarative_libraries   pyside2
+-                              ${SHIBOKEN_PYTHON_LIBRARIES}
+-                              ${Qt5Core_LIBRARIES}
+-                              ${Qt5Gui_LIBRARIES}
+-                              ${Qt5Widgets_LIBRARIES}
+-                              ${Qt5Network_LIBRARIES}
+-                              ${Qt5Script_LIBRARIES}
+-                              ${Qt5Svg_LIBRARIES}
+-                              ${Qt5Sql_LIBRARIES}
+-                              ${Qt5XmlPatterns_LIBRARIES}
+-                              ${Qt5Declarative_LIBRARIES})
+-
+-set(QtDeclarative_deps QtWidgets QtNetwork)
+-
+-create_pyside_module(QtDeclarative
+-                     QtDeclarative_include_dirs
+-                     QtDeclarative_libraries
+-                     QtDeclarative_deps
+-                     QtDeclarative_typesystem_path
+-                     QtDeclarative_SRC
+-                     QtDeclarative_registerType)
+-
+diff --git a/PySide2/QtDeclarative/pysideqmlregistertype.cpp b/PySide2/QtDeclarative/pysideqmlregistertype.cpp
+deleted file mode 100644
+index 28d10c3..0000000
+--- a/PySide2/QtDeclarative/pysideqmlregistertype.cpp
++++ /dev/null
+@@ -1,366 +0,0 @@
+-/*
+- * This file is part of the Shiboken Python Bindings Generator project.
+- *
+- * Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+- *
+- * Contact: PySide team <contact@pyside.org>
+- *
+- * This library is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU Lesser General Public
+- * License as published by the Free Software Foundation; either
+- * version 2.1 of the License, or (at your option) any later version.
+- *
+- * This library is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+- * Lesser General Public License for more details.
+- *
+- * You should have received a copy of the GNU Lesser General Public
+- * License along with this library; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+- */
+-
+-#include "pysideqmlregistertype.h"
+-// Qt
+-#include <QObject>
+-#include <QDeclarativeEngine>
+-#include <QMutex>
+-// shiboken
+-#include <typeresolver.h>
+-#include <gilstate.h>
+-#include <sbkdbg.h>
+-// pyside
+-#include <pyside.h>
+-#include <dynamicqmetaobject.h>
+-#include <pysideproperty.h>
+-
+-// auto generated headers
+-#include "qdeclarativeitem_wrapper.h"
+-#include "pyside_qtcore_python.h"
+-#include "pyside_qtdeclarative_python.h"
+-
+-#ifndef PYSIDE_MAX_QML_TYPES
+-// Maximum number of different types the user cna export to QML using qmlRegisterType.
+-#define PYSIDE_MAX_QML_TYPES 50
+-#endif
+-
+-// Forward declarations
+-static void propListMetaCall(PySideProperty* pp, PyObject* self, QMetaObject::Call call, void** args);
+-
+-
+-// All registered python types
+-static PyObject* pyTypes[PYSIDE_MAX_QML_TYPES];
+-static void (*createFuncs[PYSIDE_MAX_QML_TYPES])(void*);
+-
+-// Mutex used to avoid race condition on PySide::nextQObjectMemoryAddr
+-static QMutex nextQmlElementMutex;
+-
+-template<int N>
+-struct ElementFactoryBase
+-{
+-    static void createInto(void* memory)
+-    {
+-        QMutexLocker locker(&nextQmlElementMutex);
+-        PySide::setNextQObjectMemoryAddr(memory);
+-        Shiboken::GilState state;
+-        PyObject* obj = PyObject_CallObject(pyTypes[N], 0);
+-        if (!obj || PyErr_Occurred())
+-            PyErr_Print();
+-        PySide::setNextQObjectMemoryAddr(0);
+-    }
+-};
+-
+-template<int N>
+-struct ElementFactory : ElementFactoryBase<N>
+-{
+-    static void init()
+-    {
+-        createFuncs[N] = &ElementFactoryBase<N>::createInto;
+-        ElementFactory<N-1>::init();
+-    }
+-};
+-
+-template<>
+-struct  ElementFactory<0> : ElementFactoryBase<0>
+-{
+-    static void init()
+-    {
+-        createFuncs[0] = &ElementFactoryBase<0>::createInto;
+-    }
+-};
+-
+-int PySide::qmlRegisterType(PyObject* pyObj, const char* uri, int versionMajor, int versionMinor, const char* qmlName)
+-{
+-    using namespace Shiboken;
+-
+-    static PyTypeObject* qobjectType = Shiboken::Conversions::getPythonTypeObject("QObject*");
+-    static PyTypeObject* qdeclarativeType = Shiboken::Conversions::getPythonTypeObject("QDeclarativeItem*");
+-    assert(qobjectType);
+-    static int nextType = 0;
+-
+-    if (nextType >= PYSIDE_MAX_QML_TYPES) {
+-        PyErr_Format(PyExc_TypeError, "QML doesn't really like language bindings, so you can only export %d types to QML.", PYSIDE_MAX_QML_TYPES);
+-        return -1;
+-    }
+-
+-    if (!PySequence_Contains(((PyTypeObject*)pyObj)->tp_mro, (PyObject*)qobjectType)) {
+-        PyErr_Format(PyExc_TypeError, "A type inherited from %s expected, got %s.", qobjectType->tp_name, ((PyTypeObject*)pyObj)->tp_name);
+-        return -1;
+-    }
+-
+-    bool isDeclarativeType = PySequence_Contains(((PyTypeObject*)pyObj)->tp_mro, (PyObject*)qdeclarativeType);
+-
+-    QMetaObject* metaObject = reinterpret_cast<QMetaObject*>(ObjectType::getTypeUserData(reinterpret_cast<SbkObjectType*>(pyObj)));
+-    Q_ASSERT(metaObject);
+-
+-    // Inc ref the type object, don't worry about dec ref them because there's no way to unregister a QML type
+-    Py_INCREF(pyObj);
+-
+-    // All ready... now the ugly code begins... :-)
+-    pyTypes[nextType] = pyObj;
+-
+-    // Init proxy object static meta object
+-    QDeclarativePrivate::RegisterType type;
+-    type.version = 0;
+-    if (isDeclarativeType) {
+-        type.typeId = qMetaTypeId<QDeclarativeItem*>();
+-        type.listId = qMetaTypeId<QDeclarativeListProperty<QDeclarativeItem> >();
+-
+-        type.attachedPropertiesFunction = QDeclarativePrivate::attachedPropertiesFunc<QDeclarativeItem>();
+-        type.attachedPropertiesMetaObject = QDeclarativePrivate::attachedPropertiesMetaObject<QDeclarativeItem>();
+-
+-        type.parserStatusCast = QDeclarativePrivate::StaticCastSelector<QDeclarativeItem, QDeclarativeParserStatus>::cast();
+-        type.valueSourceCast = QDeclarativePrivate::StaticCastSelector<QDeclarativeItem, QDeclarativePropertyValueSource>::cast();
+-        type.valueInterceptorCast = QDeclarativePrivate::StaticCastSelector<QDeclarativeItem, QDeclarativePropertyValueInterceptor>::cast();
+-    } else {
+-        type.typeId = qMetaTypeId<QObject*>();
+-        type.listId = qMetaTypeId<QDeclarativeListProperty<QObject> >();
+-        type.attachedPropertiesFunction = QDeclarativePrivate::attachedPropertiesFunc<QObject>();
+-        type.attachedPropertiesMetaObject = QDeclarativePrivate::attachedPropertiesMetaObject<QObject>();
+-
+-        type.parserStatusCast = QDeclarativePrivate::StaticCastSelector<QObject, QDeclarativeParserStatus>::cast();
+-        type.valueSourceCast = QDeclarativePrivate::StaticCastSelector<QObject, QDeclarativePropertyValueSource>::cast();
+-        type.valueInterceptorCast = QDeclarativePrivate::StaticCastSelector<QObject, QDeclarativePropertyValueInterceptor>::cast();
+-    }
+-    type.objectSize = PySide::getSizeOfQObject(reinterpret_cast<SbkObjectType*>(pyObj));
+-    type.create = createFuncs[nextType];
+-    type.uri = uri;
+-    type.versionMajor = versionMajor;
+-    type.versionMinor = versionMinor;
+-    type.elementName = qmlName;
+-    type.metaObject = metaObject;
+-
+-    type.extensionObjectCreate = 0;
+-    type.extensionMetaObject = 0;
+-    type.customParser = 0;
+-
+-    int qmlTypeId = QDeclarativePrivate::qmlregister(QDeclarativePrivate::TypeRegistration, &type);
+-    ++nextType;
+-    return qmlTypeId;
+-}
+-
+-extern "C"
+-{
+-
+-// This is the user data we store in the property.
+-struct DeclarativeListProperty
+-{
+-    PyTypeObject* type;
+-    PyObject* append;
+-    PyObject* at;
+-    PyObject* clear;
+-    PyObject* count;
+-};
+-
+-static int propListTpInit(PyObject* self, PyObject* args, PyObject* kwds)
+-{
+-    static const char *kwlist[] = {"type", "append", "at", "clear", "count", 0};
+-    PySideProperty* pySelf = reinterpret_cast<PySideProperty*>(self);
+-    DeclarativeListProperty* data = new DeclarativeListProperty;
+-    memset(data, 0, sizeof(DeclarativeListProperty));
+-
+-    if (!PyArg_ParseTupleAndKeywords(args, kwds,
+-                                     "OO|OOO:QtDeclarative.ListProperty", (char**) kwlist,
+-                                     &data->type,
+-                                     &data->append,
+-                                     &data->at,
+-                                     &data->clear,
+-                                     &data->count)) {
+-        return 0;
+-    }
+-    PySide::Property::setMetaCallHandler(pySelf, &propListMetaCall);
+-    PySide::Property::setTypeName(pySelf, "QDeclarativeListProperty<QDeclarativeItem>");
+-    PySide::Property::setUserData(pySelf, data);
+-
+-    return 1;
+-}
+-
+-void propListTpFree(void* self)
+-{
+-    PySideProperty* pySelf = reinterpret_cast<PySideProperty*>(self);
+-    delete reinterpret_cast<DeclarativeListProperty*>(PySide::Property::userData(pySelf));
+-    // calls base type constructor
+-    Py_TYPE(pySelf)->tp_base->tp_free(self);
+-}
+-
+-PyTypeObject PropertyListType = {
+-    PyVarObject_HEAD_INIT(0, 0)
+-    "ListProperty",            /*tp_name*/
+-    sizeof(PySideProperty),    /*tp_basicsize*/
+-    0,                         /*tp_itemsize*/
+-    0,                         /*tp_dealloc*/
+-    0,                         /*tp_print*/
+-    0,                         /*tp_getattr*/
+-    0,                         /*tp_setattr*/
+-    0,                         /*tp_compare*/
+-    0,                         /*tp_repr*/
+-    0,                         /*tp_as_number*/
+-    0,                         /*tp_as_sequence*/
+-    0,                         /*tp_as_mapping*/
+-    0,                         /*tp_hash */
+-    0,                         /*tp_call*/
+-    0,                         /*tp_str*/
+-    0,                         /*tp_getattro*/
+-    0,                         /*tp_setattro*/
+-    0,                         /*tp_as_buffer*/
+-    Py_TPFLAGS_DEFAULT,        /*tp_flags*/
+-    0,                         /*tp_doc */
+-    0,                         /*tp_traverse */
+-    0,                         /*tp_clear */
+-    0,                         /*tp_richcompare */
+-    0,                         /*tp_weaklistoffset */
+-    0,                         /*tp_iter */
+-    0,                         /*tp_iternext */
+-    0,                         /*tp_methods */
+-    0,                         /*tp_members */
+-    0,                         /*tp_getset */
+-    &PySidePropertyType,       /*tp_base */
+-    0,                         /*tp_dict */
+-    0,                         /*tp_descr_get */
+-    0,                         /*tp_descr_set */
+-    0,                         /*tp_dictoffset */
+-    propListTpInit,            /*tp_init */
+-    0,                         /*tp_alloc */
+-    0,                         /*tp_new */
+-    propListTpFree,            /*tp_free */
+-    0,                         /*tp_is_gc */
+-    0,                         /*tp_bases */
+-    0,                         /*tp_mro */
+-    0,                         /*tp_cache */
+-    0,                         /*tp_subclasses */
+-    0,                         /*tp_weaklist */
+-    0,                         /*tp_del */
+-};
+-
+-} // extern "C"
+-
+-// Implementation of QDeclarativeListProperty<T>::AppendFunction callback
+-void propListAppender(QDeclarativeListProperty<QDeclarativeItem>* propList, QDeclarativeItem* item)
+-{
+-    Shiboken::GilState state;
+-
+-    Shiboken::AutoDecRef args(PyTuple_New(2));
+-    PyTuple_SET_ITEM(args, 0, Shiboken::Conversions::pointerToPython((SbkObjectType*)SbkPySide2_QtCoreTypes[SBK_QOBJECT_IDX], propList->object));
+-    PyTuple_SET_ITEM(args, 1, Shiboken::Conversions::pointerToPython((SbkObjectType*)SbkPySide2_QtDeclarativeTypes[SBK_QDECLARATIVEITEM_IDX], item));
+-
+-    DeclarativeListProperty* data = reinterpret_cast<DeclarativeListProperty*>(propList->data);
+-    Shiboken::AutoDecRef retVal(PyObject_CallObject(data->append, args));
+-
+-    if (PyErr_Occurred())
+-        PyErr_Print();
+-}
+-
+-// Implementation of QDeclarativeListProperty<T>::CountFunction callback
+-int propListCount(QDeclarativeListProperty<QDeclarativeItem>* propList)
+-{
+-    Shiboken::GilState state;
+-
+-    Shiboken::AutoDecRef args(PyTuple_New(1));
+-    PyTuple_SET_ITEM(args, 0, Shiboken::Conversions::pointerToPython((SbkObjectType*)SbkPySide2_QtCoreTypes[SBK_QOBJECT_IDX], propList->object));
+-
+-    DeclarativeListProperty* data = reinterpret_cast<DeclarativeListProperty*>(propList->data);
+-    Shiboken::AutoDecRef retVal(PyObject_CallObject(data->count, args));
+-
+-    // Check return type
+-    int cppResult = 0;
+-    PythonToCppFunc pythonToCpp;
+-    if (PyErr_Occurred())
+-        PyErr_Print();
+-    else if ((pythonToCpp = Shiboken::Conversions::isPythonToCppConvertible(Shiboken::Conversions::PrimitiveTypeConverter<int>(), retVal)))
+-        pythonToCpp(retVal, &cppResult);
+-    return cppResult;
+-}
+-
+-// Implementation of QDeclarativeListProperty<T>::AtFunction callback
+-QDeclarativeItem* propListAt(QDeclarativeListProperty<QDeclarativeItem>* propList, int index)
+-{
+-    Shiboken::GilState state;
+-
+-    Shiboken::AutoDecRef args(PyTuple_New(2));
+-    PyTuple_SET_ITEM(args, 0, Shiboken::Conversions::pointerToPython((SbkObjectType*)SbkPySide2_QtCoreTypes[SBK_QOBJECT_IDX], propList->object));
+-    PyTuple_SET_ITEM(args, 1, Shiboken::Conversions::copyToPython(Shiboken::Conversions::PrimitiveTypeConverter<int>(), &index));
+-
+-    DeclarativeListProperty* data = reinterpret_cast<DeclarativeListProperty*>(propList->data);
+-    Shiboken::AutoDecRef retVal(PyObject_CallObject(data->at, args));
+-
+-    QDeclarativeItem* result = 0;
+-    if (PyErr_Occurred())
+-        PyErr_Print();
+-    else if (PyType_IsSubtype(Py_TYPE(retVal), data->type))
+-        Shiboken::Conversions::pythonToCppPointer((SbkObjectType*)SbkPySide2_QtCoreTypes[SBK_QDECLARATIVEITEM_IDX], retVal, &result);
+-    return result;
+-}
+-
+-// Implementation of QDeclarativeListProperty<T>::ClearFunction callback
+-void propListClear(QDeclarativeListProperty<QDeclarativeItem>* propList)
+-{
+-    Shiboken::GilState state;
+-
+-    Shiboken::AutoDecRef args(PyTuple_New(1));
+-    PyTuple_SET_ITEM(args, 0, Shiboken::Conversions::pointerToPython((SbkObjectType*)SbkPySide2_QtCoreTypes[SBK_QOBJECT_IDX], propList->object));
+-
+-    DeclarativeListProperty* data = reinterpret_cast<DeclarativeListProperty*>(propList->data);
+-    Shiboken::AutoDecRef retVal(PyObject_CallObject(data->clear, args));
+-
+-    if (PyErr_Occurred())
+-        PyErr_Print();
+-}
+-
+-// qt_metacall specialization for ListProperties
+-static void propListMetaCall(PySideProperty* pp, PyObject* self, QMetaObject::Call call, void** args)
+-{
+-    if (call != QMetaObject::ReadProperty)
+-        return;
+-
+-    DeclarativeListProperty* data = reinterpret_cast<DeclarativeListProperty*>(PySide::Property::userData(pp));
+-    QObject* qobj;
+-    Shiboken::Conversions::pythonToCppPointer((SbkObjectType*)SbkPySide2_QtCoreTypes[SBK_QOBJECT_IDX], self, &qobj);
+-    QDeclarativeListProperty<QDeclarativeItem> declProp(qobj, data, &propListAppender);
+-
+-    if (data->count)
+-        declProp.count = &propListCount;
+-    if (data->at)
+-        declProp.at = &propListAt;
+-    if (data->clear)
+-        declProp.clear = &propListClear;
+-
+-    // Copy the data to the memory location requested by the meta call
+-    void* v = args[0];
+-    *reinterpret_cast<QDeclarativeListProperty<QDeclarativeItem>*>(v) = declProp;
+-}
+-
+-
+-void PySide::initQmlSupport(PyObject* module)
+-{
+-    ElementFactory<PYSIDE_MAX_QML_TYPES - 1>::init();
+-
+-    // Export DeclarativeListProperty type
+-    if (PyType_Ready(&PropertyListType) < 0)
+-        return;
+-
+-    Py_INCREF((PyObject*)&PropertyListType);
+-    PyModule_AddObject(module, PropertyListType.tp_name, (PyObject*)&PropertyListType);
+-
+-}
+-
+-
+diff --git a/PySide2/QtDeclarative/pysideqmlregistertype.h b/PySide2/QtDeclarative/pysideqmlregistertype.h
+deleted file mode 100644
+index b353cf7..0000000
+--- a/PySide2/QtDeclarative/pysideqmlregistertype.h
++++ /dev/null
+@@ -1,57 +0,0 @@
+-/*
+- * This file is part of the Shiboken Python Bindings Generator project.
+- *
+- * Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+- *
+- * Contact: PySide team <contact@pyside.org>
+- *
+- * This library is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU Lesser General Public
+- * License as published by the Free Software Foundation; either
+- * version 2.1 of the License, or (at your option) any later version.
+- *
+- * This library is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+- * Lesser General Public License for more details.
+- *
+- * You should have received a copy of the GNU Lesser General Public
+- * License along with this library; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+- */
+-
+-#ifndef PYSIDEQMLREGISTERTYPE_H
+-#define PYSIDEQMLREGISTERTYPE_H
+-
+-#include <Python.h>
+-
+-struct SbkObjectType;
+-
+-namespace PySide
+-{
+-
+-extern void* nextQmlElementMemoryAddr;
+-
+-/**
+- * Init the QML support doign things like registering QtDeclarative.ListProperty and create the necessary stuff for
+- * qmlRegisterType.
+- *
+- * \param module QtDeclarative python module
+- */
+-void initQmlSupport(PyObject* module);
+-
+-/**
+- * PySide implementation of qmlRegisterType<T> function.
+- *
+- * \param pyObj Python type to be registered.
+- * \param uri QML element uri.
+- * \param versionMajor QML component major version.
+- * \param versionMinor QML component minor version.
+- * \param qmlName QML element name
+- * \return the metatype id of the registered type.
+- */
+-int qmlRegisterType(PyObject* pyObj, const char* uri, int versionMajor, int versionMinor, const char* qmlName);
+-
+-}
+-
+-#endif
+diff --git a/PySide2/QtDeclarative/typesystem_declarative.xml b/PySide2/QtDeclarative/typesystem_declarative.xml
+deleted file mode 100644
+index d6c5022..0000000
+--- a/PySide2/QtDeclarative/typesystem_declarative.xml
++++ /dev/null
+@@ -1,169 +0,0 @@
+-<?xml version="1.0"?>
+-<!--
+-    This file is part of PySide project.
+-    Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+-    Contact: PySide team <contact@pyside.org>
+-
+-    This library is free software; you can redistribute it and/or
+-    modify it under the terms of the GNU Lesser General Public
+-    License as published by the Free Software Foundation; either
+-    version 2.1 of the License, or (at your option) any later version.
+-
+-    This library is distributed in the hope that it will be useful,
+-    but WITHOUT ANY WARRANTY; without even the implied warranty of
+-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+-    Lesser General Public License for more details.
+-
+-    You should have received a copy of the GNU Lesser General Public
+-    License along with this library; if not, write to the Free Software
+-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+--->
+-<typesystem package="PySide2.QtDeclarative">
+-    <load-typesystem name="typesystem_core.xml" generate="no"/>
+-    <load-typesystem name="typesystem_network.xml" generate="no"/>
+-    <load-typesystem name="typesystem_widgets.xml" generate="no"/>
+-
+-    <add-function signature="qmlRegisterType(PyTypeObject, const char*, int, int, const char*)" return-type="int">
+-        <inject-documentation format="target" mode="append">
+-            This function registers the Python type in the QML system with the name qmlName, in the library imported from uri having the version number composed from versionMajor and versionMinor.
+-            Returns the QML type id.
+-
+-            For example, this registers a Python class MySliderItem as a QML type named Slider for version 1.0 of a module called "com.mycompany.qmlcomponents":
+-
+-            ::
+-
+-                qmlRegisterType(MySliderItem, "com.mycompany.qmlcomponents", 1, 0, "Slider")
+-
+-            Once this is registered, the type can be used in QML by importing the specified module name and version number:
+-
+-            ::
+-
+-                import com.mycompany.qmlcomponents 1.0
+-
+-                Slider { ... }
+-
+-            Note that it's perfectly reasonable for a library to register types to older versions than the actual version of the library. Indeed, it is normal for the new library to allow QML written to previous versions to continue to work, even if more advanced versions of some of its types are available.
+-        </inject-documentation>
+-
+-        <inject-code class="target">
+-        int %0 = PySide::qmlRegisterType(%ARGUMENT_NAMES);
+-        %PYARG_0 = %CONVERTTOPYTHON[int](%0);
+-        </inject-code>
+-    </add-function>
+-
+-    <enum-type identified-by-value="QML_HAS_ATTACHED_PROPERTIES" since="4.7">
+-        <extra-includes>
+-            <include file-name="QtDeclarative" location="global"/>
+-            <!-- FIXME The include tag doesn't work on modules -->
+-            <include file-name="pysideqmlregistertype.h" location="local"/>
+-        </extra-includes>
+-    </enum-type>
+-
+-    <inject-code class="target" position="end">
+-    PySide::initQmlSupport(module);
+-    </inject-code>
+-
+-    <object-type name="QDeclarativeExtensionInterface"/>
+-    <object-type name="QDeclarativeComponent">
+-        <enum-type name="Status"/>
+-        <!-- This ctor isn't part of Qt public API -->
+-        <modify-function signature="QDeclarativeComponent(QObject*)" remove="all" />
+-    </object-type>
+-    <object-type name="QDeclarativeContext">
+-      <modify-function signature="setContextProperty(const QString &amp;, QObject*)">
+-      <inject-code class="target" position="end">
+-        QByteArray key("%FUNCTION_NAME_");
+-        key.append(%1.toLocal8Bit());
+-        Shiboken::Object::keepReference(reinterpret_cast&lt;SbkObject*&gt;(%PYSELF), key.constData(),  %PYARG_2);
+-      </inject-code>
+-      </modify-function>
+-    </object-type>
+-
+-    <object-type name="QDeclarativeEngine">
+-        <enum-type name="ObjectOwnership" />
+-        <modify-function signature="QDeclarativeEngine(QObject*)">
+-            <modify-argument index="1">
+-                <rename to="parent" /> <!-- Qt names this just p -->
+-            </modify-argument>
+-        </modify-function>
+-        <modify-function signature="setNetworkAccessManagerFactory(QDeclarativeNetworkAccessManagerFactory*)">
+-            <modify-argument index="1">
+-                <parent index="this" action="add" />
+-            </modify-argument>
+-        </modify-function>
+-        <modify-function signature="importPlugin(QString,QString,QString*)">
+-            <modify-argument index="3">
+-                <remove-argument/>
+-            </modify-argument>
+-            <modify-argument index="return">
+-                <replace-type modified-type="(ok, errorString)" />
+-            </modify-argument>
+-            <inject-code class="target" position="beginning">
+-            QString errorString;
+-            %BEGIN_ALLOW_THREADS
+-            %RETURN_TYPE ok_ = %CPPSELF.%FUNCTION_NAME(%1, %2, &amp;errorString);
+-            %END_ALLOW_THREADS
+-            %PYARG_0 = PyTuple_New(2);
+-            PyTuple_SET_ITEM(%PYARG_0, 0, %CONVERTTOPYTHON[%RETURN_TYPE](ok_));
+-            PyTuple_SET_ITEM(%PYARG_0, 1, %CONVERTTOPYTHON[QString](errorString));
+-            </inject-code>
+-        </modify-function>
+-    </object-type>
+-    <value-type name="QDeclarativeError" />
+-    <object-type name="QDeclarativeExpression">
+-        <modify-function signature="evaluate(bool*)">
+-            <modify-argument index="1">
+-                <remove-argument/>
+-            </modify-argument>
+-            <inject-code class="target" position="beginning">
+-                <insert-template name="fix_bool*"/>
+-            </inject-code>
+-        </modify-function>
+-    </object-type>
+-    <object-type name="QDeclarativeExtensionPlugin" />
+-    <object-type name="QDeclarativeImageProvider">
+-        <enum-type name="ImageType" />
+-    </object-type>
+-    <object-type name="QDeclarativeItem">
+-        <extra-includes>
+-            <include file-name="pysideqmlregistertype.h" location="local"/>
+-        </extra-includes>
+-        <enum-type name="TransformOrigin" />
+-    </object-type>
+-
+-    <value-type name="QDeclarativeListReference" />
+-    <object-type name="QDeclarativeNetworkAccessManagerFactory" >
+-        <modify-function signature="create(QObject *)">
+-          <modify-argument index="return">
+-            <define-ownership class="target" owner="c++"/>
+-          </modify-argument>
+-        </modify-function>
+-    </object-type>
+-    <object-type name="QDeclarativeParserStatus" />
+-
+-    <value-type name="QDeclarativeProperty">
+-        <enum-type name="PropertyTypeCategory" />
+-        <enum-type name="Type" />
+-    </value-type>
+-
+-    <object-type name="QDeclarativePropertyMap">
+-        <modify-documentation xpath="description/code[1]">&lt;code># create our data
+-ownerData = QDeclarativePropertyMap()
+-ownerData.insert(&quot;name&quot;, &quot;John Smith&quot;)
+-ownerData.insert(&quot;phone&quot;, &quot;555-5555&quot;)
+-
+-# expose it to the UI layer
+-view = QDeclarativeView()
+-ctxt = view.rootContext()
+-ctxt.setContextProperty(&quot;owner&quot;, ownerData)
+-
+-view.setSource(QUrl.fromLocalFile(&quot;main.qml&quot;))
+-view.show()&lt;/code></modify-documentation>
+-    </object-type>
+-    <object-type name="QDeclarativePropertyValueSource" />
+-    <value-type name="QDeclarativeScriptString" />
+-    <object-type name="QDeclarativeView">
+-        <enum-type name="ResizeMode" />
+-        <enum-type name="Status" />
+-    </object-type>
+-</typesystem>
+diff --git a/PySide2/global.h.in b/PySide2/global.h.in
+index 67ac7f1..8d77b5f 100644
+--- a/PySide2/global.h.in
++++ b/PySide2/global.h.in
+@@ -380,7 +380,6 @@ QT_END_NAMESPACE
+ #include <QtScript/QtScript>
+ #include <QtScriptTools/QtScriptTools>
+ #include <QtMultimedia/QtMultimedia>
+-#include <QtDeclarative/QtDeclarative>
+ #include <QtPrintSupport/QtPrintSupport>
+ 
+ // QT_WIDGETS_LIB must be defined to QSqlRelationalDelegate become visible.
+diff --git a/cmake/Macros/FindQt5Extra.cmake b/cmake/Macros/FindQt5Extra.cmake
+index 9ea6d36..6bfa5e0 100644
+--- a/cmake/Macros/FindQt5Extra.cmake
++++ b/cmake/Macros/FindQt5Extra.cmake
+@@ -22,23 +22,4 @@ if (NOT Qt5Multimedia_FOUND)
+ endif ()
+ 
+ # Maemo is no longer supported
+-
+-# Try to find QtDeclarative
+-# TODO: Remove this hack when cmake support QtDeclarative module
+-find_package(Qt5Declarative)
+-if (NOT Qt5Declarative_FOUND)
+-    find_path(QT_QTDECLARATIVE_INCLUDE_DIR QtDeclarative
+-            PATHS ${QT_HEADERS_DIR}/QtDeclarative
+-                ${QT_LIBRARY_DIR}/QtDeclarative.framework/Headers
+-            NO_DEFAULT_PATH)
+-    find_library(QT_QTDECLARATIVE_LIBRARY QtDeclarative PATHS ${QT_LIBRARY_DIR} NO_DEFAULT_PATH)
+-    if (QT_QTDECLARATIVE_INCLUDE_DIR AND QT_QTDECLARATIVE_LIBRARY)
+-        set(QT_QTDECLARATIVE_FOUND ON)
+-    else()
+-        #Replace this on documentation
+-        set(if_QtDeclarative "<!--")
+-        set(end_QtDeclarative "-->")
+-    endif()
+-endif ()
+-
+-
++# QtDeclarative is no longer supported
+diff --git a/doc/CMakeLists.txt b/doc/CMakeLists.txt
+index b442457..e13a8d1 100644
+--- a/doc/CMakeLists.txt
++++ b/doc/CMakeLists.txt
+@@ -27,7 +27,7 @@ add_custom_target("docrsts"
+             ${pyside2_BINARY_DIR}/pyside_global.h
+             --include-paths="${QT_INCLUDE_DIR}${PATH_SEP}${pyside2_SOURCE_DIR}"
+             --api-version=${SUPPORTED_QT_VERSION}
+-            --typesystem-paths="${pyside2_SOURCE_DIR}${PATH_SEP}${QtCore_SOURCE_DIR}${PATH_SEP}${QtDeclarative_SOURCE_DIR}${PATH_SEP}${QtGui_SOURCE_DIR}${PATH_SEP}${QtGui_BINARY_DIR}${PATH_SEP}${QtHelp_SOURCE_DIR}${PATH_SEP}${QtMultimedia_SOURCE_DIR}${PATH_SEP}${QtNetwork_SOURCE_DIR}${PATH_SEP}${QtOpenGL_SOURCE_DIR}${PATH_SEP}${QtScript_SOURCE_DIR}${PATH_SEP}${QtScriptTools_SOURCE_DIR}${PATH_SEP}${QtSql_SOURCE_DIR}${PATH_SEP}${QtSvg_SOURCE_DIR}${PATH_SEP}${QtTest_SOURCE_DIR}${PATH_SEP}${QtUiTools_SOURCE_DIR}${PATH_SEP}${QtWebKit_SOURCE_DIR}${PATH_SEP}${QtXml_SOURCE_DIR}${PATH_SEP}${QtXmlPatterns_SOURCE_DIR}"
++            --typesystem-paths="${pyside2_SOURCE_DIR}${PATH_SEP}${QtCore_SOURCE_DIR}${PATH_SEP}${PATH_SEP}${QtGui_SOURCE_DIR}${PATH_SEP}${QtGui_BINARY_DIR}${PATH_SEP}${QtHelp_SOURCE_DIR}${PATH_SEP}${QtMultimedia_SOURCE_DIR}${PATH_SEP}${QtNetwork_SOURCE_DIR}${PATH_SEP}${QtOpenGL_SOURCE_DIR}${PATH_SEP}${QtScript_SOURCE_DIR}${PATH_SEP}${QtScriptTools_SOURCE_DIR}${PATH_SEP}${QtSql_SOURCE_DIR}${PATH_SEP}${QtSvg_SOURCE_DIR}${PATH_SEP}${QtTest_SOURCE_DIR}${PATH_SEP}${QtUiTools_SOURCE_DIR}${PATH_SEP}${QtWebKit_SOURCE_DIR}${PATH_SEP}${QtXml_SOURCE_DIR}${PATH_SEP}${QtXmlPatterns_SOURCE_DIR}"
+             --library-source-dir=${QT_SRC_DIR}
+             --documentation-only
+             --documentation-data-dir=${DOC_DATA_DIR}
+diff --git a/doc/_templates/index.html b/doc/_templates/index.html
+index 78c539b..8da4176 100644
+--- a/doc/_templates/index.html
++++ b/doc/_templates/index.html
+@@ -29,8 +29,6 @@
+          <span class="linkdescr">core non-GUI functionality</span></p>
+       <p class="biglink"><a class="biglink" href="{{ pathto("PySide/QtGui/index") }}">QtGui</a><br/>
+          <span class="linkdescr">extends QtCore with GUI functionality.</span></p>
+-      <p class="biglink"><a class="biglink" href="{{ pathto("PySide/QtDeclarative/index") }}">QtDeclarative</a><br/>
+-         <span class="linkdescr">a declarative framework for building highly dynamic, custom user interfaces.</span></p>
+       <p class="biglink"><a class="biglink" href="{{ pathto("PySide/QtHelp/index") }}">QtHelp</a><br/>
+          <span class="linkdescr">provides classes for integrating online documentation in applications</span></p>
+       <p class="biglink"><a class="biglink" href="{{ pathto("PySide/QtMultimedia/index") }}">QtMultimedia</a><br/>
+diff --git a/doc/extras/PySide.QtDeclarative.ListProperty.rst b/doc/extras/PySide.QtDeclarative.ListProperty.rst
+deleted file mode 100644
+index d32621a..0000000
+--- a/doc/extras/PySide.QtDeclarative.ListProperty.rst
++++ /dev/null
+@@ -1,46 +0,0 @@
+-.. module:: PySide2.QtDeclarative
+-.. _ListProperty:
+-
+-ListProperty
+-************
+-
+-Synopsis
+---------
+-
+-    The The :class:`~.ListProperty` class allows applications to expose list-like properties to QML.
+-
+-Detailed Description
+---------------------
+-
+-    The :class:`~.ListProperty` class provides a replacement to QDeclarativeListProperty.
+-
+-    :class:`~.ListProperty` is a subclass of :class:`QtCore.Property`, that support the following keywords.
+-
+-    `type`      the type used in the list
+-    `append`    Function used to append itens
+-    `at`        Function used to retrieve item from the list
+-    `clear`     Function used to clear the list
+-    `count`     Function used to retrieve the list size
+-
+-
+-    QML has many list properties, where more than one object value can be assigned. The use of a list property from QML looks like this:
+-
+-    ::
+-        FruitBasket {
+-             fruit: [
+-                 Apple {},
+-                 Orange{},
+-                 Banana{}
+-             ]
+-        }
+-
+-    The :class:`~.ListProperty` encapsulates a group of callbacks that represent the set of actions QML can perform on the list - adding items, retrieving items and clearing the list. In the future, additional operations may be supported. All list properties must implement the append operation, but the rest are optional.
+-    To provide a list property, a class must implement the operation callbacks, and then return an appropriate value from the property getter. List properties should have no setter. In the example above, the  ListProperty declarative will look like this:
+-
+-    ::
+-        slices = ListProperty(PieSlice, append=appendSlice)
+-
+-
+-    Note: :class:`~.ListProperty` can only be used for lists of QObject-derived object pointers.
+-
+-
+diff --git a/doc/extras/PySide.QtDeclarative.rst b/doc/extras/PySide.QtDeclarative.rst
+deleted file mode 100644
+index cb4cc42..0000000
+--- a/doc/extras/PySide.QtDeclarative.rst
++++ /dev/null
+@@ -1,5 +0,0 @@
+-To include the definitions of the module's classes, use the following directive:
+-
+-::
+-
+-    import PySide2.QtDeclarative
+diff --git a/doc/modules.rst b/doc/modules.rst
+index 611bc85..0faa629 100644
+--- a/doc/modules.rst
++++ b/doc/modules.rst
+@@ -7,7 +7,6 @@ Qt is splitted in several modules.
+     :maxdepth: 1
+ 
+     PySide/QtCore/index.rst
+-    PySide/QtDeclarative/index.rst
+     PySide/QtGui/index.rst
+     PySide/QtHelp/index.rst
+     PySide/QtMultimedia/index.rst
+diff --git a/doc/typesystem_doc.xml.in b/doc/typesystem_doc.xml.in
+index c1e99ed..e83706b 100644
+--- a/doc/typesystem_doc.xml.in
++++ b/doc/typesystem_doc.xml.in
+@@ -48,10 +48,6 @@
+     <load-typesystem name="typesystem_multimedia.xml" generate="yes" />
+     @end_QtMultimedia@
+ 
+-    @if_QtDeclarative@
+-    <load-typesystem name="typesystem_declarative.xml" generate="yes"/>
+-    @end_QtDeclarative@
+-
+     @if_QtOpenGL@
+     <load-typesystem name="typesystem_opengl.xml" generate="yes" />
+     @end_QtOpenGL@
+diff --git a/libpyside/pysidemetafunction.cpp b/libpyside/pysidemetafunction.cpp
+index 470a002..460231d 100644
+--- a/libpyside/pysidemetafunction.cpp
++++ b/libpyside/pysidemetafunction.cpp
+@@ -146,7 +146,7 @@ bool call(QObject* self, int methodIndex, PyObject* args, PyObject** retVal)
+     int numArgs = PySequence_Fast_GET_SIZE(sequence.object()) + 1;
+ 
+     if (numArgs - 1 != argTypes.count()) {
+-        PyErr_Format(PyExc_TypeError, "%s only accepts %d arguments, %d given!", method.methodSignature().data(), argTypes.count(), numArgs);
++        PyErr_Format(PyExc_TypeError, "%s only accepts %d arguments, %d given!", method.methodSignature().constData(), argTypes.count(), numArgs);
+         return false;
+     }
+ 
+diff --git a/tests/CMakeLists.txt b/tests/CMakeLists.txt
+index c3ab329..f5a8b69 100644
+--- a/tests/CMakeLists.txt
++++ b/tests/CMakeLists.txt
+@@ -63,7 +63,6 @@ else()
+     TEST_QT_MODULE(Qt5Script_FOUND QtScript)
+     TEST_QT_MODULE(Qt5ScriptTools_FOUND QtScriptTools)
+     TEST_QT_MODULE(Qt5Multimedia_FOUND QtMultimedia)
+-    TEST_QT_MODULE(Qt5Declarative_FOUND QtDeclarative)
+ 
+     #platform specific
+     if (ENABLE_MAC)
+diff --git a/tests/QtDeclarative/CMakeLists.txt b/tests/QtDeclarative/CMakeLists.txt
+deleted file mode 100644
+index 2c842d3..0000000
+--- a/tests/QtDeclarative/CMakeLists.txt
++++ /dev/null
+@@ -1,17 +0,0 @@
+-PYSIDE_TEST(bug_451.py)
+-PYSIDE_TEST(bug_456.py)
+-PYSIDE_TEST(bug_557.py)
+-PYSIDE_TEST(bug_726.py)
+-PYSIDE_TEST(bug_814.py)
+-PYSIDE_TEST(bug_825.py)
+-PYSIDE_TEST(bug_847.py)
+-PYSIDE_TEST(bug_915.py)
+-PYSIDE_TEST(bug_926.py)
+-PYSIDE_TEST(bug_951.py)
+-PYSIDE_TEST(bug_995.py)
+-PYSIDE_TEST(bug_997.py)
+-PYSIDE_TEST(bug_1029.py)
+-PYSIDE_TEST(qdeclarativenetwork_test.py)
+-PYSIDE_TEST(qdeclarativeview_test.py)
+-PYSIDE_TEST(connect_python_qml.py)
+-PYSIDE_TEST(registertype.py)
+diff --git a/tests/QtDeclarative/bug_1029.py b/tests/QtDeclarative/bug_1029.py
+deleted file mode 100644
+index b0d5d2e..0000000
+--- a/tests/QtDeclarative/bug_1029.py
++++ /dev/null
+@@ -1,29 +0,0 @@
+-from PySide2.QtCore import *
+-from PySide2.QtWidgets import *
+-from PySide2.QtDeclarative import *
+-
+-import sys
+-import gc
+-
+-def register_qml_types():
+-    class TestClass(QDeclarativeItem):
+-        def __init__(self, parent = None):
+-            QDeclarativeItem.__init__(self, parent)
+-
+-    qmlRegisterType(TestClass, "UserTypes", 1, 0, "TestClass")
+-
+-def main():
+-    app = QApplication([])
+-
+-    # reg qml types here
+-    register_qml_types()
+-
+-    # force gc to run
+-    gc.collect()
+-
+-    view = QDeclarativeView()
+-    url = QUrl(__file__.replace(".py", ".qml"))
+-    view.setSource(url)
+-
+-if __name__ == "__main__":
+-    main()
+diff --git a/tests/QtDeclarative/bug_1029.qml b/tests/QtDeclarative/bug_1029.qml
+deleted file mode 100644
+index a9c0aea..0000000
+--- a/tests/QtDeclarative/bug_1029.qml
++++ /dev/null
+@@ -1,15 +0,0 @@
+-import QtQuick 1.0
+-import UserTypes 1.0
+-
+-Rectangle
+-{
+-    width: 200
+-    height: 200
+-
+-    color: "#ff0000"
+-
+-    TestClass
+-    {
+-
+-    }
+-}
+diff --git a/tests/QtDeclarative/bug_451.py b/tests/QtDeclarative/bug_451.py
+deleted file mode 100644
+index e615681..0000000
+--- a/tests/QtDeclarative/bug_451.py
++++ /dev/null
+@@ -1,65 +0,0 @@
+-''' Test bug 451: http://bugs.openbossa.org/show_bug.cgi?id=451'''
+-
+-from PySide2 import QtCore, QtGui, QtDeclarative
+-from helper import adjust_filename
+-import sys
+-import unittest
+-
+-class PythonObject(QtCore.QObject):
+-    def __init__(self):
+-        QtCore.QObject.__init__(self, None)
+-        self._called = ""
+-        self._arg1 = None
+-        self._arg2 = None
+-
+-    def setCalled(self, v):
+-        self._called = v
+-
+-    def setArg1(self, v):
+-        self._arg1 = v
+-
+-    def setArg2(self, v):
+-        self._arg2 = v
+-
+-    def getCalled(self):
+-        return self._called
+-
+-    def getArg1(self):
+-        return self._arg1
+-
+-    def getArg2(self):
+-        return self._arg2
+-
+-    called = QtCore.Property(str, getCalled, setCalled)
+-    arg1 = QtCore.Property(int, getArg1, setArg1)
+-    arg2 = QtCore.Property('QVariant', getArg2, setArg2)
+-
+-class TestBug(unittest.TestCase):
+-    def testQMLFunctionCall(self):
+-        app = QtGui.QApplication(sys.argv)
+-        view = QtDeclarative.QDeclarativeView()
+-
+-        obj = PythonObject()
+-        context = view.rootContext()
+-        context.setContextProperty("python", obj)
+-        view.setSource(QtCore.QUrl.fromLocalFile(adjust_filename('bug_451.qml', __file__)))
+-        root = view.rootObject()
+-        root.simpleFunction()
+-        self.assertEqual(obj.called, "simpleFunction")
+-
+-        root.oneArgFunction(42)
+-        self.assertEqual(obj.called, "oneArgFunction")
+-        self.assertEqual(obj.arg1, 42)
+-
+-        root.twoArgFunction(10, app)
+-        self.assertEqual(obj.called, "twoArgFunction")
+-        self.assertEqual(obj.arg1, 10)
+-        self.assertEqual(obj.arg2, app)
+-
+-        rvalue = root.returnFunction()
+-        self.assertEqual(obj.called, "returnFunction")
+-        self.assertEqual(rvalue, 42)
+-
+-
+-if __name__ == '__main__':
+-    unittest.main()
+diff --git a/tests/QtDeclarative/bug_451.qml b/tests/QtDeclarative/bug_451.qml
+deleted file mode 100644
+index fea8108..0000000
+--- a/tests/QtDeclarative/bug_451.qml
++++ /dev/null
+@@ -1,26 +0,0 @@
+-import Qt 4.7
+-
+-Rectangle {
+-    id: page
+-
+-    function simpleFunction() {
+-        python.called = "simpleFunction"
+-    }
+-
+-    function oneArgFunction(x) {
+-        python.called = "oneArgFunction"
+-        python.arg1 = x
+-    }
+-
+-    function twoArgFunction(x, y) {
+-        python.called = "twoArgFunction"
+-        python.arg1 = x
+-        python.arg2 = y
+-    }
+-
+-    function returnFunction() {
+-        python.called = "returnFunction"
+-        return 42
+-    }
+-
+-}
+diff --git a/tests/QtDeclarative/bug_456.py b/tests/QtDeclarative/bug_456.py
+deleted file mode 100644
+index aab35e6..0000000
+--- a/tests/QtDeclarative/bug_456.py
++++ /dev/null
+@@ -1,40 +0,0 @@
+-from PySide2 import QtCore, QtGui, QtDeclarative
+-from helper import adjust_filename, TimedQApplication
+-import unittest
+-
+-class RotateValue(QtCore.QObject):
+-    def __init__(self):
+-        super(RotateValue,self).__init__()
+-
+-    @QtCore.Slot(result=int)
+-    def val(self):
+-        return 100
+-
+-    def setRotation(self, v):
+-        self._rotation = v
+-
+-    def getRotation(self):
+-        return self._rotation
+-
+-    rotation = QtCore.Property(int, getRotation, setRotation)
+-
+-class TestConnectionWithInvalidSignature(TimedQApplication):
+-
+-    def testSlotRetur(self):
+-        view = QtDeclarative.QDeclarativeView()
+-        rotatevalue = RotateValue()
+-
+-        timer = QtCore.QTimer()
+-        timer.start(2000)
+-
+-        context = view.rootContext()
+-        context.setContextProperty("rotatevalue", rotatevalue)
+-        view.setSource(QtCore.QUrl.fromLocalFile(adjust_filename('bug_456.qml', __file__)))
+-        root = view.rootObject()
+-        button = root.findChild(QtCore.QObject, "buttonMouseArea")
+-        view.show()
+-        button.entered.emit()
+-        self.assertEqual(rotatevalue.rotation, 100)
+-
+-if __name__ == '__main__':
+-    unittest.main()
+diff --git a/tests/QtDeclarative/bug_456.qml b/tests/QtDeclarative/bug_456.qml
+deleted file mode 100644
+index 3b7e153..0000000
+--- a/tests/QtDeclarative/bug_456.qml
++++ /dev/null
+@@ -1,71 +0,0 @@
+-/****************************************************************************
+-**
+-** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+-** Contact: PySide Team (pyside@openbossa.org)
+-**
+-** This file is part of the examples of PySide: Python for Qt.
+-**
+-** $QT_BEGIN_LICENSE:BSD$
+-** You may use this file under the terms of the BSD license as follows:
+-**
+-** "Redistribution and use in source and binary forms, with or without
+-** modification, are permitted provided that the following conditions are
+-** met:
+-**   * Redistributions of source code must retain the above copyright
+-**     notice, this list of conditions and the following disclaimer.
+-**   * Redistributions in binary form must reproduce the above copyright
+-**     notice, this list of conditions and the following disclaimer in
+-**     the documentation and/or other materials provided with the
+-**     distribution.
+-**   * Neither the name of Digia Plc and its Subsidiary(-ies) nor the names
+-**     of its contributors may be used to endorse or promote products derived
+-**     from this software without specific prior written permission.
+-**
+-**
+-** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+-** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+-** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+-** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+-** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+-** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+-** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+-** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+-** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+-** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+-** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+-**
+-** $QT_END_LICENSE$
+-**
+-****************************************************************************/
+-
+-import Qt 4.7
+-
+-Rectangle {
+-    id: page
+-
+-    width: 500; height: 200
+-    color: "lightgray"
+-
+-    Rectangle {
+-        id: button
+-        width: 150; height: 40
+-        color: "darkgray"
+-        anchors.horizontalCenter: page.horizontalCenter
+-        y: 120
+-        MouseArea {
+-            id: buttonMouseArea
+-            objectName: "buttonMouseArea"
+-            anchors.fill: parent
+-            onEntered: {
+-                    rotatevalue.rotation = rotatevalue.val()
+-            }
+-        }
+-        Text {
+-            id: buttonText
+-                text: "Press me!"
+-            anchors.horizontalCenter: button.horizontalCenter
+-            anchors.verticalCenter: button.verticalCenter
+-            font.pointSize: 16;
+-        }
+-    }
+-}
+diff --git a/tests/QtDeclarative/bug_557.py b/tests/QtDeclarative/bug_557.py
+deleted file mode 100644
+index 75bb570..0000000
+--- a/tests/QtDeclarative/bug_557.py
++++ /dev/null
+@@ -1,14 +0,0 @@
+-from PySide2.QtCore import *
+-from PySide2.QtWidgets import *
+-from PySide2.QtDeclarative import *
+-
+-import sys
+-
+-app = QApplication(sys.argv)
+-
+-engine = QDeclarativeEngine()
+-component = QDeclarativeComponent(engine)
+-
+-# This should segfault if the QDeclarativeComponent has not QDeclarativeEngine
+-component.loadUrl(QUrl.fromLocalFile('foo.qml'))
+-
+diff --git a/tests/QtDeclarative/bug_726.py b/tests/QtDeclarative/bug_726.py
+deleted file mode 100644
+index 2e4e4e6..0000000
+--- a/tests/QtDeclarative/bug_726.py
++++ /dev/null
+@@ -1,41 +0,0 @@
+-from PySide2 import QtCore, QtGui, QtDeclarative
+-from helper import adjust_filename, TimedQApplication
+-import unittest
+-
+-class ProxyObject(QtCore.QObject):
+-    def __init__(self):
+-        super(ProxyObject,self).__init__()
+-        self._o = None
+-        self._receivedName = ""
+-
+-    @QtCore.Slot(result='QObject*')
+-    def getObject(self):
+-        if self._o:
+-            return self._o
+-
+-        self._o = QtCore.QObject()
+-        self._o.setObjectName("PySideObject")
+-        return self._o
+-
+-    @QtCore.Slot(str)
+-    def receivedObject(self, name):
+-        self._receivedName = name
+- 
+-
+-class TestConnectionWithInvalidSignature(TimedQApplication):
+-
+-    def testSlotRetur(self):
+-        view = QtDeclarative.QDeclarativeView()
+-        proxy = ProxyObject()
+-
+-        context = view.rootContext()
+-        context.setContextProperty("proxy", proxy)
+-        view.setSource(QtCore.QUrl.fromLocalFile(adjust_filename('bug_726.qml', __file__)))
+-        root = view.rootObject()
+-        button = root.findChild(QtCore.QObject, "buttonMouseArea")
+-        view.show()
+-        button.entered.emit()
+-        self.assertEqual(proxy._receivedName, "PySideObject")
+-
+-if __name__ == '__main__':
+-    unittest.main()
+diff --git a/tests/QtDeclarative/bug_726.qml b/tests/QtDeclarative/bug_726.qml
+deleted file mode 100644
+index 1e2cade..0000000
+--- a/tests/QtDeclarative/bug_726.qml
++++ /dev/null
+@@ -1,71 +0,0 @@
+-/****************************************************************************
+-**
+-** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+-** Contact: PySide Team (pyside@openbossa.org)
+-**
+-** This file is part of the examples of PySide: Python for Qt.
+-**
+-** $QT_BEGIN_LICENSE:BSD$
+-** You may use this file under the terms of the BSD license as follows:
+-**
+-** "Redistribution and use in source and binary forms, with or without
+-** modification, are permitted provided that the following conditions are
+-** met:
+-**   * Redistributions of source code must retain the above copyright
+-**     notice, this list of conditions and the following disclaimer.
+-**   * Redistributions in binary form must reproduce the above copyright
+-**     notice, this list of conditions and the following disclaimer in
+-**     the documentation and/or other materials provided with the
+-**     distribution.
+-**   * Neither the name of Digia Plc and its Subsidiary(-ies) nor the names
+-**     of its contributors may be used to endorse or promote products derived
+-**     from this software without specific prior written permission.
+-**
+-**
+-** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+-** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+-** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+-** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+-** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+-** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+-** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+-** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+-** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+-** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+-** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+-**
+-** $QT_END_LICENSE$
+-**
+-****************************************************************************/
+-
+-import Qt 4.7
+-
+-Rectangle {
+-    id: page
+-
+-    width: 500; height: 200
+-    color: "lightgray"
+-
+-    Rectangle {
+-        id: button
+-        width: 150; height: 40
+-        color: "darkgray"
+-        anchors.horizontalCenter: page.horizontalCenter
+-        y: 120
+-        MouseArea {
+-            id: buttonMouseArea
+-            objectName: "buttonMouseArea"
+-            anchors.fill: parent
+-            onEntered: {
+-                    proxy.receivedObject(proxy.getObject().objectName)
+-            }
+-        }
+-        Text {
+-            id: buttonText
+-                text: "Press me!"
+-            anchors.horizontalCenter: button.horizontalCenter
+-            anchors.verticalCenter: button.verticalCenter
+-            font.pointSize: 16;
+-        }
+-    }
+-}
+diff --git a/tests/QtDeclarative/bug_814.py b/tests/QtDeclarative/bug_814.py
+deleted file mode 100644
+index 8246934..0000000
+--- a/tests/QtDeclarative/bug_814.py
++++ /dev/null
+@@ -1,39 +0,0 @@
+-#!/usr/bin/python
+-# -*- coding: utf-8 -*-
+-
+-# Test case for PySide bug 814
+-# http://bugs.pyside.org/show_bug.cgi?id=814
+-# 2011-04-08 Thomas Perl <m@thp.io>
+-# Released under the same terms as PySide itself
+-
+-from PySide2.QtCore import QUrl, QAbstractListModel, QModelIndex
+-from PySide2.QtDeclarative import QDeclarativeView
+-
+-from helper import adjust_filename, TimedQApplication
+-import unittest
+-
+-class ListModel(QAbstractListModel):
+-    def __init__(self):
+-        QAbstractListModel.__init__(self)
+-        self.setRoleNames({0: 'pysideModelData'})
+-
+-    def rowCount(self, parent=QModelIndex()):
+-        return 3
+-
+-    def data(self, index, role):
+-        if index.isValid() and role == 0:
+-            return 'blubb'
+-        return None
+-
+-class TestBug814(TimedQApplication):
+-    def testAbstractItemModelTransferToQML(self):
+-        view = QDeclarativeView()
+-        view.setSource(QUrl.fromLocalFile(adjust_filename('bug_814.qml', __file__)))
+-        root = view.rootObject()
+-        model = ListModel()
+-        root.setProperty('model', model)
+-        view.show()
+-
+-if __name__ == '__main__':
+-    unittest.main()
+-
+diff --git a/tests/QtDeclarative/bug_814.qml b/tests/QtDeclarative/bug_814.qml
+deleted file mode 100644
+index 3296c07..0000000
+--- a/tests/QtDeclarative/bug_814.qml
++++ /dev/null
+@@ -1,9 +0,0 @@
+-
+-import Qt 4.7
+-
+-ListView {
+-    width: 300; height: 300
+-    delegate: Text { text: pysideModelData }
+-    model: 3
+-}
+-
+diff --git a/tests/QtDeclarative/bug_825.py b/tests/QtDeclarative/bug_825.py
+deleted file mode 100644
+index d30ca5b..0000000
+--- a/tests/QtDeclarative/bug_825.py
++++ /dev/null
+@@ -1,55 +0,0 @@
+-from PySide2.QtCore import *
+-from PySide2.QtWidgets import *
+-from PySide2.QtDeclarative import *
+-
+-from helper import adjust_filename
+-import unittest
+-
+-paintCalled = False
+-
+-class MetaA(type):
+-    pass
+-
+-class A(object):
+-    __metaclass__ = MetaA
+-
+-MetaB = type(QDeclarativeItem)
+-B = QDeclarativeItem
+-
+-class MetaC(MetaA, MetaB):
+-    pass
+-
+-class C(A, B):
+-    __metaclass__ = MetaC
+-
+-class Bug825 (C):
+-
+-    def __init__(self, parent = None):
+-        QDeclarativeItem.__init__(self, parent)
+-        # need to disable this flag to draw inside a QDeclarativeItem
+-        self.setFlag(QGraphicsItem.ItemHasNoContents, False)
+-
+-    def paint(self, painter, options, widget):
+-        global paintCalled
+-        pen = QPen(Qt.black, 2)
+-        painter.setPen(pen);
+-        painter.drawPie(self.boundingRect(), 0, 128);
+-        paintCalled = True
+-
+-class TestBug825 (unittest.TestCase):
+-    def testIt(self):
+-        global paintCalled
+-        app = QApplication([])
+-        qmlRegisterType(Bug825, 'bugs', 1, 0, 'Bug825')
+-        self.assertRaises(TypeError, qmlRegisterType, A, 'bugs', 1, 0, 'A')
+-
+-        view = QDeclarativeView()
+-        view.setSource(QUrl.fromLocalFile(adjust_filename('bug_825.qml', __file__)))
+-        view.show()
+-        QTimer.singleShot(250, view.close)
+-        app.exec_()
+-        self.assertTrue(paintCalled)
+-
+-
+-if __name__ == '__main__':
+-    unittest.main()
+diff --git a/tests/QtDeclarative/bug_825.qml b/tests/QtDeclarative/bug_825.qml
+deleted file mode 100644
+index dc1c450..0000000
+--- a/tests/QtDeclarative/bug_825.qml
++++ /dev/null
+@@ -1,10 +0,0 @@
+-import Qt 4.7
+-import bugs 1.0
+-
+-Item {
+-    width: 300; height: 200
+-
+-    Bug825 {
+-
+-    }
+-}
+diff --git a/tests/QtDeclarative/bug_847.py b/tests/QtDeclarative/bug_847.py
+deleted file mode 100644
+index c106b22..0000000
+--- a/tests/QtDeclarative/bug_847.py
++++ /dev/null
+@@ -1,42 +0,0 @@
+-#!/usr/bin/python
+-# -*- coding: utf-8 -*-
+-# Testcase for PySide bug 847
+-# Released under the same terms as PySide itself
+-# 2011-05-04 Thomas Perl <m@thp.io>
+-
+-import unittest
+-
+-from PySide2.QtCore import Slot, Signal, QUrl
+-from PySide2.QtDeclarative import QDeclarativeView
+-
+-from helper import adjust_filename, UsesQApplication
+-
+-class View(QDeclarativeView):
+-    def __init__(self):
+-        QDeclarativeView.__init__(self)
+-        self.setSource(QUrl.fromLocalFile(adjust_filename('bug_847.qml', __file__)))
+-        self.rootObject().setProperty('pythonObject', self)
+-
+-    @Slot(int, int)
+-    def blubb(self, x, y):
+-        self.called.emit(x, y)
+-
+-    called = Signal(int, int)
+-
+-
+-class TestQML(UsesQApplication):
+-    def done(self, x, y):
+-        self._sucess = True
+-        self.app.quit()
+-
+-    def testPythonSlot(self):
+-        self._sucess = False
+-        view = View()
+-        view.called.connect(self.done)
+-        view.show()
+-        self.app.exec_()
+-        self.assertTrue(self._sucess)
+-
+-if __name__ == '__main__':
+-    unittest.main()
+-
+diff --git a/tests/QtDeclarative/bug_847.qml b/tests/QtDeclarative/bug_847.qml
+deleted file mode 100644
+index 1cb40fa..0000000
+--- a/tests/QtDeclarative/bug_847.qml
++++ /dev/null
+@@ -1,26 +0,0 @@
+-
+-import Qt 4.7
+-
+-Rectangle {
+-    width: 500
+-    height: 500
+-    color: 'red'
+-
+-    property variant pythonObject: undefined
+-
+-    Text {
+-        anchors.centerIn: parent
+-        text: 'click me'
+-        color: 'white'
+-    }
+-
+-    Timer {
+-        interval: 100; running: true;
+-        onTriggered: {
+-            if (pythonObject != undefined) {
+-                pythonObject.blubb(42, 84)
+-            }
+-        }
+-    }
+-}
+-
+diff --git a/tests/QtDeclarative/bug_915.py b/tests/QtDeclarative/bug_915.py
+deleted file mode 100644
+index 3a77a69..0000000
+--- a/tests/QtDeclarative/bug_915.py
++++ /dev/null
+@@ -1,28 +0,0 @@
+-#!/usr/bin/python
+-# -*- coding: utf-8 -*-
+-import unittest
+-
+-from PySide2.QtDeclarative import QDeclarativeView, QDeclarativeItem
+-from helper import TimedQApplication
+-
+-class TestBug915(TimedQApplication):
+-    def testReturnPolicy(self):
+-        view = QDeclarativeView()
+-
+-        item1 = QDeclarativeItem()
+-        item1.setObjectName("Item1")
+-        view.scene().addItem(item1)
+-        self.assertEqual(item1.objectName(), "Item1") # check if the item still valid
+-
+-        item2 = QDeclarativeItem()
+-        item2.setObjectName("Item2")
+-        item1.scene().addItem(item2)
+-        item1 = None
+-        self.assertEqual(item2.objectName(), "Item2") # check if the item still valid
+-
+-        view = None
+-
+-if __name__ == '__main__':
+-    unittest.main()
+-
+-
+diff --git a/tests/QtDeclarative/bug_926.py b/tests/QtDeclarative/bug_926.py
+deleted file mode 100644
+index 813f330..0000000
+--- a/tests/QtDeclarative/bug_926.py
++++ /dev/null
+@@ -1,38 +0,0 @@
+-import sys
+-import unittest
+-from helper import adjust_filename
+-from PySide2.QtCore import *
+-from PySide2.QtWidgets import *
+-from PySide2.QtDeclarative import *
+-
+-class MyClass (QObject):
+-
+-    def __init__(self):
+-        super(MyClass,self).__init__()
+-        self.__url = QUrl()
+-
+-    def getUrl(self):
+-        return self.__url
+-
+-    def setUrl(self,value):
+-        newUrl = QUrl(value)
+-        if (newUrl != self.__url):
+-            self.__url = newUrl
+-            self.urlChanged.emit()
+-
+-    urlChanged = Signal()
+-    urla = Property(QUrl, getUrl, setUrl, notify = urlChanged)
+-
+-class TestBug926 (unittest.TestCase):
+-    def testIt(self):
+-        app = QApplication([])
+-        qmlRegisterType(MyClass,'Example',1,0,'MyClass')
+-        view = QDeclarativeView()
+-        view.setSource(QUrl.fromLocalFile(adjust_filename('bug_926.qml', __file__)))
+-        self.assertEqual(len(view.errors()), 0)
+-        view.show()
+-        QTimer.singleShot(0, app.quit)
+-        app.exec_()
+-
+-if __name__ == '__main__':
+-    unittest.main()
+diff --git a/tests/QtDeclarative/bug_926.qml b/tests/QtDeclarative/bug_926.qml
+deleted file mode 100644
+index 50895db..0000000
+--- a/tests/QtDeclarative/bug_926.qml
++++ /dev/null
+@@ -1,17 +0,0 @@
+-import Qt 4.7
+-import Example 1.0
+-
+-Rectangle {
+-    width: 100
+-    height: 62
+-
+-    MyClass {
+-        id: myClass
+-        urla: "http://www.pyside.org"
+-    }
+-
+-    Text {
+-        id: name
+-        text: myClass.urla
+-    }
+-}
+diff --git a/tests/QtDeclarative/bug_951.py b/tests/QtDeclarative/bug_951.py
+deleted file mode 100644
+index 881fbac..0000000
+--- a/tests/QtDeclarative/bug_951.py
++++ /dev/null
+@@ -1,31 +0,0 @@
+-from PySide2.QtDeclarative import QDeclarativeItem, qmlRegisterType, QDeclarativeView
+-from PySide2.QtCore import QUrl
+-
+-from helper import adjust_filename, TimedQApplication
+-import unittest
+-
+-class MyItem(QDeclarativeItem):
+-    COMPONENT_COMPLETE_CALLED = False
+-    def __init__(self,parent=None):
+-        super(MyItem, self).__init__(parent)
+-        self.setObjectName("myitem")
+-
+-    def componentComplete(self):
+-        MyItem.COMPONENT_COMPLETE_CALLED = True
+-        super(MyItem, self).componentComplete()
+-
+-class TestRegisterQMLType(TimedQApplication):
+-    def setup(self):
+-        TimedQApplication.setup(self, 100 * 3) # 3s
+-
+-    def testSignalEmission(self):
+-        qmlRegisterType(MyItem, "my.item", 1, 0, "MyItem")
+-
+-        view = QDeclarativeView()
+-        view.setSource(QUrl.fromLocalFile(adjust_filename('bug_951.qml', __file__)))
+-
+-        self.app.exec_()
+-        self.assertTrue(MyItem.COMPONENT_COMPLETE_CALLED)
+-
+-if __name__ == '__main__':
+-    unittest.main()
+diff --git a/tests/QtDeclarative/bug_951.qml b/tests/QtDeclarative/bug_951.qml
+deleted file mode 100644
+index dd0a560..0000000
+--- a/tests/QtDeclarative/bug_951.qml
++++ /dev/null
+@@ -1,7 +0,0 @@
+-import Qt 4.7
+-import my.item 1.0
+-Rectangle{
+-    width:10
+-    height:10
+-    MyItem{ }
+-}
+diff --git a/tests/QtDeclarative/bug_995.py b/tests/QtDeclarative/bug_995.py
+deleted file mode 100644
+index ab52b10..0000000
+--- a/tests/QtDeclarative/bug_995.py
++++ /dev/null
+@@ -1,13 +0,0 @@
+-from PySide2.QtWidgets import *
+-from PySide2.QtDeclarative import *
+-from helper import adjust_filename, UsesQApplication
+-
+-app = QApplication([])
+-view = QDeclarativeView(adjust_filename('bug_995.qml', __file__))
+-view.show()
+-view.resize(200, 200)
+-item = view.itemAt(100, 100)
+-
+-# it CAN NOT crash here
+-print(item)
+-
+diff --git a/tests/QtDeclarative/bug_995.qml b/tests/QtDeclarative/bug_995.qml
+deleted file mode 100644
+index 7603700..0000000
+--- a/tests/QtDeclarative/bug_995.qml
++++ /dev/null
+@@ -1,12 +0,0 @@
+-import Qt 4.7
+-
+-Rectangle {
+-    width: 100
+-    height: 100
+-    color: "red"
+-
+-    Text {
+-        text: "Hello World"
+-        anchors.centerIn: parent
+-    }
+-}
+diff --git a/tests/QtDeclarative/bug_997.py b/tests/QtDeclarative/bug_997.py
+deleted file mode 100644
+index 42c2a8a..0000000
+--- a/tests/QtDeclarative/bug_997.py
++++ /dev/null
+@@ -1,24 +0,0 @@
+-from PySide2 import QtCore, QtDeclarative
+-
+-import unittest
+-from helper import adjust_filename, UsesQApplication
+-
+-
+-class TestBug(UsesQApplication):
+-    def testQMLFunctionCall(self):
+-        ownerData = QtDeclarative.QDeclarativePropertyMap()
+-        ownerData.insert('name', 'John Smith')
+-        ownerData.insert('phone', '555-5555')
+-        ownerData.insert('newValue', '')
+-
+-        view = QtDeclarative.QDeclarativeView()
+-        ctxt = view.rootContext()
+-        ctxt.setContextProperty('owner', ownerData)
+-        view.setSource(QtCore.QUrl.fromLocalFile(adjust_filename('bug_997.qml', __file__)))
+-        view.show()
+-        QtCore.QTimer.singleShot(1000, self.app.quit)
+-        self.app.exec_()
+-        self.assertEqual(ownerData.value('newName'), ownerData.value('name'))
+-
+-if __name__ == '__main__':
+-    unittest.main()
+diff --git a/tests/QtDeclarative/bug_997.qml b/tests/QtDeclarative/bug_997.qml
+deleted file mode 100644
+index 43449bf..0000000
+--- a/tests/QtDeclarative/bug_997.qml
++++ /dev/null
+@@ -1,6 +0,0 @@
+-import Qt 4.7
+-
+-Text {
+-    text: owner.name + " " + owner.phone 
+-    Component.onCompleted: { owner.newName = owner.name }
+-}
+diff --git a/tests/QtDeclarative/connect_python_qml.py b/tests/QtDeclarative/connect_python_qml.py
+deleted file mode 100644
+index 8aa2f14..0000000
+--- a/tests/QtDeclarative/connect_python_qml.py
++++ /dev/null
+@@ -1,30 +0,0 @@
+-'''Test case for bug #442'''
+-
+-from PySide2 import QtCore, QtGui, QtDeclarative
+-from helper import adjust_filename, TimedQApplication
+-import unittest
+-
+-class TestConnectionWithInvalidSignature(TimedQApplication):
+-    def onButtonClicked(self):
+-        self.buttonClicked = True
+-        self.app.quit()
+-
+-    def onButtonFailClicked(self):
+-        pass
+-
+-    def testFailConnection(self):
+-        self.buttonClicked = False
+-        self.buttonFailClicked = False
+-        view = QtDeclarative.QDeclarativeView()
+-        view.setSource(QtCore.QUrl.fromLocalFile(adjust_filename('connect_python_qml.qml', __file__)))
+-        root = view.rootObject()
+-        button = root.findChild(QtCore.QObject, "buttonMouseArea")
+-        self.assertRaises(TypeError, QtCore.QObject.connect, [button,QtCore.SIGNAL('entered()'), self.onButtonFailClicked])
+-        button.entered.connect(self.onButtonClicked)
+-        button.entered.emit()
+-        view.show()
+-        self.app.exec_()
+-        self.assert_(self.buttonClicked)
+-
+-if __name__ == '__main__':
+-    unittest.main()
+diff --git a/tests/QtDeclarative/connect_python_qml.qml b/tests/QtDeclarative/connect_python_qml.qml
+deleted file mode 100644
+index df55e1b..0000000
+--- a/tests/QtDeclarative/connect_python_qml.qml
++++ /dev/null
+@@ -1,20 +0,0 @@
+-import Qt 4.7
+-
+-Rectangle {
+-    id: page
+-    width: 500; height: 200
+-    color: "lightgray"
+-
+-    Rectangle {
+-        id: button
+-        width: 150; height: 40
+-        color: "darkgray"
+-        anchors.horizontalCenter: page.horizontalCenter
+-        y: 150
+-        MouseArea {
+-            id: buttonMouseArea
+-            objectName: "buttonMouseArea"
+-            anchors.fill: parent
+-        }
+-    }
+-}
+diff --git a/tests/QtDeclarative/hw.qml b/tests/QtDeclarative/hw.qml
+deleted file mode 100644
+index 2b95b64..0000000
+--- a/tests/QtDeclarative/hw.qml
++++ /dev/null
+@@ -1,55 +0,0 @@
+-/****************************************************************************
+-**
+-** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+-** Contact: http://www.qt-project.org/legal
+-**
+-** This file is part of the QtDeclarative module of the Qt Toolkit.
+-**
+-** $QT_BEGIN_LICENSE:BSD$
+-** You may use this file under the terms of the BSD license as follows:
+-**
+-** "Redistribution and use in source and binary forms, with or without
+-** modification, are permitted provided that the following conditions are
+-** met:
+-**   * Redistributions of source code must retain the above copyright
+-**     notice, this list of conditions and the following disclaimer.
+-**   * Redistributions in binary form must reproduce the above copyright
+-**     notice, this list of conditions and the following disclaimer in
+-**     the documentation and/or other materials provided with the
+-**     distribution.
+-**   * Neither the name of Digia Plc and its Subsidiary(-ies) nor the names
+-**     of its contributors may be used to endorse or promote products derived
+-**     from this software without specific prior written permission.
+-**
+-**
+-** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+-** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+-** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+-** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+-** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+-** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+-** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+-** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+-** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+-** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+-** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+-**
+-** $QT_END_LICENSE$
+-**
+-****************************************************************************/
+-
+-import Qt 4.7
+-
+-Rectangle {
+-     id: page
+-     width: 500; height: 200
+-     color: "lightgray"
+-
+-     Text {
+-         id: helloText
+-         text: "Hello world!"
+-         y: 30
+-         anchors.horizontalCenter: page.horizontalCenter
+-         font.pointSize: 24; font.bold: true
+-     }
+-}
+diff --git a/tests/QtDeclarative/qdeclarativenetwork_test.py b/tests/QtDeclarative/qdeclarativenetwork_test.py
+deleted file mode 100644
+index 26f455a..0000000
+--- a/tests/QtDeclarative/qdeclarativenetwork_test.py
++++ /dev/null
+@@ -1,29 +0,0 @@
+-'''Test cases for QDeclarativeNetwork'''
+-
+-import unittest
+-
+-from PySide2.QtCore import QUrl
+-from PySide2.QtDeclarative import QDeclarativeView, QDeclarativeNetworkAccessManagerFactory
+-from PySide2.QtNetwork import QNetworkAccessManager
+-
+-from helper import adjust_filename, TimedQApplication
+-
+-class TestQDeclarativeNetworkFactory(TimedQApplication):
+-
+-    def setUp(self):
+-        TimedQApplication.setUp(self, timeout=1000)
+-
+-    def testQDeclarativeNetworkFactory(self):
+-        view = QDeclarativeView()
+-
+-        url = QUrl.fromLocalFile(adjust_filename('hw.qml', __file__))
+-
+-        view.setSource(url)
+-        view.show()
+-
+-        self.assertEqual(view.status(), QDeclarativeView.Ready)
+-
+-        self.app.exec_()
+-
+-if __name__ == '__main__':
+-    unittest.main()
+diff --git a/tests/QtDeclarative/qdeclarativeview_test.py b/tests/QtDeclarative/qdeclarativeview_test.py
+deleted file mode 100644
+index ea729d5..0000000
+--- a/tests/QtDeclarative/qdeclarativeview_test.py
++++ /dev/null
+@@ -1,58 +0,0 @@
+-'''Test cases for QDeclarativeView'''
+-
+-import unittest
+-
+-from PySide2.QtCore import QUrl, QObject, Property, Slot
+-from PySide2.QtDeclarative import QDeclarativeView
+-
+-from helper import adjust_filename, TimedQApplication
+-
+-class MyObject(QObject):
+-    def __init__(self, text, parent=None):
+-        QObject.__init__(self, parent)
+-        self._text = text
+-
+-    def getText(self):
+-        return self._text
+-
+-
+-    @Slot(str)
+-    def qmlText(self, text):
+-        self._qmlText = text
+-
+-    title = Property(str, getText)
+-
+-
+-class TestQDeclarativeView(TimedQApplication):
+-
+-    def testQDeclarativeViewList(self):
+-        view = QDeclarativeView()
+-
+-        dataList = ["Item 1", "Item 2", "Item 3", "Item 4"]
+-
+-        ctxt = view.rootContext()
+-        ctxt.setContextProperty("myModel", dataList)
+-
+-        url = QUrl.fromLocalFile(adjust_filename('view.qml', __file__))
+-        view.setSource(url)
+-        view.show()
+-
+-        self.assertEqual(view.status(), QDeclarativeView.Ready)
+-
+-
+-    def testModelExport(self):
+-        view = QDeclarativeView()
+-        dataList = [MyObject("Item 1"), MyObject("Item 2"), MyObject("Item 3"), MyObject("Item 4")]
+-
+-        ctxt = view.rootContext()
+-        ctxt.setContextProperty("myModel", dataList)
+-
+-        url = QUrl.fromLocalFile(adjust_filename('viewmodel.qml', __file__))
+-        view.setSource(url)
+-        view.show()
+-
+-        self.assertEqual(view.status(), QDeclarativeView.Ready)
+-
+-
+-if __name__ == '__main__':
+-    unittest.main()
+diff --git a/tests/QtDeclarative/registertype.py b/tests/QtDeclarative/registertype.py
+deleted file mode 100644
+index ce1c8fb..0000000
+--- a/tests/QtDeclarative/registertype.py
++++ /dev/null
+@@ -1,92 +0,0 @@
+-
+-import sys
+-import unittest
+-import helper
+-from PySide2.QtCore import *
+-from PySide2.QtWidgets import *
+-from PySide2.QtDeclarative import *
+-
+-class PieSlice (QDeclarativeItem):
+-
+-    def __init__(self, parent = None):
+-        QDeclarativeItem.__init__(self, parent)
+-        # need to disable this flag to draw inside a QDeclarativeItem
+-        self.setFlag(QGraphicsItem.ItemHasNoContents, False)
+-        self._color = QColor()
+-        self._fromAngle = 0
+-        self._angleSpan = 0
+-
+-    def getColor(self):
+-        return self._color
+-
+-    def setColor(self, value):
+-        self._color = value
+-
+-    def getFromAngle(self):
+-        return self._angle
+-
+-    def setFromAngle(self, value):
+-        self._fromAngle = value
+-
+-    def getAngleSpan(self):
+-        return self._angleSpan
+-
+-    def setAngleSpan(self, value):
+-        self._angleSpan = value
+-
+-    color = Property(QColor, getColor, setColor)
+-    fromAngle = Property(int, getFromAngle, setFromAngle)
+-    angleSpan = Property(int, getAngleSpan, setAngleSpan)
+-
+-    def paint(self, painter, options, widget):
+-        global paintCalled
+-        pen = QPen(self._color, 2)
+-        painter.setPen(pen);
+-        painter.setRenderHints(QPainter.Antialiasing, True);
+-        painter.drawPie(self.boundingRect(), self._fromAngle * 16, self._angleSpan * 16);
+-        paintCalled = True
+-
+-class PieChart (QDeclarativeItem):
+-
+-    def __init__(self, parent = None):
+-        QDeclarativeItem.__init__(self, parent)
+-        self._name = ''
+-        self._slices = []
+-
+-    def getName(self):
+-        return self._name
+-
+-    def setName(self, value):
+-        self._name = value
+-
+-    name = Property(str, getName, setName)
+-
+-    def appendSlice(self, _slice):
+-        global appendCalled
+-        _slice.setParentItem(self)
+-        self._slices.append(_slice)
+-        appendCalled = True
+-
+-    slices = ListProperty(PieSlice, append=appendSlice)
+-
+-appendCalled = False
+-paintCalled = False
+-
+-class TestQmlSupport(unittest.TestCase):
+-
+-    def testIt(self):
+-        app = QApplication([])
+-
+-        qmlRegisterType(PieChart, 'Charts', 1, 0, 'PieChart');
+-        qmlRegisterType(PieSlice, "Charts", 1, 0, "PieSlice");
+-
+-        view = QDeclarativeView()
+-        view.setSource(QUrl.fromLocalFile(helper.adjust_filename('registertype.qml', __file__)))
+-        view.show()
+-        QTimer.singleShot(250, view.close)
+-        app.exec_()
+-        self.assertTrue(appendCalled)
+-        self.assertTrue(paintCalled)
+-
+-if __name__ == '__main__':
+-    unittest.main()
+diff --git a/tests/QtDeclarative/registertype.qml b/tests/QtDeclarative/registertype.qml
+deleted file mode 100644
+index 7815623..0000000
+--- a/tests/QtDeclarative/registertype.qml
++++ /dev/null
+@@ -1,29 +0,0 @@
+-import Qt 4.7
+-import Charts 1.0
+-
+-Item {
+-    width: 300; height: 200
+-
+-    PieChart {
+-        anchors.centerIn: parent
+-        width: 100; height: 100
+-
+-        slices: [
+-            PieSlice {
+-                anchors.fill: parent
+-                color: "red"
+-                fromAngle: 0; angleSpan: 110
+-            },
+-            PieSlice {
+-                anchors.fill: parent
+-                color: "black"
+-                fromAngle: 110; angleSpan: 50
+-            },
+-            PieSlice {
+-                anchors.fill: parent
+-                color: "blue"
+-                fromAngle: 160; angleSpan: 100
+-            }
+-        ]
+-    }
+-}
+diff --git a/tests/QtDeclarative/view.qml b/tests/QtDeclarative/view.qml
+deleted file mode 100644
+index c851798..0000000
+--- a/tests/QtDeclarative/view.qml
++++ /dev/null
+@@ -1,55 +0,0 @@
+-/****************************************************************************
+-**
+-** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+-** Contact: http://www.qt-project.org/legal
+-**
+-** This file is part of the QtDeclarative module of the Qt Toolkit.
+-**
+-** $QT_BEGIN_LICENSE:BSD$
+-** You may use this file under the terms of the BSD license as follows:
+-**
+-** "Redistribution and use in source and binary forms, with or without
+-** modification, are permitted provided that the following conditions are
+-** met:
+-**   * Redistributions of source code must retain the above copyright
+-**     notice, this list of conditions and the following disclaimer.
+-**   * Redistributions in binary form must reproduce the above copyright
+-**     notice, this list of conditions and the following disclaimer in
+-**     the documentation and/or other materials provided with the
+-**     distribution.
+-**   * Neither the name of Digia Plc and its Subsidiary(-ies) nor the names
+-**     of its contributors may be used to endorse or promote products derived
+-**     from this software without specific prior written permission.
+-**
+-**
+-** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+-** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+-** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+-** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+-** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+-** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+-** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+-** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+-** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+-** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+-** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+-**
+-** $QT_END_LICENSE$
+-**
+-****************************************************************************/
+-
+-import Qt 4.7
+-
+-ListView {
+-    width: 100
+-    height: 100
+-    anchors.fill: parent
+-    model: myModel
+-    delegate: Component {
+-        Rectangle {
+-            height: 25
+-            width: 100
+-            Text { text: modelData }
+-        }
+-    }
+-}
+diff --git a/tests/QtDeclarative/viewmodel.qml b/tests/QtDeclarative/viewmodel.qml
+deleted file mode 100644
+index badce7d..0000000
+--- a/tests/QtDeclarative/viewmodel.qml
++++ /dev/null
+@@ -1,14 +0,0 @@
+-import Qt 4.7
+-
+-ListView {
+-    width: 100; height: 100
+-    anchors.fill: parent
+-
+-    model: myModel
+-    delegate: Rectangle {
+-        height: 25
+-        width: 100
+-        Text { text: title }
+-    }
+-}
+-
+-- 
+2.2.1
+

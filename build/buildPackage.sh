@@ -3,6 +3,8 @@
 set -e
 shopt -s nullglob
 
+VERSION=0.34.0.0
+
 PYTHON_VERSION=2.7
 
 if [[ `uname` = "Linux" ]] ; then
@@ -62,9 +64,6 @@ manifest="
 	lib/libhdf5*$SHLIBSUFFIX*
 	lib/libAlembic*
 
-	lib/libpyside*$SHLIBSUFFIX*
-	lib/libshiboken*$SHLIBSUFFIX*
-
 	lib/libQt*
 	lib/Qt*.framework
 
@@ -76,6 +75,7 @@ manifest="
 	procedurals
 	resources
 	shaders
+	qt
 
 	openColorIO
 
@@ -88,10 +88,9 @@ manifest="
 	doc/osl*
 
 	python/IECore*
-	python/shiboken.so
-	python/PySide
 	python/OpenGL
 	python/PyOpenColorIO*
+	python/Qt.py
 
 	include/IECore*
 	include/boost

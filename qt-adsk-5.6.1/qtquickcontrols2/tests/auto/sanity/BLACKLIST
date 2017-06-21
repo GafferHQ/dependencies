@@ -1,0 +1,12 @@
+[signalHandlers:material/SpinBox.qml]
+*
+[signalHandlers:material/TextArea.qml]
+*
+[signalHandlers:material/TextField.qml]
+*
+[attachedObjects:controls/ComboBox.qml]
+*
+[attachedObjects:material/ComboBox.qml]
+*
+[attachedObjects:universal/ComboBox.qml]
+*
