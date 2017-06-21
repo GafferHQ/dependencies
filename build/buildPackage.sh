@@ -25,6 +25,7 @@ manifest="
 	bin/uic
 
 	bin/python
+	bin/python-config
 	bin/python*[0-9]
 
 	bin/exrheader

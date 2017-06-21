@@ -17,6 +17,8 @@ else
 	./configure --prefix=$BUILD_DIR --enable-framework=$BUILD_DIR/lib --enable-unicode=ucs4
 	make clean && make && make install
 
-	cd $BUILD_DIR/bin && ln -fsh ../lib/Python.framework/Versions/Current/bin/python python
+	cd $BUILD_DIR/bin
+	ln -fsh ../lib/Python.framework/Versions/Current/bin/python python
+	ln -fsh ../lib/Python.framework/Versions/Current/bin/python-config python-config
 
 fi
