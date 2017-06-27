@@ -34,6 +34,13 @@ manifest="
 	bin/oslc
 	bin/oslinfo
 
+	bin/abcconvert
+	bin/abcecho
+	bin/abcechobounds
+	bin/abcls
+	bin/abcstitcher
+	bin/abctree
+
 	lib/libboost_*$SHLIBSUFFIX*
 
 	lib/libIECore*$SHLIBSUFFIX
