@@ -17,8 +17,12 @@ else
 	./configure --prefix=$BUILD_DIR --enable-framework=$BUILD_DIR/lib --enable-unicode=ucs4
 	make clean && make && make install
 
+	# Install will have made symlinks to the absolute location of
+	# the python binaries inside the framework. Make them relative.
+
 	cd $BUILD_DIR/bin
-	ln -fsh ../lib/Python.framework/Versions/Current/bin/python python
-	ln -fsh ../lib/Python.framework/Versions/Current/bin/python-config python-config
+	for f in python*; do
+		ln -fsh ../lib/Python.framework/Versions/Current/bin/$f $f
+	done
 
 fi
