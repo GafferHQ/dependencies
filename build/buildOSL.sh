@@ -21,7 +21,7 @@ cmake \
 	-D CMAKE_INSTALL_PREFIX=$BUILD_DIR \
 	-D CMAKE_PREFIX_PATH=$BUILD_DIR \
 	-D STOP_ON_WARNING=0 \
-	-D USE_CPP11=0 \
+	-D USE_CPP11=1 \
 	..
 
-make && make install
+make VERBOSE=1 && make install
