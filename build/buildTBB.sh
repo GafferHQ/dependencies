@@ -2,7 +2,7 @@
 
 set -e
 
-cd `dirname $0`/../tbb43_20150611oss
+cd `dirname $0`/../tbb-4.4.6
 
 mkdir -p $BUILD_DIR/doc/licenses
 cp COPYING $BUILD_DIR/doc/licenses/tbb
@@ -16,7 +16,7 @@ else
     export tbb_os=macos
 fi
 
-make clean && make cpp0x=1
+make clean && make stdver=c++11
 
 cp -r include/tbb $BUILD_DIR/include
 
