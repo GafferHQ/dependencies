@@ -1345,7 +1345,7 @@ namespace
 
         static void update_material_inputs(Material& material)
         {
-            if (strcmp(material.get_model(), DisneyMaterialFactory().get_model()) == 0)
+            if (strcmp(material.get_model(), "disney_material") == 0)
             {
                 ParamArray& params = material.get_parameters();
                 for (each<DictionaryDictionary> i = params.dictionaries(); i; ++i)
