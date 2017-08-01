@@ -22,9 +22,8 @@ cmake \
 	-D USE_ARNOLD=FALSE \
 	-D USE_PRMAN=FALSE \
 	-D USE_MAYA=FALSE \
-	-D ALEMBIC_LIB_USES_BOOST=TRUE \
 	.
 
 make clean
-make
+make VERBOSE=1
 make install
