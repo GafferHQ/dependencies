@@ -43,6 +43,7 @@ manifest="
 	bin/abctree
 
 	lib/libboost_*$SHLIBSUFFIX*
+	lib/libboost_test_exec_monitor.a
 
 	lib/libIECore*$SHLIBSUFFIX
 
