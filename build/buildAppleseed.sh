@@ -7,6 +7,12 @@ set -e
 export LD_LIBRARY_PATH=$BUILD_DIR/lib
 export DYLD_FALLBACK_LIBRARY_PATH=$BUILD_DIR/lib
 
+# Appleseed embeds minizip, which appears to require a later version
+# of zlib than CentOS 6 provides. These defines disable encryption,
+# which isn't needed anyway, and fixes the problem.
+# See https://github.com/appleseedhq/appleseed/issues/1597.
+export CFLAGS="-DNOCRYPT -DNOUNCRYPT"
+
 cd `dirname $0`/../appleseed-1.7.1-beta
 
 # I don't know what the sandbox is or why things are copied there
@@ -28,7 +34,6 @@ cmake \
 	-D WITH_STUDIO=OFF \
 	-D WITH_TOOLS=OFF \
 	-D WITH_PYTHON=ON \
-	-D WITH_OSL=ON \
 	-D USE_STATIC_BOOST=OFF \
 	-D USE_STATIC_OIIO=OFF \
 	-D USE_STATIC_OSL=OFF \
@@ -38,7 +43,6 @@ cmake \
 	-D USE_EXTERNAL_XERCES=ON \
 	-D USE_EXTERNAL_OSL=ON \
 	-D USE_EXTERNAL_OIIO=ON \
-	-D USE_EXTERNAL_ALEMBIC=ON \
 	-D USE_SSE=ON \
 	-D WARNINGS_AS_ERRORS=OFF \
 	-D CMAKE_PREFIX_PATH=$BUILD_DIR \
