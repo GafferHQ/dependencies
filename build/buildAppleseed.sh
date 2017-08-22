@@ -7,7 +7,7 @@ set -e
 export LD_LIBRARY_PATH=$BUILD_DIR/lib
 export DYLD_FALLBACK_LIBRARY_PATH=$BUILD_DIR/lib
 
-cd `dirname $0`/../appleseed-1.6.0-beta
+cd `dirname $0`/../appleseed-1.7.1-beta
 
 # I don't know what the sandbox is or why things are copied there
 # when we're installing somewhere else, but if the directories
@@ -43,6 +43,7 @@ cmake \
 	-D WARNINGS_AS_ERRORS=OFF \
 	-D CMAKE_PREFIX_PATH=$BUILD_DIR \
 	-D CMAKE_INSTALL_PREFIX=$BUILD_DIR/appleseed \
+	-D USE_CPP11=ON \
 	..
 
 make clean
