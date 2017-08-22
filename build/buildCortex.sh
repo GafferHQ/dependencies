@@ -13,6 +13,7 @@ rm -rf .sconsign.dblite .sconf_temp
 
 scons install installDoc \
 	-j 3 \
+	CXX=`which g++` \
 	INSTALL_PREFIX=$BUILD_DIR \
 	INSTALL_DOC_DIR=$BUILD_DIR/doc/cortex \
 	INSTALL_RMANPROCEDURAL_NAME=$BUILD_DIR/renderMan/procedurals/iePython \
