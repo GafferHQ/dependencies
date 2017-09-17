@@ -2,7 +2,7 @@
 
 set -e
 
-cd `dirname $0`/../glew-1.7.0
+cd `dirname $0`/../glew-2.1.0
 
 mkdir -p $BUILD_DIR/doc/licenses
 cp LICENSE.txt $BUILD_DIR/doc/licenses/glew
