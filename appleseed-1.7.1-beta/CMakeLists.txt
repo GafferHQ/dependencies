@@ -113,8 +113,9 @@ option (USE_CPP11                           "Use C++11"                         
 option (USE_STATIC_BOOST                    "Use static Boost libraries"                            ON)
 option (USE_STATIC_OIIO                     "Use static OpenImageIO libraries"                      ON)
 option (USE_STATIC_OSL                      "Use static OpenShadingLanguage libraries"              ON)
-option (WARNINGS_AS_ERRORS                  "Treat compiler warnings as errors"                     ON)
+option (USE_STATIC_EXR                      "Use static OpenEXR libraries"                          OFF)
 
+option (WARNINGS_AS_ERRORS                  "Treat compiler warnings as errors"                     ON)
 option (HIDE_SYMBOLS                        "When using gcc, hide symbols not on the public API"    ON)
 
 if (CMAKE_SYSTEM_NAME MATCHES "Linux|FreeBSD")
@@ -190,6 +191,9 @@ set (Boost_MULTITHREADED TRUE)
 
 if (USE_STATIC_BOOST)
     set (Boost_USE_STATIC_LIBS TRUE)
+    add_definitions(-DBOOST_PYTHON_STATIC_LIB) # link statically against Boost.Python
+else ()
+    add_definitions(-DBOOST_ALL_DYN_LINK)
 endif ()
 
 set (BOOST_NEEDED_LIBS chrono date_time filesystem regex system thread wave)
@@ -223,6 +227,9 @@ endif ()
 if (USE_EXTERNAL_EXR)
     find_package (Imath REQUIRED)
     find_package (OpenEXR REQUIRED)
+    if (NOT USE_STATIC_EXR AND MSVC)
+        add_definitions(-DOPENEXR_DLL)
+    endif ()
 endif ()
 
 if (USE_EXTERNAL_XERCES)
