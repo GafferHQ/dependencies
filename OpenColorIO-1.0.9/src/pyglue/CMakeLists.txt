@@ -56,8 +56,8 @@ endif()
 if(WIN32)
     if(OCIO_PYGLUE_LINK)
     target_link_libraries(PyOpenColorIO OpenColorIO
-        debug ${PYTHON_LIB}/python26_d.lib
-        optimized ${PYTHON_LIB}/python26.lib)
+        debug ${PYTHON_LIB}/python27_d.lib
+        optimized ${PYTHON_LIB}/python27.lib)
     else()
     target_link_libraries(PyOpenColorIO OpenColorIO)
     endif(OCIO_PYGLUE_LINK)
