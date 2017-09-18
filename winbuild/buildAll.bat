@@ -8,7 +8,7 @@ for %%n in (BUILD_DIR VERSION ARNOLD_ROOT RMAN_ROOT) do (
 )
 
 set ROOT_DIR=%~dp0%
-set CMAKE_GENERATOR="Visual Studio 12 2013 Win64"
+set CMAKE_GENERATOR="Visual Studio 14 2015 Win64"
 cd ROOT_DIR
 echo ===============================================================================
 echo Building ZLIB...
@@ -25,7 +25,7 @@ call buildPython.bat
 echo ===============================================================================
 echo Building Subprocess32...
 echo ===============================================================================
-rem call buildSubprocess32.bat
+call buildSubprocess32.bat
 echo ===============================================================================
 echo Building Boost...
 echo ===============================================================================

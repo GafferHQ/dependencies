@@ -1,4 +1,4 @@
-cd %~dp0%..\libjpeg-turbo-1.5.1
+cd %~dp0%..\libjpeg-turbo-1.5.2
 
 mkdir %BUILD_DIR%\doc\licenses
 copy LICENSE.md %BUILD_DIR%\doc\licenses\libjpeg
