@@ -1,4 +1,4 @@
-cd %~dp0%..\glew-2.0.0
+cd %~dp0%..\glew-2.1.0
 
 mkdir %BUILD_DIR%\doc\licenses
 copy LICENSE.txt %BUILD_DIR%\doc\licenses\glew
