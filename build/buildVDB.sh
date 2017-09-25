@@ -2,7 +2,7 @@
 
 set -e
 
-cd `dirname $0`/../openvdb-3.1.0/openvdb
+cd `dirname $0`/../openvdb-4.0.2/openvdb
 
 mkdir -p $BUILD_DIR/doc/licenses
 cp LICENSE $BUILD_DIR/doc/licenses/openvdb
