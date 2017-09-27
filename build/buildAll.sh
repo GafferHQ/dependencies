@@ -38,6 +38,7 @@ cd `dirname $0`
 ./buildGLEW.sh
 ./buildOCIO.sh
 ./buildOIIO.sh
+./buildBlosc.sh
 ./buildVDB.sh
 ./buildLLVM.sh
 ./buildOSL.sh
