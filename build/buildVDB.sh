@@ -37,3 +37,5 @@ make install \
 	GLFW_INCL_DIR= \
 	LOG4CPLUS_INCL_DIR= \
 	EPYDOC=
+
+mv $BUILD_DIR/python/lib/python$PYTHON_VERSION/pyopenvdb.so $BUILD_DIR/python

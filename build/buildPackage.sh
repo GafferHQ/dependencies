@@ -99,6 +99,7 @@ manifest="
 	python/OpenGL
 	python/PyOpenColorIO*
 	python/Qt.py
+	python/pyopenvdb*
 
 	include/IECore*
 	include/boost
