@@ -15,9 +15,11 @@
 define i32 @main4k() nounwind {
 entry:
 ; WIN_X32:    calll __chkstk
-; WIN_X64:    callq __chkstk
+; WIN_X64:    movabsq $__chkstk, %r11
+; WIN_X64:    callq *%r11
 ; MINGW_X32:  calll __alloca
-; MINGW_X64:  callq ___chkstk
+; MINGW_X64:  movabsq $___chkstk, %r11
+; MINGW_X64:  callq *%r11
 ; LINUX-NOT:  call __chkstk
   %array4096 = alloca [4096 x i8], align 16       ; <[4096 x i8]*> [#uses=0]
   ret i32 0
@@ -32,7 +34,8 @@ entry:
 ; WIN_X32:       ret
 
 ; WIN_X64:       # BB#0:
-; WIN_X64-NOT:   callq __chkstk
+; WIN_X64-NOT:   movabsq $__chkstk, %r11
+; WIN_X64-NOT:   callq *%r11
 ; WIN_X64:       ret
 
 ; MINGW_X64:     # BB#0:
@@ -51,9 +54,11 @@ entry:
 define x86_64_win64cc i32 @main4k_win64() nounwind {
 entry:
 ; WIN_X32:    calll __chkstk
-; WIN_X64:    callq __chkstk
+; WIN_X64:    movabsq $__chkstk, %r11
+; WIN_X64:    callq *%r11
 ; MINGW_X32:  calll __alloca
-; MINGW_X64:  callq ___chkstk
+; MINGW_X64:  movabsq $___chkstk, %r11
+; MINGW_X64:  callq *%r11
 ; LINUX-NOT:  call __chkstk
   %array4096 = alloca [4096 x i8], align 16       ; <[4096 x i8]*> [#uses=0]
   ret i32 0
