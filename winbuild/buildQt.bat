@@ -14,11 +14,11 @@ rem We need to have the lib dir
 set BACKUP_PATH=%PATH%
 set PATH=%PATH%;%BUILD_DIR%\\lib;%BUILD_DIR%\\bin
 
-jom\jom.exe distclean
+%ROOT_DIR%\jom\jom.exe distclean
 call configure.bat -prefix %BUILD_DIR% -plugindir %BUILD_DIR%\qt\plugins -release -opensource -confirm-license -opengl desktop -no-angle -no-audio-backend -no-dbus -skip qtconnectivity -skip qtwebengine -skip qt3d -skip qtdeclarative -skip qtwebkit -nomake examples -nomake tests -system-zlib -no-openssl -I %BUILD_DIR%\include -L %BUILD_DIR%\lib
 
-jom\jom.exe
-jom\jom.exe install
+%ROOT_DIR%\jom\jom.exe
+%ROOT_DIR%\jom\jom.exe install
 
 rem Restore path
 set PATH=%BACKUP_PATH%
