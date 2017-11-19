@@ -12,8 +12,9 @@ cmake --build . --config %BUILD_TYPE% --target install
 mkdir %BUILD_DIR%\python
 move %BUILD_DIR%\PyOpenColorIO.dll %BUILD_DIR%\python\PyOpenColorIO.pyd
 
-mkdir openColorIO
+mkdir %BUILD_DIR%\openColorIO
+mkdir %BUILD_DIR%\openColorIO\luts
 copy %ROOT_DIR%\..\imageworks-OpenColorIO-Configs-f931d77\nuke-default\config.ocio %BUILD_DIR%\\openColorIO\\
-copy %ROOT_DIR%\..\imageworks-OpenColorIO-Configs-f931d77\nuke-default\luts %BUILD_DIR%\\openColorIO\\
+copy %ROOT_DIR%\..\imageworks-OpenColorIO-Configs-f931d77\nuke-default\luts %BUILD_DIR%\\openColorIO\\luts
 
 cd %ROOT_DIR%
