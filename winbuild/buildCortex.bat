@@ -1,5 +1,5 @@
 mkdir %BUILD_DIR%\resources\cortex
-cp %~dp0%..\cortex-9.21.1\tileset_2048.dat %BUILD_DIR%\resources\cortex
+cp %~dp0%..\cortex-10.0.0-a2\tileset_2048.dat %BUILD_DIR%\resources\cortex
 
 cd %~dp0%..\..\cortex
 
