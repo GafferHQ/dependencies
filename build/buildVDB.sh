@@ -39,3 +39,4 @@ make install \
 	EPYDOC=
 
 mv $BUILD_DIR/python/lib/python$PYTHON_VERSION/pyopenvdb.so $BUILD_DIR/python
+mv $BUILD_DIR/python/include/python2.7/pyopenvdb.h $BUILD_DIR/include
