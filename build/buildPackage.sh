@@ -78,6 +78,7 @@ manifest="
 	lib/libxerces-c*$SHLIBSUFFIX*
 
 	lib/libopenvdb*$SHLIBSUFFIX*
+	lib/libblosc*$SHLIBSUFFIX*
 
 	fonts
 	procedurals
