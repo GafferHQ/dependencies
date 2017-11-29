@@ -94,15 +94,15 @@ namespace pyopenvdb {
 /// @brief Return a pointer to the OpenVDB grid held by the given Python object.
 /// @throw openvdb::TypeError if the Python object is not one of the pyOpenVDB grid types.
 ///     (See the Python module's GridTypes global variable for the list of supported grid types.)
-openvdb::GridBase::Ptr getGridFromPyObject(PyObject*);
-openvdb::GridBase::Ptr getGridFromPyObject(const boost::python::object&);
+OPENVDB_API openvdb::GridBase::Ptr getGridFromPyObject(PyObject*);
+OPENVDB_API openvdb::GridBase::Ptr getGridFromPyObject(const boost::python::object&);
 //@}
 
 /// @brief Return a new Python object that holds the given OpenVDB grid.
 /// @return @c None if the given grid pointer is null.
 /// @throw openvdb::TypeError if the grid is not of a supported type.
 ///     (See the Python module's GridTypes global variable for the list of supported grid types.)
-boost::python::object getPyObjectFromGrid(const openvdb::GridBase::Ptr&);
+OPENVDB_API boost::python::object getPyObjectFromGrid(const openvdb::GridBase::Ptr&);
 
 } // namespace pyopenvdb
 
