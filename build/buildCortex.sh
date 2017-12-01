@@ -2,7 +2,7 @@
 
 set -e
 
-cd `dirname $0`/../cortex-10.0.0-a6
+cd `dirname $0`/../cortex-10.0.0-a7
 
 mkdir -p $BUILD_DIR/doc/licenses
 cp LICENSE $BUILD_DIR/doc/licenses/cortex
@@ -39,3 +39,5 @@ scons install installDoc \
 	ENV_VARS_TO_IMPORT=LD_LIBRARY_PATH \
 	OPTIONS='' \
 	SAVE_OPTIONS=gaffer.options
+
+cp -r contrib/scripts/9to10 $BUILD_DIR/python

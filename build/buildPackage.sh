@@ -97,6 +97,7 @@ manifest="
 	doc/osl*
 
 	python/IECore*
+	python/9to10
 	python/OpenGL
 	python/PyOpenColorIO*
 	python/Qt.py
