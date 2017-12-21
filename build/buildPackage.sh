@@ -51,6 +51,9 @@ manifest="
 	lib/libIlmImf*$SHLIBSUFFIX*
 	lib/libIlmThread*$SHLIBSUFFIX*
 
+	lib/libPyIex*$SHLIBSUFFIX*
+	lib/libPyImath*$SHLIBSUFFIX*
+
 	lib/libtiff*$SHLIBSUFFIX*
 	lib/libfreetype*$SHLIBSUFFIX*
 	lib/libjpeg*$SHLIBSUFFIX*
