@@ -22,6 +22,7 @@ cp COPYING $BUILD_DIR/doc/licenses/pyilmbase
 
 ./configure --prefix=$BUILD_DIR --with-boost-include-dir=$BUILD_DIR/include --without-numpy && make clean && make && make install
 
+mkdir -p $BUILD_DIR/python
 mv $BUILD_DIR/lib/python*/site-packages/iexmodule.so $BUILD_DIR/python
 mv $BUILD_DIR/lib/python*/site-packages/imathmodule.so $BUILD_DIR/python
 
