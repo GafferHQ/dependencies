@@ -2,7 +2,27 @@
 
 set -e
 
-cd `dirname $0`/../OpenShadingLanguage-Release-1.8.9
+oslVersion="1.8.12"
+
+# Make clean working directory, and change into it
+
+workingDir=`dirname $0`/../working/osl
+rm -rf $workingDir
+mkdir -p $workingDir
+cd $workingDir
+
+# Unpack the source archive, and apply patches
+
+archive=OpenShadingLanguage-Release-$oslVersion.tar.gz
+cp ../../archives/$archive ./
+tar -xf $archive
+
+cd OpenShadingLanguage-Release-$oslVersion
+
+patch -p1 < ../../../patches/osl/llvmCompileFlagsMac.patch
+
+# Build!
+
 mkdir -p $BUILD_DIR/doc/licenses
 cp LICENSE $BUILD_DIR/doc/licenses/osl
 
