@@ -105,6 +105,8 @@ manifest="
 	python/PyOpenColorIO*
 	python/Qt.py
 	python/pyopenvdb*
+	python/iexmodule*
+	python/imathmodule*
 
 	include/IECore*
 	include/boost
