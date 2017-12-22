@@ -84,7 +84,6 @@ manifest="
 	lib/libblosc*$SHLIBSUFFIX*
 
 	fonts
-	procedurals
 	resources
 	shaders
 	qt
