@@ -3,7 +3,7 @@
 set -e
 shopt -s nullglob
 
-VERSION=0.41.0.0
+VERSION=0.42.0.0
 
 PYTHON_VERSION=2.7
 
@@ -51,6 +51,9 @@ manifest="
 	lib/libIlmImf*$SHLIBSUFFIX*
 	lib/libIlmThread*$SHLIBSUFFIX*
 
+	lib/libPyIex*$SHLIBSUFFIX*
+	lib/libPyImath*$SHLIBSUFFIX*
+
 	lib/libtiff*$SHLIBSUFFIX*
 	lib/libfreetype*$SHLIBSUFFIX*
 	lib/libjpeg*$SHLIBSUFFIX*
@@ -78,9 +81,9 @@ manifest="
 	lib/libxerces-c*$SHLIBSUFFIX*
 
 	lib/libopenvdb*$SHLIBSUFFIX*
+	lib/libblosc*$SHLIBSUFFIX*
 
 	fonts
-	procedurals
 	resources
 	shaders
 	qt
@@ -96,9 +99,13 @@ manifest="
 	doc/osl*
 
 	python/IECore*
+	python/9to10
 	python/OpenGL
 	python/PyOpenColorIO*
 	python/Qt.py
+	python/pyopenvdb*
+	python/iexmodule*
+	python/imathmodule*
 
 	include/IECore*
 	include/boost
@@ -120,6 +127,7 @@ manifest="
 	include/jerror.h
 	include/jmorecfg.h
 	include/jpeglib.h
+	include/pyopenvdb.h
 
 	renderMan
 	arnold

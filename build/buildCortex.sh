@@ -2,7 +2,17 @@
 
 set -e
 
-cd `dirname $0`/../cortex-10.0.0-a2
+cortexVersion=10.0.0-a8
+
+workingDir=`dirname $0`/../working/cortex
+rm -rf $workingDir
+mkdir -p $workingDir
+cd $workingDir
+
+archive=cortex-$cortexVersion.tar.gz
+cp ../../archives/$archive ./
+tar -xf $archive
+cd cortex-$cortexVersion
 
 mkdir -p $BUILD_DIR/doc/licenses
 cp LICENSE $BUILD_DIR/doc/licenses/cortex
@@ -39,3 +49,5 @@ scons install installDoc \
 	ENV_VARS_TO_IMPORT=LD_LIBRARY_PATH \
 	OPTIONS='' \
 	SAVE_OPTIONS=gaffer.options
+
+cp -r contrib/scripts/9to10 $BUILD_DIR/python

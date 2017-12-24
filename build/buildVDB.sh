@@ -2,7 +2,7 @@
 
 set -e
 
-cd `dirname $0`/../openvdb-3.1.0/openvdb
+cd `dirname $0`/../openvdb-4.0.2/openvdb
 
 mkdir -p $BUILD_DIR/doc/licenses
 cp LICENSE $BUILD_DIR/doc/licenses/openvdb
@@ -32,8 +32,13 @@ make install \
 	PYTHON_VERSION=$PYTHON_VERSION \
 	PYTHON_INCL_DIR=$PYTHON_INCL_DIR \
 	PYTHON_LIB_DIR=$PYTHON_LIB_DIR \
+	BLOSC_INCL_DIR=$BUILD_DIR/include \
+	BLOSC_LIB_DIR=$BUILD_DIR/lib \
 	NUMPY_INCL_DIR= \
 	CONCURRENT_MALLOC_LIB= \
 	GLFW_INCL_DIR= \
 	LOG4CPLUS_INCL_DIR= \
 	EPYDOC=
+
+mv $BUILD_DIR/python/lib/python$PYTHON_VERSION/pyopenvdb.so $BUILD_DIR/python
+mv $BUILD_DIR/python/include/python2.7/pyopenvdb.h $BUILD_DIR/include
