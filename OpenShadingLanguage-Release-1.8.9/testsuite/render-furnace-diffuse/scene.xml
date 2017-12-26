@@ -1,9 +1,0 @@
-<World>
-   <Camera eye="0, 100, 300" look_at="0,0,0" fov="70" />
-
-   <ShaderGroup>float Kb 0.5; shader furnace layer1;</ShaderGroup>
-   <Background />
-
-   <ShaderGroup>color Cs 1.0 1.0 1.0; shader matte layer1;</ShaderGroup>
-   <Sphere center="  0,0,0"        radius="30" />
-</World>

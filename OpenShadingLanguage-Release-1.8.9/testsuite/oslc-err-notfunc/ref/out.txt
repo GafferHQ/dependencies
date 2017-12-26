@@ -1,3 +1,0 @@
-test.osl:2: error: 'cos' is not a function
-test.osl:2: error: No matching function call to 'cos (int)'
-FAILED test.osl
