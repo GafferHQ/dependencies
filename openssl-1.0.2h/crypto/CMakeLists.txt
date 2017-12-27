@@ -124,7 +124,7 @@ add_submodule( camellia camellia.c cmll_misc.c cmll_ecb.c cmll_cbc.c cmll_ofb.c
 add_submodule( cast c_skey.c c_ecb.c c_enc.c c_cfb64.c c_ofb64.c EXHEADERS cast.h )
 add_submodule( cmac cm_ameth.c cm_pmeth.c cmac.c EXHEADERS cmac.h )
 add_submodule( cms cms_lib.c cms_asn1.c cms_att.c cms_io.c cms_smime.c cms_err.c
-  cms_sd.c cms_dd.c cms_cd.c cms_env.c cms_enc.c cms_ess.c cms_pwri.c EXHEADERS cms.h )
+  cms_sd.c cms_dd.c cms_cd.c cms_env.c cms_enc.c cms_ess.c cms_pwri.c cms_kari.c EXHEADERS cms.h )
 add_submodule( comp comp_lib.c comp_err.c c_rle.c c_zlib.c EXHEADERS comp.h )
 add_submodule ( conf conf_err.c conf_lib.c conf_api.c conf_def.c conf_mod.c conf_mall.c
   conf_sap.c EXHEADERS conf.h conf_api.h )
@@ -133,7 +133,7 @@ add_submodule( des cbc_cksm.c cbc_enc.c cfb64enc.c cfb_enc.c ecb3_enc.c ecb_enc.
   rpc_enc.c set_key.c des_enc.c fcrypt_b.c xcbc_enc.c str2key.c cfb64ede.c ofb64ede.c
   ede_cbcm_enc.c des_old.c des_old2.c read2pwd.c EXHEADERS des.h des_old.h )
 add_submodule( dh dh_asn1.c dh_gen.c dh_key.c dh_lib.c dh_check.c dh_err.c dh_depr.c
-  dh_ameth.c dh_pmeth.c dh_prn.c EXHEADERS dh.h )
+  dh_ameth.c dh_pmeth.c dh_prn.c dh_kdf.c dh_rfc5114.c EXHEADERS dh.h )
 add_submodule( dsa dsa_gen.c dsa_key.c dsa_lib.c dsa_asn1.c dsa_vrf.c dsa_sign.c
   dsa_err.c dsa_ossl.c dsa_depr.c dsa_ameth.c dsa_pmeth.c dsa_prn.c EXHEADERS dsa.h )
 add_submodule( dso dso_dl.c dso_dlfcn.c dso_err.c dso_lib.c dso_null.c dso_openssl.c
@@ -141,7 +141,7 @@ add_submodule( dso dso_dl.c dso_dlfcn.c dso_err.c dso_lib.c dso_null.c dso_opens
 add_submodule( ec ec_lib.c ecp_smpl.c ecp_mont.c ecp_nist.c ec_cvt.c ec_mult.c ec_err.c
   ec_curve.c ec_check.c ec_print.c ec_asn1.c ec_key.c ec2_smpl.c ec2_mult.c ec_ameth.c
   ec_oct.c ec_pmeth.c eck_prn.c ecp_oct.c ec2_oct.c EXHEADERS ec.h )
-add_submodule( ecdh ech_lib.c ech_ossl.c ech_key.c ech_err.c EXHEADERS ecdh.h )
+add_submodule( ecdh ech_lib.c ech_ossl.c ech_key.c ech_err.c ech_kdf.c EXHEADERS ecdh.h )
 add_submodule( ecdsa ecs_lib.c ecs_asn1.c ecs_ossl.c ecs_sign.c ecs_vrf.c ecs_err.c
   EXHEADERS ecdsa.h )
 add_submodule( engine eng_err.c eng_lib.c eng_list.c eng_init.c eng_ctrl.c eng_table.c
@@ -156,7 +156,7 @@ add_submodule( evp encode.c digest.c evp_enc.c evp_key.c evp_acnf.c e_des.c e_bf
   p_enc.c p_dec.c bio_md.c bio_b64.c bio_enc.c evp_err.c e_null.c c_all.c c_allc.c
   c_alld.c evp_lib.c bio_ok.c evp_pkey.c evp_pbe.c p5_crpt.c p5_crpt2.c e_old.c pmeth_lib.c
   pmeth_fn.c pmeth_gn.c m_sigver.c evp_cnf.c e_rc4_hmac_md5.c e_aes_cbc_hmac_sha1.c
-  EXHEADERS evp.h )
+  e_aes_cbc_hmac_sha256.c EXHEADERS evp.h )
 add_submodule( hmac hmac.c hm_ameth.c hm_pmeth.c EXHEADERS hmac.h )
 add_submodule( idea i_cbc.c i_cfb64.c i_ofb64.c i_ecb.c i_skey.c EXHEADERS idea.h )
 # add_submodule(jpake jpake.c jpake_err.c EXHEADERS jpake.h)
@@ -167,7 +167,7 @@ add_submodule( md4 md4_dgst.c md4_one.c EXHEADERS md4.h )
 add_submodule( md5 md5_dgst.c md5_one.c EXHEADERS md5.h )
 add_submodule( mdc2 mdc2dgst.c mdc2_one.c EXHEADERS mdc2.h )
 add_submodule( modes cbc128.c ccm128.c ctr128.c cts128.c cfb128.c gcm128.c ofb128.c
-  xts128.c EXHEADERS modes.h )
+  xts128.c wrap128.c EXHEADERS modes.h )
 add_submodule( objects o_names.c obj_dat.c obj_lib.c obj_err.c obj_xref.c EXHEADERS
   objects.h obj_mac.h )
 add_submodule( ocsp ocsp_asn.c ocsp_ext.c ocsp_ht.c ocsp_lib.c ocsp_cl.c ocsp_srv.c
@@ -214,7 +214,7 @@ add_submodule( x509v3 v3_bcons.c v3_bitst.c v3_conf.c v3_extku.c v3_ia5.c v3_lib
   v3_prn.c v3_utl.c v3err.c v3_genn.c v3_alt.c v3_skey.c v3_akey.c v3_pku.c v3_int.c
   v3_enum.c v3_sxnet.c v3_cpols.c v3_crld.c v3_purp.c v3_info.c v3_ocsp.c v3_akeya.c
   v3_pmaps.c v3_pcons.c v3_ncons.c v3_pcia.c v3_pci.c pcy_cache.c pcy_node.c pcy_data.c
-  pcy_map.c pcy_tree.c pcy_lib.c v3_asid.c v3_addr.c EXHEADERS x509v3.h )
+  pcy_map.c pcy_tree.c pcy_lib.c v3_asid.c v3_addr.c v3_scts.c EXHEADERS x509v3.h )
 # dirs not included: threads
 
 add_submodule( . EXHEADERS crypto.h opensslv.h opensslconf.h ebcdic.h symhacks.h
