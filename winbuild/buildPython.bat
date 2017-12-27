@@ -10,6 +10,6 @@ cmake -Wno-dev -G %CMAKE_GENERATOR% -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -DCMAKE_INST
 cmake --build . --config %BUILD_TYPE% --target install
 
 rem Move stuff around
-move /Y %BUILD_DIR%\libs\*.lib %BUILD_DIR%\lib
+copy %BUILD_DIR%\libs\*.lib %BUILD_DIR%\lib
 
 cd %ROOT_DIR%

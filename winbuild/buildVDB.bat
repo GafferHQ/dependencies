@@ -1,4 +1,4 @@
-cd %~dp0%..\openvdb-3.3.0
+cd %~dp0%..\openvdb-4.0.2
 
 mkdir %BUILD_DIR%\doc\licenses
 copy openvdb\LICENSE %BUILD_DIR%\doc\licenses\openvdb
