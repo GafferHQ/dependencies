@@ -27,4 +27,18 @@ cmake --build . --config %BUILD_TYPE% --target install
 rem Restore path
 set PATH=%BACKUP_PATH%
 
+cd %ROOT_DIR%\..\pyilmbase-2.2.0
+
+copy COPYING %BUILD_DIR%\doc\licenses\pyilmbase
+
+mkdir gafferBuild
+cd gafferBuild
+
+cmake -Wno-dev -G %CMAKE_GENERATOR% -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -DCMAKE_INSTALL_PREFIX=%BUILD_DIR% -DCMAKE_PREFIX_PATH=%BUILD_DIR% -DPYTHON_LIBRARY=%BUILD_DIR%\lib -DPYTHON_INCLUDE_DIR=%BUILD_DIR%\include -DBOOST_ROOT=%BUILD_DIR% -DILMBASE_PACKAGE_PREFIX=%BUILD_DIR% ..
+cmake --build . --config %BUILD_TYPE% --target install
+
+mkdir %BUILD_DIR%\python
+move %BUILD_DIR%\lib\python2.7\site-packages\iexmodule.pyd %BUILD_DIR%\python
+move %BUILD_DIR%\lib\python2.7\site-packages\imathmodule.pyd %BUILD_DIR%\python
+
 cd %ROOT_DIR%

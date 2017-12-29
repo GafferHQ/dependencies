@@ -53,7 +53,7 @@
 #  endif
 #endif
 
-#if defined(PYIMATH_EXPORTS)                         // create library
+#if defined(PYIMATH_EXPORTS) || defined(PyImath_EXPORTS) // create library
 #  define PYIMATH_EXPORT PYIMATH_EXPORT_DEFINITION
 #else                                                // use library
 #  define PYIMATH_EXPORT PYIMATH_IMPORT_DEFINITION
