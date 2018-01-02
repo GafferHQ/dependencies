@@ -34,6 +34,7 @@ if(OCIO_BUILD_SHARED)
     endif()
 
     if(WIN32)
+        add_definitions(-DOpenColorIO_EXPORTS)
         target_link_libraries(OpenColorIO
             debug ${EXTERNAL_DEBUG_LIBRARIES}
             optimized ${EXTERNAL_OPTIMIZED_LIBRARIES}
@@ -61,6 +62,7 @@ if(OCIO_BUILD_STATIC)
     add_library(OpenColorIO_STATIC STATIC ${core_src_files})
     add_dependencies(OpenColorIO_STATIC tinyxml YAML_CPP_LOCAL)
     if(WIN32)
+        add_definitions(-DOpenColorIO_STATIC)
         target_link_libraries(OpenColorIO_STATIC
             debug ${EXTERNAL_DEBUG_LIBRARIES}
             optimized ${EXTERNAL_OPTIMIZED_LIBRARIES}

@@ -69,20 +69,7 @@ if $(with-python)
     if $(OS) = NT
     {
         --python-include = [ .path $(python-location) include ] ;
-        --python-lib = ;
-        for local v in 27 26 25 24 23 22
-        {
-            --python-lib ?=
-                [ GLOB [ .path $(python-location) libs ] : "python$(v).lib" ]
-                [ GLOB $(python-location) [ .path $(python-location) libs ]
-                    $(Path) $(PATH) $(path) : "python$(v).dll" ]
-                ;
-            if ! $(--python-lib[2])
-            {
-                --python-lib = ;
-            }
-        }
-        --python-lib = $(--python-lib[1]) ;
+        --python-lib = $(python-location)\\lib\\python27.lib ;
     }
     else if $(OS) = MACOSX
     {

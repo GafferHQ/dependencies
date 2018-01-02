@@ -1,0 +1,44 @@
+
+cd %~dp0%..\ilmbase-2.2.0
+
+mkdir %BUILD_DIR%\doc\licenses
+copy COPYING %BUILD_DIR%\doc\licenses\ilmbase
+
+mkdir gafferBuild
+cd gafferBuild
+
+cmake -Wno-dev -G %CMAKE_GENERATOR% -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=%BUILD_DIR% ..
+cmake --build . --config %BUILD_TYPE% --target install
+
+cd %ROOT_DIR%\..\openexr-2.2.0
+
+copy LICENSE %BUILD_DIR%\doc\licenses\openexr
+
+mkdir gafferBuild
+cd gafferBuild
+
+rem We need to have the lib dir in the system path so that the DLL's that OpenEXR relies on in the build process can be found
+set BACKUP_PATH=%PATH%
+set PATH=%PATH%;%BUILD_DIR%\lib
+
+cmake -Wno-dev -G %CMAKE_GENERATOR% -DBUILD_SHARED_LIBS=ON -DILMBASE_PACKAGE_PREFIX=%BUILD_DIR% -DZLIB_INCLUDE_DIR=%BUILD_DIR%\include -DZLIB_LIBRARY=%BUILD_DIR%\lib\zlib.lib -DCMAKE_INSTALL_PREFIX=%BUILD_DIR% ..
+cmake --build . --config %BUILD_TYPE% --target install
+
+rem Restore path
+set PATH=%BACKUP_PATH%
+
+cd %ROOT_DIR%\..\pyilmbase-2.2.0
+
+copy COPYING %BUILD_DIR%\doc\licenses\pyilmbase
+
+mkdir gafferBuild
+cd gafferBuild
+
+cmake -Wno-dev -G %CMAKE_GENERATOR% -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -DCMAKE_INSTALL_PREFIX=%BUILD_DIR% -DCMAKE_PREFIX_PATH=%BUILD_DIR% -DPYTHON_LIBRARY=%BUILD_DIR%\lib -DPYTHON_INCLUDE_DIR=%BUILD_DIR%\include -DBOOST_ROOT=%BUILD_DIR% -DILMBASE_PACKAGE_PREFIX=%BUILD_DIR% ..
+cmake --build . --config %BUILD_TYPE% --target install
+
+mkdir %BUILD_DIR%\python
+move %BUILD_DIR%\lib\python2.7\site-packages\iexmodule.pyd %BUILD_DIR%\python
+move %BUILD_DIR%\lib\python2.7\site-packages\imathmodule.pyd %BUILD_DIR%\python
+
+cd %ROOT_DIR%

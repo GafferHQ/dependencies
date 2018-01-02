@@ -1,0 +1,12 @@
+cd %~dp0%..\oiio-Release-1.7.15
+
+mkdir %BUILD_DIR%\doc\licenses
+copy LICENSE %BUILD_DIR%\doc\licenses\openImageIO
+
+mkdir gafferBuild
+cd gafferBuild
+
+cmake -Wno-dev -G %CMAKE_GENERATOR% -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -DCMAKE_INSTALL_PREFIX=%BUILD_DIR% -DCMAKE_PREFIX_PATH=%BUILD_DIR% -DUSE_FFMPEG=OFF -DUSE_QT=OFF -DUSE_PYTHON=OFF -DBUILDSTATIC=OFF -DOPENEXR_INCLUDE_PATH=%BUILD_DIR%\\include -DOPENEXR_IMATH_LIBRARY=%BUILD_DIR%\\lib\\Imath-2_2.lib -DOPENEXR_ILMIMF_LIBRARY=%BUILD_DIR%\\lib\\IlmImf-2_2.lib -DOPENEXR_IEX_LIBRARY=%BUILD_DIR%\\lib\\Iex-2_2.lib -DOPENEXR_ILMTHREAD_LIBRARY=%BUILD_DIR%\\lib\\IlmThread-2_2.lib -DZLIB_INCLUDE_DIR=%BUILD_DIR%\\include -DZLIB_LIBRARY=%BUILD_DIR%\\lib\\zlib.lib -DPNG_PNG_INCLUDE_DIR=%BUILD_DIR%\\include -DPNG_LIBRARY=%BUILD_DIR%\\lib\\libpng16.lib -DJPEG_INCLUDE_DIR=%BUILD_DIR%\\include -DJPEG_LIBRARY=%BUILD_DIR%\\lib\\jpeg.lib -DTIFF_INCLUDE_DIR=%BUILD_DIR%\\include -DTIFF_LIBRARY=%BUILD_DIR%\\lib\\libtiff.lib -DPYTHON_INCLUDE_DIR=%BUILD_DIR%\\include\\python2.7 -DPYTHON_LIBRARY=%BUILD_DIR%\\lib\\python27.lib -DOCIO_LIBRARY_PATH=%BUILD_DIR%\\lib\\OpenColorIO.lib ..
+cmake --build . --config %BUILD_TYPE% --target install
+
+cd %ROOT_DIR%

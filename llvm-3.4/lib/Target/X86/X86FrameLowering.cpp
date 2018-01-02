@@ -636,18 +636,33 @@ void X86FrameLowering::emitPrologue(MachineFunction &MF) const {
         .setMIFlag(MachineInstr::FrameSetup);
     }
 
+    MachineInstrBuilder MIB;
+
     if (Is64Bit) {
       // Handle the 64-bit Windows ABI case where we need to call __chkstk.
       // Function prologue is responsible for adjusting the stack pointer.
       BuildMI(MBB, MBBI, DL, TII.get(X86::MOV64ri), X86::RAX)
         .addImm(NumBytes)
         .setMIFlag(MachineInstr::FrameSetup);
+
+      // R11 will be used to contain the address of __chkstk.
+      // R11 is a volatile register and assumed to be destroyed by the callee, 
+      // so there is no need to save and restore it.
+      BuildMI(MBB, MBBI, DL, TII.get(X86::MOV64ri), X86::R11)
+        .addExternalSymbol(StackProbeSymbol);
+
+      // Create a call to __chkstk function which address contained in R11.
+      MIB = BuildMI(MBB, MBBI, DL, TII.get(X86::CALL64r))
+              .addReg(X86::R11, RegState::Kill);
     } else {
       // Allocate NumBytes-4 bytes on stack in case of isEAXAlive.
       // We'll also use 4 already allocated bytes for EAX.
       BuildMI(MBB, MBBI, DL, TII.get(X86::MOV32ri), X86::EAX)
         .addImm(isEAXAlive ? NumBytes - 4 : NumBytes)
         .setMIFlag(MachineInstr::FrameSetup);
+
+      MIB = BuildMI(MBB, MBBI, DL, TII.get(X86::CALLpcrel32))
+              .addExternalSymbol(StackProbeSymbol);
     }
 
     BuildMI(MBB, MBBI, DL,

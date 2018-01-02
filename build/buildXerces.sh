@@ -2,7 +2,7 @@
 
 set -e
 
-cd `dirname $0`/../xerces-c-3.1.2
+cd `dirname $0`/../xerces-c-3.2.0
 
 mkdir -p $BUILD_DIR/doc/licenses
 cp LICENSE $BUILD_DIR/doc/licenses/xerces

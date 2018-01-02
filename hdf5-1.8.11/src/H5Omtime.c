@@ -223,7 +223,12 @@ H5O_mtime_decode(H5F_t UNUSED *f, hid_t UNUSED dxpl_id, H5O_t UNUSED *open_oh,
     the_time += tm.__tm_gmtoff;
 #elif defined(H5_HAVE_TIMEZONE)
     /* Linux libc-5 */
+    /* Fix for MSVC >= 1900 */
+#ifdef _MSC_VER >= 1900
+    the_time -= _timezone - (tm.tm_isdst?3600:0);
+#else
     the_time -= timezone - (tm.tm_isdst?3600:0);
+#endif
 #elif defined(H5_HAVE_BSDGETTIMEOFDAY) && defined(H5_HAVE_STRUCT_TIMEZONE)
     /* Irix5.3 */
     {

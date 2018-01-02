@@ -98,6 +98,11 @@ if ((LLVM_LIBRARY OR LLVM_LIBRARIES OR LLVM_STATIC) AND LLVM_INCLUDES AND LLVM_D
                      OUTPUT_STRIP_TRAILING_WHITESPACE)
     string (REPLACE " " ";" LLVM_LIBRARIES "${LLVM_LIBRARIES}")
     set (LLVM_LIBRARY "")
+    # Very hacky territory here, so we link the right lib names from MSVC
+    if (MSVC)
+      string (REPLACE "libL" "L" LLVM_LIBRARIES ${LLVM_LIBRARIES})
+      string (REPLACE ".a" ".lib;" LLVM_LIBRARIES ${LLVM_LIBRARIES})
+    endif ()
   else ()
     set (LLVM_LIBRARIES "${LLVM_LIBRARY}")
   endif ()
