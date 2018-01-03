@@ -33,7 +33,7 @@ export CFLAGS="-DNOCRYPT -DNOUNCRYPT"
 # Make sure we pick up the python headers from $BUILD_DIR,
 # rather than any system level headers.
 if [[ `uname` = "Linux" ]] ; then
-	pythonIncludeDir=$BUILD_DIR/include
+	pythonIncludeDir=$BUILD_DIR/include/python2.7
 else
 	pythonIncludeDir=$BUILD_DIR/lib/Python.framework/Headers
 fi
