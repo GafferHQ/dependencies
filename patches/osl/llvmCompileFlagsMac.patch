@@ -1,0 +1,20 @@
+diff --git a/src/liboslexec/CMakeLists.txt b/src/liboslexec/CMakeLists.txt
+index a0ffca5c97..667e1e2d42 100644
+--- a/src/liboslexec/CMakeLists.txt
++++ b/src/liboslexec/CMakeLists.txt
+@@ -102,9 +102,12 @@ MACRO ( LLVM_COMPILE llvm_src srclist )
+         EXEC_PROGRAM ( "${LLVM_BC_GENERATOR}" ARGS --version OUTPUT_VARIABLE MY_CLANG_VERSION )
+         string (REGEX REPLACE "clang version ([0-9][.][0-9]+).*" "\\1" MY_CLANG_VERSION "${MY_CLANG_VERSION}")
+         if ((${MY_CLANG_VERSION} VERSION_GREATER "3.3")
+-              AND (EXISTS "/usr/lib/libc++.dylib")
+-              AND (EXISTS "/Library/Developer/CommandLineTools/usr/lib/c++/v1"))
+-            set (LLVM_COMPILE_FLAGS ${LLVM_COMPILE_FLAGS} "-I/Library/Developer/CommandLineTools/usr/lib/c++/v1")
++               AND (EXISTS "/usr/lib/libc++.dylib"))
++             if ((EXISTS "/Library/Developer/CommandLineTools/usr/lib/c++/v1"))
++                 set (LLVM_COMPILE_FLAGS ${LLVM_COMPILE_FLAGS} "-I/Library/Developer/CommandLineTools/usr/lib/c++/v1")
++             elseif ((EXISTS "/Library/Developer/CommandLineTools/usr/include/c++/v1"))
++                 set (LLVM_COMPILE_FLAGS ${LLVM_COMPILE_FLAGS} "-I/Library/Developer/CommandLineTools/usr/include/c++/v1")
++             endif ()
+         endif ()
+     endif ()
+ 

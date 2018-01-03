@@ -1,5 +1,0 @@
-Compiled test.osl -> test.oso
-shader name: test
-layer name:  Cake
-group name:  Beatles
-

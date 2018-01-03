@@ -1,4 +1,0 @@
-{
-    global: *OSL*; test_shade; *osl*imageio*; *osl_input_extensions;
-    local: osl_*; *;
-};

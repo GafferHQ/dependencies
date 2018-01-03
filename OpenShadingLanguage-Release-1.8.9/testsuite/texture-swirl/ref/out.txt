@@ -1,3 +1,0 @@
-Compiled swirl.osl -> swirl.oso
-
-Output Cout to out.tif

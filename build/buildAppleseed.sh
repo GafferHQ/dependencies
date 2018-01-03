@@ -2,6 +2,23 @@
 
 set -e
 
+appleseedVersion="1.8.1-beta"
+
+# Make clean working directory, and change into it
+
+workingDir=`dirname $0`/../working/appleseed
+rm -rf $workingDir
+mkdir -p $workingDir
+cd $workingDir
+
+# Unpack the source archive
+
+archive=appleseed-$appleseedVersion.tar.gz
+cp ../../archives/$archive ./
+tar -xf $archive
+
+cd appleseed-$appleseedVersion
+
 # Needed so that `oslc` can be run to compile
 # shaders during the build.
 export LD_LIBRARY_PATH=$BUILD_DIR/lib
@@ -13,7 +30,13 @@ export DYLD_FALLBACK_LIBRARY_PATH=$BUILD_DIR/lib
 # See https://github.com/appleseedhq/appleseed/issues/1597.
 export CFLAGS="-DNOCRYPT -DNOUNCRYPT"
 
-cd `dirname $0`/../appleseed-1.7.1-beta
+# Make sure we pick up the python headers from $BUILD_DIR,
+# rather than any system level headers.
+if [[ `uname` = "Linux" ]] ; then
+	pythonIncludeDir=$BUILD_DIR/include
+else
+	pythonIncludeDir=$BUILD_DIR/lib/Python.framework/Headers
+fi
 
 # I don't know what the sandbox is or why things are copied there
 # when we're installing somewhere else, but if the directories
@@ -27,12 +50,12 @@ mkdir -p sandbox/schemas
 
 mkdir -p build
 cd build
-rm -f CMakeCache.txt
 
 cmake \
 	-D WITH_CLI=ON \
 	-D WITH_STUDIO=OFF \
 	-D WITH_TOOLS=OFF \
+	-D WITH_TESTS=OFF \
 	-D WITH_PYTHON=ON \
 	-D USE_STATIC_BOOST=OFF \
 	-D USE_STATIC_OIIO=OFF \
@@ -47,7 +70,7 @@ cmake \
 	-D WARNINGS_AS_ERRORS=OFF \
 	-D CMAKE_PREFIX_PATH=$BUILD_DIR \
 	-D CMAKE_INSTALL_PREFIX=$BUILD_DIR/appleseed \
-	-D USE_CPP11=ON \
+	-D PYTHON_INCLUDE_DIR=$pythonIncludeDir \
 	..
 
 make clean

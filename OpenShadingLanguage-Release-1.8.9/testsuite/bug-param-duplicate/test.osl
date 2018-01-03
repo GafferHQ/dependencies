@@ -1,4 +1,0 @@
-shader test(float myparam = 1.0)
-{
-    printf ("myparam = %g\n", myparam);
-}
