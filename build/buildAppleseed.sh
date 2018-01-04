@@ -73,6 +73,5 @@ cmake \
 	-D PYTHON_INCLUDE_DIR=$pythonIncludeDir \
 	..
 
-make clean
-make -j 4 VERBOSE=1
+make -j `getconf _NPROCESSORS_ONLN` VERBOSE=1
 make install
