@@ -16,7 +16,7 @@ cp LICENSE $BUILD_DIR/doc/licenses/openColorIO
 # 2016 by using OCIO 1.0.9, this is an example of where the platform is under
 # specified, and we must go the extra mile to get compatibility.
 cmake -DCMAKE_INSTALL_PREFIX=$BUILD_DIR -DPYTHON=$BUILD_DIR/bin/python -DOCIO_USE_BOOST_PTR=1 -DOCIO_BUILD_TRUELIGHT=OFF -DOCIO_BUILD_APPS=OFF -DOCIO_BUILD_NUKE=OFF
-make clean && make -j 4 && make install
+make clean && make -j `getconf _NPROCESSORS_ONLN` && make install
 
 mkdir -p $BUILD_DIR/python
 mv $BUILD_DIR/lib/python*/site-packages/PyOpenColorIO* $BUILD_DIR/python

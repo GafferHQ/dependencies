@@ -33,4 +33,4 @@ fi
 	-I $BUILD_DIR/include -I $BUILD_DIR/include/freetype2 \
 	-L $BUILD_DIR/lib
 
-make -j 4 && make install
+make -j `getconf _NPROCESSORS_ONLN` && make install
