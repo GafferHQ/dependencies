@@ -19,17 +19,14 @@ cp LICENSE $BUILD_DIR/doc/licenses/cortex
 
 export LD_LIBRARY_PATH=$BUILD_DIR/lib
 
-rm -rf .sconsign.dblite .sconf_temp
-
 scons install installDoc \
-	-j 3 \
+	-j `getconf _NPROCESSORS_ONLN` \
 	CXX=`which g++` \
 	INSTALL_PREFIX=$BUILD_DIR \
 	INSTALL_DOC_DIR=$BUILD_DIR/doc/cortex \
 	INSTALL_RMANPROCEDURAL_NAME=$BUILD_DIR/renderMan/procedurals/iePython \
 	INSTALL_RMANDISPLAY_NAME=$BUILD_DIR/renderMan/displayDrivers/ieDisplay \
 	INSTALL_PYTHON_DIR=$BUILD_DIR/python \
-	INSTALL_ARNOLDPROCEDURAL_NAME=/tmp/unusedGafferDependencies/ieProcedural.so \
 	INSTALL_ARNOLDOUTPUTDRIVER_NAME=$BUILD_DIR/arnold/plugins/ieOutputDriver.so \
 	INSTALL_IECORE_OPS='' \
 	PYTHON_CONFIG=$BUILD_DIR/bin/python-config \
