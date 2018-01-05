@@ -2,12 +2,21 @@
 
 set -e
 
-cd `dirname $0`/../alembic-1.6.1
+alembicVersion=1.7.5
+
+workingDir=`dirname $0`/../working/alembic
+rm -rf $workingDir
+mkdir -p $workingDir
+cd $workingDir
+
+archive=alembic-$alembicVersion.tar.gz
+cp ../../archives/$archive ./
+tar -xf $archive
+cd alembic-$alembicVersion
 
 mkdir -p $BUILD_DIR/doc/licenses
 cp LICENSE.txt $BUILD_DIR/doc/licenses/alembic
 
-rm -f CMakeCache.txt
 cmake \
 	-D CMAKE_INSTALL_PREFIX=$BUILD_DIR \
 	-D CMAKE_PREFIX_PATH=$BUILD_DIR \
@@ -25,5 +34,5 @@ cmake \
 	.
 
 make clean
-make VERBOSE=1
+make VERBOSE=1 -j `getconf _NPROCESSORS_ONLN`
 make install

@@ -1,4 +1,0 @@
-node = kwargs.get('node')
-if node:
-   node.hdaModule().ResetConstantXform(node)
-
