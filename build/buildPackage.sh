@@ -40,6 +40,9 @@ manifest="
 	bin/abcstitcher
 	bin/abctree
 
+	bin/usd*
+	bin/sdfdump
+
 	lib/libboost_*$SHLIBSUFFIX*
 	lib/libboost_test_exec_monitor.a
 
@@ -83,6 +86,20 @@ manifest="
 	lib/libopenvdb*$SHLIBSUFFIX*
 	lib/libblosc*$SHLIBSUFFIX*
 
+	lib/libtracelite$SHLIBSUFFIX
+	lib/libarch$SHLIBSUFFIX
+	lib/libtf$SHLIBSUFFIX
+	lib/libjs$SHLIBSUFFIX
+	lib/libwork$SHLIBSUFFIX
+	lib/libplug$SHLIBSUFFIX
+	lib/libkind$SHLIBSUFFIX
+	lib/libgf$SHLIBSUFFIX
+	lib/libvt$SHLIBSUFFIX
+	lib/libar$SHLIBSUFFIX
+	lib/libsdf$SHLIBSUFFIX
+	lib/libpcp$SHLIBSUFFIX
+	lib/libusd*$SHLIBSUFFIX
+
 	fonts
 	resources
 	shaders
@@ -106,6 +123,7 @@ manifest="
 	python/pyopenvdb*
 	python/iexmodule*
 	python/imathmodule*
+	python/pxr
 
 	include/IECore*
 	include/boost
@@ -128,11 +146,14 @@ manifest="
 	include/jmorecfg.h
 	include/jpeglib.h
 	include/pyopenvdb.h
+	include/pxr
 
 	renderMan
 	arnold
 
 	appleseedDisplays
+
+	share/usd
 
 	appleseed/bin/appleseed.cli
 	appleseed/include
