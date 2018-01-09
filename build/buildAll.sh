@@ -47,6 +47,7 @@ cd `dirname $0`
 ./buildXerces.sh
 ./buildAppleseed.sh
 ./buildResources.sh
+./buildUSD.sh
 ./buildCortex.sh
 ./buildPyOpenGL.sh
 ./buildQt.sh
