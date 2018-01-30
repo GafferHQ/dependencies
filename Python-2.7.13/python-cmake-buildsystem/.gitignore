@@ -8,6 +8,7 @@ install_manifest.txt
 
 bin
 lib
+!cmake/lib
 
 # Ignore all dotfiles...
 .*
