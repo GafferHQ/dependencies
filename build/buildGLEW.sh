@@ -8,4 +8,4 @@ mkdir -p $BUILD_DIR/doc/licenses
 cp LICENSE.txt $BUILD_DIR/doc/licenses/glew
 
 mkdir -p $BUILD_DIR/lib64/pkgconfig
-make clean && make install GLEW_DEST=$BUILD_DIR LIBDIR=$BUILD_DIR/lib
+make clean && make -j `getconf _NPROCESSORS_ONLN` install GLEW_DEST=$BUILD_DIR LIBDIR=$BUILD_DIR/lib

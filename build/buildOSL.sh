@@ -56,4 +56,4 @@ cmake \
 	-D LLVM_COMPILE_FLAGS=$llvmCompileFlags \
 	..
 
-make VERBOSE=1 && make install
+make -j `getconf _NPROCESSORS_ONLN` VERBOSE=1 && make install

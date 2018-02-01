@@ -10,14 +10,14 @@ cp LICENSE $BUILD_DIR/doc/licenses/openssl
 if [[ `uname` = "Linux" ]] ; then
 
 	./config --prefix=$BUILD_DIR -fPIC
-	make
+	make -j `getconf _NPROCESSORS_ONLN`
 	make install
 
 else
 
 	export KERNEL_BITS=64
 	./config --prefix=$BUILD_DIR -fPIC
-	make
+	make -j `getconf _NPROCESSORS_ONLN`
 	make install
 
 fi

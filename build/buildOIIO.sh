@@ -20,4 +20,4 @@ cmake \
 	-D USE_CPP11=1 \
 	..
 
-make VERBOSE=1 && make install
+make -j `getconf _NPROCESSORS_ONLN` VERBOSE=1 && make install

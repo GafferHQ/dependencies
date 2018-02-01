@@ -16,7 +16,7 @@ else
     export tbb_os=macos
 fi
 
-make clean && make stdver=c++11
+make clean && make -j `getconf _NPROCESSORS_ONLN` stdver=c++11
 
 cp -r include/tbb $BUILD_DIR/include
 
