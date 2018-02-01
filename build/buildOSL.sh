@@ -49,6 +49,7 @@ rm -f CMakeCache.txt
 
 cmake \
 	-D ENABLERTTI=1 \
+	-D LLVM_STATIC=1 \
 	-D CMAKE_INSTALL_PREFIX=$BUILD_DIR \
 	-D CMAKE_PREFIX_PATH=$BUILD_DIR \
 	-D STOP_ON_WARNING=0 \
@@ -56,4 +57,4 @@ cmake \
 	-D LLVM_COMPILE_FLAGS=$llvmCompileFlags \
 	..
 
-make VERBOSE=1 && make install
+make -j `getconf _NPROCESSORS_ONLN` VERBOSE=1 && make install

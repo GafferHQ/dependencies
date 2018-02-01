@@ -13,4 +13,5 @@ export LDFLAGS=-L$BUILD_DIR/lib
 mkdir -p $BUILD_DIR/doc/licenses
 cp COPYRIGHT $BUILD_DIR/doc/licenses/libtiff
 
-./configure --without-x --prefix=$BUILD_DIR && make clean && make && make install
+./configure --without-x --prefix=$BUILD_DIR
+make clean && make -j `getconf _NPROCESSORS_ONLN` && make install

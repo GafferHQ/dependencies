@@ -21,6 +21,8 @@ mkdir -p $BUILD_DIR/doc/licenses/blosc
 cp LICENSES/* $BUILD_DIR/doc/licenses/blosc/
 
 cmake -DCMAKE_INSTALL_PREFIX=$BUILD_DIR .
+# Note : blosc does not declare its build dependencies
+# correctly, so we cannot do a parallel build with `-j`.
 make install VERBOSE=1
 
 popd

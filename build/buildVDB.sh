@@ -19,7 +19,7 @@ else
 fi
 
 make clean
-make install \
+make -j `getconf _NPROCESSORS_ONLN` install \
 	DESTDIR=$BUILD_DIR \
 	BOOST_INCL_DIR=$BUILD_DIR/include \
 	BOOST_LIB_DIR=$BUILD_DIR/lib \
