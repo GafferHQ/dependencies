@@ -65,7 +65,6 @@ manifest="
 	lib/libOpenImageIO*$SHLIBSUFFIX*
 	lib/libOpenColorIO*$SHLIBSUFFIX*
 
-	lib/libLLVM*$SHLIBSUFFIX*
 	lib/libosl*
 
 	lib/libpython*$SHLIBSUFFIX*
