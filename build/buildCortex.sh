@@ -34,6 +34,8 @@ scons install installDoc \
 	LIBPATH=$BUILD_DIR/lib \
 	BOOST_LIB_SUFFIX='' \
 	OPENEXR_INCLUDE_PATH=$BUILD_DIR/include \
+	OIIO_INCLUDE_PATH=$BUILD_DIR/include \
+	OSL_INCLUDE_PATH=$BUILD_DIR/include \
 	FREETYPE_INCLUDE_PATH=$BUILD_DIR/include/freetype2 \
 	WITH_GL=1 \
 	GLEW_INCLUDE_PATH=$BUILD_DIR/include/GL \
