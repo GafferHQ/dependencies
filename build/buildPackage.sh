@@ -3,7 +3,7 @@
 set -e
 shopt -s nullglob
 
-VERSION=0.43.0.0
+VERSION=0.44.0.0
 
 PYTHON_VERSION=2.7
 
