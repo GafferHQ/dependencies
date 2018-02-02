@@ -17,5 +17,5 @@ export MACOSX_DEPLOYMENT_TARGET=10.9
 # always seem to get it right.
 export CPLUS_INCLUDE_PATH=$BUILD_DIR/include/python2.7
 
-./bootstrap.sh --prefix=$BUILD_DIR --with-python=$BUILD_DIR/bin/python --with-python-root=$BUILD_DIR --without-libraries=log
-./bjam -d+2 -j `getconf _NPROCESSORS_ONLN` cxxflags="-std=c++11" variant=release link=shared threading=multi install
+./bootstrap.sh --prefix=$BUILD_DIR --with-python=$BUILD_DIR/bin/python --with-python-root=$BUILD_DIR --without-libraries=log --without-icu
+./bjam -d+2 -j `getconf _NPROCESSORS_ONLN` --disable-icu cxxflags="-std=c++11" variant=release link=shared threading=multi install
