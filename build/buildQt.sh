@@ -27,6 +27,8 @@ fi
 	-skip qt3d \
 	-skip qtdeclarative \
 	-no-libudev \
+	-no-icu \
+	-qt-pcre \
 	-nomake examples \
 	-nomake tests \
 	$extraArgs \
