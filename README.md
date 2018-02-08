@@ -27,7 +27,6 @@ Since the build covers so many different projects, it requires the installation 
 The build is controlled by several environment variables, which must be set up before running :
 
 - BUILD_DIR : Path to a directory where the build will be performed
-- VERSION : Version number for the build - e.g. 0.29.0.0
 - ARNOLD_ROOT : Path to the root of an Arnold installation
 - RMAN_ROOT : Path to the root of a 3delight installation
 
