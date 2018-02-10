@@ -1,10 +1,12 @@
 mkdir %BUILD_DIR%\resources\cortex
-cp %~dp0%..\cortex-10.0.0-a8\tileset_2048.dat %BUILD_DIR%\resources\cortex
+copy %~dp0%..\cortex-10.0.0-a8\tileset_2048.dat %BUILD_DIR%\resources\cortex
 
 cd %~dp0%..\..\cortex
 
 mkdir %BUILD_DIR%\doc\licenses
 copy LICENSE %BUILD_DIR%\doc\licenses\cortex
+
+copy contrib\cmake\CMakeLists.txt CMakeLists.txt
 
 mkdir gafferBuild
 cd gafferBuild
