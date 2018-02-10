@@ -42,6 +42,8 @@ lib/Half*
 lib/Imath*
 lib/IlmImf*
 lib/IlmThread*
+lib/PyIex*
+lib/PyImath*
 
 lib/libtiff*
 lib/freetype*
@@ -99,6 +101,9 @@ python/IECore*
 python/OpenGL
 python/PyOpenColorIO*
 python/Qt.py
+python/iex.pxd
+python/imath.pxd
+python/pyopenvdb.pxd
 
 include/IECore*
 include/boost*
