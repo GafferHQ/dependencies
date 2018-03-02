@@ -2,7 +2,7 @@
 
 set -e
 
-cortexVersion=10.0.0-a14
+cortexVersion=10.0.0-a15
 
 workingDir=`dirname $0`/../working/cortex
 rm -rf $workingDir
