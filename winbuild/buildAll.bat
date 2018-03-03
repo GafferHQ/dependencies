@@ -8,9 +8,9 @@ for %%n in (BUILD_DIR VERSION ARNOLD_ROOT RMAN_ROOT) do (
 )
 
 set ROOT_DIR=%~dp0%
-set CMAKE_GENERATOR="Visual Studio 14 2015 Win64"
+set CMAKE_GENERATOR="Visual Studio 15 2017 Win64"
 set BUILD_TYPE=RELEASE
-set BOOST_MSVC_VERSION=msvc-14.0
+set BOOST_MSVC_VERSION=msvc-14.1
 cd ROOT_DIR
 echo ===============================================================================
 echo Building ZLIB...
