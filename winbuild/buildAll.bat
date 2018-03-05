@@ -10,7 +10,8 @@ for %%n in (BUILD_DIR VERSION ARNOLD_ROOT RMAN_ROOT) do (
 set ROOT_DIR=%~dp0%
 set CMAKE_GENERATOR="Visual Studio 15 2017 Win64"
 set BUILD_TYPE=RELEASE
-set BOOST_MSVC_VERSION=msvc-14.1
+set BOOST_MSVC_VERSION=msvc-14.0
+set EXACT_MSVC_VERSION=14.12.25827
 cd ROOT_DIR
 echo ===============================================================================
 echo Building ZLIB...
@@ -73,9 +74,13 @@ echo Building OIIO...
 echo ===============================================================================
 call buildOIIO.bat
 echo ===============================================================================
+echo Building Blosc...
+echo ===============================================================================
+call buildBlosc.bat
+echo ===============================================================================
 echo Building OpenVDB...
 echo ===============================================================================
-rem call buildVDB.bat
+call buildVDB.bat
 echo ===============================================================================
 echo Building LLVM...
 echo ===============================================================================
