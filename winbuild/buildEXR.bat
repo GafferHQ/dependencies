@@ -6,6 +6,7 @@ copy COPYING %BUILD_DIR%\doc\licenses\ilmbase
 
 mkdir gafferBuild
 cd gafferBuild
+del -f CMakeCache.txt
 
 cmake -Wno-dev -G %CMAKE_GENERATOR% -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=%BUILD_DIR% ..
 cmake --build . --config %BUILD_TYPE% --target install
