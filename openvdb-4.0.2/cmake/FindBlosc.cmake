@@ -58,7 +58,7 @@ IF ( BLOSC_FOUND )
   IF (Blosc_USE_STATIC_LIBS)
     SET(CMAKE_FIND_LIBRARY_SUFFIXES_BACKUP ${CMAKE_FIND_LIBRARY_SUFFIXES})
 	IF (WIN32)
-	  SET ( _blosc_library_name "libblosc" )
+	  SET ( _blosc_library_name "blosc" )
 	ELSE ()
 	  SET(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
 	ENDIF ()
@@ -69,6 +69,12 @@ IF ( BLOSC_FOUND )
     NO_DEFAULT_PATH
     NO_SYSTEM_ENVIRONMENT_PATH
     )
+
+  IF (NOT BLOSC_blosc_LIBRARY)
+    MESSAGE (FATAL_ERROR "blosc library not found in ${BLOSC_LIBRARYDIR} with library name ${_blosc_library_name}")
+  ELSE ()
+    MESSAGE (STATUS "Found blosc library at ${BLOSC_blosc_LIBRARY}")
+  ENDIF()
   
   # Static library tear down
   IF (Blosc_USE_STATIC_LIBS)

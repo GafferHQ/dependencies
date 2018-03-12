@@ -258,6 +258,12 @@ TARGET_LINK_LIBRARIES ( vdb_render
 #  )
 #ENDIF()
 
+IF (WIN32)
+  TARGET_COMPILE_OPTIONS ( vdb_render
+  PRIVATE -DOPENEXR_DLL
+  )
+ENDIF()
+
 SET ( VDB_VIEW_SOURCE_FILES
   cmd/openvdb_view/main.cc
   viewer/Camera.cc
