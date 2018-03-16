@@ -10,7 +10,6 @@ set PATH=%BUILD_DIR%\bin;%PATH%
 call bootstrap.bat --prefix=%BUILD_DIR% --with-python=%BUILD_DIR% --with-python-root=%BUILD_DIR% --without-libraries=log
 if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
 set "BUILD_DIR=%BUILD_DIR:\=\\%"
-powershell -Command "(gc project-config.jam) -replace 'using msvc ;', 'using msvc : %BOOST_MSVC_VERSION : ^"c:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\%EXACT_MSVC_VERSION%\bin\HostX64\x64\cl.exe^"' | Out-File -encoding ASCII build-config.jam"
 echo "using python ^: 2.7 : %BUILD_DIR% ^: %BUILD_DIR%\include ^: %BUILD_DIR%\lib ^: ^<address-model^>64 ^; >> project-config.jam"
 b2 --prefix=%BUILD_DIR% --toolset=%BOOST_MSVC_VERSION% architecture=x86 address-model=64 --build-type=complete variant=release link=shared threading=multi -s ZLIB_SOURCE=%ROOT_DIR%\..\zlib-1.2.11 -s ZLIB_INCLUDE=%BUILD_DIR%\include -s ZLIB_LIBPATH=%BUILD_DIR%\lib -s ZLIB_BINARY=zlib install
 if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
