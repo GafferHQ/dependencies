@@ -4,6 +4,7 @@ mkdir %BUILD_DIR%\doc\licenses
 copy COPYRIGHT %BUILD_DIR%\doc\licenses\libtiff
 
 nmake /f makefile.vc
+if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
 
 copy libtiff\libtiff.lib %BUILD_DIR%\lib
 copy libtiff\*.h %BUILD_DIR%\include

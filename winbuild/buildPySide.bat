@@ -6,6 +6,7 @@ set PYTHONHOME=%BUILD_DIR%
 set PYTHONPATH=%BUILD_DIR%\python;%PYTHONPATH%
 
 python setup.py --ignore-git --qmake=%BUILD_DIR%\bin\qmake.exe --openssl=%BUILD_DIR%\lib --cmake="C:\Program Files\CMake\bin\cmake.exe" install
+if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
 
 set PATH=%SAVEPATH%
 
