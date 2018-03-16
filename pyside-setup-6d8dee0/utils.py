@@ -388,17 +388,17 @@ def run_process(args, initial_env=None):
 
     proc = popenasync.Popen(args,
         stdin = subprocess.PIPE,
-        stdout = subprocess.PIPE,
+        # stdout = subprocess.PIPE,
         stderr = subprocess.STDOUT,
         universal_newlines = 1,
         shell = shell,
         env = initial_env)
 
-    log_buffer = None;
-    while proc.poll() is None:
-        log_buffer = _log(proc.read_async(wait=0.1, e=0))
-    if log_buffer:
-        _log(log_buffer)
+    # log_buffer = None;
+    # while proc.poll() is None:
+    #     log_buffer = _log(proc.read_async(wait=0.1, e=0))
+    # if log_buffer:
+    #     _log(log_buffer)
 
     proc.wait()
     return proc.returncode
