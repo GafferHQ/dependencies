@@ -1,4 +1,4 @@
-cd %~dp0%..\\appleseed-1.7.1-beta
+cd %~dp0%..\appleseed-1.8.1-beta
 
 mkdir sandbox\bin
 mkdir sandbox\schemas
