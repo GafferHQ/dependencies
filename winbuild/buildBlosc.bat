@@ -10,9 +10,9 @@ copy %ARCHIVE_DIR%\%ARCHIVE_ROOT_NAME%.tar.gz  %WORKING_DIR%
 
 cd %WORKING_DIR%
 
-..\winbuild\7zip\7za.exe e %ARCHIVE_ROOT_NAME%.tar.gz
+..\winbuild\7zip\7za.exe e -aoa %ARCHIVE_ROOT_NAME%.tar.gz
 if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
-..\winbuild\7zip\7za.exe x %ARCHIVE_ROOT_NAME%.tar
+..\winbuild\7zip\7za.exe x -aoa %ARCHIVE_ROOT_NAME%.tar
 if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
 
 cd %ARCHIVE_ROOT_NAME%
