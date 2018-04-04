@@ -137,6 +137,7 @@ manifest="
 	include/freetype2
 	include/Alembic
 	include/openvdb
+	include/blosc*.h
 	include/tiff*
 	include/png*
 	include/libpng*
