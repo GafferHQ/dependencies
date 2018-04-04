@@ -1,18 +1,18 @@
-cd %~dp0%..\OpenShadingLanguage-Release-1.8.12
+set OSL_VERSION=1.8.12
+
+cd %~dp0..\OpenShadingLanguage-Release-%OSL_VERSION%
 
 mkdir %BUILD_DIR%\doc\licenses
 copy LICENSE %BUILD_DIR%\doc\licenses\osl
 
 rem We need to have the lib dir
 set BACKUP_PATH=%PATH%
-set PATH=%PATH%;%BUILD_DIR%\\lib;%BUILD_DIR%\\bin;%ROOT_DIR%\FlexBison\bin;%ROOT_DIR%\..\OpenShadingLanguage-Release-1.8.9\gafferBuild\src\liboslcomp\Release
+set PATH=%PATH%;%BUILD_DIR%\lib;%BUILD_DIR%\bin;%ROOT_DIR%\FlexBison\bin;%ROOT_DIR%\..\OpenShadingLanguage-Release-%OSL_VERSION%\gafferBuild\src\liboslcomp\Release
 
 mkdir gafferBuild
 cd gafferBuild
 
 del /f CMakeCache.txt
-
-set VERBOSE=1
 
 cmake -Wno-dev -G %CMAKE_GENERATOR% -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -DCMAKE_INSTALL_PREFIX=%BUILD_DIR% -DBUILDSTATIC=OFF -DUSE_OIIO_STATIC=OFF -DOSL_BUILD_PLUGINS=OFF -DENABLERTTI=1 -DCMAKE_PREFIX_PATH=%BUILD_DIR% -DSTOP_ON_WARNING=0 -DLLVM_DIRECTORY=%BUILD_DIR% -DUSE_LLVM_BITCODE=OFF -DOSL_BUILD_TESTS=OFF -DBOOST_ROOT=%BUILD_DIR% -DBoost_USE_STATIC_LIBS=OFF -DLLVM_STATIC=ON -DOPENEXR_INCLUDE_PATH=%BUILD_DIR%\\include -DOPENEXR_IMATH_LIBRARY=%BUILD_DIR%\\lib\\Imath-2_2.lib -DOPENEXR_ILMIMF_LIBRARY=%BUILD_DIR%\\lib\\IlmImf-2_2.lib -DOPENEXR_IEX_LIBRARY=%BUILD_DIR%\\lib\\Iex-2_2.lib -DOPENEXR_ILMTHREAD_LIBRARY=%BUILD_DIR%\\lib\\IlmThread-2_2.lib -DOPENIMAGEIOHOME=%BUILD_DIR% -DZLIB_INCLUDE_DIR=%BUILD_DIR%\\include -DZLIB_LIBRARY=%BUILD_DIR%\\lib\\zlib.lib -DEXTRA_CPP_ARGS="/DTINYFORMAT_ALLOW_WCHAR_STRINGS" -DFLEX_EXECUTABLE=flex -DBISON_EXECUTABLE=bison ..
 if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
