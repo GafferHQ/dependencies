@@ -1,3 +1,8 @@
 working
 */archives
 .vscode
+**/gafferBuild
+llvm*/build-release
+qt*/**/*.qm
+c-blosc*/**
+qt-adsk-*/**
