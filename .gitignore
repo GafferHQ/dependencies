@@ -1,2 +1,7 @@
 working
 */archives
+**/gafferBuild
+llvm*/build-release
+qt*/**/*.qm
+c-blosc*/**
+qt-adsk-*/**
