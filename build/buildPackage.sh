@@ -79,6 +79,8 @@ manifest="
 
 	lib/libQt*
 	lib/Qt*.framework
+	lib/cmake
+	mkspecs
 
 	lib/libxerces-c*$SHLIBSUFFIX*
 
