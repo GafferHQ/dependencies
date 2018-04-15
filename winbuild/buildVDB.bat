@@ -13,4 +13,8 @@ if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
 cmake --build . --config %BUILD_TYPE% --target install
 if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
 
+rem not sure why this doesn't get put in the site-packages directory, but move it to they python directory regardless
+move %BUILD_DIR%\lib\python2.7\pyopenvdb.pyd %BUILD_DIR%\python
+if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
+
 cd %ROOT_DIR%

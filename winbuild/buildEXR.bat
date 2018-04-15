@@ -1,5 +1,10 @@
 
-cd %~dp0%..\ilmbase-2.2.0
+echo ===============================================================================
+echo Building ILMBase...
+echo ===============================================================================
+
+
+cd %ROOT_DIR%\..\ilmbase-2.2.0
 
 mkdir %BUILD_DIR%\doc\licenses
 copy COPYING %BUILD_DIR%\doc\licenses\ilmbase
@@ -12,6 +17,11 @@ cmake -Wno-dev -G %CMAKE_GENERATOR% -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFI
 if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
 cmake --build . --config %BUILD_TYPE% --target install
 if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
+
+
+echo ===============================================================================
+echo Building OpenEXR...
+echo ===============================================================================
 
 cd %ROOT_DIR%\..\openexr-2.2.0
 
@@ -33,6 +43,10 @@ if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
 rem Restore path
 set PATH=%BACKUP_PATH%
 
+echo ===============================================================================
+echo Building PyILMBase...
+echo ===============================================================================
+
 cd %ROOT_DIR%\..\pyilmbase-2.2.0
 
 copy COPYING %BUILD_DIR%\doc\licenses\pyilmbase
@@ -47,7 +61,9 @@ cmake --build . --config %BUILD_TYPE% --target install
 if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
 
 mkdir %BUILD_DIR%\python
-move %BUILD_DIR%\lib\python2.7\site-packages\iexmodule.pyd %BUILD_DIR%\python
-move %BUILD_DIR%\lib\python2.7\site-packages\imathmodule.pyd %BUILD_DIR%\python
+move %BUILD_DIR%\lib\python2.7\site-packages\iex.pyd %BUILD_DIR%\python
+if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
+move %BUILD_DIR%\lib\python2.7\site-packages\imath.pyd %BUILD_DIR%\python
+if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
 
 cd %ROOT_DIR%
