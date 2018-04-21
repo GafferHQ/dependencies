@@ -1,13 +1,11 @@
-set OSL_VERSION=1.8.12
-
-cd %~dp0..\OpenShadingLanguage-Release-%OSL_VERSION%
+cd %ROOT_DIR%\OpenShadingLanguage-Release-%OSL_VERSION%
 
 mkdir %BUILD_DIR%\doc\licenses
 copy LICENSE %BUILD_DIR%\doc\licenses\osl
 
 rem We need to have the lib dir
 set BACKUP_PATH=%PATH%
-set PATH=%PATH%;%BUILD_DIR%\lib;%BUILD_DIR%\bin;%ROOT_DIR%\FlexBison\bin;%ROOT_DIR%\..\OpenShadingLanguage-Release-%OSL_VERSION%\gafferBuild\src\liboslcomp\Release
+set PATH=%PATH%;%BUILD_DIR%\lib;%BUILD_DIR%\bin;%ROOT_DIR%\winbuild\FlexBison\bin;%ROOT_DIR%\OpenShadingLanguage-Release-%OSL_VERSION%\gafferBuild\src\liboslcomp\Release
 
 mkdir gafferBuild
 cd gafferBuild
@@ -21,5 +19,3 @@ if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
 
 rem Restore path
 set PATH=%BACKUP_PATH%
-
-cd %ROOT_DIR%

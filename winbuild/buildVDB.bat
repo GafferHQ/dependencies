@@ -1,4 +1,4 @@
-cd %~dp0%..\openvdb-4.0.2
+cd %ROOT_DIR%\openvdb-4.0.2
 
 mkdir %BUILD_DIR%\doc\licenses
 copy openvdb\LICENSE %BUILD_DIR%\doc\licenses\openvdb
@@ -16,5 +16,3 @@ if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
 rem not sure why this doesn't get put in the site-packages directory, but move it to they python directory regardless
 move %BUILD_DIR%\lib\python2.7\pyopenvdb.pyd %BUILD_DIR%\python
 if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
-
-cd %ROOT_DIR%

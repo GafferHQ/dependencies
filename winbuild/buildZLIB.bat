@@ -1,4 +1,4 @@
-cd %~dp0%..\zlib-1.2.11
+cd %ROOT_DIR%\zlib-1.2.11
 
 mkdir %BUILD_DIR%\doc\licenses
 copy LICENSE %BUILD_DIR%\doc\licenses\libzlib
@@ -14,5 +14,3 @@ if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
 
 rem This is silly, why does zlib move zconf.h and fails Boost building?
 move ..\\zconf.h.included ..\\zconf.h
-
-cd %ROOT_DIR%

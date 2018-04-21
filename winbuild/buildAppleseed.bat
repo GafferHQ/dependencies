@@ -1,4 +1,4 @@
-cd %~dp0%..\appleseed-1.8.1-beta
+cd %ROOT_DIR%\appleseed-1.8.1-beta
 
 mkdir sandbox\bin
 mkdir sandbox\schemas
@@ -18,5 +18,3 @@ if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
 
 rem Restore path
 set PATH=%BACKUP_PATH%
-
-cd %ROOT_DIR%

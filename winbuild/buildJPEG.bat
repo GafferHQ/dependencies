@@ -1,4 +1,4 @@
-cd %~dp0%..\libjpeg-turbo-1.5.2
+cd %ROOT_DIR%\libjpeg-turbo-1.5.2
 
 mkdir %BUILD_DIR%\doc\licenses
 copy LICENSE.md %BUILD_DIR%\doc\licenses\libjpeg
@@ -11,5 +11,3 @@ cmake -Wno-dev -G %CMAKE_GENERATOR% -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -DWITH_SIMD=
 if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
 cmake --build . --config %BUILD_TYPE% --target install
 if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
-
-cd %ROOT_DIR%

@@ -1,4 +1,4 @@
-cd %~dp0%..\pyside-setup-6d8dee0
+cd %ROOT_DIR%\pyside-setup-6d8dee0
 
 set SAVEPATH=%PATH%
 set PATH=%BUILD_DIR%\bin;%PATH%
@@ -15,4 +15,3 @@ if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
 set PATH=%SAVEPATH%
 set VERSION=%OLDVERSION%
 
-cd %ROOT_DIR%

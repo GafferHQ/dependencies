@@ -1,4 +1,4 @@
-cd %~dp0%..\tbb-4.4.6
+cd %ROOT_DIR%\tbb-4.4.6
 
 mkdir %BUILD_DIR%\doc\licenses
 copy COPYING %BUILD_DIR%\doc\licenses\tbb
@@ -11,6 +11,3 @@ cmake -Wno-dev -G %CMAKE_GENERATOR% -DCMAKE_BUILD_TYPE=%BUILD_TYPE%  -DCMAKE_PRE
 if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
 cmake --build . --config %BUILD_TYPE% --target install
 if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
-
-
-cd %ROOT_DIR%

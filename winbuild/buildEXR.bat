@@ -4,7 +4,7 @@ echo Building ILMBase...
 echo ===============================================================================
 
 
-cd %ROOT_DIR%\..\ilmbase-2.2.0
+cd %ROOT_DIR%\ilmbase-2.2.0
 
 mkdir %BUILD_DIR%\doc\licenses
 copy COPYING %BUILD_DIR%\doc\licenses\ilmbase
@@ -23,7 +23,7 @@ echo ===========================================================================
 echo Building OpenEXR...
 echo ===============================================================================
 
-cd %ROOT_DIR%\..\openexr-2.2.0
+cd %ROOT_DIR%\openexr-2.2.0
 
 copy LICENSE %BUILD_DIR%\doc\licenses\openexr
 
@@ -47,7 +47,7 @@ echo ===========================================================================
 echo Building PyILMBase...
 echo ===============================================================================
 
-cd %ROOT_DIR%\..\pyilmbase-2.2.0
+cd %ROOT_DIR%\pyilmbase-2.2.0
 
 copy COPYING %BUILD_DIR%\doc\licenses\pyilmbase
 
@@ -65,5 +65,3 @@ move %BUILD_DIR%\lib\python2.7\site-packages\iex.pyd %BUILD_DIR%\python
 if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
 move %BUILD_DIR%\lib\python2.7\site-packages\imath.pyd %BUILD_DIR%\python
 if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
-
-cd %ROOT_DIR%

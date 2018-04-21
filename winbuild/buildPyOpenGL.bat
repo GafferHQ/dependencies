@@ -1,4 +1,4 @@
-cd %~dp0%..\PyOpenGL-3.0.2
+cd %ROOT_DIR%\PyOpenGL-3.0.2
 
 rem We need to have the lib dir
 set BACKUP_PATH=%PATH%
@@ -12,4 +12,3 @@ if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
 rem Restore path
 set PATH=%BACKUP_PATH%
 
-cd %ROOT_DIR%

@@ -1,4 +1,4 @@
-cd %~dp0%..\Python-2.7.13
+cd %ROOT_DIR%\Python-2.7.13
 
 mkdir %BUILD_DIR%\doc\licenses
 copy LICENSE %BUILD_DIR%\doc\licenses\python
@@ -15,4 +15,3 @@ if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
 rem Move stuff around
 copy %BUILD_DIR%\libs\*.lib %BUILD_DIR%\lib
 
-cd %ROOT_DIR%

@@ -1,4 +1,4 @@
-cd %~dp0%..\libpng-1.6.3
+cd %ROOT_DIR%\libpng-1.6.3
 
 mkdir %BUILD_DIR%\doc\licenses
 copy LICENSE %BUILD_DIR%\doc\licenses\libpng
@@ -11,5 +11,3 @@ cmake -Wno-dev -G %CMAKE_GENERATOR% -DZLIB_INCLUDE_DIR=%BUILD_DIR%\\include -DZL
 if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
 cmake --build . --config %BUILD_TYPE% --target install
 if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
-
-cd %ROOT_DIR%

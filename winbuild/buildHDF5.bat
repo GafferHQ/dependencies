@@ -1,4 +1,4 @@
-cd %~dp0%..\hdf5-1.8.11
+cd %ROOT_DIR%\hdf5-1.8.11
 
 mkdir %BUILD_DIR%\doc\licenses
 copy COPYING %BUILD_DIR%\doc\licenses\hdf5
@@ -11,5 +11,3 @@ cmake -C ..\config\cmake\cacheinit.cmake -Wno-dev -G %CMAKE_GENERATOR% -DCMAKE_B
 if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
 cmake --build . --config %BUILD_TYPE% --target install
 if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
-
-cd %ROOT_DIR%

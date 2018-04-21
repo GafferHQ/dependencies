@@ -7,16 +7,29 @@ for %%n in (BUILD_DIR VERSION ARNOLD_ROOT RMAN_ROOT) do (
 	)
 )
 
-set ROOT_DIR=%~dp0%
 set CMAKE_GENERATOR="Visual Studio 15 2017 Win64"
 set BUILD_TYPE=RELEASE
 set BOOST_MSVC_VERSION=msvc-14.0
-set EXACT_MSVC_VERSION=14.12.25827
+
+set ROOT_DIR=%~dp0%\..
+
+set ARCHIVE_DIR=%ROOT_DIR%\archives
+
+set ALEMBIC_VERSION=1.7.5
+set BLOSC_VERSION=1.7.0
+set APPLESEED_VERSION=1.8.1-beta
+set HDF5_VERSION=1.8.20
+set JPEG_VERSION=1.5.2
+set OSL_VERSION=1.8.12
+set TBB_VERSION=2017_U6
+set USD_VERSION=0.8.2
+
 cd ROOT_DIR
+
 echo ===============================================================================
 echo Building ZLIB...
 echo ===============================================================================
-call buildZLIB.bat
+call %ROOT_DIR%\winbuild\buildZLIB.bat
 if %ERRORLEVEL% NEQ 0 (
 	echo "Error(s) building ZLIB"
 	exit /b %ERRORLEVEL%
@@ -24,7 +37,7 @@ if %ERRORLEVEL% NEQ 0 (
 echo ===============================================================================
 echo Building OpenSSL...
 echo ===============================================================================
-call buildOpenSSL.bat
+call %ROOT_DIR%\winbuild\buildOpenSSL.bat
 if %ERRORLEVEL% NEQ 0 (
 	echo "Error(s) building OpenSSL"
 	exit /b %ERRORLEVEL%
@@ -32,7 +45,7 @@ if %ERRORLEVEL% NEQ 0 (
 echo ===============================================================================
 echo Building Python...
 echo ===============================================================================
-call buildPython.bat
+call %ROOT_DIR%\winbuild\buildPython.bat
 if %ERRORLEVEL% NEQ 0 (
 	echo "Error(s) building Python"
 	exit /b %ERRORLEVEL%
@@ -40,7 +53,7 @@ if %ERRORLEVEL% NEQ 0 (
 echo ===============================================================================
 echo Building Subprocess32...
 echo ===============================================================================
-call buildSubprocess32.bat
+call %ROOT_DIR%\winbuild\buildSubprocess32.bat
 if %ERRORLEVEL% NEQ 0 (
 	echo "Error(s) building Subprocess32"
 	exit /b %ERRORLEVEL%
@@ -48,7 +61,7 @@ if %ERRORLEVEL% NEQ 0 (
 echo ===============================================================================
 echo Building Boost...
 echo ===============================================================================
-call buildBoost.bat
+call %ROOT_DIR%\winbuild\buildBoost.bat
 if %ERRORLEVEL% NEQ 0 (
 	echo "Error(s) building Boost"
 	exit /b %ERRORLEVEL%
@@ -56,7 +69,7 @@ if %ERRORLEVEL% NEQ 0 (
 echo ===============================================================================
 echo Building JPEG...
 echo ===============================================================================
-call buildJPEG.bat
+call %ROOT_DIR%\winbuild\buildJPEG.bat
 if %ERRORLEVEL% NEQ 0 (
 	echo "Error(s) building libJPEG"
 	exit /b %ERRORLEVEL%
@@ -64,7 +77,7 @@ if %ERRORLEVEL% NEQ 0 (
 echo ===============================================================================
 echo Building TIFF...
 echo ===============================================================================
-call buildTIFF.bat
+call %ROOT_DIR%\winbuild\buildTIFF.bat
 if %ERRORLEVEL% NEQ 0 (
 	echo "Error(s) building libTIFF"
 	exit /b %ERRORLEVEL%
@@ -72,7 +85,7 @@ if %ERRORLEVEL% NEQ 0 (
 echo ===============================================================================
 echo Building PNG...
 echo ===============================================================================
-call buildPNG.bat
+call %ROOT_DIR%\winbuild\buildPNG.bat
 if %ERRORLEVEL% NEQ 0 (
 	echo "Error(s) building libPNG"
 	exit /b %ERRORLEVEL%
@@ -80,7 +93,7 @@ if %ERRORLEVEL% NEQ 0 (
 echo ===============================================================================
 echo Building FreeType...
 echo ===============================================================================
-call buildFreeType.bat
+call %ROOT_DIR%\winbuild\buildFreeType.bat
 if %ERRORLEVEL% NEQ 0 (
 	echo "Error(s) building libFreetype"
 	exit /b %ERRORLEVEL%
@@ -88,7 +101,7 @@ if %ERRORLEVEL% NEQ 0 (
 echo ===============================================================================
 echo Building TBB...
 echo ===============================================================================
-call buildTBB.bat
+call %ROOT_DIR%\winbuild\buildTBB.bat
 if %ERRORLEVEL% NEQ 0 (
 	echo "Error(s) building TBB"
 	exit /b %ERRORLEVEL%
@@ -96,7 +109,7 @@ if %ERRORLEVEL% NEQ 0 (
 echo ===============================================================================
 echo Building EXR...
 echo ===============================================================================
-call buildEXR.bat
+call %ROOT_DIR%\winbuild\buildEXR.bat
 if %ERRORLEVEL% NEQ 0 (
 	echo "Error(s) building OpenEXR"
 	exit /b %ERRORLEVEL%
@@ -104,7 +117,7 @@ if %ERRORLEVEL% NEQ 0 (
 echo ===============================================================================
 echo Building Fonts...
 echo ===============================================================================
-call buildFonts.bat
+call %ROOT_DIR%\winbuild\buildFonts.bat
 if %ERRORLEVEL% NEQ 0 (
 	echo "Error(s) building Fonts"
 	exit /b %ERRORLEVEL%
@@ -112,7 +125,7 @@ if %ERRORLEVEL% NEQ 0 (
 echo ===============================================================================
 echo Building GLEW...
 echo ===============================================================================
-call buildGLEW.bat
+call %ROOT_DIR%\winbuild\buildGLEW.bat
 if %ERRORLEVEL% NEQ 0 (
 	echo "Error(s) building GLEW"
 	exit /b %ERRORLEVEL%
@@ -120,7 +133,7 @@ if %ERRORLEVEL% NEQ 0 (
 echo ===============================================================================
 echo Building OCIO...
 echo ===============================================================================
-call buildOCIO.bat
+call %ROOT_DIR%\winbuild\buildOCIO.bat
 if %ERRORLEVEL% NEQ 0 (
 	echo "Error(s) building OCIO"
 	exit /b %ERRORLEVEL%
@@ -128,7 +141,7 @@ if %ERRORLEVEL% NEQ 0 (
 echo ===============================================================================
 echo Building OIIO...
 echo ===============================================================================
-call buildOIIO.bat
+call %ROOT_DIR%\winbuild\buildOIIO.bat
 if %ERRORLEVEL% NEQ 0 (
 	echo "Error(s) building OIIO"
 	exit /b %ERRORLEVEL%
@@ -136,7 +149,7 @@ if %ERRORLEVEL% NEQ 0 (
 echo ===============================================================================
 echo Building Blosc...
 echo ===============================================================================
-call buildBlosc.bat
+call %ROOT_DIR%\winbuild\buildBlosc.bat
 if %ERRORLEVEL% NEQ 0 (
 	echo "Error(s) building Blosc"
 	exit /b %ERRORLEVEL%
@@ -144,7 +157,7 @@ if %ERRORLEVEL% NEQ 0 (
 echo ===============================================================================
 echo Building OpenVDB...
 echo ===============================================================================
-call buildVDB.bat
+call %ROOT_DIR%\winbuild\buildVDB.bat
 if %ERRORLEVEL% NEQ 0 (
 	echo "Error(s) building OpenVDB"
 	exit /b %ERRORLEVEL%
@@ -152,7 +165,7 @@ if %ERRORLEVEL% NEQ 0 (
 echo ===============================================================================
 echo Building LLVM...
 echo ===============================================================================
-call buildLLVM.bat
+call %ROOT_DIR%\winbuild\buildLLVM.bat
 if %ERRORLEVEL% NEQ 0 (
 	echo "Error(s) building LLVM"
 	exit /b %ERRORLEVEL%
@@ -160,7 +173,7 @@ if %ERRORLEVEL% NEQ 0 (
 echo ===============================================================================
 echo Building OSL...
 echo ===============================================================================
-call buildOSL.bat
+call %ROOT_DIR%\winbuild\buildOSL.bat
 if %ERRORLEVEL% NEQ 0 (
 	echo "Error(s) building OSL"
 	exit /b %ERRORLEVEL%
@@ -168,7 +181,7 @@ if %ERRORLEVEL% NEQ 0 (
 echo ===============================================================================
 echo Building HDF5...
 echo ===============================================================================
-call buildHDF5.bat
+call %ROOT_DIR%\winbuild\buildHDF5.bat
 if %ERRORLEVEL% NEQ 0 (
 	echo "Error(s) building HDF5"
 	exit /b %ERRORLEVEL%
@@ -176,7 +189,7 @@ if %ERRORLEVEL% NEQ 0 (
 echo ===============================================================================
 echo Building Alembic...
 echo ===============================================================================
-call buildAlembic.bat
+call %ROOT_DIR%\winbuild\buildAlembic.bat
 if %ERRORLEVEL% NEQ 0 (
 	echo "Error(s) building Alembic"
 	exit /b %ERRORLEVEL%
@@ -184,7 +197,7 @@ if %ERRORLEVEL% NEQ 0 (
 echo ===============================================================================
 echo Building Xerces...
 echo ===============================================================================
-call buildXerces.bat
+call %ROOT_DIR%\winbuild\buildXerces.bat
 if %ERRORLEVEL% NEQ 0 (
 	echo "Error(s) building Xerces"
 	exit /b %ERRORLEVEL%
@@ -192,7 +205,7 @@ if %ERRORLEVEL% NEQ 0 (
 echo ===============================================================================
 echo Building Appleseed...
 echo ===============================================================================
-call buildAppleseed.bat
+call %ROOT_DIR%\winbuild\buildAppleseed.bat
 if %ERRORLEVEL% NEQ 0 (
 	echo "Error(s) building Appleseed"
 	exit /b %ERRORLEVEL%
@@ -200,7 +213,7 @@ if %ERRORLEVEL% NEQ 0 (
 echo ===============================================================================
 echo Building PyOpenGL...
 echo ===============================================================================
-call buildPyOpenGL.bat
+call %ROOT_DIR%\winbuild\buildPyOpenGL.bat
 if %ERRORLEVEL% NEQ 0 (
 	echo "Error(s) building PyOpenGL"
 	exit /b %ERRORLEVEL%
@@ -208,7 +221,7 @@ if %ERRORLEVEL% NEQ 0 (
 echo ===============================================================================
 echo Building Qt...
 echo ===============================================================================
-call buildQt.bat
+call %ROOT_DIR%\winbuild\buildQt.bat
 if %ERRORLEVEL% NEQ 0 (
 	echo "Error(s) building Qt"
 	exit /b %ERRORLEVEL%
@@ -216,7 +229,7 @@ if %ERRORLEVEL% NEQ 0 (
 echo ===============================================================================
 echo Building PySide...
 echo ===============================================================================
-call buildPySide.bat
+call %ROOT_DIR%\winbuild\buildPySide.bat
 if %ERRORLEVEL% NEQ 0 (
 	echo "Error(s) building PySide"
 	exit /b %ERRORLEVEL%
@@ -224,7 +237,7 @@ if %ERRORLEVEL% NEQ 0 (
 echo ===============================================================================
 echo Building Qt.py...
 echo ===============================================================================
-call buildQtPy.bat
+call %ROOT_DIR%\winbuild\buildQtPy.bat
 if %ERRORLEVEL% NEQ 0 (
 	echo "Error(s) building QtPy"
 	exit /b %ERRORLEVEL%
@@ -232,7 +245,7 @@ if %ERRORLEVEL% NEQ 0 (
 echo ===============================================================================
 echo Building Package...
 echo ===============================================================================
-rem call buildPackage.bat
+rem call %ROOT_DIR%\winbuild\buildPackage.bat
 rem if %ERRORLEVEL% NEQ 0 (
 rem 	echo "Error(s) building Dependencies Package"
 rem 	exit /b %ERRORLEVEL%

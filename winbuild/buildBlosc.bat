@@ -1,10 +1,7 @@
 SETLOCAL
-set BLOSC_VERSION=1.7.0
 set ARCHIVE_ROOT_NAME=c-blosc-%BLOSC_VERSION%
-set ARCHIVE_DIR=%~dp0%..\archives
-set WORKING_DIR=%~dp0%..\c-blosc-1.7.0
+set WORKING_DIR=%ROOT_DIR%\%ARCHIVE_ROOT_NAME%
 
-del %WORKING_DIR%
 mkdir %WORKING_DIR%
 copy %ARCHIVE_DIR%\%ARCHIVE_ROOT_NAME%.tar.gz  %WORKING_DIR%
 
@@ -30,5 +27,3 @@ cmake --build . --config %BUILD_TYPE% --target install
 if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
 
 ENDLOCAL
-
-cd %ROOT_DIR%
