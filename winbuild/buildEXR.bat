@@ -1,3 +1,4 @@
+SETLOCAL 
 
 echo ===============================================================================
 echo Building ILMBase...
@@ -31,8 +32,9 @@ mkdir gafferBuild
 cd gafferBuild
 del /f CMakeCache.txt
 
+SETLOCAL
+
 rem We need to have the lib dir in the system path so that the DLL's that OpenEXR relies on in the build process can be found
-set BACKUP_PATH=%PATH%
 set PATH=%PATH%;%BUILD_DIR%\lib
 
 cmake -Wno-dev -G %CMAKE_GENERATOR% -DBUILD_SHARED_LIBS=ON -DILMBASE_PACKAGE_PREFIX=%BUILD_DIR% -DZLIB_INCLUDE_DIR=%BUILD_DIR%\include -DZLIB_LIBRARY=%BUILD_DIR%\lib\zlib.lib -DCMAKE_INSTALL_PREFIX=%BUILD_DIR% ..
@@ -40,8 +42,7 @@ if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
 cmake --build . --config %BUILD_TYPE% --target install
 if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
 
-rem Restore path
-set PATH=%BACKUP_PATH%
+ENDLOCAL
 
 echo ===============================================================================
 echo Building PyILMBase...
@@ -65,3 +66,5 @@ move %BUILD_DIR%\lib\python2.7\site-packages\iex.pyd %BUILD_DIR%\python
 if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
 move %BUILD_DIR%\lib\python2.7\site-packages\imath.pyd %BUILD_DIR%\python
 if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
+
+ENDLOCAL

@@ -1,3 +1,5 @@
+SETLOCAL
+
 cd %ROOT_DIR%\llvm-3.4
 
 mkdir build-release
@@ -8,3 +10,5 @@ cmake -Wno-dev -G %CMAKE_GENERATOR% -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -DCMAKE_INST
 if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
 cmake --build . --config %BUILD_TYPE% --target install
 if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
+
+ENDLOCAL

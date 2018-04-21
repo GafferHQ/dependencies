@@ -1,3 +1,5 @@
+SETLOCAL
+
 cd %ROOT_DIR%\OpenColorIO-1.0.9
 
 mkdir %BUILD_DIR%\doc\licenses
@@ -24,3 +26,5 @@ mkdir %BUILD_DIR%\openColorIO
 mkdir %BUILD_DIR%\openColorIO\luts
 copy %ROOT_DIR%\imageworks-OpenColorIO-Configs-f931d77\nuke-default\config.ocio %BUILD_DIR%\\openColorIO\\
 copy %ROOT_DIR%\imageworks-OpenColorIO-Configs-f931d77\nuke-default\luts %BUILD_DIR%\\openColorIO\\luts
+
+ENDLOCAL

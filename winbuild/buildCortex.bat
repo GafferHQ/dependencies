@@ -1,3 +1,5 @@
+SETLOCAL
+
 mkdir %BUILD_DIR%\resources\cortex
 copy %ROOT_DIR%\cortex-10.0.0-a8\tileset_2048.dat %BUILD_DIR%\resources\cortex
 
@@ -16,3 +18,5 @@ cmake -Wno-dev -G %CMAKE_GENERATOR% -DCMAKE_INSTALL_PREFIX=%BUILD_DIR% -DPYTHON_
 if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
 cmake --build . --config %BUILD_TYPE% --target install
 if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
+
+ENDLOCAL

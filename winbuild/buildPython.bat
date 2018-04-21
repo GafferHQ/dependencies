@@ -1,3 +1,5 @@
+SETLOCAL
+
 cd %ROOT_DIR%\Python-2.7.13
 
 mkdir %BUILD_DIR%\doc\licenses
@@ -15,3 +17,4 @@ if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
 rem Move stuff around
 copy %BUILD_DIR%\libs\*.lib %BUILD_DIR%\lib
 
+ENDLOCAL

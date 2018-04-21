@@ -1,3 +1,5 @@
+SETLOCAL
+
 cd %ROOT_DIR%\qt-adsk-5.6.1
 
 mkdir %BUILD_DIR%\doc\licenses
@@ -11,7 +13,6 @@ rem Qt5 wants 'libjpeg.lib' not 'jpeg.lib'
 copy %BUILD_DIR%\lib\jpeg.lib %BUILD_DIR%\lib\libjpeg.lib
 
 rem We need to have the lib dir
-set BACKUP_PATH=%PATH%
 set PATH=%PATH%;%BUILD_DIR%\\lib;%BUILD_DIR%\\bin
 
 rem We should probably check this batch file to make sure ERRORLEVEL
@@ -26,6 +27,4 @@ if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
 %ROOT_DIR%\winbuild\jom\jom.exe install
 if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
 
-rem Restore path
-set PATH=%BACKUP_PATH%
-
+ENDLOCAL
