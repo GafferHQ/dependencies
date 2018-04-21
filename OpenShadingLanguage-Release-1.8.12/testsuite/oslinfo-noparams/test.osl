@@ -1,4 +1,0 @@
-surface test ()
-{
-    float localvariable = 0;
-}

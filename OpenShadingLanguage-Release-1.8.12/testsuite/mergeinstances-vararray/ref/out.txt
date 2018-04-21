@@ -1,4 +1,0 @@
-Compiled arrayparam.osl -> arrayparam.oso
-Compiled simple.osl -> simple.oso
-1.000000 0.000000 1.000000
-

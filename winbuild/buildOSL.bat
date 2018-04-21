@@ -1,10 +1,33 @@
-cd %ROOT_DIR%\OpenShadingLanguage-Release-%OSL_VERSION%
+SETLOCAL
+
+set ARCHIVE_ROOT_NAME=OpenShadingLanguage-Release-%OSL_VERSION%
+set WORKING_DIR=%ROOT_DIR%\%ARCHIVE_ROOT_NAME%
+
+mkdir %WORKING_DIR%
+copy %ARCHIVE_DIR%\%ARCHIVE_ROOT_NAME%.tar.gz %ROOT_DIR%
+
+cd %ROOT_DIR%
+
+%ROOT_DIR%\winbuild\7zip\7za.exe e -aoa %ARCHIVE_ROOT_NAME%.tar.gz
+if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
+%ROOT_DIR%\winbuild\7zip\7za.exe x -aoa %ARCHIVE_ROOT_NAME%.tar
+if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
+
+cd %ROOT_DIR%
+rem These two files are created by the following patches
+rem Conflicts between Unix and Windows line endings make it
+rem easier to just delete them and create them by patch
+del %WORKING_DIR%\src\cmake\flexbison.cmake
+del %WORKING_DIR%\src\cmake\modules\FindLLVM.cmake
+%ROOT_DIR%\winbuild\patch\bin\patch -f -p1 < %ROOT_DIR%\winbuild\osl_patch_1.diff
+%ROOT_DIR%\winbuild\patch\bin\patch -f -p1 < %ROOT_DIR%\winbuild\osl_patch_2.diff
+
+cd %WORKING_DIR%
 
 mkdir %BUILD_DIR%\doc\licenses
 copy LICENSE %BUILD_DIR%\doc\licenses\osl
 
 rem We need to have the lib dir
-set BACKUP_PATH=%PATH%
 set PATH=%PATH%;%BUILD_DIR%\lib;%BUILD_DIR%\bin;%ROOT_DIR%\winbuild\FlexBison\bin;%ROOT_DIR%\OpenShadingLanguage-Release-%OSL_VERSION%\gafferBuild\src\liboslcomp\Release
 
 mkdir gafferBuild
@@ -17,5 +40,4 @@ if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
 cmake --build . --config %BUILD_TYPE% --target install
 if %ERRORLEVEL% NEQ 0 (exit /b %ERRORLEVEL%)
 
-rem Restore path
-set PATH=%BACKUP_PATH%
+ENDLOCAL

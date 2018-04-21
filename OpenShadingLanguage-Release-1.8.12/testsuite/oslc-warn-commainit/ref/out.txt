@@ -1,3 +1,0 @@
-test.osl:3: warning: Comma operator is very confusing here. Did you mean to use a constructor: x = vector(...)?
-test.osl:4: warning: Comma operator is very confusing here. Did you mean to use a constructor: = color(...)?
-Compiled test.osl -> test.oso

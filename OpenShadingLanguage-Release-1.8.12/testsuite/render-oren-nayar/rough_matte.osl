@@ -1,7 +1,0 @@
-surface rough_matte(
-    float Kd = 1,
-    float sigma = 0.1,
-    color Cs = 1)
-{
-    Ci = Kd * Cs * oren_nayar (N, sigma);
-}
