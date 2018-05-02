@@ -79,6 +79,9 @@ lib/_ctypes.lib
 lib/_ctypes_test.lib
 
 lib/cmake
+
+lib/cmark*.lib
+
 mkspecs
 
 lib64
@@ -222,6 +225,8 @@ include/ucnhash.h
 include/unicodeobject.h
 include/warnings.h
 include/weakrefobject.h
+
+include/cmark*.h
 
 appleseed/bin/appleseed.cli.exe
 appleseed/bin/appleseed.dll
