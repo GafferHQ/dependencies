@@ -35,9 +35,38 @@
 	"manifest" : [
 
 		"include/boost",
-		"lib/libboost_*{sharedLibraryExtension}*",
-		"lib/libboost_test_exec_monitor.a",
+		"{sharedLibraryDir}/{libraryPrefix}boost_*{sharedLibraryExtension}*",
+		"lib/{libraryPrefix}boost_*.lib",
+		"lib/libboost_test_exec_monitor*{staticLibraryExtension}",	# Windows and Linux both use the "lib" prefix
 
 	],
 
+	"platform:windows" : {
+
+		"dependencies" : [ "Python", "ZLib" ],
+
+		"environment" : {
+
+			# Boost needs help finding Python
+			"PATH" : "{buildDir}\\bin;%PATH%",
+			"PYTHONPATH" : "{buildDir};{buildDir}\\bin;{buildDir}\\lib\\python{pythonVersion};{buildDir}\\lib"
+
+		},
+
+		"commands" : [
+			"echo using zlib : 1.2.13 : > user-config.jam",
+			"echo ^<include^>\"{buildDir}/include\" >> user-config.jam",
+			"echo ^<search^>\"{buildDir}/lib\" ; >> user-config.jam",
+			"bootstrap.bat --prefix={buildDir} --without-libraries=log",
+			"b2 -d+2 --prefix={buildDir} --layout=system --toolset=msvc architecture=x86 address-model=64 variant=release link=shared threading=multi cxxflags=\"/std:c++{c++Standard}\" cxxstd={c++Standard} --user-config=\"user-config.jam\" install"
+
+		],
+
+		"postMovePaths" : {
+
+			"{buildDir}/lib/*.dll" : "{buildDir}/bin",
+
+		}
+
+	},
 }
