@@ -1,0 +1,12 @@
+diff --git a/./CMakeLists.txt b/./CMakeLists.txt
+--- ./CMakeLists.txt
++++ ./CMakeLists.txt
+@@ -125,6 +125,8 @@
+ 
+ if(WIN32)
+     if(PYTHON_VERSION AND PYTHON_INCLUDE AND PYTHON_LIB)
++        file(TO_CMAKE_PATH ${PYTHON_INCLUDE} PYTHON_INCLUDE)
++        file(TO_CMAKE_PATH ${PYTHON_LIB} PYTHON_LIB)
+         set(EXTDIST_PYTHONPATH ${PYTHON_LIB}/python${PYTHON_VARIANT_PATH}/site-packages)
+         set(PYTHONPATH ${EXTDIST_PYTHONPATH};$ENV{PYTHONPATH})
+         set(PYTHON_OK YES)
