@@ -165,6 +165,8 @@ manifest="
 	appleseed/settings
 	appleseed/shaders
 
+	lib/libcmark*$SHLIBSUFFIX*
+
 "
 
 packageName=gafferDependencies-$VERSION-$PLATFORM
