@@ -1,0 +1,23 @@
+From acac892ffc3759bf9b0fd9bf0500f1cc7feb3c39 Mon Sep 17 00:00:00 2001
+From: alanb-sony <62992435+alanb-sony@users.noreply.github.com>
+Date: Sat, 24 Oct 2020 10:31:15 +0100
+Subject: [PATCH] Workaround bug in visual studio 2017
+
+Fixes #274
+---
+ include/tbb/tbb_config.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/tbb/tbb_config.h b/include/tbb/tbb_config.h
+index 7a8d06a03..886699d87 100644
+--- a/include/tbb/tbb_config.h
++++ b/include/tbb/tbb_config.h
+@@ -620,7 +620,7 @@ There are four cases that are supported:
+ // instantiation site, which is too late for suppression of the corresponding messages for internal
+ // stuff.
+ #if !defined(__INTEL_COMPILER) && (!defined(TBB_SUPPRESS_DEPRECATED_MESSAGES) || (TBB_SUPPRESS_DEPRECATED_MESSAGES == 0))
+-    #if (__cplusplus >= 201402L)
++    #if (__cplusplus >= 201402L && (!defined(_MSC_VER) || _MSC_VER >= 1920))
+         #define __TBB_DEPRECATED [[deprecated]]
+         #define __TBB_DEPRECATED_MSG(msg) [[deprecated(msg)]]
+     #elif _MSC_VER
