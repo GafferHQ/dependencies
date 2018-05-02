@@ -648,7 +648,9 @@ struct VecTypeDescr
 extern "C" { void init_openvdb(); }
 #else
 #define PY_OPENVDB_MODULE_NAME  pyopenvdb
+#ifndef _MSC_VER
 extern "C" { void initpyopenvdb(); }
+#endif
 #endif
 
 BOOST_PYTHON_MODULE(PY_OPENVDB_MODULE_NAME)
