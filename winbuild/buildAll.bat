@@ -116,7 +116,7 @@ if %ERRORLEVEL% NEQ 0 (
 echo ===============================================================================
 echo Building GLEW...
 echo ===============================================================================
-call %ROOT_DIR%\winbuild\buildGLEW.bat
+cd %ROOT_DIR% && python build/build.py --project GLEW --buildDir %BUILD_DIR%
 if %ERRORLEVEL% NEQ 0 (
 	echo "Error(s) building GLEW"
 	exit /b %ERRORLEVEL%
