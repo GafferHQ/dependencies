@@ -22,8 +22,31 @@
 	"manifest" : [
 
 		"include/blosc*.h",
-		"lib/libblosc*{sharedLibraryExtension}*",
+		"lib/{libraryPrefix}blosc*{sharedLibraryExtension}*",
+		"lib/{libraryPrefix}blosc*.lib",
 
 	],
+	"platform:windows" : {
+
+		"commands" : [
+
+			"mkdir gafferBuild",
+			"cd gafferBuild && "
+				" cmake"
+				" -Wno-dev"
+				" -G {cmakeGenerator}"
+				" -D CMAKE_BUILD_TYPE={cmakeBuildType}"
+				" -D CMAKE_INSTALL_PREFIX={buildDir}"
+				" -D BUILD_TESTS=OFF"
+				" -D BUILD_BENCHMARKS=OFF"
+				" -D BUILD_STATIC=OFF"
+				" ..",
+
+			"cd gafferBuild && cmake --build . --config {cmakeBuildType} --target install -- -j {jobs}",
+			"move {buildDir}\\bin\\blosc.dll {buildDir}\\lib"
+
+		],
+
+	},
 
 }
