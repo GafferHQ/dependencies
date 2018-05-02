@@ -27,4 +27,31 @@
 
 	],
 
+	"platform:windows" : {
+	
+		"variables" : {
+
+			# technically not accurate for MSVC 2017 but Boost needs this
+			# for Boost versions < 1.65
+			"boostMsvcVersion" : "msvc-14.0",
+
+		},
+
+		"environment" : {
+
+			# Boost needs help finding Python
+			"PATH" : "%PATH%;{buildDir}\\bin",
+			"PYTHONPATH" : "{buildDir};{buildDir}\\bin;{buildDir}\\lib64;{buildDir}\\lib"
+
+		},
+
+		"commands" : [
+
+			"bootstrap.bat --prefix={buildDir} --with-python=\"{buildDir}\" --with-python-root=\"{buildDir}\" --without-libraries=log",
+			"(echo using python ^: 2.7 : {buildDirFwd} ^: {buildDirFwd}/include ^: {buildDirFwd}/lib ^: ^<address-model^>64 ^;) >> project-config.jam",
+			"b2 -d+2 --prefix={buildDir} --toolset={boostMsvcVersion} architecture=x86 address-model=64 --build-type=complete variant=release link=shared threading=multi -s ZLIB_SOURCE=%ROOT_DIR%\\Zlib\\working\\zlib-1.2.11 -s ZLIB_INCLUDE={buildDir}\\include -s ZLIB_LIBPATH={buildDir}\\lib -s ZLIB_BINARY=zlib install"
+
+		],
+
+	},
 }
