@@ -1,0 +1,39 @@
+From c81059eae0faa26c90deffdd5e2bc45b023e3165 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?=C5=81ukasz=20Plewa?= <lukasz.plewa@intel.com>
+Date: Tue, 13 Aug 2024 17:25:41 +0200
+Subject: [PATCH] Fix tbb malloc proxy on 14.30.33807
+
+In this version of the ucrtbase.dll, the assembly of the _msize
+function has changed.
+
+The first instruction of this function is a relative jump (0xE9)
+followed by a 4-byte offset. This offset has changed, but we can
+safely assume that 0xE9 followed by any offset value is correct,
+especially since we have special handling for the 0xE9 instruction in
+the InsertTrampoline() function.
+
+The 0xCC is an INT 3 instruction, so it's a free space to use.
+---
+ src/tbbmalloc_proxy/proxy.cpp | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/src/tbbmalloc_proxy/proxy.cpp b/src/tbbmalloc_proxy/proxy.cpp
+index a6d3dea06f..954583ba5f 100644
+--- a/src/tbbmalloc/proxy.cpp
++++ b/src/tbbmalloc/proxy.cpp
+@@ -431,14 +431,12 @@ void __TBB_malloc__free_base(void *ptr)
+ const char* known_bytecodes[] = {
+ #if _WIN64
+ //  "========================================================" - 56 symbols
++    "E9********CCCC",         // multiple - jmp(0xE9) with address followed by empty space (0xCC - INT 3)
+     "4883EC284885C974",       // release free()
+     "4883EC284885C975",       // release _msize()
+     "4885C974375348",         // release free() 8.0.50727.42, 10.0
+-    "E907000000CCCC",         // release _aligned_msize(), _aligned_free() ucrtbase.dll
+     "C7442410000000008B",     // release free() ucrtbase.dll 10.0.14393.33
+-    "E90B000000CCCC",         // release _msize() ucrtbase.dll 10.0.14393.33
+     "48895C24085748",         // release _aligned_msize() ucrtbase.dll 10.0.14393.33
+-    "E903000000CCCC",         // release _aligned_msize() ucrtbase.dll 10.0.16299.522
+     "48894C24084883EC28BA",   // debug prologue
+     "4C894424184889542410",   // debug _aligned_msize() 10.0
+     "48894C24084883EC2848",   // debug _aligned_free 10.0
