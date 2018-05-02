@@ -28,8 +28,29 @@
 	"manifest" : [
 
 		"include/freetype2",
-		"lib/libfreetype*{sharedLibraryExtension}*",
+		"{sharedLibraryDir}/{libraryPrefix}freetype*{sharedLibraryExtension}*",
+		"lib/{libraryPrefix}freetype*.lib*",
 
 	],
+	"platform:windows" : {
+
+		"commands" : [
+
+			"mkdir gafferBuild",
+			"cd gafferBuild && cmake"
+				" -Wno-dev"
+				" -G {cmakeGenerator}"
+				" -D CMAKE_BUILD_TYPE={cmakeBuildType}"
+				" -D CMAKE_INSTALL_PREFIX={buildDir}"
+				" -D CMAKE_DISABLE_FIND_PACKAGE_PNG=TRUE"
+				" ..",
+			# FreeType 2.9.1 does not copy the ftconfig.h header
+			# the binary directory, help it out here
+			"copy include\\freetype\\config\\ftconfig.h gafferBuild\\include\\freetype\\config\\ftconfig.h",
+			"cd gafferBuild && cmake --build . --config {cmakeBuildType} --target install -- -j {jobs}",
+
+		]
+
+	}
 
 }
