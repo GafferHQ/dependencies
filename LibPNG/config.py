@@ -5,6 +5,8 @@
 		"https://download.sourceforge.net/libpng/libpng-1.6.37.tar.gz"
 
 	],
+    
+	"dependencies" : [ "ZLib" ],
 
 	"url" : "http://www.libpng.org",
 	"license" : "LICENSE",
@@ -21,8 +23,28 @@
 
 		"include/png*",
 		"include/libpng*",
-		"lib/libpng*{sharedLibraryExtension}*",
+		"{sharedLibraryDir}/libpng*{sharedLibraryExtension}*",	# lib prefix is accurate for all platforms
+		"lib/libpng*.lib",
 
 	],
+	"platform:windows" : {
+
+		"commands" : [
+
+			"mkdir gafferBuild",
+			"cd gafferBuild && "
+				" cmake"
+				" -G {cmakeGenerator}"
+				" -D CMAKE_BUILD_TYPE={cmakeBuildType}"
+				" -D CMAKE_INSTALL_PREFIX={buildDir}"
+				" -D ZLIB_INCLUDE_DIR={buildDir}\\include"
+				" -D ZLIB_LIBRARY={buildDir}\\lib\\zlib.lib"
+				" ..",
+
+			"cd gafferBuild && cmake --build . --config {cmakeBuildType} --target install -- -j {jobs}",
+
+		],
+
+	},
 
 }
