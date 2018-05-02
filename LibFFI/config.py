@@ -19,8 +19,16 @@
 
 	"manifest" : [
 
-		"lib/libffi*{sharedLibraryExtension}*",
+		"{sharedLibraryDir}/{libraryPrefix}ffi*{sharedLibraryExtension}*",
+		"lib/{libraryPrefix}ffi*{staticLibraryExtension}*",
 
 	],
+
+	"platform:windows" : {
+
+		"manifest" : [],
+		"commands" : [],
+
+	},
 
 }
