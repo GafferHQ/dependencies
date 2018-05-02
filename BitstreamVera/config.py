@@ -10,12 +10,13 @@
 
 	"license" : "COPYRIGHT.TXT",
 
-	"commands" : [
+	"commands" : [],
 
-		"mkdir -p {buildDir}/fonts",
-		"cp *.ttf {buildDir}/fonts"
+	"postMovePaths" : {
 
-	],
+		"*.ttf" : "{buildDir}/fonts",
+
+	},
 
 	"manifest" : [
 
