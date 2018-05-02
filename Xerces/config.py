@@ -10,10 +10,14 @@
 
 	"commands" : [
 
-		"./configure --prefix={buildDir} --without-icu",
-		"make -j {jobs}",
-		"make install",
-
+		"mkdir gafferBuild",
+		"cd gafferBuild &&"
+		 	" cmake"
+		 	" -G $CMAKE_GENERATOR"
+		 	" -D CMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE"
+		 	" -D CMAKE_INSTALL_PREFIX=$BUILD_DIR"
+		 	" ..",
+		"cd gafferBuild && cmake --build . --config $CMAKE_BUILD_TYPE --target install -- -j $NUM_PROCESSORS"
 	],
 
 }
