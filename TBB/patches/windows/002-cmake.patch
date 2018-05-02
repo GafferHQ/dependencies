@@ -1,0 +1,10 @@
+--- ./CMakeLists.txt	2021-12-22 12:35:01.012377400 -0500
++++ ./CMakeLists.txt	2021-12-22 12:37:57.055092500 -0500
+@@ -45,6 +45,7 @@
+ list(APPEND tbb_src ${CMAKE_CURRENT_SOURCE_DIR}/src/rml/client/rml_tbb.cpp)
+ file(GLOB to_remove "${CMAKE_CURRENT_SOURCE_DIR}/src/old/test*.cpp")
+ list(REMOVE_ITEM tbb_src ${to_remove})
++list(REMOVE_ITEM tbb_src "${CMAKE_CURRENT_SOURCE_DIR}/src/tbb/tbb_bind.cpp")
+ 
+ set(tbbmalloc_static_src
+   src/tbbmalloc/backend.cpp
