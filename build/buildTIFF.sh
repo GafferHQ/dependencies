@@ -2,7 +2,7 @@
 
 set -e
 
-cd `dirname $0`/../tiff-3.8.2
+cd `dirname $0`/../tiff-4.0.8
 
 # needed to make sure we link against the libjpeg
 # in the gaffer distribution and not the system

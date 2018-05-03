@@ -1,0 +1,71 @@
+From 708717e19d9bd388dc11dd2821a7f441d4c2fdd2 Mon Sep 17 00:00:00 2001
+From: Eric Mehl <eric@thinkhypothetical.com>
+Date: Wed, 28 Mar 2018 09:34:49 -0400
+Subject: [PATCH] update build scripts for new versions of OSL and Appleseed
+ (+1 squashed commits)
+
+Squashed commits:
+
+[ccd211e351] pull in changes for dynamic linking @boberfly made to appleseed windows build
+---
+ appleseed-1.8.1-beta/CMakeLists.txt          | 12 +++++++++++-
+ appleseed-1.8.1-beta/cmake/config/win-vs.txt |  2 +-
+ 2 files changed, 12 insertions(+), 3 deletions(-)
+
+diff --git a/appleseed-1.8.1-beta/CMakeLists.txt b/appleseed-1.8.1-beta/CMakeLists.txt
+index 10bcdd58bb..8262d94a23 100644
+--- a/appleseed-1.8.1-beta/CMakeLists.txt
++++ b/appleseed-1.8.1-beta/CMakeLists.txt
+@@ -121,6 +121,7 @@ option (USE_STATIC_BOOST                    "Use static Boost libraries"
+ option (USE_STATIC_OIIO                     "Use static OpenImageIO libraries"                      ON)
+ option (USE_STATIC_OCIO                     "Use static OpenColorIO libraries"                      ON)
+ option (USE_STATIC_OSL                      "Use static OpenShadingLanguage libraries"              ON)
++option (USE_STATIC_EXR                      "Use static OpenEXR libraries"                          OFF)
+ option (WARNINGS_AS_ERRORS                  "Treat compiler warnings as errors"                     ON)
+ 
+ option (HIDE_SYMBOLS                        "When using gcc, hide symbols not on the public API"    ON)
+@@ -191,6 +192,9 @@ set (Boost_MULTITHREADED TRUE)
+ 
+ if (USE_STATIC_BOOST)
+     set (Boost_USE_STATIC_LIBS TRUE)
++    add_definitions(-DBOOST_PYTHON_STATIC_LIB) # link statically against Boost.Python
++else ()
++    add_definitions(-DBOOST_ALL_DYN_LINK)
+ endif ()
+ 
+ set (BOOST_NEEDED_LIBS atomic chrono date_time filesystem regex system thread wave)
+@@ -224,6 +228,9 @@ endif ()
+ if (USE_EXTERNAL_EXR)
+     find_package (Imath REQUIRED)
+     find_package (OpenEXR REQUIRED)
++    if (NOT USE_STATIC_EXR AND MSVC)
++        add_definitions(-DOPENEXR_DLL)
++    endif ()
+ endif ()
+ 
+ if (USE_EXTERNAL_XERCES)
+@@ -573,7 +580,10 @@ endif ()
+ 
+ if (WITH_PYTHON)
+     set (Python_ADDITIONAL_VERSIONS 2.7)
+-    find_package (PythonLibs REQUIRED)
++
++    if (NOT  MSVC)
++        find_package (PythonLibs REQUIRED)
++    endif ()
+ 
+     # Splitting version string into list.
+     string (REGEX MATCHALL "[0123456789]+" PYTHON_VERSION_LIST "${PYTHONLIBS_VERSION_STRING}")
+diff --git a/appleseed-1.8.1-beta/cmake/config/win-vs.txt b/appleseed-1.8.1-beta/cmake/config/win-vs.txt
+index 1c7295fd90..ddcf888004 100644
+--- a/appleseed-1.8.1-beta/cmake/config/win-vs.txt
++++ b/appleseed-1.8.1-beta/cmake/config/win-vs.txt
+@@ -61,7 +61,7 @@ set (preprocessor_definitions_common
+     _USRDLL
+     _WINDOWS
+     XERCES_STATIC_LIBRARY                   # link statically against Xerces-C
+-    BOOST_PYTHON_STATIC_LIB                 # link statically against Boost.Python
++    # BOOST_PYTHON_STATIC_LIB                 # link statically against Boost.Python
+ )
+ 
+ # Release configuration.

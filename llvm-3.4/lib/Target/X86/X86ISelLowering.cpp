@@ -15487,12 +15487,24 @@ X86TargetLowering::EmitLoweredWinAlloca(MachineInstr *MI,
   // non-trivial part is impdef of ESP.
 
   if (Subtarget->isTargetWin64()) {
+    const char *StackProbeSymbol = 
+      Subtarget->isTargetCygMing() ? "___chkstk" : "__chkstk";
+    
+    // R11 will be used to contain the address of __chkstk.
+    // R11 is a volotiale register and assumed to be destoyed by the callee, 
+    // so there is no need to save and restore it.
+    BuildMI(*BB, MI, DL, TII->get(X86::MOV64ri), X86::R11)
+      .addExternalSymbol(StackProbeSymbol);
+
+    // Create a call to __chkstk function which address contained in R11.
+    MachineInstrBuilder MIB = BuildMI(*BB, MI, DL, TII->get(X86::CALL64r))
+                  .addReg(X86::R11, RegState::Kill);
+
     if (Subtarget->isTargetCygMing()) {
       // ___chkstk(Mingw64):
       // Clobbers R10, R11, RAX and EFLAGS.
       // Updates RSP.
-      BuildMI(*BB, MI, DL, TII->get(X86::W64ALLOCA))
-        .addExternalSymbol("___chkstk")
+      MIB
         .addReg(X86::RAX, RegState::Implicit)
         .addReg(X86::RSP, RegState::Implicit)
         .addReg(X86::RAX, RegState::Define | RegState::Implicit)
@@ -15501,8 +15513,7 @@ X86TargetLowering::EmitLoweredWinAlloca(MachineInstr *MI,
     } else {
       // __chkstk(MSVCRT): does not update stack pointer.
       // Clobbers R10, R11 and EFLAGS.
-      BuildMI(*BB, MI, DL, TII->get(X86::W64ALLOCA))
-        .addExternalSymbol("__chkstk")
+      MIB
         .addReg(X86::RAX, RegState::Implicit)
         .addReg(X86::EFLAGS, RegState::Define | RegState::Implicit);
       // RAX has the offset to be subtracted from RSP.

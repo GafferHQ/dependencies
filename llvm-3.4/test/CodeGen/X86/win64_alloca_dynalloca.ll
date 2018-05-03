@@ -21,7 +21,8 @@ entry:
 ; __chkstk does not adjust %rsp.
 ; W64: movq  %rsp, %rbp
 ; W64:       $4096, %rax
-; W64: callq __chkstk
+; M64: movabsq  $__chkstk, %r11
+; M64: callq    *%r11
 ; W64: subq  %rax, %rsp
 
 ; Freestanding
@@ -33,13 +34,15 @@ entry:
 
 ; M64: leaq  15(%{{.*}}), %rax
 ; M64: andq  $-16, %rax
-; M64: callq ___chkstk
+; M64: movabsq  $___chkstk, %r11
+; M64: callq    *%r11
 ; M64-NOT:   %rsp
 ; M64: movq  %rsp, %rax
 
 ; W64: leaq  15(%{{.*}}), %rax
 ; W64: andq  $-16, %rax
-; W64: callq __chkstk
+; W64: movabsq  $__chkstk, %r11
+; W64: callq    *%r11
 ; W64: subq  %rax, %rsp
 ; W64: movq  %rsp, %rax
 
@@ -84,14 +87,16 @@ entry:
 
 ; M64: leaq  15(%{{.*}}), %rax
 ; M64: andq  $-16, %rax
-; M64: callq ___chkstk
+; M64: movabsq  $___chkstk, %r11
+; M64: callq    *%r11
 ; M64: movq  %rsp, [[R2:%r.*]]
 ; M64: andq  $-128, [[R2]]
 ; M64: movq  [[R2]], %rsp
 
 ; W64: leaq  15(%{{.*}}), %rax
 ; W64: andq  $-16, %rax
-; W64: callq __chkstk
+; W64: movabsq  $__chkstk, %r11
+; W64: callq    *%r11
 ; W64: subq  %rax, %rsp
 ; W64: movq  %rsp, [[R2:%r.*]]
 ; W64: andq  $-128, [[R2]]
