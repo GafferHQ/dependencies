@@ -18,6 +18,9 @@ bin/abcls.exe
 bin/abcstitcher.exe
 bin/abctree.exe
 
+bin/usd*
+bin/sdfdump
+
 bin/glew32.dll
 bin/hdf5*
 bin/jpeg*
@@ -81,6 +84,20 @@ lib/_ctypes_test.lib
 lib/cmake
 
 lib/cmark*.lib
+
+lib/libtracelite*
+lib/libarch*
+lib/libtf*
+lib/libjs*
+lib/libwork*
+lib/libplug*
+lib/libkind*
+lib/libgf*
+lib/libvt*
+lib/libar*
+lib/libsdf*
+lib/libpcp*
+lib/libusd*
 
 mkspecs
 
@@ -226,6 +243,8 @@ include/unicodeobject.h
 include/warnings.h
 include/weakrefobject.h
 
+include/pxr
+
 include/cmark*.h
 
 appleseed/bin/appleseed.cli.exe
@@ -237,3 +256,5 @@ appleseed/samples
 appleseed/schemas
 appleseed/settings
 appleseed/shaders
+
+share/usd

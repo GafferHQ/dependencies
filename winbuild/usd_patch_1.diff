@@ -1,0 +1,13 @@
+--- a/USD-0.8.2/cmake/defaults/msvcdefaults.cmake	2017-12-07 11:22:02.000000000 -0800
++++ b/USD-0.8.2/cmake/defaults/msvcdefaults.cmake	2018-05-27 13:48:53.520734149 -0700
+@@ -26,9 +26,7 @@
+ set(_PXR_CXX_FLAGS "${_PXR_CXX_FLAGS} /EHsc")
+ 
+ # Standards compliant.
+-set(_PXR_CXX_FLAGS "${_PXR_CXX_FLAGS} /Zc:rvalueCast
+-                                      /Zc:strictStrings
+-                                      /Zc:inline")
++set(_PXR_CXX_FLAGS "${_PXR_CXX_FLAGS} /Zc:rvalueCast /Zc:strictStrings /Zc:inline")
+ 
+ # Turn on all but informational warnings.
+ set(_PXR_CXX_FLAGS "${_PXR_CXX_FLAGS} /W3")

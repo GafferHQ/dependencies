@@ -210,6 +210,14 @@ if %ERRORLEVEL% NEQ 0 (
 	exit /b %ERRORLEVEL%
 )
 echo ===============================================================================
+echo Building USD...
+echo ===============================================================================
+call %ROOT_DIR%\winbuild\buildUSD.bat
+if %ERRORLEVEL% NEQ 0 (
+	echo "Error(s) building USD"
+	exit /b %ERRORLEVEL%
+)
+echo ===============================================================================
 echo Building PyOpenGL...
 echo ===============================================================================
 call %ROOT_DIR%\winbuild\buildPyOpenGL.bat
