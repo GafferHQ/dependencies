@@ -26,6 +26,7 @@ fi
 cd `dirname $0`
 ./buildOpenSSL.sh
 ./buildPython.sh
+./buildCMark.sh
 ./buildSubprocess32.sh
 ./buildBoost.sh
 ./buildJPEG.sh
