@@ -41,7 +41,7 @@ cd `dirname $0`
 ./buildBlosc.sh
 ./buildVDB.sh
 (cd .. && ./build/build.py --project LLVM --buildDir $BUILD_DIR)
-./buildOSL.sh
+(cd .. && ./build/build.py --project OpenShadingLanguage --buildDir $BUILD_DIR)
 ./buildHDF5.sh
 ./buildAlembic.sh
 ./buildXerces.sh
