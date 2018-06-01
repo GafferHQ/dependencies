@@ -40,7 +40,7 @@ cd `dirname $0`
 (cd .. && ./build/build.py --project OpenImageIO --buildDir $BUILD_DIR)
 ./buildBlosc.sh
 ./buildVDB.sh
-./buildLLVM.sh
+(cd .. && ./build/build.py --project LLVM --buildDir $BUILD_DIR)
 ./buildOSL.sh
 ./buildHDF5.sh
 ./buildAlembic.sh
