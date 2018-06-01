@@ -871,11 +871,6 @@ class pyside_build(_build):
         if run_process(cmd_make) != 0:
             raise DistutilsSetupError("Error compiling " + extension)
 
-        if extension.lower() == "shiboken2":
-            log.info("Generating Shiboken documentation %s..." % extension)
-            if run_process([self.make_path, "doc"]) != 0:
-                raise DistutilsSetupError("Error generating documentation " + extension)
-
         if not OPTION_SKIP_MAKE_INSTALL:
             log.info("Installing module %s..." % extension)
             # Need to wait a second, so installed file timestamps are older than build file

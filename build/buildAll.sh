@@ -26,6 +26,7 @@ fi
 cd `dirname $0`
 ./buildOpenSSL.sh
 ./buildPython.sh
+./buildCMark.sh
 ./buildSubprocess32.sh
 ./buildBoost.sh
 ./buildJPEG.sh
@@ -37,15 +38,15 @@ cd `dirname $0`
 ./buildFonts.sh
 ./buildGLEW.sh
 ./buildOCIO.sh
-./buildOIIO.sh
+(cd .. && ./build/build.py --project OpenImageIO --buildDir $BUILD_DIR)
 ./buildBlosc.sh
 ./buildVDB.sh
-./buildLLVM.sh
-./buildOSL.sh
+(cd .. && ./build/build.py --project LLVM --buildDir $BUILD_DIR)
+(cd .. && ./build/build.py --project OpenShadingLanguage --buildDir $BUILD_DIR)
 ./buildHDF5.sh
 ./buildAlembic.sh
-./buildXerces.sh
-./buildAppleseed.sh
+(cd .. && ./build/build.py --project Xerces --buildDir $BUILD_DIR)
+(cd .. && ./build/build.py --project Appleseed --buildDir $BUILD_DIR)
 ./buildResources.sh
 ./buildUSD.sh
 ./buildCortex.sh

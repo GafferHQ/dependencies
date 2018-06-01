@@ -213,7 +213,6 @@ else()
 endif()
 
 add_subdirectory(libshiboken)
-add_subdirectory(doc)
 
 # deps found, compile the generator.
 if (Qt5Core_FOUND AND PYTHONINTERP_FOUND)

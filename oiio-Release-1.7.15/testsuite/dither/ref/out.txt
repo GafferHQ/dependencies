@@ -1,3 +1,0 @@
-Done.
-Comparing "ramp.tif" and "ref/ramp.tif"
-PASS
