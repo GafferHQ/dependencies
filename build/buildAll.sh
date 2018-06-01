@@ -45,7 +45,7 @@ cd `dirname $0`
 ./buildHDF5.sh
 ./buildAlembic.sh
 (cd .. && ./build/build.py --project Xerces --buildDir $BUILD_DIR)
-./buildAppleseed.sh
+(cd .. && ./build/build.py --project Appleseed --buildDir $BUILD_DIR)
 ./buildResources.sh
 ./buildUSD.sh
 ./buildCortex.sh

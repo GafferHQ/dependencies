@@ -1,0 +1,56 @@
+{
+
+	"downloads" : [
+
+		"https://github.com/appleseedhq/appleseed/archive/1.9.0-beta.tar.gz"
+
+	],
+
+	"license" : "LICENSE.txt",
+
+	"environment" : {
+
+		# Needed so that `oslc` can be run to compile
+		# shaders during the build.
+		"DYLD_FALLBACK_LIBRARY_PATH" : "$BUILD_DIR/lib",
+		"LD_LIBRARY_PATH" : "$BUILD_DIR/lib",
+
+		# Appleseed embeds minizip, which appears to require a later version
+		# of zlib than CentOS 6 provides. These defines disable encryption,
+		# which isn't needed anyway, and fixes the problem.
+		# See https://github.com/appleseedhq/appleseed/issues/1597.
+		"CFLAGS" : "-DNOCRYPT -DNOUNCRYPT"
+
+	},
+
+	"commands" : [
+
+		"mkdir build",
+
+		"cd build &&"
+			" cmake"
+			" -D WITH_CLI=ON"
+			" -D WITH_STUDIO=OFF"
+			" -D WITH_TOOLS=OFF"
+			" -D WITH_TESTS=OFF"
+			" -D WITH_PYTHON=ON"
+			" -D USE_STATIC_BOOST=OFF"
+			" -D USE_STATIC_OIIO=OFF"
+			" -D USE_STATIC_OSL=OFF"
+			" -D USE_EXTERNAL_ZLIB=ON"
+			" -D USE_EXTERNAL_EXR=ON"
+			" -D USE_EXTERNAL_PNG=ON"
+			" -D USE_EXTERNAL_XERCES=ON"
+			" -D USE_EXTERNAL_OSL=ON"
+			" -D USE_EXTERNAL_OIIO=ON"
+			" -D USE_SSE=ON"
+			" -D WARNINGS_AS_ERRORS=OFF"
+			" -D CMAKE_PREFIX_PATH=$BUILD_DIR"
+			" -D CMAKE_INSTALL_PREFIX=$BUILD_DIR/appleseed"
+			" ..",
+
+		"cd build && make install -j `getconf _NPROCESSORS_ONLN` VERBOSE=1"
+
+	],
+
+}
