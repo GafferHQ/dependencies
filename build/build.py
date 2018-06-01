@@ -16,9 +16,10 @@ def __decompress( archive ) :
 
 	command = "tar -xvf {archive}".format( archive=archive )
 	sys.stderr.write( command + "\n" )
-	files = subprocess.check_output( command, shell = True )
-
-	dirs = { f.split( "/" )[0] for f in files.split( "\n" ) if f }
+	files = subprocess.check_output( command, stderr=subprocess.STDOUT, shell = True )
+	files = [ f for f in files.split( "\n" ) if f ]
+	files = [ f[2:] if f.startswith( "x " ) else f for f in files ]
+	dirs = { f.split( "/" )[0] for f in files }
 	assert( len( dirs ) ==  1 )
 	return next( iter( dirs ) )
 
