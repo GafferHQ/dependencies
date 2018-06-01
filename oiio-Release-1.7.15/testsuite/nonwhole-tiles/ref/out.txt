@@ -1,2 +1,0 @@
-Comparing "bcheck.exr" and "b2.exr"
-PASS
