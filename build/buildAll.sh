@@ -44,7 +44,7 @@ cd `dirname $0`
 (cd .. && ./build/build.py --project OpenShadingLanguage --buildDir $BUILD_DIR)
 ./buildHDF5.sh
 ./buildAlembic.sh
-./buildXerces.sh
+(cd .. && ./build/build.py --project Xerces --buildDir $BUILD_DIR)
 ./buildAppleseed.sh
 ./buildResources.sh
 ./buildUSD.sh
