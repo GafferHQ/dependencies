@@ -59,7 +59,8 @@ def __buildProject( project, buildDir ) :
 	decompressedArchives = [ __decompress( "../../" + a ) for a in archives ]
 	os.chdir( decompressedArchives[0] )
 
-	shutil.copy( config["license"], os.path.join( buildDir, "doc/licenses", project ) )
+	if config["license"] is not None :
+		shutil.copy( config["license"], os.path.join( buildDir, "doc/licenses", project ) )
 
 	for patch in glob.glob( "../../patches/*.patch" ) :
 		subprocess.check_call( "patch -p1 < {patch}".format( patch = patch ), shell = True )

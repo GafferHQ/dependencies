@@ -47,7 +47,7 @@ cd `dirname $0`
 ./buildAlembic.sh
 (cd .. && ./build/build.py --project Xerces --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project Appleseed --buildDir $BUILD_DIR)
-./buildResources.sh
+(cd .. && ./build/build.py --project GafferResources --buildDir $BUILD_DIR)
 ./buildUSD.sh
 ./buildCortex.sh
 ./buildPyOpenGL.sh
