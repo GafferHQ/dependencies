@@ -27,7 +27,11 @@ def __buildProject( project, buildDir ) :
 
 	with open( project + "/config.py" ) as f :
 		config =f.read()
-	config = eval( config )
+
+	configContext = {
+		"platform" : "osx" if sys.platform == "darwin" else "linux"
+	}
+	config = eval( config, configContext, configContext )
 
 	archiveDir = project + "/archives"
 	if not os.path.exists( archiveDir ) :
@@ -61,7 +65,8 @@ def __buildProject( project, buildDir ) :
 		subprocess.check_call( "patch -p1 < {patch}".format( patch = patch ), shell = True )
 
 	environment = os.environ.copy()
-	environment.update( config.get( "environment", {} ) )
+	for key, value in config.get( "environment", {} ).items() :
+		environment[key] = value.replace( "$BUILD_DIR", buildDir )
 	environment["BUILD_DIR"] = buildDir
 
 	for command in config["commands"] :

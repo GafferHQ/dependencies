@@ -19,7 +19,11 @@
 		# of zlib than CentOS 6 provides. These defines disable encryption,
 		# which isn't needed anyway, and fixes the problem.
 		# See https://github.com/appleseedhq/appleseed/issues/1597.
-		"CFLAGS" : "-DNOCRYPT -DNOUNCRYPT"
+		"CFLAGS" : "-DNOCRYPT -DNOUNCRYPT",
+
+		# Make sure we pick up the python headers from $BUILD_DIR,
+		# rather than any system level headers.
+		"PYTHON_INCLUDE_DIR" : "$BUILD_DIR/lib/Python.framework/Headers" if platform == "osx" else "$BUILD_DIR/include/python2.7"
 
 	},
 
@@ -47,6 +51,7 @@
 			" -D WARNINGS_AS_ERRORS=OFF"
 			" -D CMAKE_PREFIX_PATH=$BUILD_DIR"
 			" -D CMAKE_INSTALL_PREFIX=$BUILD_DIR/appleseed"
+			" -D PYTHON_INCLUDE_DIR=$PYTHON_INCLUDE_DIR"
 			" ..",
 
 		"cd build && make install -j `getconf _NPROCESSORS_ONLN` VERBOSE=1"
