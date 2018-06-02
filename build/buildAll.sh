@@ -49,7 +49,7 @@ cd `dirname $0`
 (cd .. && ./build/build.py --project Appleseed --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project GafferResources --buildDir $BUILD_DIR)
 ./buildUSD.sh
-./buildCortex.sh
+(cd .. && ./build/build.py --project Cortex --buildDir $BUILD_DIR)
 ./buildPyOpenGL.sh
 ./buildQt.sh
 ./buildPySide.sh
