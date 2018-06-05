@@ -10,44 +10,44 @@
 
 	"environment" : {
 
-		"LD_LIBRARY_PATH" : "$BUILD_DIR/lib",
+		"LD_LIBRARY_PATH" : "{buildDir}/lib",
 
 	},
 
 	"commands" : [
 
 		"scons install installDoc"
-			" -j `getconf _NPROCESSORS_ONLN`"
+			" -j {jobs}"
 			" CXX=`which g++`"
-			" INSTALL_PREFIX=$BUILD_DIR"
-			" INSTALL_DOC_DIR=$BUILD_DIR/doc/cortex"
-			" INSTALL_RMANPROCEDURAL_NAME=$BUILD_DIR/renderMan/procedurals/iePython"
-			" INSTALL_RMANDISPLAY_NAME=$BUILD_DIR/renderMan/displayDrivers/ieDisplay"
-			" INSTALL_PYTHON_DIR=$BUILD_DIR/python"
-			" INSTALL_ARNOLDOUTPUTDRIVER_NAME=$BUILD_DIR/arnold/plugins/ieOutputDriver.so"
+			" INSTALL_PREFIX={buildDir}"
+			" INSTALL_DOC_DIR={buildDir}/doc/cortex"
+			" INSTALL_RMANPROCEDURAL_NAME={buildDir}/renderMan/procedurals/iePython"
+			" INSTALL_RMANDISPLAY_NAME={buildDir}/renderMan/displayDrivers/ieDisplay"
+			" INSTALL_PYTHON_DIR={buildDir}/python"
+			" INSTALL_ARNOLDOUTPUTDRIVER_NAME={buildDir}/arnold/plugins/ieOutputDriver.so"
 			" INSTALL_IECORE_OPS=''"
-			" PYTHON_CONFIG=$BUILD_DIR/bin/python-config"
-			" BOOST_INCLUDE_PATH=$BUILD_DIR/include/boost"
-			" LIBPATH=$BUILD_DIR/lib"
+			" PYTHON_CONFIG={buildDir}/bin/python-config"
+			" BOOST_INCLUDE_PATH={buildDir}/include/boost"
+			" LIBPATH={buildDir}/lib"
 			" BOOST_LIB_SUFFIX=''"
-			" OPENEXR_INCLUDE_PATH=$BUILD_DIR/include"
-			" OIIO_INCLUDE_PATH=$BUILD_DIR/include"
-			" OSL_INCLUDE_PATH=$BUILD_DIR/include"
-			" BLOSC_INCLUDE_PATH=$BUILD_DIR/include"
-			" FREETYPE_INCLUDE_PATH=$BUILD_DIR/include/freetype2"
+			" OPENEXR_INCLUDE_PATH={buildDir}/include"
+			" OIIO_INCLUDE_PATH={buildDir}/include"
+			" OSL_INCLUDE_PATH={buildDir}/include"
+			" BLOSC_INCLUDE_PATH={buildDir}/include"
+			" FREETYPE_INCLUDE_PATH={buildDir}/include/freetype2"
 			" WITH_GL=1"
-			" GLEW_INCLUDE_PATH=$BUILD_DIR/include/GL"
+			" GLEW_INCLUDE_PATH={buildDir}/include/GL"
 			" RMAN_ROOT=$RMAN_ROOT"
 			" NUKE_ROOT="
 			" ARNOLD_ROOT=$ARNOLD_ROOT"
-			" APPLESEED_ROOT=$BUILD_DIR/appleseed"
-			" APPLESEED_INCLUDE_PATH=$BUILD_DIR/appleseed/include"
-			" APPLESEED_LIB_PATH=$BUILD_DIR/appleseed/lib"
+			" APPLESEED_ROOT={buildDir}/appleseed"
+			" APPLESEED_INCLUDE_PATH={buildDir}/appleseed/include"
+			" APPLESEED_LIB_PATH={buildDir}/appleseed/lib"
 			" ENV_VARS_TO_IMPORT=LD_LIBRARY_PATH"
 			" OPTIONS=''"
 			" SAVE_OPTIONS=gaffer.options",
 
-		"cp -r contrib/scripts/9to10 $BUILD_DIR/python",
+		"cp -r contrib/scripts/9to10 {buildDir}/python",
 
 	],
 

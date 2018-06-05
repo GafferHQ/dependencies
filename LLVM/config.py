@@ -11,16 +11,15 @@
 
 	"commands" : [
 
-		"echo $BUILD_DIR",
 		"mv ../cfe* tools/clang",
 		"mkdir build",
 		"cd build &&"
-		 	" cmake"
-		 	" -DCMAKE_INSTALL_PREFIX=$BUILD_DIR"
-		 	" -DCMAKE_BUILD_TYPE=Release"
+			" cmake"
+			" -DCMAKE_INSTALL_PREFIX={buildDir}"
+			" -DCMAKE_BUILD_TYPE=Release"
 			" -DLLVM_ENABLE_RTTI=ON"
-		 	" ..",
-		"cd build && make install -j `getconf _NPROCESSORS_ONLN`"
+			" ..",
+		"cd build && make install -j {jobs}"
 
 	],
 

@@ -10,7 +10,7 @@
 
 	"commands" : [
 
-		"cp -r resources $BUILD_DIR",
+		"cp -r resources {buildDir}",
 
 	],
 
