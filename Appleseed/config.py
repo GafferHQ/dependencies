@@ -12,8 +12,8 @@
 
 		# Needed so that `oslc` can be run to compile
 		# shaders during the build.
-		"DYLD_FALLBACK_LIBRARY_PATH" : "$BUILD_DIR/lib",
-		"LD_LIBRARY_PATH" : "$BUILD_DIR/lib",
+		"DYLD_FALLBACK_LIBRARY_PATH" : "{buildDir}/lib",
+		"LD_LIBRARY_PATH" : "{buildDir}/lib",
 
 		# Appleseed embeds minizip, which appears to require a later version
 		# of zlib than CentOS 6 provides. These defines disable encryption,
@@ -21,9 +21,9 @@
 		# See https://github.com/appleseedhq/appleseed/issues/1597.
 		"CFLAGS" : "-DNOCRYPT -DNOUNCRYPT",
 
-		# Make sure we pick up the python headers from $BUILD_DIR,
+		# Make sure we pick up the python headers from {buildDir},
 		# rather than any system level headers.
-		"PYTHON_INCLUDE_DIR" : "$BUILD_DIR/lib/Python.framework/Headers" if platform == "osx" else "$BUILD_DIR/include/python2.7"
+		"PYTHON_INCLUDE_DIR" : "{buildDir}/lib/Python.framework/Headers" if platform == "osx" else "{buildDir}/include/python2.7"
 
 	},
 
@@ -49,12 +49,12 @@
 			" -D USE_EXTERNAL_OIIO=ON"
 			" -D USE_SSE=ON"
 			" -D WARNINGS_AS_ERRORS=OFF"
-			" -D CMAKE_PREFIX_PATH=$BUILD_DIR"
-			" -D CMAKE_INSTALL_PREFIX=$BUILD_DIR/appleseed"
+			" -D CMAKE_PREFIX_PATH={buildDir}"
+			" -D CMAKE_INSTALL_PREFIX={buildDir}/appleseed"
 			" -D PYTHON_INCLUDE_DIR=$PYTHON_INCLUDE_DIR"
 			" ..",
 
-		"cd build && make install -j `getconf _NPROCESSORS_ONLN` VERBOSE=1"
+		"cd build && make install -j {jobs} VERBOSE=1"
 
 	],
 

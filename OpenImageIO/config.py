@@ -12,13 +12,13 @@
 
 		"mkdir gafferBuild",
 		"cd gafferBuild &&"
-		 	" cmake"
-		 	" -D CMAKE_INSTALL_PREFIX=$BUILD_DIR"
-		 	" -D CMAKE_INSTALL_LIBDIR=$BUILD_DIR/lib"
-		 	" -D CMAKE_PREFIX_PATH=$BUILD_DIR"
-		 	" -D USE_FFMPEG=NO"
-		 	" ..",
-		"cd gafferBuild && make install -j `getconf _NPROCESSORS_ONLN` VERBOSE=1"
+			" cmake"
+			" -D CMAKE_INSTALL_PREFIX={buildDir}"
+			" -D CMAKE_INSTALL_LIBDIR={buildDir}/lib"
+			" -D CMAKE_PREFIX_PATH={buildDir}"
+			" -D USE_FFMPEG=NO"
+			" ..",
+		"cd gafferBuild && make install -j {jobs} VERBOSE=1"
 
 	],
 

@@ -3,6 +3,7 @@
 import argparse
 import glob
 import os
+import multiprocessing
 import subprocess
 import shutil
 import sys
@@ -23,7 +24,9 @@ def __decompress( archive ) :
 	assert( len( dirs ) ==  1 )
 	return next( iter( dirs ) )
 
-def __buildProject( project, buildDir ) :
+def __loadConfig( project, buildDir ) :
+
+	# Load file.
 
 	with open( project + "/config.py" ) as f :
 		config =f.read()
@@ -32,6 +35,28 @@ def __buildProject( project, buildDir ) :
 		"platform" : "osx" if sys.platform == "darwin" else "linux"
 	}
 	config = eval( config, configContext, configContext )
+
+	# Apply variable substitutions.
+
+	variables = {
+		"buildDir" : buildDir,
+		"jobs" : multiprocessing.cpu_count(),
+	}
+
+	def __substitute( o ) :
+
+		if isinstance( o, dict ) :
+			return { k : __substitute( v ) for k, v in o.items() }
+		elif isinstance( o, list ) :
+			return [ __substitute( x ) for x in o ]
+		elif isinstance( o, str ) :
+			return o.format( **variables )
+
+	return __substitute( config )
+
+def __buildProject( project, buildDir ) :
+
+	config = __loadConfig( project, buildDir )
 
 	archiveDir = project + "/archives"
 	if not os.path.exists( archiveDir ) :
@@ -59,15 +84,14 @@ def __buildProject( project, buildDir ) :
 	decompressedArchives = [ __decompress( "../../" + a ) for a in archives ]
 	os.chdir( decompressedArchives[0] )
 
-	shutil.copy( config["license"], os.path.join( buildDir, "doc/licenses", project ) )
+	if config["license"] is not None :
+		shutil.copy( config["license"], os.path.join( buildDir, "doc/licenses", project ) )
 
 	for patch in glob.glob( "../../patches/*.patch" ) :
 		subprocess.check_call( "patch -p1 < {patch}".format( patch = patch ), shell = True )
 
 	environment = os.environ.copy()
-	for key, value in config.get( "environment", {} ).items() :
-		environment[key] = value.replace( "$BUILD_DIR", buildDir )
-	environment["BUILD_DIR"] = buildDir
+	environment.update( config.get( "environment", {} ) )
 
 	for command in config["commands"] :
 		sys.stderr.write( command + "\n" )

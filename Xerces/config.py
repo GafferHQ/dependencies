@@ -10,8 +10,8 @@
 
 	"commands" : [
 
-		"./configure --prefix=$BUILD_DIR --without-icu",
-		"make -j `getconf _NPROCESSORS_ONLN`",
+		"./configure --prefix={buildDir} --without-icu",
+		"make -j {jobs}",
 		"make install",
 
 	],

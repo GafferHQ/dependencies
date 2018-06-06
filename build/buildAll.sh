@@ -36,7 +36,7 @@ cd `dirname $0`
 ./buildTBB.sh
 ./buildEXR.sh
 ./buildFonts.sh
-./buildGLEW.sh
+(cd .. && ./build/build.py --project GLEW --buildDir $BUILD_DIR)
 ./buildOCIO.sh
 (cd .. && ./build/build.py --project OpenImageIO --buildDir $BUILD_DIR)
 ./buildBlosc.sh
@@ -47,9 +47,9 @@ cd `dirname $0`
 ./buildAlembic.sh
 (cd .. && ./build/build.py --project Xerces --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project Appleseed --buildDir $BUILD_DIR)
-./buildResources.sh
+(cd .. && ./build/build.py --project GafferResources --buildDir $BUILD_DIR)
 ./buildUSD.sh
-./buildCortex.sh
+(cd .. && ./build/build.py --project Cortex --buildDir $BUILD_DIR)
 ./buildPyOpenGL.sh
 ./buildQt.sh
 ./buildPySide.sh
