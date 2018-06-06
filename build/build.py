@@ -26,22 +26,36 @@ def __decompress( archive ) :
 
 def __loadConfig( project, buildDir ) :
 
-	# Load file.
+	# Load file. Really we want to use JSON to
+	# enforce a "pure data" methodology, but JSON
+	# doesn't allow comments so we use Python
+	# instead. Because we use `eval` and don't expose
+	# any modules, there's not much beyond JSON
+	# syntax that we can use in practice.
 
 	with open( project + "/config.py" ) as f :
 		config =f.read()
 
-	configContext = {
-		"platform" : "osx" if sys.platform == "darwin" else "linux"
-	}
-	config = eval( config, configContext, configContext )
+	config = eval( config )
+
+	# Apply platform-specific config overrides.
+
+	platform = "platform:osx" if sys.platform == "darwin" else "platform:linux"
+	platformOverrides = config.pop( platform, {} )
+	for key, value in platformOverrides.items() :
+
+		if isinstance( value, dict ) and key in config :
+			config[key].update( value )
+		else :
+			config[key] = value
 
 	# Apply variable substitutions.
 
-	variables = {
+	variables = config.get( "variables", {} ).copy()
+	variables.update( {
 		"buildDir" : buildDir,
 		"jobs" : multiprocessing.cpu_count(),
-	}
+	} )
 
 	def __substitute( o ) :
 
@@ -50,7 +64,12 @@ def __loadConfig( project, buildDir ) :
 		elif isinstance( o, list ) :
 			return [ __substitute( x ) for x in o ]
 		elif isinstance( o, str ) :
-			return o.format( **variables )
+			while True :
+				s = o.format( **variables )
+				if s == o :
+					return s
+				else :
+					o = s
 
 	return __substitute( config )
 
