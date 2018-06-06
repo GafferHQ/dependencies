@@ -28,7 +28,7 @@ cd `dirname $0`
 ./buildPython.sh
 ./buildCMark.sh
 ./buildSubprocess32.sh
-./buildBoost.sh
+(cd .. && ./build/build.py --project Boost --buildDir $BUILD_DIR)
 ./buildJPEG.sh
 ./buildTIFF.sh
 ./buildPNG.sh
