@@ -37,7 +37,7 @@ cd `dirname $0`
 ./buildEXR.sh
 ./buildFonts.sh
 (cd .. && ./build/build.py --project GLEW --buildDir $BUILD_DIR)
-./buildOCIO.sh
+(cd .. && ./build/build.py --project OpenColorIO --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project OpenImageIO --buildDir $BUILD_DIR)
 ./buildBlosc.sh
 ./buildVDB.sh
