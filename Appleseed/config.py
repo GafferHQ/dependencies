@@ -21,9 +21,14 @@
 		# See https://github.com/appleseedhq/appleseed/issues/1597.
 		"CFLAGS" : "-DNOCRYPT -DNOUNCRYPT",
 
+	},
+
+	"variables" : {
+
 		# Make sure we pick up the python headers from {buildDir},
-		# rather than any system level headers.
-		"PYTHON_INCLUDE_DIR" : "{buildDir}/lib/Python.framework/Headers" if platform == "osx" else "{buildDir}/include/python2.7"
+		# rather than any system level headers. We refer to this
+		# variable in "commands" below.
+		"pythonIncludeDir" : "{buildDir}/include/python2.7",
 
 	},
 
@@ -51,11 +56,22 @@
 			" -D WARNINGS_AS_ERRORS=OFF"
 			" -D CMAKE_PREFIX_PATH={buildDir}"
 			" -D CMAKE_INSTALL_PREFIX={buildDir}/appleseed"
-			" -D PYTHON_INCLUDE_DIR=$PYTHON_INCLUDE_DIR"
+			" -D PYTHON_INCLUDE_DIR={pythonIncludeDir}"
 			" ..",
 
 		"cd build && make install -j {jobs} VERBOSE=1"
 
 	],
+
+	"platform:osx" : {
+
+		"variables" : {
+
+			# Python headers have a different location on OSX.
+			"pythonIncludeDir" : "{buildDir}/lib/Python.framework/Headers",
+
+		},
+
+	},
 
 }

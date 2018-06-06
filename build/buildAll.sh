@@ -28,7 +28,7 @@ cd `dirname $0`
 ./buildPython.sh
 ./buildCMark.sh
 ./buildSubprocess32.sh
-./buildBoost.sh
+(cd .. && ./build/build.py --project Boost --buildDir $BUILD_DIR)
 ./buildJPEG.sh
 ./buildTIFF.sh
 ./buildPNG.sh
@@ -37,7 +37,7 @@ cd `dirname $0`
 ./buildEXR.sh
 ./buildFonts.sh
 (cd .. && ./build/build.py --project GLEW --buildDir $BUILD_DIR)
-./buildOCIO.sh
+(cd .. && ./build/build.py --project OpenColorIO --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project OpenImageIO --buildDir $BUILD_DIR)
 ./buildBlosc.sh
 ./buildVDB.sh
