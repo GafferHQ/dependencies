@@ -44,7 +44,7 @@ cd `dirname $0`
 (cd .. && ./build/build.py --project LLVM --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project OpenShadingLanguage --buildDir $BUILD_DIR)
 ./buildHDF5.sh
-./buildAlembic.sh
+(cd .. && ./build/build.py --project Alembic --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project Xerces --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project Appleseed --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project GafferResources --buildDir $BUILD_DIR)
