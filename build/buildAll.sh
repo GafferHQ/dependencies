@@ -25,7 +25,7 @@ fi
 
 cd `dirname $0`
 ./buildOpenSSL.sh
-./buildPython.sh
+(cd .. && ./build/build.py --project Python --buildDir $BUILD_DIR)
 ./buildCMark.sh
 ./buildSubprocess32.sh
 (cd .. && ./build/build.py --project Boost --buildDir $BUILD_DIR)

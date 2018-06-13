@@ -63,6 +63,8 @@ def __loadConfig( project, buildDir ) :
 			return { k : __substitute( v ) for k, v in o.items() }
 		elif isinstance( o, list ) :
 			return [ __substitute( x ) for x in o ]
+		elif isinstance( o, tuple ) :
+			return tuple( __substitute( x ) for x in o )
 		elif isinstance( o, str ) :
 			while True :
 				s = o.format( **variables )
@@ -115,6 +117,11 @@ def __buildProject( project, buildDir ) :
 	for command in config["commands"] :
 		sys.stderr.write( command + "\n" )
 		subprocess.check_call( command, shell = True, env = environment )
+
+	for link in config.get( "symbolicLinks", [] ) :
+		if os.path.exists( link[0] ) :
+			os.remove( link[0] )
+		os.symlink( link[1], link[0] )
 
 parser = argparse.ArgumentParser()
 
