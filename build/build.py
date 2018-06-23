@@ -88,7 +88,7 @@ def __loadConfig( project, buildDir ) :
 		elif isinstance( o, str ) :
 			while True :
 				s = o.format( **variables )
-				s = s.replace( "/", os.sep )
+				s = s.replace( "(?<!\\\\)/", os.sep )
 				s = re.sub( "mv\\s" , "move ", s ) if config["platform"] == "platform:windows" else s
 				s = re.sub( "cp\\s" , "copy ", s ) if config["platform"] == "platform:windows" else s
 				if s == o :
