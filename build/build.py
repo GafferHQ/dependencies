@@ -48,6 +48,10 @@ def __loadConfig( project, buildDir ) :
 	config["platform"] = "platform:{}".format({ "darwin": "osx", "linux":"linux", "win32": "windows"}.get( sys.platform, "linux" ))
 	platformOverrides = config.pop( config["platform"], {} )
 
+	unused_keys = [key for key, value in config.items() if "platform:" in key]
+	for key in unused_keys:
+		config.pop( key, None )
+
 	for key, value in platformOverrides.items() :
 
 		if isinstance( value, dict ) and key in config :
