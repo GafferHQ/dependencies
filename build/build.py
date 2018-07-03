@@ -106,41 +106,46 @@ def __loadConfig( project, buildDir ) :
 	config.update( { "downloads": original_downloads } )
 	return config
 
-def __buildProject( project, buildDir ) :
+def __buildProject( project, buildDir, noDownload, workingDirOverride ) :
 
 	config = __loadConfig( project, buildDir )
 
-	archiveDir = project + "/archives"
-	if not os.path.exists( archiveDir ) :
-		os.makedirs( archiveDir )
-
-	archives = []
-	for download in config["downloads"] :
-
-		archivePath = os.path.join( archiveDir, os.path.basename( download ) )
-		archives.append( archivePath )
-
-		if os.path.exists( archivePath ) :
-			continue
-
-		sys.stderr.write( "Downloading {}".format( download ) + "\n" )
-		urllib.urlretrieve( download, archivePath )
-
 	workingDir = project + "/working"
-	if os.path.exists( workingDir ) :
-		shutil.rmtree( workingDir )
-	os.makedirs( workingDir )
-	os.chdir( workingDir )
 
-	decompressedArchives = [ __decompress( "../../" + a ) for a in archives ]
-	os.chdir( decompressedArchives[0] )
+	if not noDownload:
+		archiveDir = project + "/archives"
+		if not os.path.exists( archiveDir ):
+			os.makedirs( archiveDir )
+
+		archives = []
+		for download in config["downloads"] :
+
+			archivePath = os.path.join( archiveDir, os.path.basename( download ) )
+			archives.append( archivePath )
+
+			if os.path.exists( archivePath ) :
+				continue
+
+			sys.stderr.write( "Downloading {}".format( download ) + "\n" )
+			urllib.urlretrieve( download, archivePath )
+
+		if os.path.exists( workingDir ) :
+			shutil.rmtree( workingDir )
+		os.makedirs( workingDir )
+		os.chdir( workingDir )
+
+		decompressedArchives = [ __decompress( "../../" + a ) for a in archives ]
+		os.chdir( decompressedArchives[0] )
+
+		patch_command = "%ROOT_DIR%\\winbuild\\patch\\bin\\patch" if config["platform"] == "platform:windows" else "patch"
+		for patch in glob.glob( "../../patches/{}/*.patch".format( config["platform"].lstrip( "platform:" ) ) ) :
+			subprocess.check_call( "{patch_command} -p1 < {patch}".format( patch = patch, patch_command = patch_command ), shell = True )
+
+	else:
+		os.chdir( workingDir + os.sep + workingDirOverride )
 
 	if config.get( "license" ) is not None :
 		shutil.copy( config["license"], os.path.join( buildDir, "doc/licenses", project ) )
-
-	patch_command = "%ROOT_DIR%\\winbuild\\patch\\bin\\patch" if config["platform"] == "platform:windows" else "patch"
-	for patch in glob.glob( "../../patches/{}/*.patch".format( config["platform"].lstrip( "platform:" ) ) ) :
-		subprocess.check_call( "{patch_command} -p1 < {patch}".format( patch = patch, patch_command = patch_command ), shell = True )
 
 	if config["platform"] == "platform:windows" and "LD_LIBRARY_PATH" in config.get( "environment", {} ) :
 		config["environment"]["PATH"] = "{0};{1}".format( config["environment"]["LD_LIBRARY_PATH"], config["environment"].get( "PATH", "%PATH%" ) )
@@ -171,5 +176,17 @@ parser.add_argument(
 	help = "The directory to put the builds in."
 )
 
+parser.add_argument(
+	"--noDownload",
+	required = False,
+	help = "Do not download, extract or patch archives, instead building existing code if it exists. Specifying a --workingDir is most likely needed to build successfully.",
+	action = "store_true"
+)
+
+parser.add_argument(
+	"--workingDir",
+	required = False,
+	help = "The subdirectory of the project directory to use as the working directory. Typically only used in conjunction with --noDownload.")
+
 args = parser.parse_args()
-__buildProject( args.project, args.buildDir )
+__buildProject( args.project, args.buildDir, args.noDownload, args.workingDir )
