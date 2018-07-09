@@ -19,8 +19,25 @@
 	"manifest" : [
 
 		"include/GL",
-		"lib/libGLEW*{sharedLibraryExtension}*",
+		"lib/{libraryPrefix}GLEW*{sharedLibraryExtension}*",
+		"lib/{libraryPrefix}GLEW*.lib",
 
 	],
+	"platform:windows" : {
+
+		"commands" : [
+
+			"if not exist \"build\" mkdir build",
+			"cd build &&"
+				" cmake"
+				" -Wno-dev"
+				" -G {cmakeGenerator}"
+				" -DCMAKE_INSTALL_PREFIX={buildDir}"
+				" ..\\build\\cmake",
+			"cd build && cmake --build . --config {cmakeBuildType} --target install -- -j {jobs}",
+			"copy {buildDir}\\bin\\{libraryPrefix}GLEW*{sharedLibraryExtension}* {buildDir}\\lib\\",
+		]
+
+	}
 
 }
