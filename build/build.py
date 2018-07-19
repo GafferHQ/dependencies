@@ -7,6 +7,8 @@ import multiprocessing
 import subprocess
 import shutil
 import sys
+import re
+import urllib
 
 def __projects() :
 
@@ -16,11 +18,14 @@ def __projects() :
 def __decompress( archive ) :
 
 	command = "tar -xvf {archive}".format( archive=archive )
+	if sys.platform == "win32":
+		command = "cmake -E tar xvf {archive}".format( archive=archive )
+		
 	sys.stderr.write( command + "\n" )
 	files = subprocess.check_output( command, stderr=subprocess.STDOUT, shell = True )
 	files = [ f for f in files.split( "\n" ) if f ]
 	files = [ f[2:] if f.startswith( "x " ) else f for f in files ]
-	dirs = { f.split( "/" )[0] for f in files }
+	dirs = { f.split( "/" )[0] for f in files if re.search( "warning:", f ) == None }
 	assert( len( dirs ) ==  1 )
 	return next( iter( dirs ) )
 
@@ -40,8 +45,9 @@ def __loadConfig( project, buildDir ) :
 
 	# Apply platform-specific config overrides.
 
-	platform = "platform:osx" if sys.platform == "darwin" else "platform:linux"
-	platformOverrides = config.pop( platform, {} )
+	config["platform"] = "platform:{}".format({ "darwin": "osx", "linux":"linux", "win32": "windows"}.get( sys.platform, "linux" ))
+	platformOverrides = config.pop( config["platform"], {} )
+
 	for key, value in platformOverrides.items() :
 
 		if isinstance( value, dict ) and key in config :
@@ -52,10 +58,24 @@ def __loadConfig( project, buildDir ) :
 	# Apply variable substitutions.
 
 	variables = config.get( "variables", {} ).copy()
-	variables.update( {
+	cmake_generator = "\"NMake Makefiles JOM\"" if config["platform"] == "platform:windows" else "\"Unix Makefiles\""
+	default_variables = {
 		"buildDir" : buildDir,
 		"jobs" : multiprocessing.cpu_count(),
-	} )
+		"cmakeGenerator" : cmake_generator,
+		"cmakeBuildType": "Release"
+	}
+	missing_variables = { k:v for (k, v) in default_variables.items() if k not in variables }
+	variables.update( missing_variables )
+
+	if config["platform"] == "platform:windows":
+		# make sure JOM is in the path
+		path_variable = ""
+		if "environment" in config:
+			path_variable = os.path.expandvars(config["environment"].get("PATH", "%PATH%"))
+			config["environment"].update( { "PATH": path_variable + ";%ROOT_DIR%\\winbuild\\jom" } )
+		else:
+			config["environment"] = { "PATH": "%PATH%;%ROOT_DIR%\\winbuild\\jom" }
 
 	def __substitute( o ) :
 
@@ -92,9 +112,8 @@ def __buildProject( project, buildDir ) :
 		if os.path.exists( archivePath ) :
 			continue
 
-		downloadCommand = "curl -L {0} > {1}".format( download, archivePath )
-		sys.stderr.write( downloadCommand + "\n" )
-		subprocess.check_call( downloadCommand, shell = True )
+		sys.stderr.write( "Downloading {}".format( download ) + "\n" )
+		urllib.urlretrieve( download, archivePath )
 
 	workingDir = project + "/working"
 	if os.path.exists( workingDir ) :
@@ -111,8 +130,12 @@ def __buildProject( project, buildDir ) :
 			os.makedirs( licenseDir )
 		shutil.copy( config["license"], os.path.join( licenseDir, project ) )
 
-	for patch in glob.glob( "../../patches/*.patch" ) :
-		subprocess.check_call( "patch -p1 < {patch}".format( patch = patch ), shell = True )
+	patch_command = "%ROOT_DIR%\\winbuild\\patch\\bin\\patch" if config["platform"] == "platform:windows" else "patch"
+	for patch in glob.glob( "../../patches/{}/*.patch".format( config["platform"].lstrip( "platform:" ) ) ) :
+		subprocess.check_call( "{patch_command} -p1 < {patch}".format( patch = patch, patch_command = patch_command ), shell = True )
+
+	if config["platform"] == "platform:windows" and "LD_LIBRARY_PATH" in config.get( "environment", {} ) :
+		config["environment"]["PATH"] = "{0};{1}".format( config["environment"]["LD_LIBRARY_PATH"], config["environment"].get( "PATH", "%PATH%" ) )
 
 	environment = os.environ.copy()
 	for k, v in config.get( "environment", {} ).items() :
