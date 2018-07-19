@@ -6,8 +6,6 @@
 
 	],
 
-	"license" : "LICENSE",
-
 	"commands" : [
 
 		"mkdir gafferBuild",
