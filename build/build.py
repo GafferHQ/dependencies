@@ -40,8 +40,9 @@ def __loadConfig( project, buildDir ) :
 
 	# Apply platform-specific config overrides.
 
-	platform = "platform:osx" if sys.platform == "darwin" else "platform:linux"
-	platformOverrides = config.pop( platform, {} )
+	config["platform"] = "platform:{}".format({ "darwin": "osx", "linux":"linux", "win32": "windows"}.get( sys.platform, "linux" ))
+	platformOverrides = config.pop( config["platform"], {} )
+	
 	for key, value in platformOverrides.items() :
 
 		if isinstance( value, dict ) and key in config :
