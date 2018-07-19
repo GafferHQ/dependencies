@@ -7,6 +7,7 @@ import multiprocessing
 import subprocess
 import shutil
 import sys
+import re
 import urllib
 
 def __projects() :
@@ -21,7 +22,7 @@ def __decompress( archive ) :
 	files = subprocess.check_output( command, stderr=subprocess.STDOUT, shell = True )
 	files = [ f for f in files.split( "\n" ) if f ]
 	files = [ f[2:] if f.startswith( "x " ) else f for f in files ]
-	dirs = { f.split( "/" )[0] for f in files }
+	dirs = { f.split( "/" )[0] for f in files if re.search( "warning:", f ) == None }
 	assert( len( dirs ) ==  1 )
 	return next( iter( dirs ) )
 
