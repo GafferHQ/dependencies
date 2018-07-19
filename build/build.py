@@ -20,7 +20,7 @@ def __decompress( archive ) :
 	command = "tar -xvf {archive}".format( archive=archive )
 	if sys.platform == "win32":
 		command = "cmake -E tar xvf {archive}".format( archive=archive )
-		
+
 	sys.stderr.write( command + "\n" )
 	files = subprocess.check_output( command, stderr=subprocess.STDOUT, shell = True )
 	files = [ f for f in files.split( "\n" ) if f ]
@@ -88,12 +88,19 @@ def __loadConfig( project, buildDir ) :
 		elif isinstance( o, str ) :
 			while True :
 				s = o.format( **variables )
+				s = s.replace( "/", os.sep )
+				s = re.sub( "mv\\s" , "move ", s ) if config["platform"] == "platform:windows" else s
+				s = re.sub( "cp\\s" , "copy ", s ) if config["platform"] == "platform:windows" else s
 				if s == o :
 					return s
 				else :
 					o = s
 
-	return __substitute( config )
+	# changing "/" to "\\" on windows will cause errors with the urls
+	original_downloads = config.get("downloads", [])
+	config = __substitute( config )
+	config.update( { "downloads": original_downloads } )
+	return config
 
 def __buildProject( project, buildDir ) :
 
