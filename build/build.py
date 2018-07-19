@@ -134,8 +134,9 @@ def __buildProject( project, buildDir ) :
 	if config.get( "license" ) is not None :
 		shutil.copy( config["license"], os.path.join( buildDir, "doc/licenses", project ) )
 
-	for patch in glob.glob( "../../patches/*.patch" ) :
-		subprocess.check_call( "patch -p1 < {patch}".format( patch = patch ), shell = True )
+	patch_command = "%ROOT_DIR%\\winbuild\\patch\\bin\\patch" if config["platform"] == "platform:windows" else "patch"
+	for patch in glob.glob( "../../patches/{}/*.patch".format( config["platform"].lstrip( "platform:" ) ) ) :
+		subprocess.check_call( "{patch_command} -p1 < {patch}".format( patch = patch, patch_command = patch_command ), shell = True )
 
 	environment = os.environ.copy()
 	environment.update( config.get( "environment", {} ) )
