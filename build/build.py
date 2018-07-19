@@ -55,10 +55,24 @@ def __loadConfig( project, buildDir ) :
 	# Apply variable substitutions.
 
 	variables = config.get( "variables", {} ).copy()
-	variables.update( {
+	cmake_generator = "\"NMake Makefiles JOM\"" if config["platform"] == "platform:windows" else "\"Unix Makefiles\""
+	default_variables = {
 		"buildDir" : buildDir,
 		"jobs" : multiprocessing.cpu_count(),
-	} )
+		"cmakeGenerator" : cmake_generator,
+		"cmakeBuildType": "Release"
+	}
+	missing_variables = { k:v for (k, v) in default_variables.items() if k not in variables }
+	variables.update( missing_variables )
+
+	if config["platform"] == "platform:windows":
+		# make sure JOM is in the path
+		path_variable = ""
+		if "environment" in config:
+			path_variable = os.path.expandvars(config["environment"].get("PATH", "%PATH%"))
+			config["environment"].update( { "PATH": path_variable + ";%ROOT_DIR%\\winbuild\\jom" } )
+		else:
+			config["environment"] = { "PATH": "%PATH%;%ROOT_DIR%\\winbuild\\jom" }
 
 	def __substitute( o ) :
 
