@@ -138,6 +138,9 @@ def __buildProject( project, buildDir ) :
 	for patch in glob.glob( "../../patches/{}/*.patch".format( config["platform"].lstrip( "platform:" ) ) ) :
 		subprocess.check_call( "{patch_command} -p1 < {patch}".format( patch = patch, patch_command = patch_command ), shell = True )
 
+	if config["platform"] == "platform:windows" and "LD_LIBRARY_PATH" in config.get( "environment", {} ) :
+		config["environment"]["PATH"] = "{0};{1}".format( config["environment"]["LD_LIBRARY_PATH"], config["environment"].get( "PATH", "%PATH%" ) )
+
 	environment = os.environ.copy()
 	environment.update( config.get( "environment", {} ) )
 
