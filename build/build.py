@@ -18,6 +18,9 @@ def __projects() :
 def __decompress( archive ) :
 
 	command = "tar -xvf {archive}".format( archive=archive )
+	if sys.platform == "win32":
+		command = "cmake -E tar xvf {archive}".format( archive=archive )
+		
 	sys.stderr.write( command + "\n" )
 	files = subprocess.check_output( command, stderr=subprocess.STDOUT, shell = True )
 	files = [ f for f in files.split( "\n" ) if f ]
