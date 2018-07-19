@@ -7,6 +7,7 @@ import multiprocessing
 import subprocess
 import shutil
 import sys
+import urllib
 
 def __projects() :
 
@@ -42,7 +43,7 @@ def __loadConfig( project, buildDir ) :
 
 	config["platform"] = "platform:{}".format({ "darwin": "osx", "linux":"linux", "win32": "windows"}.get( sys.platform, "linux" ))
 	platformOverrides = config.pop( config["platform"], {} )
-	
+
 	for key, value in platformOverrides.items() :
 
 		if isinstance( value, dict ) and key in config :
@@ -93,9 +94,8 @@ def __buildProject( project, buildDir ) :
 		if os.path.exists( archivePath ) :
 			continue
 
-		downloadCommand = "curl -L {0} > {1}".format( download, archivePath )
-		sys.stderr.write( downloadCommand + "\n" )
-		subprocess.check_call( downloadCommand, shell = True )
+		sys.stderr.write( "Downloading {}".format( download ) + "\n" )
+		urllib.urlretrieve( download, archivePath )
 
 	workingDir = project + "/working"
 	if os.path.exists( workingDir ) :
