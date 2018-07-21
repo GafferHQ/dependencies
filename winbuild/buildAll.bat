@@ -1,6 +1,6 @@
 @echo off
 
-for %%n in (BUILD_DIR ARNOLD_ROOT RMAN_ROOT) do (
+for %%n in (BUILD_DIR) do (
 	if not defined %%n (
 		echo ERROR : %%n environment variable not set
 		goto error
