@@ -17,10 +17,16 @@ We strongly recommend using the precompiled binaries as described above, but if 
 
 Since the build covers so many different projects, it requires the installation of several common software development tools, most of which should be installed by default on a typical developer machine. They include (but are probably not limited to) :
 
+#### Linux and OS X
 - Make
 - CMake
 - SCons
 - libbz2 (and headers)
+
+#### Windows
+- Microsoft Visual Studio 2017 (Community edition is a free version that is known to work)
+- CMake
+- Python 2.7.xx
 
 ### Invoking the build
 
@@ -30,6 +36,7 @@ The build is controlled by several environment variables, which must be set up b
 - ARNOLD_ROOT : Path to the root of an Arnold installation
 - RMAN_ROOT : Path to the root of a 3delight installation
 
+#### Linux and OS X
 The build is then initiated using a bash script, which should be run from the root directory of the project :
 
 ```
@@ -40,4 +47,32 @@ Dependencies can be built individually using the other scripts in the build dire
 
 ```
 ./build/buildTBB.sh
+```
+#### Windows
+The build is then initiated using the "x64 Native Tools Command Prompt" for Visual Studio 2017. This is a special command prompt that sets up all of the environment variables for Visual Studio to find the various tools needed for building. It is installed with Visual Studio and is accessible from the start menu under Visual Studio 2017.
+
+To build all of the dependencies run buildAll.bat from the winbuild directory:
+```
+./winbuild/buildAll.bat
+```
+
+Dependencies can be built individually using other batch files in the build directory, for instance Python can be built as follows:
+```
+./winbuild/buildPython.bat
+```
+
+#### Universal Python Builder
+Some packages are built using a common Python script and configuration settings for each package. These are built by calling the build.py script in the "build" directory (for all of Linux, OS X and Windows) and specifying the package to build and the build directory.
+
+For example, to build Boost on Linux and OS X and you would run:
+```
+./build/build.py --project Boost --buildDir $BUILD_DIR
+```
+and on Windows :
+```
+python build/build.py --project Boost --buildDir %BUILD_DIR%
+```
+A list of projects that have are built using this script is shown if you run
+```
+./build/build.py
 ```
