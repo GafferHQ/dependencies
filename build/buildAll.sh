@@ -32,7 +32,7 @@ cd `dirname $0`
 ./buildJPEG.sh
 ./buildTIFF.sh
 ./buildPNG.sh
-./buildFreeType.sh
+(cd .. && ./build/build.py --project FreeType --buildDir $BUILD_DIR)
 ./buildTBB.sh
 ./buildEXR.sh
 ./buildFonts.sh
