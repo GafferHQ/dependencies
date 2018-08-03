@@ -14,4 +14,14 @@
 
 	],
 
+	"platform:windows" : {
+
+		"commands" : [
+
+			"xcopy /s /e /h /y /i resources {buildDir}\\resources",
+
+		],
+
+	}
+
 }
