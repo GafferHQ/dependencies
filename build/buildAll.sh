@@ -34,7 +34,7 @@ cd `dirname $0`
 (cd .. && ./build/build.py --project PNG --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project FreeType --buildDir $BUILD_DIR)
 ./buildTBB.sh
-./buildEXR.sh
+(cd .. && ./build/build.py --project OpenEXR --buildDir $BUILD_DIR)
 ./buildFonts.sh
 (cd .. && ./build/build.py --project GLEW --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project OpenColorIO --buildDir $BUILD_DIR)

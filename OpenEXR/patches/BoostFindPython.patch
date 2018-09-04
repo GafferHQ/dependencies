@@ -1,0 +1,11 @@
+--- a/PyIlmBase/CMakeLists.txt	2018-09-09 13:12:39.303466319 -0700
++++ b/PyIlmBase/CMakeLists.txt	2018-09-09 13:12:26.795306657 -0700
+@@ -39,7 +39,7 @@
+ FIND_PACKAGE ( PythonLibs REQUIRED )
+ FIND_PACKAGE ( PythonInterp REQUIRED )
+ FIND_PACKAGE ( Boost
+-	COMPONENTS Python
++	COMPONENTS python
+ )
+ FIND_PACKAGE ( NumPy )
+ 
