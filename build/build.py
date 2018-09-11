@@ -112,7 +112,8 @@ def __buildProject( project, buildDir ) :
 		subprocess.check_call( "patch -p1 < {patch}".format( patch = patch ), shell = True )
 
 	environment = os.environ.copy()
-	environment.update( config.get( "environment", {} ) )
+	for k, v in config.get( "environment", {} ).items() :
+		environment[k] = os.path.expandvars( v )
 
 	for command in config["commands"] :
 		sys.stderr.write( command + "\n" )
