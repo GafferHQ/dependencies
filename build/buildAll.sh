@@ -27,7 +27,7 @@ cd `dirname $0`
 ./buildOpenSSL.sh
 (cd .. && ./build/build.py --project Python --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project CMark --buildDir $BUILD_DIR)
-./buildSubprocess32.sh
+(cd .. && ./build/build.py --project Subprocess32 --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project Boost --buildDir $BUILD_DIR)
 ./buildJPEG.sh
 ./buildTIFF.sh
