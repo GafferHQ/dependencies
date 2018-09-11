@@ -29,7 +29,7 @@ cd `dirname $0`
 (cd .. && ./build/build.py --project CMark --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project Subprocess32 --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project Boost --buildDir $BUILD_DIR)
-./buildJPEG.sh
+(cd .. && ./build/build.py --project LibJPEG-Turbo --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project LibTIFF --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project PNG --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project FreeType --buildDir $BUILD_DIR)
