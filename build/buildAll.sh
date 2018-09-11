@@ -31,7 +31,7 @@ cd `dirname $0`
 (cd .. && ./build/build.py --project Boost --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project LibJPEG-Turbo --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project LibTIFF --buildDir $BUILD_DIR)
-(cd .. && ./build/build.py --project PNG --buildDir $BUILD_DIR)
+(cd .. && ./build/build.py --project LibPNG --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project FreeType --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project TBB --buildDir $BUILD_DIR)
 ./buildEXR.sh
