@@ -50,7 +50,7 @@ cd `dirname $0`
 (cd .. && ./build/build.py --project GafferResources --buildDir $BUILD_DIR)
 ./buildUSD.sh
 (cd .. && ./build/build.py --project Cortex --buildDir $BUILD_DIR)
-./buildPyOpenGL.sh
+(cd .. && ./build/build.py --project PyOpenGL --buildDir $BUILD_DIR)
 ./buildQt.sh
 ./buildPySide.sh
 ./buildQtPy.sh
