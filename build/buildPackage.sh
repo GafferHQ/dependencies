@@ -115,6 +115,7 @@ manifest="
 	doc/licenses
 	doc/cortex/html
 	doc/osl*
+	doc/openimageio.pdf
 
 	python/IECore*
 	python/9to10
