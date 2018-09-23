@@ -29,7 +29,8 @@
 			" -D ENABLERTTI=1"
 			" -D LLVM_STATIC=1"
 			" ..",
-		"cd gafferBuild && make install -j {jobs} VERBOSE=1"
+		"cd gafferBuild && make install -j {jobs} VERBOSE=1",
+		"cp {buildDir}/share/doc/OSL/osl-languagespec.pdf {buildDir}/doc",
 
 	],
 
