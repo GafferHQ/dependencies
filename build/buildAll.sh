@@ -53,5 +53,5 @@ cd `dirname $0`
 (cd .. && ./build/build.py --project PyOpenGL --buildDir $BUILD_DIR)
 ./buildQt.sh
 ./buildPySide.sh
-./buildQtPy.sh
+(cd .. && ./build/build.py --project Qt.py --buildDir $BUILD_DIR)
 ./buildPackage.sh
