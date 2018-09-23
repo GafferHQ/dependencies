@@ -24,7 +24,7 @@ if [[ `uname` = "Darwin" ]] ; then
 fi
 
 cd `dirname $0`
-./buildOpenSSL.sh
+(cd .. && ./build/build.py --project OpenSSL --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project Python --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project CMark --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project Subprocess32 --buildDir $BUILD_DIR)

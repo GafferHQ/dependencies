@@ -106,7 +106,10 @@ def __buildProject( project, buildDir ) :
 	os.chdir( decompressedArchives[0] )
 
 	if config["license"] is not None :
-		shutil.copy( config["license"], os.path.join( buildDir, "doc/licenses", project ) )
+		licenseDir = os.path.join( buildDir, "doc/licenses" )
+		if not os.path.exists( licenseDir ) :
+			os.makedirs( licenseDir )
+		shutil.copy( config["license"], os.path.join( licenseDir, project ) )
 
 	for patch in glob.glob( "../../patches/*.patch" ) :
 		subprocess.check_call( "patch -p1 < {patch}".format( patch = patch ), shell = True )
