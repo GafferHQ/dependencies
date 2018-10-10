@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"http://apache.mirror.anlx.net//xerces/c/3/sources/xerces-c-3.2.1.tar.gz"
+		"http://apache.mirror.anlx.net//xerces/c/3/sources/xerces-c-3.2.2.tar.gz"
 
 	],
 
