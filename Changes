@@ -1,0 +1,13 @@
+0.52.0.0
+--------
+
+- Cortex : Updated to version 10.0.0-a37.
+
+0.51.0.0
+--------
+
+- Cortex : Updated to version 10.0.0-a35.
+- USD : Updated to version 18.09.
+- Xerces : Updated to version 3.2.2.
+- OpenImageIO : Added documentation to package.
+- OpenShadingLanguage : Fixed documentation installation.
