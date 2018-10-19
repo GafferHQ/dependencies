@@ -1,7 +1,8 @@
 0.52.0.0
 --------
 
-- Cortex : Updated to version 10.0.0-a37.
+- Cortex : Updated to version 10.0.0-a38.
+- USD : Fixed python module linking on OSX.
 
 0.51.0.0
 --------
