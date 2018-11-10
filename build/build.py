@@ -129,7 +129,7 @@ def __buildProject( project, buildDir ) :
 	decompressedArchives = [ __decompress( "../../" + a ) for a in archives ]
 	os.chdir( decompressedArchives[0] )
 
-	if config["license"] is not None :
+	if config.get("license") is not None :
 		licenseDir = os.path.join( buildDir, "doc/licenses" )
 		if not os.path.exists( licenseDir ) :
 			os.makedirs( licenseDir )
