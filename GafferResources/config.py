@@ -10,11 +10,13 @@
 
 	"license" : None,
 
-	"commands" : [
+	"commands" : [],
 
-		"cp -r resources {buildDir}",
+	"postMovePaths" : {
 
-	],
+		"resources" : "{buildDir}",
+
+	},
 
 	"manifest" : [
 
