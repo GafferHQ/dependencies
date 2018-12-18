@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://download.osgeo.org/libtiff/old/tiff-3.8.2.tar.gz",
+		"https://download.osgeo.org/libtiff/tiff-4.0.10.tar.gz",
 
 	],
 
@@ -25,5 +25,17 @@
 		"make install"
 
 	],
+
+	"platform:windows" : {
+
+		"commands" : [
+
+			"nmake /f makefile.vc",
+			"copy libtiff\\*.h {buildDir}\\include",
+			"copy libtiff\\libtiff.lib {buildDir}\\lib"
+
+		],
+
+	},
 
 }
