@@ -34,7 +34,19 @@
 
 		"include/tiff*",
 		"lib/libtiff*{sharedLibraryExtension}*",
+        "lib/libtiff.lib",
 
 	],
+	"platform:windows" : {
+
+		"commands" : [
+
+			"nmake /f makefile.vc",
+			"copy libtiff\\*.h {buildDir}\\include",
+			"copy libtiff\\libtiff.lib {buildDir}\\lib",
+
+		],
+
+	},
 
 }
