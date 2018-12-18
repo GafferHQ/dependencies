@@ -29,4 +29,27 @@
 
 	],
 
+	"platform:windows" : {
+
+		"commands" : [
+
+			"mkdir gafferBuild",
+			"cd gafferBuild && "
+				" cmake"
+				" -G {cmakeGenerator}"
+				" -D CMAKE_BUILD_TYPE={cmakeBuildType}"
+				" -D CMAKE_INSTALL_PREFIX={buildDir}"
+				" -D CMAKE_PREFIX_PATH={buildDir}"
+				" -D Boost_NO_BOOST_CMAKE=TRUE"
+				" -D PXR_BUILD_IMAGING=FALSE"
+				" -D PXR_BUILD_TESTS=FALSE"
+				" ..",
+
+			"cd gafferBuild && cmake --build . --config {cmakeBuildType} --target install -- -j {jobs}",
+			"move {buildDir}\\lib\\python\\pxr {buildDir}\\python"
+
+		],
+
+	},
+
 }
