@@ -31,6 +31,23 @@
 		"python/OpenGL",
 
 	],
+	
+	"platform:windows" : {
+        
+		"environment" : {
+
+			"PATH" : "{buildDir}\\bin;%PATH%",
+			"PYTHONPATH" : "{buildDir}\\python"
+
+		},
+
+		"commands" : [
+
+			"{buildDir}\\bin\\python setup.py install {extraArgs} --root / --prefix {buildDir} --install-lib {buildDir}\\python",
+
+		]
+
+	},
 
 	"variables" : {
 
