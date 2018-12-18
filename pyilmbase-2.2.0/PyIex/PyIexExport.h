@@ -53,7 +53,7 @@
 #  endif
 #endif
 
-#if defined(PYIEX_EXPORTS)                         // create library
+#if defined(PYIEX_EXPORTS) || defined(PyIex_EXPORTS) // create library
 #  define PYIEX_EXPORT PYIEX_EXPORT_DEFINITION
 #else                                              // use library
 #  define PYIEX_EXPORT PYIEX_IMPORT_DEFINITION
