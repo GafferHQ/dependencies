@@ -65,6 +65,7 @@ def __loadConfig( project, buildDir ) :
 	cmake_generator = "\"NMake Makefiles JOM\"" if config["platform"] == "platform:windows" else "\"Unix Makefiles\""
 	default_variables = {
 		"buildDir" : buildDir,
+		"buildDirFwd" : buildDir.replace("\\", "/"),
 		"jobs" : multiprocessing.cpu_count(),
 		"cmakeGenerator" : cmake_generator,
 		"cmakeBuildType": "Release"
