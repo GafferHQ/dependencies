@@ -1,0 +1,16 @@
+--- ./nmake.opt	2018-11-03 14:26:00.959361000 -0400
++++ ./nmake.opt	2018-12-14 17:48:11.536126800 -0500
+@@ -62,10 +62,9 @@
+ # Uncomment and edit following lines to enable ZIP support
+ # (required for Deflate compression and Pixar log-format)
+ #
+-#ZIP_SUPPORT	= 1
+-#ZLIBDIR 	= d:/projects/zlib-1.2.1
+-#ZLIB_INCLUDE	= -I$(ZLIBDIR)
+-#ZLIB_LIB 	= $(ZLIBDIR)/zlib.lib
++ZIP_SUPPORT	= 1
++ZLIB_INCLUDE	= -I%BUILD_DIR%/include
++ZLIB_LIB 	= %BUILD_DIR%/lib/zlib.lib
+ 
+ #
+ # Uncomment and edit following lines to enable ISO JBIG support
