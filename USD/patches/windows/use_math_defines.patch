@@ -1,0 +1,32 @@
+From 33fd2b05117fda0c908a450d527d6d5db122f1cc Mon Sep 17 00:00:00 2001
+From: sunyab <sunyab@users.noreply.github.com>
+Date: Thu, 23 Jun 2022 17:01:47 -0700
+Subject: [PATCH] Add -D_USE_MATH_DEFINES when building on Windows
+
+This define is needed on Windows to enable the math constants
+like M_PI_2 that are used in openvdb headers, otherwise builds
+will fail. This is needed for OpenVDB versions after v7.0.0.
+(see commit d87bb3bb in the openvdb GitHub repo).
+
+(Internal change: 2239319)
+---
+ pxr/imaging/hioOpenVDB/CMakeLists.txt | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/pxr/imaging/hioOpenVDB/CMakeLists.txt b/pxr/imaging/hioOpenVDB/CMakeLists.txt
+index e3db1d1319..2a2dfd5e72 100644
+--- a/pxr/imaging/hioOpenVDB/CMakeLists.txt
++++ b/pxr/imaging/hioOpenVDB/CMakeLists.txt
+@@ -7,6 +7,12 @@ if (NOT ${PXR_BUILD_GPU_SUPPORT})
+     return()
+ endif()
+ 
++if (WIN32)
++    # OpenVDB uses constants from <cmath> that aren't available on
++    # Windows unless this is defined.
++    add_definitions(-D_USE_MATH_DEFINES)
++endif()
++
+ pxr_library(hioOpenVDB
+     LIBRARIES
+         ar
