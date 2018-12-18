@@ -33,8 +33,25 @@
 	"manifest" : [
 
 		"include/tiff*",
-		"lib/libtiff*{sharedLibraryExtension}*",
+		"{sharedLibraryDir}/libtiff*{sharedLibraryExtension}*",
+		"lib/libtiff.lib",
 
 	],
+	"platform:windows" : {
+
+		"commands" : [
+
+			"nmake /f makefile.vc",
+
+		],
+
+		"postMovePaths" : {
+
+			"libtiff/*.h" : "{buildDir}/include",
+			"libtiff/libtiff.lib" : "{buildDir}/lib",
+
+		}
+
+	},
 
 }
