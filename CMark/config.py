@@ -20,8 +20,28 @@
 
 	"manifest" : [
 
-		"lib/libcmark*{sharedLibraryExtension}*"
+		"lib/{libraryPrefix}cmark*{sharedLibraryExtension}*",
+		"lib/{libraryPrefix}cmark*.lib",
 
 	],
 
+	"platform:windows" : {
+
+		"commands" : [
+
+			"mkdir gafferBuild",
+			"cd gafferBuild && "
+				" cmake"
+				" -G {cmakeGenerator}"
+				" -D CMAKE_BUILD_TYPE={cmakeBuildType}"
+				" -D CMAKE_INSTALL_PREFIX={buildDir}"
+				" ..",
+
+			"cd gafferBuild && cmake --build . --config {cmakeBuildType} --target install -- -j {jobs}",
+			"copy {buildDir}\\bin\\{libraryPrefix}cmark*{sharedLibraryExtension}* {buildDir}\\lib\\",
+
+		],
+
+	}
+	
 }
