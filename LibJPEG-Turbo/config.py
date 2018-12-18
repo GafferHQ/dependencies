@@ -28,8 +28,28 @@
 		"include/jmorecfg.h",
 		"include/jpeglib.h",
 
-		"lib/libjpeg*{sharedLibraryExtension}*",
-
+		"{sharedLibraryDir}/libjpeg*{sharedLibraryExtension}*",	# Linux / Mac OS
+		"lib/libjpeg.lib",
+        "lib/jpeg.lib",
+		"{sharedLibraryDir}/jpeg62{sharedLibraryExtension}",	# Windows only
+		"{sharedLibraryDir}/turbojpeg{sharedLibraryExtension}",	# Windows only
 	],
+	"platform:windows" : {
+
+		"commands" : [
+
+			"mkdir gafferBuild",
+			"cd gafferBuild && "
+				" cmake"
+				" -G {cmakeGenerator}"
+				" -D CMAKE_BUILD_TYPE={cmakeBuildType}"
+				" -D CMAKE_INSTALL_PREFIX={buildDir}"
+				" -D WITH_SIMD=OFF"
+				" ..",
+
+			"cd gafferBuild && cmake --build . --config {cmakeBuildType} --target install -- -j {jobs}",
+		],
+
+	},
 
 }
