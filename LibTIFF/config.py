@@ -10,7 +10,7 @@
 
 	"license" : "COPYRIGHT",
 
-	"dependencies" : [ "LibJPEG-Turbo" ],
+	"dependencies" : [ "LibJPEG-Turbo", "ZLib" ],
 
 	"environment" : {
 
@@ -33,8 +33,35 @@
 	"manifest" : [
 
 		"include/tiff*",
-		"lib/libtiff*{sharedLibraryExtension}*",
+		"{sharedLibraryDir}/{libraryPrefix}tiff*{sharedLibraryExtension}*",
+		"lib/{libraryPrefix}tiff.lib",
 
 	],
+	"platform:windows" : {
+
+		"commands" : [
+
+			"mkdir gafferBuild",
+			"cd gafferBuild && "
+				" cmake"
+				" -G {cmakeGenerator}"
+				" -D CMAKE_BUILD_TYPE={cmakeBuildType}"
+				" -D CMAKE_INSTALL_PREFIX={buildDir}"
+				" -D ZLIB_INCLUDE_DIR={buildDir}\\include"
+				" -D ZLIB_LIBRARY={buildDir}\\lib\\zlib.lib"
+				" ..",
+
+			"cd gafferBuild && cmake --build . --config {cmakeBuildType} --target install -- -j {jobs}",
+
+		],
+
+		"postMovePaths" : {
+
+			"libtiff/*.h" : "{buildDir}/include",
+			"libtiff/libtiff.lib" : "{buildDir}/lib",
+
+		}
+
+	},
 
 }
