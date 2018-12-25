@@ -36,7 +36,9 @@ cd `dirname $0`
 (cd .. && ./build/build.py --project LibPNG --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project FreeType --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project TBB --buildDir $BUILD_DIR)
-./buildEXR.sh
+(cd .. && ./build/build.py --project IlmBase --buildDir $BUILD_DIR)
+(cd .. && ./build/build.py --project PyIlmBase --buildDir $BUILD_DIR)
+(cd .. && ./build/build.py --project OpenEXR --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project BitstreamVera --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project GLEW --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project OpenColorIO --buildDir $BUILD_DIR)
