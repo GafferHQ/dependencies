@@ -43,7 +43,7 @@ cd `dirname $0`
 (cd .. && ./build/build.py --project GLEW --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project OpenColorIO --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project OpenImageIO --buildDir $BUILD_DIR)
-./buildBlosc.sh
+(cd .. && ./build/build.py --project Blosc --buildDir $BUILD_DIR)
 ./buildVDB.sh
 (cd .. && ./build/build.py --project LLVM --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project OpenShadingLanguage --buildDir $BUILD_DIR)

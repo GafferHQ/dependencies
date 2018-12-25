@@ -130,7 +130,10 @@ def __buildProject( project, buildDir ) :
 		licenseDir = os.path.join( buildDir, "doc/licenses" )
 		if not os.path.exists( licenseDir ) :
 			os.makedirs( licenseDir )
-		shutil.copy( config["license"], os.path.join( licenseDir, project ) )
+		if os.path.isfile( config["license"] ) :
+			shutil.copy( config["license"], os.path.join( licenseDir, project ) )
+		else :
+			shutil.copytree( config["license"], os.path.join( licenseDir, project ) )
 
 	for patch in glob.glob( "../../patches/*.patch" ) :
 		subprocess.check_call( "patch -p1 < {patch}".format( patch = patch ), shell = True )
