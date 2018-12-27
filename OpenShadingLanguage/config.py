@@ -8,6 +8,8 @@
 
 	"license" : "LICENSE",
 
+	"dependencies" : [ "OpenImageIO", "LLVM" ],
+
 	"environment" : {
 
 		# Needed because the build process runs oslc, which

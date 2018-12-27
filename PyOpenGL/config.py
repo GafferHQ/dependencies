@@ -8,6 +8,8 @@
 
 	"license" : "license.txt",
 
+	"dependencies" : [ "Python" ],
+
 	"environment" : {
 
 		"LD_LIBRARY_PATH" : "{buildDir}/lib",

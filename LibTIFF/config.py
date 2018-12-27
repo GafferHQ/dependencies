@@ -8,6 +8,8 @@
 
 	"license" : "COPYRIGHT",
 
+	"dependencies" : [ "LibJPEG-Turbo" ],
+
 	"environment" : {
 
 		# Needed to make sure we link against the libjpeg

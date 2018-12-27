@@ -8,6 +8,8 @@
 
 	"license" : "LICENSE_1_0.txt",
 
+	"dependencies" : [ "Python" ],
+
 	"environment" : {
 
 		# Without this, boost build will still pick up the system python framework,

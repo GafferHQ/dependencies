@@ -8,6 +8,8 @@
 
 	"license" : "LICENSE.txt",
 
+	"dependencies" : [ "Boost", "Python", "OpenImageIO", "TBB", "Alembic" ],
+
 	"commands" : [
 
 		"cmake"

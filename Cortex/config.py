@@ -8,6 +8,11 @@
 
 	"license" : "LICENSE",
 
+	"dependencies" : [
+		"Python", "OpenImageIO", "IlmBase", "PyIlmBase", "Boost", "OpenShadingLanguage",
+		"Blosc", "FreeType", "GLEW", "Appleseed", "TBB", "OpenVDB", "USD"
+	],
+
 	"environment" : {
 
 		"LD_LIBRARY_PATH" : "{buildDir}/lib",

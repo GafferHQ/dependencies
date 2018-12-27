@@ -8,6 +8,8 @@
 
 	"license" : "LICENSE",
 
+	"dependencies" : [ "IlmBase" ],
+
 	"commands" : [
 
 		"./configure --prefix={buildDir}",

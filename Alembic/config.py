@@ -8,6 +8,8 @@
 
 	"license" : "LICENSE.txt",
 
+	"dependencies" : [ "Python", "IlmBase", "PyIlmBase", "Boost", "HDF5" ],
+
 	"commands" : [
 
 		"cmake"

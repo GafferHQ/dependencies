@@ -8,6 +8,8 @@
 
 	"license" : "LICENSE",
 
+	"dependencies" : [ "OpenSSL" ],
+
 	"commands" : [
 
 		"./configure --prefix={buildDir} {libraryType} --enable-unicode=ucs4",

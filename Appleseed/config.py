@@ -8,6 +8,8 @@
 
 	"license" : "LICENSE.txt",
 
+	"dependencies" : [ "Python", "Xerces", "OpenShadingLanguage", "OpenImageIO", "Boost", "LibPNG", "OpenEXR" ],
+
 	"environment" : {
 
 		# Needed so that `oslc` can be run to compile

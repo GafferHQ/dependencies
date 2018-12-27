@@ -8,6 +8,8 @@
 
 	"license" : "LICENSE.LGPLv21",
 
+	"dependencies" : [ "Python", "Qt" ],
+
 	"environment" : {
 
 		"PATH" : "{buildDir}/bin:$PATH",

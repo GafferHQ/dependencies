@@ -8,6 +8,8 @@
 
 	"workingDir" : "qt-adsk-5.6.1-vfx",
 
+	"dependencies" : [ "LibPNG", "LibTIFF", "LibJPEG-Turbo", "FreeType" ],
+
 	"license" : "LICENSE.LGPLv21",
 
 	"commands" : [

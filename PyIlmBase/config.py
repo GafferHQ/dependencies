@@ -8,6 +8,8 @@
 
 	"license" : "LICENSE",
 
+	"dependencies" : [ "IlmBase", "Python", "Boost" ],
+
 	"environment" : {
 
 		"PATH" : "{buildDir}/bin:$PATH",

@@ -8,6 +8,8 @@
 
 	"license" : "LICENSE",
 
+	"dependencies" : [ "Blosc", "TBB", "OpenEXR", "Python" ],
+
 	"variables" : {
 
 		"pythonVersion" : "2.7",
