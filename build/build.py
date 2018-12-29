@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import argparse
+import functools
 import glob
 import os
 import multiprocessing
@@ -13,7 +14,7 @@ import zipfile
 def __projects() :
 
 	configFiles = glob.glob( "*/config.py" )
-	return [ os.path.split( f )[0] for f in configFiles ]
+	return sorted( [ os.path.split( f )[0] for f in configFiles ] )
 
 def __decompress( archive ) :
 
@@ -97,9 +98,30 @@ def __loadConfig( project, buildDir ) :
 
 	return __substitute( config )
 
-def __buildProject( project, buildDir ) :
+def __loadConfigs( buildDir ) :
 
-	config = __loadConfig( project, buildDir )
+	result = {}
+	for project in __projects() :
+		result[project] = __loadConfig( project, buildDir )
+
+	return result
+
+def __preserveCurrentDirectory( f ) :
+
+	@functools.wraps( f )
+	def decorated( *args, **kw ) :
+		d = os.getcwd()
+		try :
+			return f( *args, **kw )
+		finally :
+			os.chdir( d )
+
+	return decorated
+
+@__preserveCurrentDirectory
+def __buildProject( project, config, buildDir ) :
+
+	sys.stderr.write( "Building project {}\n".format( project ) )
 
 	archiveDir = project + "/archives"
 	if not os.path.exists( archiveDir ) :
@@ -152,12 +174,31 @@ def __buildProject( project, buildDir ) :
 			os.remove( link[0] )
 		os.symlink( link[1], link[0] )
 
+def __buildProjects( projects, configs, buildDir ) :
+
+	built = set()
+	def walk( project, configs, buildDir ) :
+
+		if project in built :
+			return
+
+		for dependency in configs[project].get( "dependencies", [] ) :
+			walk( dependency, configs, buildDir )
+
+		__buildProject( project, configs[project], buildDir )
+		built.add( project )
+
+	for project in projects :
+		walk( project, configs, buildDir )
+
 parser = argparse.ArgumentParser()
 
 parser.add_argument(
-	"--project",
+	"--projects",
 	choices = __projects(),
-	help = "The project to build."
+	nargs = "+",
+	default = __projects(),
+	help = "The projects to build."
 )
 
 parser.add_argument(
@@ -167,4 +208,6 @@ parser.add_argument(
 )
 
 args = parser.parse_args()
-__buildProject( args.project, args.buildDir )
+
+configs = __loadConfigs( args.buildDir )
+__buildProjects( args.projects, configs, args.buildDir )
