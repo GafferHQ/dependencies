@@ -11,6 +11,19 @@ import sys
 import tarfile
 import zipfile
 
+__version = "0.56.0.0"
+
+def __globalVariables( buildDir ) :
+
+	return {
+		"buildDir" : buildDir,
+		"jobs" : multiprocessing.cpu_count(),
+		"path" : os.environ["PATH"],
+		"version" : __version,
+		"platform" : "osx" if sys.platform == "darwin" else "linux",
+		"sharedLibraryExtension" : ".dylib" if sys.platform == "darwin" else ".so",
+	}
+
 def __projects() :
 
 	configFiles = glob.glob( "*/config.py" )
@@ -74,11 +87,7 @@ def __loadConfig( project, buildDir ) :
 	# Apply variable substitutions.
 
 	variables = config.get( "variables", {} ).copy()
-	variables.update( {
-		"buildDir" : buildDir,
-		"jobs" : multiprocessing.cpu_count(),
-		"sharedLibraryExtension" : ".dylib" if sys.platform == "darwin" else ".so"
-	} )
+	variables.update( __globalVariables( buildDir ) )
 
 	def __substitute( o ) :
 
@@ -174,6 +183,18 @@ def __buildProject( project, config, buildDir ) :
 			os.remove( link[0] )
 		os.symlink( link[1], link[0] )
 
+def __checkEnvironment( projects, configs ) :
+
+	def walk( project, configs ) :
+
+		for e in configs[project].get( "requiredEnvironment", [] ) :
+			if e not in os.environ :
+				sys.stderr.write( "{} requires environment variable {}\n".format( project, e ) )
+				sys.exit( 1 )
+
+	for project in projects :
+		walk( project, configs )
+
 def __buildProjects( projects, configs, buildDir ) :
 
 	built = set()
@@ -191,6 +212,35 @@ def __buildProjects( projects, configs, buildDir ) :
 	for project in projects :
 		walk( project, configs, buildDir )
 
+def __buildPackage( projects, configs, buildDir, package ) :
+
+	sys.stderr.write( "Building package {}\n".format( package ) )
+
+	visited = set()
+	manifest = { "doc/licenses" }
+
+	def walk( project, configs, buildDir ) :
+
+		if project in visited :
+			return
+
+		for dependency in configs[project].get( "dependencies", [] ) :
+			walk( dependency, configs, buildDir )
+
+		for pattern in configs[project].get( "manifest", [] ) :
+			for f in glob.glob( os.path.join( buildDir, pattern ) ) :
+				manifest.add( os.path.relpath( f, buildDir ) )
+
+		visited.add( project )
+
+	for project in projects :
+		walk( project, configs, buildDir )
+
+	rootName = os.path.basename( package ).replace( ".tar.gz", "" )
+	with tarfile.open( package, "w:gz" ) as file :
+		for m in manifest :
+			file.add( os.path.join( buildDir, m ), arcname = os.path.join( rootName, m ) )
+
 parser = argparse.ArgumentParser()
 
 parser.add_argument(
@@ -207,7 +257,18 @@ parser.add_argument(
 	help = "The directory to put the builds in."
 )
 
+parser.add_argument(
+	"--package",
+	default = "gafferDependencies-{version}-{platform}.tar.gz",
+	help = "The filename of the tarball package to create.",
+)
+
 args = parser.parse_args()
 
 configs = __loadConfigs( args.buildDir )
+
+__checkEnvironment( args.projects, configs )
 __buildProjects( args.projects, configs, args.buildDir )
+
+if args.package :
+	__buildPackage( args.projects, configs, args.buildDir, args.package.format( **__globalVariables( args.buildDir ) ) )

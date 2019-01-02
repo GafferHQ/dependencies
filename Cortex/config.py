@@ -19,6 +19,8 @@
 
 	},
 
+	"requiredEnvironment" : [ "ARNOLD_ROOT", "RMAN_ROOT" ],
+
 	"commands" : [
 
 		"scons install installDoc"
