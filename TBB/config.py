@@ -16,6 +16,13 @@
 
 	],
 
+	"manifest" : [
+
+		"include/tbb",
+		"lib/libtbb*{sharedLibraryExtension}*",
+
+	],
+
 	"platform:linux" : {
 
 		"environment" : {

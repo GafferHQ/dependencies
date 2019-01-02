@@ -23,4 +23,10 @@
 
 	],
 
+	"manifest" : [
+
+		"python/OpenGL",
+
+	],
+
 }

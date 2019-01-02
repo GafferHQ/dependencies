@@ -44,6 +44,24 @@
 
 	],
 
+	"manifest" : [
+
+		"bin/moc",
+		"bin/qmake",
+		"bin/rcc",
+		"bin/uic",
+
+		"include/Qt*",
+
+		"lib/libQt*",
+		"lib/Qt*.framework",
+
+		"mkspecs",
+		"qt",
+		"lib/cmake",
+
+	],
+
 	"platform:linux" : {
 
 		"environment" : {

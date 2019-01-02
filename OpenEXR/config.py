@@ -18,4 +18,13 @@
 
 	],
 
+	"manifest" : [
+
+		"bin/exrheader",
+		"include/OpenEXR/Imf*.h",
+		"include/OpenEXR/OpenEXRConfig.h",
+		"lib/libIlmImf*{sharedLibraryExtension}*",
+
+	]
+
 }

@@ -16,4 +16,19 @@
 
 	],
 
+	"manifest" : [
+
+		"include/OpenEXR/Iex*.h",
+		"include/OpenEXR/IlmBaseConfig.h",
+		"include/OpenEXR/IlmThread*.h",
+		"include/OpenEXR/Imath*.h",
+		"include/OpenEXR/half*.h",
+
+		"lib/libIex*{sharedLibraryExtension}*",
+		"lib/libHalf*{sharedLibraryExtension}*",
+		"lib/libIlmThread*{sharedLibraryExtension}*",
+		"lib/libImath*{sharedLibraryExtension}*",
+
+	],
+
 }

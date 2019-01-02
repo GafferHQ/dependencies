@@ -29,4 +29,12 @@
 
 	],
 
+	"manifest" : [
+
+		"include/boost",
+		"lib/libboost_*{sharedLibraryExtension}*",
+		"lib/libboost_test_exec_monitor.a",
+
+	],
+
 }

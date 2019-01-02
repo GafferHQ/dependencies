@@ -17,4 +17,11 @@
 
 	],
 
+	"manifest" : [
+
+		"include/blosc*.h",
+		"lib/libblosc*{sharedLibraryExtension}*",
+
+	],
+
 }

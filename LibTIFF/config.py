@@ -28,4 +28,11 @@
 
 	],
 
+	"manifest" : [
+
+		"include/tiff*",
+		"lib/libtiff*{sharedLibraryExtension}*",
+
+	],
+
 }

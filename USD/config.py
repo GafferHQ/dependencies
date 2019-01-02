@@ -35,4 +35,32 @@
 
 	],
 
+	"manifest" : [
+
+		"bin/usd*",
+		"bin/sdfdump",
+
+		"include/pxr",
+
+		"lib/libtrace{sharedLibraryExtension}",
+		"lib/libarch{sharedLibraryExtension}",
+		"lib/libtf{sharedLibraryExtension}",
+		"lib/libjs{sharedLibraryExtension}",
+		"lib/libwork{sharedLibraryExtension}",
+		"lib/libplug{sharedLibraryExtension}",
+		"lib/libkind{sharedLibraryExtension}",
+		"lib/libgf{sharedLibraryExtension}",
+		"lib/libvt{sharedLibraryExtension}",
+		"lib/libar{sharedLibraryExtension}",
+		"lib/libsdf{sharedLibraryExtension}",
+		"lib/libpcp{sharedLibraryExtension}",
+		"lib/libusd*{sharedLibraryExtension}",
+		"lib/usd",
+
+		"python/pxr",
+
+		"share/usd",
+
+	],
+
 }

@@ -18,6 +18,19 @@
 
 	],
 
+	"manifest" : [
+
+		"bin/python",
+		"bin/python*[0-9]",
+
+		"include/python*",
+
+		"lib/libpython*{sharedLibraryExtension}*",
+		"lib/Python.framework*",
+		"lib/python2.7",
+
+	],
+
 	"variables" : {
 
 		"libraryType" : "--enable-shared",

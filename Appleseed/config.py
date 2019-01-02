@@ -65,6 +65,18 @@
 
 	],
 
+	"manifest" : [
+
+		"appleseed/bin/appleseed.cli",
+		"appleseed/include",
+		"appleseed/lib",
+		"appleseed/samples",
+		"appleseed/schemas",
+		"appleseed/settings",
+		"appleseed/shaders",
+
+	],
+
 	"platform:osx" : {
 
 		"variables" : {

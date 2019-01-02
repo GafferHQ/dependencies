@@ -16,4 +16,15 @@
 
 	],
 
+	"manifest" : [
+
+		"include/jconfig.h",
+		"include/jerror.h",
+		"include/jmorecfg.h",
+		"include/jpeglib.h",
+
+		"lib/libjpeg*{sharedLibraryExtension}*",
+
+	],
+
 }

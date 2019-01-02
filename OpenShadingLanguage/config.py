@@ -36,4 +36,15 @@
 
 	],
 
+	"manifest" : [
+
+		"bin/oslc",
+		"bin/oslinfo",
+		"include/OSL",
+		"lib/libosl*",
+		"doc/osl*",
+		"shaders",
+
+	],
+
 }

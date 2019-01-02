@@ -45,6 +45,15 @@
 
 	],
 
+	"manifest" : [
+
+		"include/openvdb",
+		"include/pyopenvdb.h",
+		"lib/libopenvdb*{sharedLibraryExtension}*",
+		"python/pyopenvdb*",
+
+	],
+
 	"platform:linux" : {
 
 		"variables" : {

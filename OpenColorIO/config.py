@@ -45,4 +45,13 @@
 
 	],
 
+	"manifest" : [
+
+		"include/OpenColorIO",
+		"lib/libOpenColorIO*{sharedLibraryExtension}*",
+		"openColorIO",
+		"python/PyOpenColorIO*",
+
+	],
+
 }

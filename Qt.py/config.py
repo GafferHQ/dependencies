@@ -15,4 +15,10 @@
 
 	],
 
+	"manifest" : [
+
+		"python/Qt.py",
+
+	],
+
 }

@@ -38,4 +38,21 @@
 
 	],
 
+	"manifest" : [
+
+		"bin/abcconvert",
+		"bin/abcecho",
+		"bin/abcechobounds",
+		"bin/abcls",
+		"bin/abcstitcher",
+		"bin/abctree",
+
+		"include/Alembic",
+
+		"lib/libAlembic*",
+
+		"python/alembic*",
+
+	],
+
 }

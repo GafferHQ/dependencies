@@ -30,4 +30,14 @@
 
 	],
 
+	"manifest" : [
+
+		"include/OpenEXR/Py*.h",
+		"lib/libPyIex*{sharedLibraryExtension}*",
+		"lib/libPyImath*{sharedLibraryExtension}*",
+		"python/iexmodule*",
+		"python/imathmodule*",
+
+	],
+
 }
