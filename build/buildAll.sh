@@ -23,6 +23,8 @@ if [[ `uname` = "Darwin" ]] ; then
 	fi
 fi
 
+export MACOSX_DEPLOYMENT_TARGET=10.12
+
 cd `dirname $0`
 (cd .. && ./build/build.py --project OpenSSL --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project Python --buildDir $BUILD_DIR)
