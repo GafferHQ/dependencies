@@ -10,7 +10,7 @@ cp LICENSE.LGPLv21 $BUILD_DIR/doc/licenses/qt
 export LD_LIBRARY_PATH=$BUILD_DIR/lib
 
 if [[ `uname` = "Darwin" ]] ; then
-	extraArgs=-no-freetype
+	extraArgs="-no-freetype -platform macx-clang"
 else
 	extraArgs=-qt-xcb
 fi
@@ -33,6 +33,7 @@ fi
 	-nomake tests \
 	$extraArgs \
 	-I $BUILD_DIR/include -I $BUILD_DIR/include/freetype2 \
-	-L $BUILD_DIR/lib
+	-L $BUILD_DIR/lib \
+	-c++std c++11
 
 make -j `getconf _NPROCESSORS_ONLN` && make install
