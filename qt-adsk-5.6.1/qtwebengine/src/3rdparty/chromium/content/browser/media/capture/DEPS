@@ -1,4 +1,0 @@
-include_rules = [
-  "+media/capture",
-  "+third_party/libyuv",  # For scaling in desktop_capture_device.cc.
-]

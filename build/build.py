@@ -37,8 +37,13 @@ def __decompress( archive ) :
 			files = f.getnames()
 
 	dirs = { f.split( "/" )[0] for f in files }
-	assert( len( dirs ) ==  1 )
-	return next( iter( dirs ) )
+	if len( dirs ) == 1 :
+		# Well behaved archive with single top-level
+		# directory.
+		return next( iter( dirs ) )
+	else :
+		# Badly behaved archive
+		return "./"
 
 def __loadConfig( project, buildDir ) :
 
@@ -119,7 +124,7 @@ def __buildProject( project, buildDir ) :
 	os.chdir( workingDir )
 
 	decompressedArchives = [ __decompress( "../../" + a ) for a in archives ]
-	os.chdir( decompressedArchives[0] )
+	os.chdir( config.get( "workingDir", decompressedArchives[0] ) )
 
 	if config["license"] is not None :
 		licenseDir = os.path.join( buildDir, "doc/licenses" )

@@ -1,6 +1,0 @@
-include_rules = [
-  "+gpu",
-  "+media/base",
-  "+media/cdm",
-  "+media/renderers",
-]
