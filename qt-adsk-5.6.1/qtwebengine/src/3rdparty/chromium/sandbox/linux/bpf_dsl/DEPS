@@ -1,5 +1,0 @@
-include_rules = [
-  # TODO(mdempsky): Eliminate cyclic dependency on seccomp-bpf.
-  "+sandbox/linux/seccomp-bpf",
-  "+sandbox/linux/system_headers",
-]

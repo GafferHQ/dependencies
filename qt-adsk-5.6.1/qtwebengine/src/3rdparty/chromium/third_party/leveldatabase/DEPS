@@ -1,9 +1,0 @@
-include_rules = [
-  '+base',
-  '+testing',
-
-  # internal includes
-  '+leveldb',
-  '+port',
-  '+util',
-]

@@ -7,6 +7,8 @@ import multiprocessing
 import subprocess
 import shutil
 import sys
+import tarfile
+import zipfile
 
 def __projects() :
 
@@ -15,14 +17,33 @@ def __projects() :
 
 def __decompress( archive ) :
 
-	command = "tar -xvf {archive}".format( archive=archive )
-	sys.stderr.write( command + "\n" )
-	files = subprocess.check_output( command, stderr=subprocess.STDOUT, shell = True )
-	files = [ f for f in files.split( "\n" ) if f ]
-	files = [ f[2:] if f.startswith( "x " ) else f for f in files ]
+	if os.path.splitext( archive )[1] == ".zip" :
+		with zipfile.ZipFile( archive ) as f :
+			for info in f.infolist() :
+				extracted = f.extract( info.filename )
+				os.chmod( extracted, info.external_attr >> 16 )
+			files = f.namelist()
+	elif archive.endswith( ".tar.xz" ) :
+		## \todo When we eventually move to Python 3, we can use
+		# the `tarfile` module for this too.
+		command = "tar -xvf {archive}".format( archive=archive )
+		sys.stderr.write( command + "\n" )
+		files = subprocess.check_output( command, stderr=subprocess.STDOUT, shell = True )
+		files = [ f for f in files.split( "\n" ) if f ]
+		files = [ f[2:] if f.startswith( "x " ) else f for f in files ]
+	else :
+		with tarfile.open( archive, "r:*" ) as f :
+			f.extractall()
+			files = f.getnames()
+
 	dirs = { f.split( "/" )[0] for f in files }
-	assert( len( dirs ) ==  1 )
-	return next( iter( dirs ) )
+	if len( dirs ) == 1 :
+		# Well behaved archive with single top-level
+		# directory.
+		return next( iter( dirs ) )
+	else :
+		# Badly behaved archive
+		return "./"
 
 def __loadConfig( project, buildDir ) :
 
@@ -103,7 +124,7 @@ def __buildProject( project, buildDir ) :
 	os.chdir( workingDir )
 
 	decompressedArchives = [ __decompress( "../../" + a ) for a in archives ]
-	os.chdir( decompressedArchives[0] )
+	os.chdir( config.get( "workingDir", decompressedArchives[0] ) )
 
 	if config["license"] is not None :
 		licenseDir = os.path.join( buildDir, "doc/licenses" )

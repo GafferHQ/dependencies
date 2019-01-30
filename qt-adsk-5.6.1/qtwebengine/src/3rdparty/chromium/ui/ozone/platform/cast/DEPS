@@ -1,4 +1,0 @@
-include_rules = [
-  "+chromecast/media/base/media_message_loop.h",
-  "+chromecast/public"
-]
