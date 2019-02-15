@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/appleseedhq/appleseed/archive/1.9.0-beta.tar.gz"
+		"https://github.com/appleseedhq/appleseed/archive/2.0.5-beta.tar.gz"
 
 	],
 
