@@ -13,4 +13,14 @@
 
 	],
 
+	"platform:windows" : {
+
+		"commands" : [
+
+			"copy Qt.py {buildDir}\\python",
+
+		]
+
+	}
+
 }

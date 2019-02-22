@@ -22,4 +22,23 @@
 
 	],
 
+	"platform:windows" : {
+
+		"commands" : [
+
+			"mkdir gafferBuild",
+			"cd gafferBuild && cmake"
+				" -Wno-dev"
+				" -G {cmakeGenerator}"
+				" -DCMAKE_INSTALL_PREFIX={buildDir}"
+				" ..",
+			# FreeType 2.9.1 does not copy the ftconfig.h header
+			# the binary directory, help it out here
+			"copy include\\freetype\\config\\ftconfig.h gafferBuild\\include\\freetype\\config\\ftconfig.h",
+			"cd gafferBuild && cmake --build . --config {cmakeBuildType} --target install -- -j {jobs}",
+
+		]
+
+	}
+
 }

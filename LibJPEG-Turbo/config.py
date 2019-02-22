@@ -16,4 +16,23 @@
 
 	],
 
+	"platform:windows" : {
+
+		"commands" : [
+
+			"mkdir gafferBuild",
+			"cd gafferBuild && "
+				" cmake"
+				" -G {cmakeGenerator}"
+				" -D CMAKE_BUILD_TYPE={cmakeBuildType}"
+				" -D CMAKE_INSTALL_PREFIX={buildDir}"
+				" -D WITH_SIMD=OFF"
+				" ..",
+
+			"cd gafferBuild && cmake --build . --config {cmakeBuildType} --target install -- -j {jobs}",
+
+		],
+
+	},
+
 }

@@ -21,4 +21,14 @@
 
 	],
 
+	"platform:windows" : {
+
+		"commands" : [
+
+			"{buildDir}\\bin\\python setup.py install --prefix {buildDir} --install-lib {buildDir}\\python",
+
+		]
+
+	}
+
 }

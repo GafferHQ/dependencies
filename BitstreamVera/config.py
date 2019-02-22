@@ -14,4 +14,15 @@
 
 	],
 
+	"platform:windows" : {
+
+		"commands" : [
+
+			"if not exist \"{buildDir}\\fonts\" mkdir {buildDir}\\fonts",
+			"copy *.ttf {buildDir}\\fonts"
+
+		]
+
+	}
+
 }
