@@ -1,0 +1,33 @@
+diff --git a/src/cmake/flexbison.cmake b/src/cmake/flexbison.cmake
+--- ./src/cmake/flexbison.cmake
++++ ./src/cmake/flexbison.cmake
+@@ -62,8 +62,12 @@
+         # Be really sure that we prefer the FlexLexer.h that comes with
+         # the flex binary we're using, not some other one in the system.
+         GET_FILENAME_COMPONENT ( FLEX_UP ${FLEX_EXECUTABLE} PATH )
+-        GET_FILENAME_COMPONENT ( FLEX_UP_UP ${FLEX_UP} PATH )
+-        SET ( FLEX_INCLUDE_DIR "${FLEX_UP_UP}/include" )
++        if ( MSVC )
++            SET ( FLEX_INCLUDE_DIR "${FLEX_UP_UP}/../include" )
++        else ()
++            GET_FILENAME_COMPONENT ( FLEX_UP_UP ${FLEX_UP} PATH )
++            SET ( FLEX_INCLUDE_DIR "${FLEX_UP_UP}/include" )
++        endif ()
+         if (VERBOSE)
+             MESSAGE (STATUS "Flex include dir = ${FLEX_INCLUDE_DIR}")
+         endif ()
+@@ -76,8 +80,13 @@
+           MAIN_DEPENDENCY ${bisonsrc}
+           DEPENDS ${${compiler_headers}}
+           WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} )
++        if ( WINDOWS )
++            SET ( WINCOMPAT --wincompat )
++        else ()
++            SET ( WINCOMPAT )
++        endif ()
+         ADD_CUSTOM_COMMAND ( OUTPUT ${flexoutputcxx} 
+-          COMMAND ${FLEX_EXECUTABLE} -o ${flexoutputcxx} "${CMAKE_CURRENT_SOURCE_DIR}/${flexsrc}"
++          COMMAND ${FLEX_EXECUTABLE} ${WINCOMPAT} -o ${flexoutputcxx} "${CMAKE_CURRENT_SOURCE_DIR}/${flexsrc}"
+           MAIN_DEPENDENCY ${flexsrc}
+           DEPENDS ${${compiler_headers}}
+           WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} )

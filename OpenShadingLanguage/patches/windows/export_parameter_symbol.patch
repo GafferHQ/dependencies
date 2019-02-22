@@ -1,0 +1,12 @@
+diff --git a/./src/include/OSL/oslquery.h b/./src/include/OSL/oslquery.h
+--- ./src/include/OSL/oslquery.h
++++ ./src/include/OSL/oslquery.h
+@@ -58,7 +58,7 @@
+ public:
+     /// Parameter holds all the information about a single shader parameter.
+     ///
+-    struct Parameter {
++    struct OSLQUERYPUBLIC Parameter {
+         ustring name;                    ///< name
+         TypeDesc type;                   ///< data type
+         bool isoutput = false;           ///< is it an output param?
