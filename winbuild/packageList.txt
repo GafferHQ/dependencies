@@ -98,6 +98,8 @@ lib/libar*
 lib/libsdf*
 lib/libpcp*
 lib/libusd*
+lib/usd*
+lib/usd
 
 mkspecs
 
