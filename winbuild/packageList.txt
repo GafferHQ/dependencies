@@ -85,19 +85,18 @@ lib/cmake
 
 lib/cmark*.lib
 
-lib/libtracelite*
-lib/libarch*
-lib/libtf*
-lib/libjs*
-lib/libwork*
-lib/libplug*
-lib/libkind*
-lib/libgf*
-lib/libvt*
-lib/libar*
-lib/libsdf*
-lib/libpcp*
-lib/libusd*
+lib/trace*
+lib/arch*
+lib/tf*
+lib/js*
+lib/work*
+lib/plug*
+lib/kind*
+lib/gf*
+lib/vt*
+lib/ar*
+lib/sdf*
+lib/pcp*
 lib/usd*
 lib/usd
 
