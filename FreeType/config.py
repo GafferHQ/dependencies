@@ -30,7 +30,8 @@
 			"cd gafferBuild && cmake"
 				" -Wno-dev"
 				" -G {cmakeGenerator}"
-				" -DCMAKE_INSTALL_PREFIX={buildDir}"
+				" -D CMAKE_BUILD_TYPE={cmakeBuildType}"
+				" -D CMAKE_INSTALL_PREFIX={buildDir}"
 				" ..",
 			# FreeType 2.9.1 does not copy the ftconfig.h header
 			# the binary directory, help it out here
