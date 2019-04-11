@@ -18,9 +18,10 @@
 			" -D BOOST_ROOT={buildDir}"
 			" -D ILMBASE_ROOT={buildDir}"
 			" -D HDF5_ROOT={buildDir}"
+			" -D ALEMBIC_PYILMBASE_INCLUDE_DIRECTORY={buildDir}/include/OpenEXR"
 			" -D USE_HDF5=TRUE"
-			" -D USE_PYILMBASE=FALSE"
-			" -D USE_PYALEMBIC=FALSE"
+			" -D USE_PYILMBASE=TRUE"
+			" -D USE_PYALEMBIC=TRUE"
 			" -D USE_ARNOLD=FALSE"
 			" -D USE_PRMAN=FALSE"
 			" -D USE_MAYA=FALSE"
@@ -29,6 +30,9 @@
 
 		"make VERBOSE=1 -j {jobs}",
 		"make install",
+
+		"mkdir -p {buildDir}/python",
+		"mv {buildDir}/lib/python*/site-packages/alembic* {buildDir}/python",
 
 	],
 
