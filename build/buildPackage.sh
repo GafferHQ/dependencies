@@ -126,6 +126,7 @@ manifest="
 	python/pyopenvdb*
 	python/iexmodule*
 	python/imathmodule*
+	python/alembic*
 	python/pxr
 
 	include/IECore*
