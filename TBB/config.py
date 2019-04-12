@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/01org/tbb/archive/2017_U6.tar.gz"
+		"https://github.com/01org/tbb/archive/2018_U5.tar.gz"
 
 	],
 
