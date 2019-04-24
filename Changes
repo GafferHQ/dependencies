@@ -1,7 +1,7 @@
 0.54.0.0
 --------
 
-- Cortex : Updated to version 10.0.0-a52.
+- Cortex : Updated to version 10.0.0-a53.
 - TBB : Updated to version 2018 Update 5.
 - Alembic : Added python bindings.
 
