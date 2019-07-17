@@ -1,1 +1,0 @@
-PYSIDE_TEST(this_module_loads_test.py)

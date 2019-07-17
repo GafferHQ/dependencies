@@ -36,13 +36,15 @@ cd `dirname $0`
 (cd .. && ./build/build.py --project LibPNG --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project FreeType --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project TBB --buildDir $BUILD_DIR)
-./buildEXR.sh
+(cd .. && ./build/build.py --project IlmBase --buildDir $BUILD_DIR)
+(cd .. && ./build/build.py --project PyIlmBase --buildDir $BUILD_DIR)
+(cd .. && ./build/build.py --project OpenEXR --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project BitstreamVera --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project GLEW --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project OpenColorIO --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project OpenImageIO --buildDir $BUILD_DIR)
-./buildBlosc.sh
-./buildVDB.sh
+(cd .. && ./build/build.py --project Blosc --buildDir $BUILD_DIR)
+(cd .. && ./build/build.py --project OpenVDB --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project LLVM --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project OpenShadingLanguage --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project HDF5 --buildDir $BUILD_DIR)
@@ -54,6 +56,6 @@ cd `dirname $0`
 (cd .. && ./build/build.py --project Cortex --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project PyOpenGL --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project Qt --buildDir $BUILD_DIR)
-./buildPySide.sh
+(cd .. && ./build/build.py --project PySide --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project Qt.py --buildDir $BUILD_DIR)
 ./buildPackage.sh
