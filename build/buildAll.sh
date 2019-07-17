@@ -56,6 +56,6 @@ cd `dirname $0`
 (cd .. && ./build/build.py --project Cortex --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project PyOpenGL --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project Qt --buildDir $BUILD_DIR)
-./buildPySide.sh
+(cd .. && ./build/build.py --project PySide --buildDir $BUILD_DIR)
 (cd .. && ./build/build.py --project Qt.py --buildDir $BUILD_DIR)
 ./buildPackage.sh
