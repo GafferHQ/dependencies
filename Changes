@@ -1,3 +1,9 @@
+
+- OpenEXR : Updated to version 2.3.0.
+- OpenVDB : Updated to version 6.0.0.
+- Blosc : Updated to version 1.15.1.
+- PySide : Update to version corresponding with Maya 2018 Update 6.
+
 0.54.0.0-rc3
 ------------
 
