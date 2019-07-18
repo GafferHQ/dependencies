@@ -11,6 +11,7 @@
 	"environment" : {
 
 		"LDFLAGS" : "-L{buildDir}/lib",
+		"PKG_CONFIG_PATH" : "{buildDir}/lib/pkgconfig",
 
 	},
 
