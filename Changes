@@ -6,6 +6,7 @@
 - Blosc : Updated to version 1.15.1.
 - PySide : Updated to version corresponding with Maya 2018 Update 6.
 - Cortex : Updated to version 10.0.0-a58.
+- USD : Enable support for loading Alembic archives.
 
 0.54.0.0-rc3
 ------------
