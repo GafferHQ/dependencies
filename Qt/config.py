@@ -147,6 +147,8 @@
 				" -opengl desktop"
 				" -no-rpath"
 				" -no-dbus"
+				" -skip qt3d"
+				" -skip qtcharts"
 				" -skip qtconnectivity"
 				" -skip qtdatavis3d"
 				" -skip qtdeclarative"
