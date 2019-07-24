@@ -37,12 +37,58 @@
 
 	"manifest" : [
 
-		"bin/exrheader",
+		"bin/exrheader.*",
 		"include/OpenEXR",
-		"lib/libIex*{sharedLibraryExtension}*",
-		"lib/libIlmThread*{sharedLibraryExtension}*",
-		"lib/libOpenEXR*{sharedLibraryExtension}*",
+		"lib/{libraryPrefix}Iex*{sharedLibraryExtension}*",
+        "lib/{libraryPrefix}Iex*.lib",
+		"lib/{libraryPrefix}IlmThread*{sharedLibraryExtension}*",
+		"lib/{libraryPrefix}IlmThread*.lib",
+		"lib/{libraryPrefix}OpenEXR*{sharedLibraryExtension}*",
+		"lib/{libraryPrefix}OpenEXR*.lib",
 
 	],
+
+	"platform:windows" : {
+        
+		"environment" : {
+
+			"PATH" : "{buildDir}\\bin;%PATH%",
+
+		},
+
+		"variables" : {
+
+			"cmakeGenerator" : "\"Visual Studio 15 2017 Win64\"",
+
+		},
+
+		"dependencies" : [ "Python", "Boost", "Imath", "ZLib" ],
+
+		"commands" : [
+			"mkdir gafferBuild",
+			"cd gafferBuild && cmake"
+				" -D CMAKE_INSTALL_PREFIX={buildDir}"
+				" -D CMAKE_BUILD_TYPE={cmakeBuildType}"
+				" -G {cmakeGenerator}"
+				" -D CMAKE_PREFIX_PATH={buildDir}"
+				" -D OPENEXR_LIB_SUFFIX="
+				" -D ILMBASE_LIB_SUFFIX="
+				" -D PYILMBASE_LIB_SUFFIX="
+				" -D Boost_NO_SYSTEM_PATHS=TRUE"
+				" -D Boost_NO_BOOST_CMAKE=TRUE"
+				" -D BOOST_ROOT={buildDir}"
+				" -D Python3_ROOT_DIR={buildDir}"
+				" -D Python_NO_SYSTEM_PATHS=TRUE"
+				" -D Python3_FIND_STRATEGY=LOCATION"
+				" -D CMAKE_CXX_FLAGS=\"-DBOOST_ALL_NO_LIB\""
+				" -D ZLIB_ROOT={buildDir}"
+				" ..",
+			"cd gafferBuild && cmake --build . --config {cmakeBuildType} --target install",
+			"if not exist {buildDir}\\python mkdir {buildDir}\\python",
+			"copy {buildDir}\\bin\\{libraryPrefix}Iex*{sharedLibraryExtension}* {buildDir}\\lib\\",
+			"copy {buildDir}\\bin\\{libraryPrefix}IlmThread*{sharedLibraryExtension}* {buildDir}\\lib\\",
+			"copy {buildDir}\\bin\\{libraryPrefix}OpenEXR*{sharedLibraryExtension}* {buildDir}\\lib\\",
+		]
+	},
 
 }
