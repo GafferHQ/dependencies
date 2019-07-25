@@ -5,8 +5,9 @@
 - OpenVDB : Updated to version 6.0.0.
 - Blosc : Updated to version 1.15.1.
 - PySide : Updated to version corresponding with Maya 2018 Update 6.
-- Cortex : Updated to version 10.0.0-a58.
+- Cortex : Updated to version 10.0.0-a59.
 - USD : Enable support for loading Alembic archives.
+- Appleseed : Updated to version 2.0.5-beta.
 
 0.54.0.0-rc3
 ------------
