@@ -119,7 +119,6 @@ manifest="
 	doc/openimageio.pdf
 
 	python/IECore*
-	python/9to10
 	python/OpenGL
 	python/PyOpenColorIO*
 	python/Qt.py
