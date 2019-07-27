@@ -47,7 +47,8 @@
 			" OPTIONS=''"
 			" SAVE_OPTIONS=gaffer.options",
 
-		"cp -r contrib/scripts/9to10 {buildDir}/python",
+		# Symlink for RenderMan, which uses a different convention to 3Delight.
+		"ln -s ieDisplay.dylib {buildDir}/renderMan/displayDrivers/d_ieDisplay.so"
 
 	],
 
