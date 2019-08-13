@@ -76,6 +76,7 @@ def __loadConfig( project, buildDir ) :
 	variables.update( {
 		"buildDir" : buildDir,
 		"jobs" : multiprocessing.cpu_count(),
+		"sharedLibraryExtension" : ".dylib" if sys.platform == "darwin" else ".so"
 	} )
 
 	def __substitute( o ) :
