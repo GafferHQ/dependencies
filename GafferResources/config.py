@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/GafferHQ/resources/archive/0.47.0.0.tar.gz"
+		"https://github.com/GafferHQ/resources/archive/0.54.2.0.tar.gz"
 
 	],
 
