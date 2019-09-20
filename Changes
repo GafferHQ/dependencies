@@ -2,7 +2,7 @@
 --------
 
 - Cortex :
-	- Updated to version 10.0.0-a62.
+	- Updated to version 10.0.0-a64.
 	- Fixed extension for RenderMan display driver on Linux.
 - GafferResources :
 	- Update to version 0.54.2.0.
