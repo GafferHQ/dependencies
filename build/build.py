@@ -3,7 +3,10 @@
 import argparse
 import functools
 import glob
+import hashlib
+import json
 import os
+import md5
 import multiprocessing
 import subprocess
 import shutil
@@ -88,6 +91,10 @@ def __loadConfig( project, buildDir ) :
 
 	variables = config.get( "variables", {} ).copy()
 	variables.update( __globalVariables( buildDir ) )
+	variables.update( {
+		"buildDir" : "{buildDir}", # Don't substitute these yet,
+		"jobs" : "{jobs}",         # because they shouldn't affect the digest.
+	} )
 
 	def __substitute( o ) :
 
@@ -104,16 +111,57 @@ def __loadConfig( project, buildDir ) :
 					return s
 				else :
 					o = s
+		else :
+			return o
 
-	return __substitute( config )
+	config = __substitute( config )
+
+	# Compute digest. This needs to account for everything that
+	# `__buildProject()` is sensitive to.
+
+	config["digest"] = hashlib.md5()
+	config["digest"].update( str( config["downloads"] ) )
+	config["digest"].update( str( config.get( "license" ) ) )
+	config["digest"].update( str( config.get( "environment" ) ) )
+	config["digest"].update( str( config.get( "commands" ) ) )
+	config["digest"].update( str( config.get( "symbolicLinks" ) ) )
+	for e in config.get( "requiredEnvironment", [] ) :
+		config["digest"].update( os.environ.get( e, "" ) )
+
+	# Apply the substitutions we avoided earlier.
+
+	variables.update( __globalVariables( buildDir ) )
+	config = __substitute( config )
+
+	return config
 
 def __loadConfigs( buildDir ) :
 
-	result = {}
-	for project in __projects() :
-		result[project] = __loadConfig( project, buildDir )
+	# Load configs
 
-	return result
+	configs = {}
+	for project in __projects() :
+		configs[project] = __loadConfig( project, buildDir )
+
+	# Update digests of each project with the digests
+	# of all its dependencies.
+
+	visited = set()
+	def walk( project, configs ) :
+
+		if project in visited :
+			return
+
+		for dependency in configs[project].get( "dependencies", [] ) :
+			walk( dependency, configs )
+			configs[project]["digest"].update( configs[dependency]["digest"].hexdigest() )
+
+		visited.add( project )
+
+	for project in configs.keys() :
+		walk( project, configs )
+
+	return configs
 
 def __preserveCurrentDirectory( f ) :
 
@@ -197,6 +245,13 @@ def __checkEnvironment( projects, configs ) :
 
 def __buildProjects( projects, configs, buildDir ) :
 
+	digestsFilename = os.path.join( buildDir, ".digests" )
+	if os.path.isfile( digestsFilename ) :
+		with open( digestsFilename ) as digestsFile :
+			digests = json.load( digestsFile )
+	else :
+		digests = {}
+
 	built = set()
 	def walk( project, configs, buildDir ) :
 
@@ -206,7 +261,14 @@ def __buildProjects( projects, configs, buildDir ) :
 		for dependency in configs[project].get( "dependencies", [] ) :
 			walk( dependency, configs, buildDir )
 
-		__buildProject( project, configs[project], buildDir )
+		if digests.get( project ) == configs[project]["digest"].hexdigest() :
+			sys.stderr.write( "Project {} is up to date : skipping\n".format( project ) )
+		else :
+			__buildProject( project, configs[project], buildDir )
+			digests[project] = configs[project]["digest"].hexdigest()
+			with open( digestsFilename, "w" ) as digestsFile :
+				json.dump( digests, digestsFile, indent = 4 )
+
 		built.add( project )
 
 	for project in projects :

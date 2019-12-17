@@ -31,6 +31,7 @@
 		"make VERBOSE=1 -j {jobs}",
 		"make install",
 
+		"rm -rf {buildDir}/python/pxr",
 		"mv {buildDir}/lib/python/pxr {buildDir}/python",
 
 	],

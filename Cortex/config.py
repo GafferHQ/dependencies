@@ -55,7 +55,7 @@
 			" SAVE_OPTIONS=gaffer.options",
 
 		# Symlink for RenderMan, which uses a different convention to 3Delight.
-		"ln -s ieDisplay{sharedLibraryExtension} {buildDir}/renderMan/displayDrivers/d_ieDisplay.so"
+		"ln -s -f ieDisplay{sharedLibraryExtension} {buildDir}/renderMan/displayDrivers/d_ieDisplay.so"
 
 	],
 
