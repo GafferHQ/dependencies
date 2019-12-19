@@ -22,22 +22,23 @@ Since the build covers so many different projects, it requires the installation 
 - SCons
 - libbz2 (and headers)
 
+See https://github.com/GafferHQ/build for a Docker container which contains all necessary prerequisites.
+
 ### Invoking the build
 
 The build is controlled by several environment variables, which must be set up before running :
 
-- BUILD_DIR : Path to a directory where the build will be performed
 - ARNOLD_ROOT : Path to the root of an Arnold installation
 - RMAN_ROOT : Path to the root of a 3delight installation
 
-The build is then initiated using a bash script, which should be run from the root directory of the project :
+The build is then initiated with `build.py`, which should be run from the root directory of the project :
 
 ```
-./build/buildAll.sh
+./build.py --buildDir /path/to/build
 ```
 
-Dependencies can be built individually using the other scripts in the build directory, for instance TBB is built as follows :
+Subsets of the dependencies can be built using the `--projects` command line argument :
 
 ```
-./build/buildTBB.sh
+./build/buildTBB.sh --buildDir /path/to/build --projects TBB
 ```
