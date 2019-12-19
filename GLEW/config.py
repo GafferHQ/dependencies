@@ -15,4 +15,11 @@
 
 	],
 
+	"manifest" : [
+
+		"include/GL",
+		"lib/libGLEW*{sharedLibraryExtension}*",
+
+	],
+
 }

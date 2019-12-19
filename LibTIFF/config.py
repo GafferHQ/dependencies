@@ -8,6 +8,8 @@
 
 	"license" : "COPYRIGHT",
 
+	"dependencies" : [ "LibJPEG-Turbo" ],
+
 	"environment" : {
 
 		# Needed to make sure we link against the libjpeg
@@ -23,6 +25,13 @@
 		"./configure --without-x --prefix={buildDir}",
 		"make -j {jobs}",
 		"make install"
+
+	],
+
+	"manifest" : [
+
+		"include/tiff*",
+		"lib/libtiff*{sharedLibraryExtension}*",
 
 	],
 

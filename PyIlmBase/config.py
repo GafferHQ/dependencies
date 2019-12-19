@@ -8,6 +8,8 @@
 
 	"license" : "LICENSE",
 
+	"dependencies" : [ "IlmBase", "Python", "Boost" ],
+
 	"environment" : {
 
 		"PATH" : "{buildDir}/bin:$PATH",
@@ -25,6 +27,16 @@
 		"mkdir -p {buildDir}/python",
 		"mv {buildDir}/lib/python*/site-packages/iexmodule.so {buildDir}/python",
 		"mv {buildDir}/lib/python*/site-packages/imathmodule.so {buildDir}/python",
+
+	],
+
+	"manifest" : [
+
+		"include/OpenEXR/Py*.h",
+		"lib/libPyIex*{sharedLibraryExtension}*",
+		"lib/libPyImath*{sharedLibraryExtension}*",
+		"python/iexmodule*",
+		"python/imathmodule*",
 
 	],
 

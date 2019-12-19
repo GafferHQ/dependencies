@@ -8,6 +8,8 @@
 
 	"license" : "LICENSE.txt",
 
+	"dependencies" : [ "Python", "Xerces", "OpenShadingLanguage", "OpenImageIO", "Boost", "LibPNG", "OpenEXR" ],
+
 	"environment" : {
 
 		# Needed so that `oslc` can be run to compile
@@ -60,6 +62,18 @@
 			" ..",
 
 		"cd build && make install -j {jobs} VERBOSE=1"
+
+	],
+
+	"manifest" : [
+
+		"appleseed/bin/appleseed.cli",
+		"appleseed/include",
+		"appleseed/lib",
+		"appleseed/samples",
+		"appleseed/schemas",
+		"appleseed/settings",
+		"appleseed/shaders",
 
 	],
 

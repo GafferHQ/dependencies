@@ -17,4 +17,10 @@
 
 	],
 
+	"manifest" : [
+
+		"lib/libhdf5*{sharedLibraryExtension}*",
+
+	],
+
 }

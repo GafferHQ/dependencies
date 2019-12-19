@@ -16,4 +16,12 @@
 
 	],
 
+	"manifest" : [
+
+		"include/png*",
+		"include/libpng*",
+		"lib/libpng*{sharedLibraryExtension}*",
+
+	],
+
 }

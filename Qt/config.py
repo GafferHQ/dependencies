@@ -8,6 +8,8 @@
 
 	"workingDir" : "qt-adsk-5.6.1-vfx",
 
+	"dependencies" : [ "LibPNG", "LibTIFF", "LibJPEG-Turbo", "FreeType" ],
+
 	"license" : "LICENSE.LGPLv21",
 
 	"commands" : [
@@ -39,6 +41,24 @@
 
 		"make -j {jobs}",
 		"make install",
+
+	],
+
+	"manifest" : [
+
+		"bin/moc",
+		"bin/qmake",
+		"bin/rcc",
+		"bin/uic",
+
+		"include/Qt*",
+
+		"lib/libQt*",
+		"lib/Qt*.framework",
+
+		"mkspecs",
+		"qt",
+		"lib/cmake",
 
 	],
 

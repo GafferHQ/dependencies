@@ -16,4 +16,10 @@
 
 	],
 
+	"manifest" : [
+
+		"lib/libcmark*{sharedLibraryExtension}*"
+
+	],
+
 }

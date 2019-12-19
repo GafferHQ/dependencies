@@ -8,11 +8,18 @@
 
 	"license" : "LICENSE",
 
+	"dependencies" : [
+		"Python", "OpenImageIO", "IlmBase", "PyIlmBase", "Boost", "OpenShadingLanguage",
+		"Blosc", "FreeType", "GLEW", "Appleseed", "TBB", "OpenVDB", "USD"
+	],
+
 	"environment" : {
 
 		"LD_LIBRARY_PATH" : "{buildDir}/lib",
 
 	},
+
+	"requiredEnvironment" : [ "ARNOLD_ROOT", "RMAN_ROOT" ],
 
 	"commands" : [
 
@@ -48,7 +55,22 @@
 			" SAVE_OPTIONS=gaffer.options",
 
 		# Symlink for RenderMan, which uses a different convention to 3Delight.
-		"ln -s ieDisplay{sharedLibraryExtension} {buildDir}/renderMan/displayDrivers/d_ieDisplay.so"
+		"ln -s -f ieDisplay{sharedLibraryExtension} {buildDir}/renderMan/displayDrivers/d_ieDisplay.so"
+
+	],
+
+	"manifest" : [
+
+		"include/IECore*",
+		"lib/libIECore*{sharedLibraryExtension}",
+		"python/IECore*",
+		"renderMan",
+		"arnold",
+		"appleseedDisplays",
+		"glsl/IECoreGL",
+		"glsl/*.frag",
+		"glsl/*.vert",
+		"doc/cortex/html",
 
 	],
 

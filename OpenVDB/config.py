@@ -8,6 +8,8 @@
 
 	"license" : "LICENSE",
 
+	"dependencies" : [ "Blosc", "TBB", "OpenEXR", "Python" ],
+
 	"variables" : {
 
 		"pythonVersion" : "2.7",
@@ -40,6 +42,15 @@
 
 		"mv {buildDir}/python/lib/python{pythonVersion}/pyopenvdb.so {buildDir}/python",
 		"mv {buildDir}/python/include/python{pythonVersion}/pyopenvdb.h {buildDir}/include",
+
+	],
+
+	"manifest" : [
+
+		"include/openvdb",
+		"include/pyopenvdb.h",
+		"lib/libopenvdb*{sharedLibraryExtension}*",
+		"python/pyopenvdb*",
 
 	],
 

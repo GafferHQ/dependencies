@@ -23,4 +23,11 @@
 
 	],
 
+	"manifest" : [
+
+		"include/freetype2",
+		"lib/libfreetype*{sharedLibraryExtension}*",
+
+	],
+
 }

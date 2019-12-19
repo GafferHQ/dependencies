@@ -8,11 +8,26 @@
 
 	"license" : "LICENSE",
 
+	"dependencies" : [ "OpenSSL" ],
+
 	"commands" : [
 
 		"./configure --prefix={buildDir} {libraryType} --enable-unicode=ucs4",
 		"make -j {jobs}",
 		"make install",
+
+	],
+
+	"manifest" : [
+
+		"bin/python",
+		"bin/python*[0-9]",
+
+		"include/python*",
+
+		"lib/libpython*{sharedLibraryExtension}*",
+		"lib/Python.framework*",
+		"lib/python2.7",
 
 	],
 

@@ -8,6 +8,8 @@
 
 	"license" : "LICENSE.txt",
 
+	"dependencies" : [ "Python", "IlmBase", "PyIlmBase", "Boost", "HDF5" ],
+
 	"commands" : [
 
 		"cmake"
@@ -33,6 +35,23 @@
 
 		"mkdir -p {buildDir}/python",
 		"mv {buildDir}/lib/python*/site-packages/alembic* {buildDir}/python",
+
+	],
+
+	"manifest" : [
+
+		"bin/abcconvert",
+		"bin/abcecho",
+		"bin/abcechobounds",
+		"bin/abcls",
+		"bin/abcstitcher",
+		"bin/abctree",
+
+		"include/Alembic",
+
+		"lib/libAlembic*",
+
+		"python/alembic*",
 
 	],
 

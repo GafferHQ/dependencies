@@ -8,6 +8,8 @@
 
 	"license" : "LICENSE",
 
+	"dependencies" : [ "OpenImageIO", "LLVM" ],
+
 	"environment" : {
 
 		# Needed because the build process runs oslc, which
@@ -31,6 +33,17 @@
 			" ..",
 		"cd gafferBuild && make install -j {jobs} VERBOSE=1",
 		"cp {buildDir}/share/doc/OSL/osl-languagespec.pdf {buildDir}/doc",
+
+	],
+
+	"manifest" : [
+
+		"bin/oslc",
+		"bin/oslinfo",
+		"include/OSL",
+		"lib/libosl*",
+		"doc/osl*",
+		"shaders",
 
 	],
 

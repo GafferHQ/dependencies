@@ -16,4 +16,10 @@
 
 	],
 
+	"manifest" : [
+
+		"lib/libxerces-c*{sharedLibraryExtension}*",
+
+	],
+
 }

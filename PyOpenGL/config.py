@@ -8,6 +8,8 @@
 
 	"license" : "license.txt",
 
+	"dependencies" : [ "Python" ],
+
 	"environment" : {
 
 		"LD_LIBRARY_PATH" : "{buildDir}/lib",
@@ -18,6 +20,12 @@
 	"commands" : [
 
 		"{buildDir}/bin/python setup.py install --prefix {buildDir} --install-lib {buildDir}/python",
+
+	],
+
+	"manifest" : [
+
+		"python/OpenGL",
 
 	],
 

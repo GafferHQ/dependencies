@@ -7,9 +7,17 @@
 
 	"license" : "LICENSE",
 
+	"dependencies" : [ "Python" ],
+
 	"commands" : [
 
 		"cp Qt.py {buildDir}/python",
+
+	],
+
+	"manifest" : [
+
+		"python/Qt.py",
 
 	],
 

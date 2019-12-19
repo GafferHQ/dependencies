@@ -14,4 +14,10 @@
 
 	],
 
+	"manifest" : [
+
+		"resources",
+
+	],
+
 }

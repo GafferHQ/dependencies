@@ -7,6 +7,8 @@
 
 	"license" : "LICENSE",
 
+	"dependencies" : [ "Python" ],
+
 	"environment" : {
 
 		"PATH" : "{buildDir}/bin:$PATH",

@@ -8,6 +8,8 @@
 
 	"license" : "LICENSE",
 
+	"dependencies" : [ "IlmBase" ],
+
 	"commands" : [
 
 		"./configure --prefix={buildDir}",
@@ -15,5 +17,14 @@
 		"make install",
 
 	],
+
+	"manifest" : [
+
+		"bin/exrheader",
+		"include/OpenEXR/Imf*.h",
+		"include/OpenEXR/OpenEXRConfig.h",
+		"lib/libIlmImf*{sharedLibraryExtension}*",
+
+	]
 
 }

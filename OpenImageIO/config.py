@@ -8,6 +8,8 @@
 
 	"license" : "LICENSE",
 
+	"dependencies" : [ "Boost", "Python", "IlmBase", "OpenEXR", "LibTIFF", "LibPNG", "LibJPEG-Turbo", "OpenColorIO" ],
+
 	"commands" : [
 
 		"mkdir gafferBuild",
@@ -20,6 +22,18 @@
 			" ..",
 		"cd gafferBuild && make install -j {jobs} VERBOSE=1",
 		"cp {buildDir}/share/doc/OpenImageIO/openimageio.pdf {buildDir}/doc",
+
+	],
+
+	"manifest" : [
+
+		"bin/maketx",
+		"bin/oiiotool",
+
+		"include/OpenImageIO",
+		"lib/libOpenImageIO*{sharedLibraryExtension}*",
+
+		"doc/openimageio.pdf",
 
 	],
 
