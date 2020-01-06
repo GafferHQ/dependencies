@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://files.pythonhosted.org/packages/a2/3f/986cf2693584a8738985a63d62aee32f9317e9895ab3c224cbf17d5ca371/PyOpenGL-3.0.2.tar.gz"
+		"https://files.pythonhosted.org/packages/d7/8a/5db9096aa6506e405309c400bd0feb41997689cbba30683479c30dba6355/PyOpenGL-3.1.4.tar.gz"
 
 	],
 
