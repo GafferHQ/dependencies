@@ -128,6 +128,10 @@ def __loadConfig( project, buildDir ) :
 	for e in config.get( "requiredEnvironment", [] ) :
 		config["digest"].update( os.environ.get( e, "" ) )
 
+	for patch in glob.glob( "{}/patches/*.patch".format( project ) ) :
+		with open( patch ) as f :
+			config["digest"].update( f.read() )
+
 	# Apply the substitutions we avoided earlier.
 
 	variables.update( __globalVariables( buildDir ) )
