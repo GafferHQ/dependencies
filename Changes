@@ -1,3 +1,12 @@
+1.0.0
+-----
+
+Move to Semantic Versioning to describe changes in dependencies, and decouple from GAFFER_VERSION.
+
+- Cortex : Updated to version 10.0.0-a72.
+- USD : Updated to version 20.02.
+- VDB : Updated to version 7.0.0.
+
 0.54.2.0
 --------
 

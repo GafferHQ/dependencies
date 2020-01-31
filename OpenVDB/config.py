@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/AcademySoftwareFoundation/openvdb/archive/v6.0.0.tar.gz"
+		"https://github.com/AcademySoftwareFoundation/openvdb/archive/v7.0.0.tar.gz"
 
 	],
 
