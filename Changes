@@ -1,7 +1,7 @@
 1.0.0
 -----
 
-Move to Semantic Versioning to describe changes in dependencies, and decouple from GAFFER_VERSION.
+Moved to Semantic Versioning to describe changes in dependencies, and decouple from GAFFER_VERSION.
 
 - Cortex : Updated to version 10.0.0-a72.
 - USD : Updated to version 20.02.
