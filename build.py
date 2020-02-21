@@ -14,7 +14,7 @@ import sys
 import tarfile
 import zipfile
 
-__version = "1.0.0"
+__version = "1.1.0"
 
 def __globalVariables( buildDir ) :
 
