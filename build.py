@@ -231,6 +231,7 @@ def __buildProject( project, config, buildDir ) :
 		subprocess.check_call( command, shell = True, env = environment )
 
 	for link in config.get( "symbolicLinks", [] ) :
+		sys.stderr.write( "Linking {} to {}\n".format( link[0], link[1] ) )
 		if os.path.exists( link[0] ) :
 			os.remove( link[0] )
 		os.symlink( link[1], link[0] )
