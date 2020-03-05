@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://sourceforge.net/projects/boost/files/boost/1.61.0/boost_1_61_0.tar.gz"
+		"https://dl.bintray.com/boostorg/release/1.68.0/source/boost_1_68_0.tar.gz"
 
 	],
 
