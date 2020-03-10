@@ -1,5 +1,14 @@
 {
 
+	"publicVariables" : {
+
+		"pythonVersion" : "2.7",
+		"pythonMajorVersion" : "2",
+		"pythonIncludeDir" : "{buildDir}/include/python{pythonVersion}",
+		"pythonLibDir" : "{buildDir}/lib",
+
+	},
+
 	"downloads" : [
 
 		"https://www.python.org/ftp/python/2.7.15/Python-2.7.15.tgz",
@@ -27,7 +36,7 @@
 
 		"lib/libpython*{sharedLibraryExtension}*",
 		"lib/Python.framework*",
-		"lib/python2.7",
+		"lib/python{pythonVersion}",
 
 	],
 
@@ -45,11 +54,18 @@
 
 		},
 
+		"publicVariables" : {
+
+			"pythonIncludeDir" : "{buildDir}/lib/Python.framework/Headers",
+			"pythonLibDir" : "{buildDir}/lib/Python.framework/Versions/{pythonVersion}/lib",
+
+		},
+
 		"symbolicLinks" : [
 
 			( "{buildDir}/bin/python", "../lib/Python.framework/Versions/Current/bin/python" ),
-			( "{buildDir}/bin/python2", "../lib/Python.framework/Versions/Current/bin/python2" ),
-			( "{buildDir}/bin/python2.7", "../lib/Python.framework/Versions/Current/bin/python2.7" ),
+			( "{buildDir}/bin/python{pythonMajorVersion}", "../lib/Python.framework/Versions/Current/bin/python{pythonMajorVersion}" ),
+			( "{buildDir}/bin/python{pythonVersion}", "../lib/Python.framework/Versions/Current/bin/python{pythonVersion}" ),
 
 		],
 

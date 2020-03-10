@@ -18,7 +18,7 @@
 		"MACOSX_DEPLOYMENT_TARGET" : "10.9",
 		# Give a helping hand to find the python headers, since the bootstrap
 		# below doesn't always seem to get it right.
-		"CPLUS_INCLUDE_PATH" : "{buildDir}/include/python2.7",
+		"CPLUS_INCLUDE_PATH" : "{pythonIncludeDir}",
 
 	},
 
