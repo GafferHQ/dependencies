@@ -16,17 +16,6 @@ import zipfile
 
 __version = "1.1.0"
 
-def __globalVariables( buildDir ) :
-
-	return {
-		"buildDir" : buildDir,
-		"jobs" : multiprocessing.cpu_count(),
-		"path" : os.environ["PATH"],
-		"version" : __version,
-		"platform" : "osx" if sys.platform == "darwin" else "linux",
-		"sharedLibraryExtension" : ".dylib" if sys.platform == "darwin" else ".so",
-	}
-
 def __projects() :
 
 	configFiles = glob.glob( "*/config.py" )
@@ -62,7 +51,7 @@ def __decompress( archive ) :
 		# Badly behaved archive
 		return "./"
 
-def __loadConfig( project, buildDir ) :
+def __loadConfig( project ) :
 
 	# Load file. Really we want to use JSON to
 	# enforce a "pure data" methodology, but JSON
@@ -87,23 +76,24 @@ def __loadConfig( project, buildDir ) :
 		else :
 			config[key] = value
 
-	# Apply variable substitutions.
+	return config
 
-	variables = config.get( "variables", {} ).copy()
-	variables.update( __globalVariables( buildDir ) )
-	variables.update( {
-		"buildDir" : "{buildDir}", # Don't substitute these yet,
-		"jobs" : "{jobs}",         # because they shouldn't affect the digest.
-	} )
+def __substitute( config, variables, forDigest = False ) :
 
-	def __substitute( o ) :
+	if not forDigest :
+		# These shouldn't affect the output of the build, so
+		# hold them constant when computing a digest.
+		variables = variables.copy()
+		variables.update( { "buildDir" : "{buildDir}", "jobs" : "{jobs}" } )
+
+	def substituteWalk( o ) :
 
 		if isinstance( o, dict ) :
-			return { k : __substitute( v ) for k, v in o.items() }
+			return { k : substituteWalk( v ) for k, v in o.items() }
 		elif isinstance( o, list ) :
-			return [ __substitute( x ) for x in o ]
+			return [ substituteWalk( x ) for x in o ]
 		elif isinstance( o, tuple ) :
-			return tuple( __substitute( x ) for x in o )
+			return tuple( substituteWalk( x ) for x in o )
 		elif isinstance( o, str ) :
 			while True :
 				s = o.format( **variables )
@@ -114,12 +104,13 @@ def __loadConfig( project, buildDir ) :
 		else :
 			return o
 
-	config = __substitute( config )
+	return substituteWalk( config )
 
-	# Compute digest. This needs to account for everything that
+def __updateDigest( project, config ) :
+
+	# This needs to account for everything that
 	# `__buildProject()` is sensitive to.
 
-	config["digest"] = hashlib.md5()
 	config["digest"].update( str( config["downloads"] ) )
 	config["digest"].update( str( config.get( "license" ) ) )
 	config["digest"].update( str( config.get( "environment" ) ) )
@@ -132,23 +123,16 @@ def __loadConfig( project, buildDir ) :
 		with open( patch ) as f :
 			config["digest"].update( f.read() )
 
-	# Apply the substitutions we avoided earlier.
-
-	variables.update( __globalVariables( buildDir ) )
-	config = __substitute( config )
-
-	return config
-
-def __loadConfigs( buildDir ) :
+def __loadConfigs( variables ) :
 
 	# Load configs
 
 	configs = {}
 	for project in __projects() :
-		configs[project] = __loadConfig( project, buildDir )
+		configs[project] = __loadConfig( project )
 
-	# Update digests of each project with the digests
-	# of all its dependencies.
+	# Walk dependency tree to compute digests and
+	# apply substitutions.
 
 	visited = set()
 	def walk( project, configs ) :
@@ -156,9 +140,26 @@ def __loadConfigs( buildDir ) :
 		if project in visited :
 			return
 
-		for dependency in configs[project].get( "dependencies", [] ) :
+		projectConfig = configs[project]
+		projectConfig["digest"] = hashlib.md5()
+
+		# Visit dependencies to gather their public variables
+		# and apply their digest to this project.
+
+		projectVariables = variables.copy()
+		for dependency in projectConfig.get( "dependencies", [] ) :
 			walk( dependency, configs )
-			configs[project]["digest"].update( configs[dependency]["digest"].hexdigest() )
+			projectConfig["digest"].update( configs[dependency]["digest"].hexdigest() )
+			projectVariables.update( configs[dependency].get( "publicVariables", {} ) )
+
+		# Apply substitutions and update digest.
+
+		projectVariables.update( projectConfig.get( "publicVariables", {} ) )
+		projectVariables.update( projectConfig.get( "variables", {} ) )
+
+		projectConfig = __substitute( projectConfig, projectVariables, forDigest = True )
+		__updateDigest( project, projectConfig )
+		configs[project] = __substitute( projectConfig, projectVariables, forDigest = False )
 
 		visited.add( project )
 
@@ -332,10 +333,19 @@ parser.add_argument(
 
 args = parser.parse_args()
 
-configs = __loadConfigs( args.buildDir )
+variables = {
+	"buildDir" : args.buildDir,
+	"jobs" : multiprocessing.cpu_count(),
+	"path" : os.environ["PATH"],
+	"version" : __version,
+	"platform" : "osx" if sys.platform == "darwin" else "linux",
+	"sharedLibraryExtension" : ".dylib" if sys.platform == "darwin" else ".so",
+}
+
+configs = __loadConfigs( variables )
 
 __checkEnvironment( args.projects, configs )
 __buildProjects( args.projects, configs, args.buildDir )
 
 if args.package :
-	__buildPackage( args.projects, configs, args.buildDir, args.package.format( **__globalVariables( args.buildDir ) ) )
+	__buildPackage( args.projects, configs, args.buildDir, args.package.format( **variables ) )
