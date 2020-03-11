@@ -10,12 +10,6 @@
 
 	"dependencies" : [ "Blosc", "TBB", "OpenEXR", "Python" ],
 
-	"variables" : {
-
-		"pythonVersion" : "2.7",
-
-	},
-
 	"commands" : [
 
 		"cd openvdb && make install"
@@ -53,27 +47,5 @@
 		"python/pyopenvdb*",
 
 	],
-
-	"platform:linux" : {
-
-		"variables" : {
-
-			"pythonIncludeDir" : "{buildDir}/include/python{pythonVersion}",
-			"pythonLibDir" : "{buildDir}/lib",
-
-		},
-
-	},
-
-	"platform:osx" : {
-
-		"variables" : {
-
-			"pythonIncludeDir" : "{buildDir}/lib/Python.framework/Headers",
-			"pythonLibDir" : "{buildDir}/lib/Python.framework/Versions/{pythonVersion}",
-
-		},
-
-	},
 
 }

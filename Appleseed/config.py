@@ -25,15 +25,6 @@
 
 	},
 
-	"variables" : {
-
-		# Make sure we pick up the python headers from {buildDir},
-		# rather than any system level headers. We refer to this
-		# variable in "commands" below.
-		"pythonIncludeDir" : "{buildDir}/include/python2.7",
-
-	},
-
 	"commands" : [
 
 		"mkdir build",
@@ -76,16 +67,5 @@
 		"appleseed/shaders",
 
 	],
-
-	"platform:osx" : {
-
-		"variables" : {
-
-			# Python headers have a different location on OSX.
-			"pythonIncludeDir" : "{buildDir}/lib/Python.framework/Headers",
-
-		},
-
-	},
 
 }

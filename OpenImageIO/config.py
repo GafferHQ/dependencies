@@ -19,6 +19,7 @@
 			" -D CMAKE_INSTALL_LIBDIR={buildDir}/lib"
 			" -D CMAKE_PREFIX_PATH={buildDir}"
 			" -D USE_FFMPEG=NO"
+			" -D USE_PYTHON=NO"
 			" ..",
 		"cd gafferBuild && make install -j {jobs} VERBOSE=1",
 		"cp {buildDir}/share/doc/OpenImageIO/openimageio.pdf {buildDir}/doc",
