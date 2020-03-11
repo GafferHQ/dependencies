@@ -9,7 +9,7 @@
 	"license" : "LICENSE",
 
 	"dependencies" : [
-		"Python", "OpenImageIO", "IlmBase", "PyIlmBase", "Boost", "OpenShadingLanguage",
+		"Python", "OpenImageIO", "OpenEXR", "Boost", "OpenShadingLanguage",
 		"Blosc", "FreeType", "GLEW", "Appleseed", "TBB", "OpenVDB", "USD"
 	],
 
