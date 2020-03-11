@@ -40,5 +40,11 @@ The build is then initiated with `build.py`, which should be run from the root d
 Subsets of the dependencies can be built using the `--projects` command line argument :
 
 ```
-./build/buildTBB.sh --buildDir /path/to/build --projects TBB
+./build.py --buildDir /path/to/build --projects TBB
+```
+
+Variants are specified using the `--variant:<Project>` command line arguments :
+
+```
+./build.py --buildDir /path/to/build --variants:Python 3
 ```
