@@ -36,6 +36,8 @@
 			" -D WITH_TOOLS=OFF"
 			" -D WITH_TESTS=OFF"
 			" -D WITH_PYTHON=ON"
+			" -D WITH_PYTHON2_BINDINGS={withPython2Bindings}"
+			" -D WITH_PYTHON3_BINDINGS={withPython3Bindings}"
 			" -D USE_STATIC_BOOST=OFF"
 			" -D USE_STATIC_OIIO=OFF"
 			" -D USE_STATIC_OSL=OFF"
@@ -55,6 +57,28 @@
 		"cd build && make install -j {jobs} VERBOSE=1"
 
 	],
+
+	"variant:Python:2" : {
+
+		"variables" : {
+
+			"withPython2Bindings" : "ON",
+			"withPython3Bindings" : "OFF",
+
+		},
+
+	},
+
+	"variant:Python:3" : {
+
+		"variables" : {
+
+			"withPython2Bindings" : "OFF",
+			"withPython3Bindings" : "ON",
+
+		},
+
+	},
 
 	"manifest" : [
 

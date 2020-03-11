@@ -2,18 +2,12 @@
 
 	"publicVariables" : {
 
-		"pythonVersion" : "2.7",
-		"pythonMajorVersion" : "2",
-		"pythonIncludeDir" : "{buildDir}/include/python{pythonVersion}",
+		"pythonIncludeDir" : "{buildDir}/include/python{pythonABIVersion}",
 		"pythonLibDir" : "{buildDir}/lib",
 
 	},
 
-	"downloads" : [
-
-		"https://www.python.org/ftp/python/2.7.15/Python-2.7.15.tgz",
-
-	],
+	"variants" : [ "2", "3" ],
 
 	"license" : "LICENSE",
 
@@ -46,6 +40,53 @@
 
 	},
 
+	"variant:2" : {
+
+		"downloads" : [
+
+			"https://www.python.org/ftp/python/2.7.15/Python-2.7.15.tgz",
+
+		],
+
+		"publicVariables" : {
+
+			"pythonVersion" : "2.7",
+			"pythonABIVersion" : "2.7",
+			"pythonMajorVersion" : "2",
+
+		},
+
+	},
+
+	"variant:3" : {
+
+		"downloads" : [
+
+			"https://www.python.org/ftp/python/3.7.6/Python-3.7.6.tgz",
+
+		],
+
+		"publicVariables" : {
+
+			"pythonVersion" : "3.7",
+			# Python 3 unconditionally puts these infuriating "m" ABI suffixes on
+			# everything. This is intended to allow different types of Python builds
+			# to exist in the same place, but that's not a problem we have. The problem
+			# we _do_ have is that a bunch of our projects get tripped up by these
+			# suffixes. See : https://www.python.org/dev/peps/pep-3149.
+			"pythonABIVersion" : "3.7m",
+			"pythonMajorVersion" : "3",
+
+		},
+
+		"symbolicLinks" : [
+
+			( "{buildDir}/bin/python", "{buildDir}/bin/python3" ),
+
+		],
+
+	},
+
 	"platform:osx" : {
 
 		"variables" : {
@@ -63,7 +104,7 @@
 
 		"symbolicLinks" : [
 
-			( "{buildDir}/bin/python", "../lib/Python.framework/Versions/Current/bin/python" ),
+			( "{buildDir}/bin/python", "../lib/Python.framework/Versions/Current/bin/python{pythonMajorVersion}" ),
 			( "{buildDir}/bin/python{pythonMajorVersion}", "../lib/Python.framework/Versions/Current/bin/python{pythonMajorVersion}" ),
 			( "{buildDir}/bin/python{pythonVersion}", "../lib/Python.framework/Versions/Current/bin/python{pythonVersion}" ),
 

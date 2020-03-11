@@ -15,6 +15,7 @@
 		# Without this, boost build will still pick up the system python framework,
 		# even though we tell it quite explicitly to use the one in {buildDir}.
 		"DYLD_FALLBACK_FRAMEWORK_PATH" : "{buildDir}/lib",
+		"LD_LIBRARY_PATH" : "{buildDir}/lib",
 		"MACOSX_DEPLOYMENT_TARGET" : "10.9",
 		# Give a helping hand to find the python headers, since the bootstrap
 		# below doesn't always seem to get it right.

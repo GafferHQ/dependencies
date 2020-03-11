@@ -1,8 +1,11 @@
 2.x.x
 -----
 
+This major version introduces the concept of build variants, and provides package variants for both Python 2 and 3.
+
 - Boost : Updated to version 1.68.0.
 - OpenEXR : Updated to version 1.4.1.
+- Python : Added version 3.7.6.
 
 1.2.0
 -----
