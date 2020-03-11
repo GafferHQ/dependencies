@@ -10,6 +10,12 @@
 
 	"dependencies" : [ "Boost", "Python", "OpenImageIO", "TBB", "Alembic" ],
 
+	"environment" : {
+
+		"LD_LIBRARY_PATH" : "{buildDir}/lib",
+
+	},
+
 	"commands" : [
 
 		"cmake"
@@ -23,6 +29,8 @@
 			" -D PXR_ENABLE_HDF5_SUPPORT=FALSE"
 			" -D ALEMBIC_DIR={buildDir}/lib"
 			" -D OPENEXR_LOCATION={buildDir}/lib"
+			# Disable Python support until USD supports Python 3.
+			" -D PXR_ENABLE_PYTHON_SUPPORT=FALSE"
 			# Needed to prevent CMake picking up system python libraries on Mac.
 			" -D CMAKE_FRAMEWORK_PATH={pythonLibDir}"
 			" ."
@@ -30,9 +38,6 @@
 
 		"make VERBOSE=1 -j {jobs}",
 		"make install",
-
-		"rm -rf {buildDir}/python/pxr",
-		"mv {buildDir}/lib/python/pxr {buildDir}/python",
 
 	],
 
