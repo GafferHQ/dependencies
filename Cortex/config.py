@@ -10,7 +10,7 @@
 
 	"dependencies" : [
 		"Python", "OpenImageIO", "OpenEXR", "Boost", "OpenShadingLanguage",
-		"Blosc", "FreeType", "GLEW", "Appleseed", "TBB", "OpenVDB", "USD"
+		"Blosc", "FreeType", "GLEW", "Appleseed", "TBB", "OpenVDB", "USD", "Six"
 	],
 
 	"environment" : {
