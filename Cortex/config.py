@@ -12,7 +12,7 @@
 
 	"dependencies" : [
 		"Python", "OpenImageIO", "IlmBase", "PyIlmBase", "Boost", "OpenShadingLanguage",
-		"Blosc", "FreeType", "GLEW", "Appleseed", "TBB", "OpenVDB", "USD"
+		"Blosc", "FreeType", "GLEW", "Appleseed", "TBB", "OpenVDB", "USD", "Six"
 	],
 
 	"environment" : {
