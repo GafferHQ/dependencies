@@ -2,13 +2,14 @@
 
 	"downloads" : [
 
-		"https://www.autodesk.com/content/dam/autodesk/www/Company/files/PySide2-Maya-2018_6.tgz"
+		"https://download.qt.io/official_releases/QtForPython/pyside2/PySide2-5.12.6-src/pyside-setup-everywhere-src-5.12.6.tar.xz"
 
 	],
 
-	"license" : "LICENSE.LGPLv21",
+	"license" : "LICENSE.LGPLv3",
 
-	"dependencies" : [ "Python", "Qt" ],
+	# PySide uses clang for parsing headers, hence the LLVM dependency.
+	"dependencies" : [ "Python", "Qt", "LLVM" ],
 
 	"environment" : {
 
@@ -18,8 +19,7 @@
 
 	"commands" : [
 
-		"python setup.py --ignore-git --no-examples --jobs {jobs} --osx-use-libc++ install"
-
+		"python setup.py --verbose-build --ignore-git --no-examples --parallel {jobs} install",
 
 	],
 
