@@ -1,0 +1,11 @@
+--- a/sources/shiboken2/ApiExtractor/clangparser/compilersupport.cpp	2020-04-09 21:20:28.000000000 +0100
++++ b/sources/shiboken2/ApiExtractor/clangparser/compilersupport.cpp	2020-04-09 21:21:26.000000000 +0100
+@@ -292,7 +292,7 @@
+ static QString compilerFromCMake(const QString &defaultCompiler)
+ {
+ // Added !defined(Q_OS_DARWIN) due to PYSIDE-1032
+-#  if defined(CMAKE_CXX_COMPILER) && !defined(Q_OS_DARWIN)
++#  if defined(CMAKE_CXX_COMPILER)
+     Q_UNUSED(defaultCompiler)
+     return QString::fromLocal8Bit(CMAKE_CXX_COMPILER);
+ #  else

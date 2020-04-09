@@ -1,0 +1,13 @@
+--- a/ez_setup.py	2020-04-09 10:14:21.393481256 +0100
++++ b/ez_setup.py	2020-04-09 10:15:18.335459087 +0100
+@@ -246,7 +246,9 @@
+ download_file_powershell.viable = has_powershell
+
+ def download_file_curl(url, target):
+-    cmd = ['curl', url, '--silent', '--output', target]
++    # We need `-L` because the PyPi package has moved
++    # so we need to follow a redirection.
++    cmd = ['curl', url, '-L', '--silent', '--output', target]
+     _clean_check(cmd, target)
+
+ def has_curl():
