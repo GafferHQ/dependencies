@@ -14,6 +14,7 @@
 
 		"LD_LIBRARY_PATH" : "{buildDir}/lib",
 		"DYLD_FRAMEWORK_PATH" : "{buildDir}/lib",
+		"PYTHONPATH" : "{buildDir}/python",
 
 	},
 
