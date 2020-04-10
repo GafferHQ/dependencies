@@ -36,6 +36,9 @@ Dictionary fields
 - environment : Dictionary of environment variables to provide to the
   build.
 - commands : List containing the build commands to be executed.
+- enabled : May be set to `False` to disable a project entirely. This is
+  only expected to be useful in conjunction with platform overrides or
+  variants.
 
 ### Packaging
 
@@ -187,12 +190,14 @@ def __loadConfigs( variables, variants ) :
 
 	configs = {}
 	for project in __projects() :
-		configs[project] = __loadJSON( project )
+		config = __loadJSON( project )
 		if project in variants :
-			__applyConfigOverrides( configs[project], "variant:{}".format( variants[project] ) )
+			__applyConfigOverrides( config, "variant:{}".format( variants[project] ) )
 		for variantProject, variant in variants.items() :
-			__applyConfigOverrides( configs[project], "variant:{}:{}".format( variantProject, variant ) )
-		__applyConfigOverrides( configs[project], "platform:osx" if sys.platform == "darwin" else "platform:linux" )
+			__applyConfigOverrides( config, "variant:{}:{}".format( variantProject, variant ) )
+		__applyConfigOverrides( config, "platform:osx" if sys.platform == "darwin" else "platform:linux" )
+		if config.get( "enabled", True ) :
+			configs[project] = config
 
 	# Walk dependency tree to compute digests and
 	# apply substitutions.
@@ -378,7 +383,7 @@ parser.add_argument(
 	"--projects",
 	choices = __projects(),
 	nargs = "+",
-	default = __projects(),
+	default = None,
 	help = "The projects to build."
 )
 
@@ -427,6 +432,11 @@ variables = {
 }
 
 configs = __loadConfigs( variables, variants )
+if args.projects is None :
+	# We don't default to everything in `__projects()`,
+	# because projects may have been disabled based on
+	# platform/variant.
+	args.projects = sorted( configs.keys() )
 
 __checkEnvironment( args.projects, configs )
 __buildProjects( args.projects, configs, args.buildDir )

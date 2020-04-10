@@ -23,4 +23,10 @@
 
 	],
 
+	"variant:Python:3" : {
+
+		"enabled" : False,
+
+	},
+
 }
