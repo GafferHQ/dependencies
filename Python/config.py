@@ -81,7 +81,7 @@
 
 		"symbolicLinks" : [
 
-			( "{buildDir}/bin/python", "{buildDir}/bin/python3" ),
+			( "{buildDir}/bin/python", "python3" ),
 
 		],
 
