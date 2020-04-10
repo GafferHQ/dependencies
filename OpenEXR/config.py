@@ -42,9 +42,15 @@
 	"manifest" : [
 
 		"bin/exrheader",
-		"include/OpenEXR/Imf*.h",
-		"include/OpenEXR/OpenEXRConfig.h",
+		"include/OpenEXR",
 		"lib/libIlmImf*{sharedLibraryExtension}*",
+		"lib/libIex*{sharedLibraryExtension}*",
+		"lib/libHalf*{sharedLibraryExtension}*",
+		"lib/libIlmThread*{sharedLibraryExtension}*",
+		"lib/libImath*{sharedLibraryExtension}*",
+		"lib/libPyIex*{sharedLibraryExtension}*",
+		"lib/libPyImath*{sharedLibraryExtension}*",
+
 		"python/iex.so",
 		"python/imath.so",
 
