@@ -22,6 +22,9 @@
 		"cd build && cmake"
 			" -D CMAKE_INSTALL_PREFIX={buildDir}"
 			" -D CMAKE_PREFIX_PATH={buildDir}"
+			# OpenVDB's CMake setup uses GNUInstallDirs, which unhelpfully
+			# puts the libraries in `lib64`. Coax them back.
+			" -D CMAKE_INSTALL_LIBDIR={buildDir}/lib"
 			" -D OPENVDB_BUILD_PYTHON_MODULE=ON"
 			" -D PYOPENVDB_INSTALL_DIRECTORY={buildDir}/python"
 			" .."

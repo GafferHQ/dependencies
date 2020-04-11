@@ -16,6 +16,12 @@
 
 	},
 
+	"variables" : {
+
+		"pythonModuleDir" : "{pythonLibDir}/python{pythonVersion}/site-packages",
+
+	},
+
 	"commands" : [
 
 		"cmake"
@@ -34,20 +40,42 @@
 		"make install",
 
 		"mkdir -p {buildDir}/python",
-		"mv {pythonLibDir}/python{pythonVersion}/site-packages/iex.so {buildDir}/python",
-		"mv {pythonLibDir}/python{pythonVersion}/site-packages/imath.so {buildDir}/python",
+		"mv {pythonModuleDir}/iex.so {buildDir}/python",
+		"mv {pythonModuleDir}/imath.so {buildDir}/python",
 
 	],
 
 	"manifest" : [
 
 		"bin/exrheader",
-		"include/OpenEXR/Imf*.h",
-		"include/OpenEXR/OpenEXRConfig.h",
+		"include/OpenEXR",
 		"lib/libIlmImf*{sharedLibraryExtension}*",
+		"lib/libIex*{sharedLibraryExtension}*",
+		"lib/libHalf*{sharedLibraryExtension}*",
+		"lib/libIlmThread*{sharedLibraryExtension}*",
+		"lib/libImath*{sharedLibraryExtension}*",
+		"lib/libPyIex*{sharedLibraryExtension}*",
+		"lib/libPyImath*{sharedLibraryExtension}*",
+
 		"python/iex.so",
 		"python/imath.so",
 
-	]
+	],
+
+	"variant:Python:2" : {
+
+		"platform:osx" : {
+
+			"variables" : {
+
+				# Yep, a totally different location to where it installs for Python 3,
+				# and missing the L in Library.
+				"pythonModuleDir" : "{buildDir}/ibrary/Python/2.7/site-packages",
+
+			},
+
+		},
+
+	}
 
 }
