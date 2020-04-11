@@ -281,12 +281,15 @@ def __buildProject( project, config, buildDir ) :
 
 	if config["license"] is not None :
 		licenseDir = os.path.join( buildDir, "doc/licenses" )
+		licenseDest = os.path.join( licenseDir, project )
 		if not os.path.exists( licenseDir ) :
 			os.makedirs( licenseDir )
 		if os.path.isfile( config["license"] ) :
-			shutil.copy( config["license"], os.path.join( licenseDir, project ) )
+			shutil.copy( config["license"], licenseDest )
 		else :
-			shutil.copytree( config["license"], os.path.join( licenseDir, project ) )
+			if os.path.exists( licenseDest ) :
+				shutil.rmtree( licenseDest )
+			shutil.copytree( config["license"], licenseDest )
 
 	for patch in glob.glob( "../../patches/*.patch" ) :
 		subprocess.check_call( "patch -p1 < {patch}".format( patch = patch ), shell = True )
@@ -301,7 +304,7 @@ def __buildProject( project, config, buildDir ) :
 
 	for link in config.get( "symbolicLinks", [] ) :
 		sys.stderr.write( "Linking {} to {}\n".format( link[0], link[1] ) )
-		if os.path.exists( link[0] ) :
+		if os.path.lexists( link[0] ) :
 			os.remove( link[0] )
 		os.symlink( link[1], link[0] )
 
