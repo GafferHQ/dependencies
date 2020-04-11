@@ -53,6 +53,7 @@
 			"pythonVersion" : "2.7",
 			"pythonABIVersion" : "2.7",
 			"pythonMajorVersion" : "2",
+			"pythonMinorVersion" : "7",
 
 		},
 
@@ -76,6 +77,7 @@
 			# suffixes. See : https://www.python.org/dev/peps/pep-3149.
 			"pythonABIVersion" : "3.7m",
 			"pythonMajorVersion" : "3",
+			"pythonMinorVersion" : "7",
 
 		},
 
