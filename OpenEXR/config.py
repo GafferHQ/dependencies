@@ -16,12 +16,6 @@
 
 	},
 
-	"variables" : {
-
-		"pythonModuleDir" : "{pythonLibDir}/python{pythonVersion}/site-packages",
-
-	},
-
 	"commands" : [
 
 		"cmake"
@@ -33,15 +27,18 @@
 			" -D Boost_NO_SYSTEM_PATHS=TRUE"
 			" -D Boost_NO_BOOST_CMAKE=TRUE"
 			" -D BOOST_ROOT={buildDir}"
-			" ."
+			" -D Python_ROOT_DIR={buildDir}"
+			" -D Python2_ROOT_DIR={buildDir}"
+			" -D Python3_ROOT_DIR={buildDir}"
+			"."
 		,
 
 		"make VERBOSE=1 -j {jobs}",
 		"make install",
 
 		"mkdir -p {buildDir}/python",
-		"mv {pythonModuleDir}/iex.so {buildDir}/python",
-		"mv {pythonModuleDir}/imath.so {buildDir}/python",
+		"mv {pythonLibDir}/python{pythonVersion}/site-packages/iex.so {buildDir}/python",
+		"mv {pythonLibDir}/python{pythonVersion}/site-packages/imath.so {buildDir}/python",
 
 	],
 
@@ -61,21 +58,5 @@
 		"python/imath.so",
 
 	],
-
-	"variant:Python:2" : {
-
-		"platform:osx" : {
-
-			"variables" : {
-
-				# Yep, a totally different location to where it installs for Python 3,
-				# and missing the L in Library.
-				"pythonModuleDir" : "{buildDir}/ibrary/Python/2.7/site-packages",
-
-			},
-
-		},
-
-	}
 
 }
