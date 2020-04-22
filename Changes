@@ -10,6 +10,7 @@ This major version introduces the concept of build variants, and provides packag
 - OpenEXR : Updated to version 1.4.1.
 - Python : Added version 3.7.6.
 - Six : Added version 1.14.0.
+- PySetProcTitle : Added version 1.1.10.
 
 1.2.0
 -----
