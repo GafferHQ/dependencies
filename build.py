@@ -14,7 +14,7 @@ import sys
 import tarfile
 import zipfile
 
-__version = "1.2.0"
+__version = "1.3.0"
 
 def __projects() :
 
