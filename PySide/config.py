@@ -6,6 +6,8 @@
 
 	],
 
+	"url" : "http://www.pyside.org",
+
 	"license" : "LICENSE.LGPLv21",
 
 	"dependencies" : [ "Python", "Qt" ],

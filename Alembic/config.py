@@ -6,6 +6,8 @@
 
 	],
 
+	"url" : "http://www.alembic.io",
+
 	"license" : "LICENSE.txt",
 
 	"dependencies" : [ "Python", "IlmBase", "PyIlmBase", "Boost", "HDF5" ],

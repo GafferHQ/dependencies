@@ -6,6 +6,7 @@
 
 	],
 
+	"url" : "http://www.openexr.com",
 	"license" : "LICENSE",
 
 	"commands" : [

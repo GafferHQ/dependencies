@@ -8,6 +8,8 @@
 
 	"license" : "LICENSE_1_0.txt",
 
+	"url" : "http://www.boost.org",
+
 	"dependencies" : [ "Python" ],
 
 	"environment" : {

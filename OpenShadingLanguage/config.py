@@ -6,6 +6,8 @@
 
 	],
 
+	"url" : "https://github.com/imageworks/OpenShadingLanguage",
+
 	"license" : "LICENSE",
 
 	"dependencies" : [ "OpenImageIO", "LLVM" ],

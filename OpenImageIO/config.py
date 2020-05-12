@@ -6,6 +6,8 @@
 
 	],
 
+	"url" : "http://www.openimageio.org",
+
 	"license" : "LICENSE",
 
 	"dependencies" : [ "Boost", "Python", "IlmBase", "OpenEXR", "LibTIFF", "LibPNG", "LibJPEG-Turbo", "OpenColorIO" ],
