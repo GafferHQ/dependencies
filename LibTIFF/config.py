@@ -6,6 +6,8 @@
 
 	],
 
+	"url" : "http://www.libtiff.org",
+
 	"license" : "COPYRIGHT",
 
 	"dependencies" : [ "LibJPEG-Turbo" ],

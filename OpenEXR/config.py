@@ -6,6 +6,8 @@
 
 	],
 
+	"url" : "http://www.openexr.com",
+
 	"license" : "LICENSE",
 
 	"dependencies" : [ "IlmBase" ],

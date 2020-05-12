@@ -6,6 +6,8 @@
 
 	],
 
+	"url" : "https://www.openssl.org",
+
 	"license" : "LICENSE",
 
 	"commands" : [

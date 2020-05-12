@@ -7,6 +7,8 @@
 
 	],
 
+	"url" : "https://llvm.org",
+
 	"license" : "LICENSE.TXT",
 
 	"commands" : [

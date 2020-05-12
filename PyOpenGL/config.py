@@ -6,6 +6,8 @@
 
 	],
 
+	"url" : "http://pyopengl.sourceforge.net",
+
 	"license" : "license.txt",
 
 	"dependencies" : [ "Python" ],

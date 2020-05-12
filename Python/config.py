@@ -15,6 +15,8 @@
 
 	],
 
+	"url" : "https://www.python.org",
+
 	"license" : "LICENSE",
 
 	"dependencies" : [ "OpenSSL" ],

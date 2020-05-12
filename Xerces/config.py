@@ -6,6 +6,8 @@
 
 	],
 
+	"url" : "https://xerces.apache.org",
+
 	"license" : "LICENSE",
 
 	"commands" : [

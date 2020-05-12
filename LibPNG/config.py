@@ -6,6 +6,7 @@
 
 	],
 
+	"url" : "http://www.libpng.org",
 	"license" : "LICENSE",
 
 	"commands" : [

@@ -7,6 +7,8 @@
 
 	],
 
+	"url" : "http://opencolorio.org",
+
 	"license" : "LICENSE",
 
 	"dependencies" : [ "Python" ],
