@@ -6,6 +6,8 @@
 
 	],
 
+	"url" : "https://blosc.org",
+
 	"license" : "LICENSES",
 
 	"commands" : [

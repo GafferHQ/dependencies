@@ -6,6 +6,8 @@
 
 	],
 
+	"url" : "http://www.openexr.com",
+
 	"license" : "LICENSE.md",
 
 	"dependencies" : [ "Python", "Boost" ],

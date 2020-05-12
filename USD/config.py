@@ -6,6 +6,8 @@
 
 	],
 
+	"url" : "https://graphics.pixar.com/usd",
+
 	"license" : "LICENSE.txt",
 
 	"dependencies" : [ "Boost", "Python", "OpenImageIO", "TBB", "Alembic" ],

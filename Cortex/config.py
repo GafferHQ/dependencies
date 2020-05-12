@@ -6,6 +6,8 @@
 
 	],
 
+	"url" : "https://github.com/ImageEngine/cortex",
+
 	"license" : "LICENSE",
 
 	"dependencies" : [

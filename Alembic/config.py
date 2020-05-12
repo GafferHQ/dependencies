@@ -6,6 +6,8 @@
 
 	],
 
+	"url" : "http://www.alembic.io",
+
 	"license" : "LICENSE.txt",
 
 	"dependencies" : [ "Python", "OpenEXR", "Boost", "HDF5" ],

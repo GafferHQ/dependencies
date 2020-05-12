@@ -6,6 +6,7 @@
 
 	],
 
+	"url" : "https://libjpeg-turbo.org",
 	"license" : "LICENSE.md",
 
 	"commands" : [

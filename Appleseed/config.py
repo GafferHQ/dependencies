@@ -6,6 +6,8 @@
 
 	],
 
+	"url" : "https://appleseedhq.net",
+
 	"license" : "LICENSE.txt",
 
 	"dependencies" : [ "Python", "Xerces", "OpenShadingLanguage", "OpenImageIO", "Boost", "LibPNG", "OpenEXR" ],

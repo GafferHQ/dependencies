@@ -6,6 +6,8 @@
 
 	],
 
+	"url" : "http://www.pyside.org",
+
 	"license" : "LICENSE.LGPLv3",
 
 	# PySide uses clang for parsing headers, hence the LLVM dependency.

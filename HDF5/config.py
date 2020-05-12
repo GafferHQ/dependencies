@@ -6,6 +6,8 @@
 
 	],
 
+	"url" : "http://www.hdfgroup.org",
+
 	"license" : "COPYING",
 
 	"commands" : [

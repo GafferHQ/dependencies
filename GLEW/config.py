@@ -6,6 +6,7 @@
 
 	],
 
+	"url" : "http://glew.sourceforge.net",
 	"license" : "LICENSE.txt",
 
 	"commands" : [

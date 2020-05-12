@@ -8,6 +8,8 @@
 
 	"dependencies" : [ "LibPNG", "LibTIFF", "LibJPEG-Turbo", "FreeType" ],
 
+	"url" : "https://www.qt.io",
+
 	"license" : "LICENSE.LGPLv21",
 
 	"environment" : {

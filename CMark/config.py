@@ -6,6 +6,8 @@
 
 	],
 
+	"url" : "https://github.com/github/cmark",
+
 	"license" : "COPYING",
 
 	"commands" : [

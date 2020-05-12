@@ -6,6 +6,8 @@
 
 	],
 
+	"url" : "http://www.openvdb.org",
+
 	"license" : "LICENSE",
 
 	"dependencies" : [ "Blosc", "TBB", "OpenEXR", "Python" ],

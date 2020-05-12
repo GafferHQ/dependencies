@@ -6,6 +6,8 @@
 
 	],
 
+	"url" : "https://www.gafferhq.org",
+
 	"license" : None,
 
 	"commands" : [

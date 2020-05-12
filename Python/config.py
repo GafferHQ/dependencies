@@ -9,6 +9,8 @@
 
 	"variants" : [ "2", "3" ],
 
+	"url" : "https://www.python.org",
+
 	"license" : "LICENSE",
 
 	"dependencies" : [ "OpenSSL" ],

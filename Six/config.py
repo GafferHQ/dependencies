@@ -7,6 +7,8 @@
 
 	],
 
+	"url" : "https://github.com/benjaminp/six",
+
 	"license" : "LICENSE",
 
 	"commands" : [

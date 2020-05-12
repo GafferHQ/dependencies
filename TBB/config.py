@@ -6,6 +6,8 @@
 
 	],
 
+	"url" : "http://threadingbuildingblocks.org/",
+
 	"license" : "LICENSE",
 
 	"commands" : [
