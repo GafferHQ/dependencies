@@ -43,7 +43,9 @@ Dictionary fields
 
 ### Packaging
 
+- url : URL for the project website.
 - license : The name of the license file within the source.
+- credit : Any specific credit required to be given to the project.
 - manifest : List of output files to include in the final package.
   May contain standard glob matching patterns.
 
