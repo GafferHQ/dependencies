@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://files.pythonhosted.org/packages/28/8d/33ccbff51053f59ae6c357310cac0e79246bbed1d345ecc6188b176d72c3/subprocess32-3.2.6.tar.gz"
+		"https://files.pythonhosted.org/packages/32/c8/564be4d12629b912ea431f1a50eb8b3b9d00f1a0b1ceff17f266be190007/subprocess32-3.5.4.tar.gz"
 	],
 
 	"url" : "https://github.com/google/python-subprocess32",
@@ -24,11 +24,5 @@
 		"python setup.py install",
 
 	],
-
-	"variant:Python:3" : {
-
-		"enabled" : False,
-
-	},
 
 }

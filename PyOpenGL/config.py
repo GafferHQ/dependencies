@@ -22,7 +22,7 @@
 
 	"commands" : [
 
-		"{buildDir}/bin/python setup.py install --prefix {buildDir} --install-lib {buildDir}/python",
+		"{buildDir}/bin/python setup.py install {extraArgs} --root / --prefix {buildDir} --install-lib {buildDir}/python",
 
 	],
 
@@ -31,5 +31,22 @@
 		"python/OpenGL",
 
 	],
+
+	"variables" : {
+
+		"extraArgs" : "",
+
+	},
+
+	"variant:Python:3" : {
+
+
+		"variables" : {
+
+			"extraArgs" : "--single-version-externally-managed"
+
+		},
+
+	},
 
 }
