@@ -12,7 +12,10 @@ import subprocess
 import shutil
 import sys
 import tarfile
+from telnetlib import STATUS
 import zipfile
+from urllib.request import urlretrieve
+import stat
 
 __version = "8.0.1"
 
@@ -99,12 +102,14 @@ def __decompress( archive ) :
 		with zipfile.ZipFile( archive ) as f :
 			for info in f.infolist() :
 				extracted = f.extract( info.filename )
-				os.chmod( extracted, info.external_attr >> 16 )
+				os.chmod( extracted, ( info.external_attr >> 16 ) | stat.S_IWUSR )
 			files = f.namelist()
 	elif archive.endswith( ".tar.xz" ) :
 		## \todo When we eventually move to Python 3, we can use
 		# the `tarfile` module for this too.
 		command = "tar -xvf {archive}".format( archive=archive )
+		if sys.platform == "win32":
+			command = "cmake -E tar xvf {archive}".format( archive=archive )
 		sys.stderr.write( command + "\n" )
 		files = subprocess.check_output( command, stderr=subprocess.STDOUT, shell = True, universal_newlines = True )
 		files = [ f for f in files.split( "\n" ) if f ]
@@ -192,7 +197,7 @@ def __updateDigest( project, config ) :
 	for e in config.get( "requiredEnvironment", [] ) :
 		__appendHash( config["digest"], os.environ.get( e, "" ) )
 
-	for patch in glob.glob( "{}/patches/*.patch".format( project ) ) :
+	for patch in glob.glob( "{}/patches/{}/*.patch".format( project, config["platform"] ) ) + glob.glob( "{}/patches/*.patch".format( project ) ) :
 		with open( patch ) as f :
 			__appendHash( config["digest"], f.read() )
 
@@ -203,11 +208,12 @@ def __loadConfigs( variables, variants ) :
 	configs = {}
 	for project in __projects() :
 		config = __loadJSON( project )
+		config[ "platform" ] = variables[ "platform" ]
 		if project in variants :
 			__applyConfigOverrides( config, "variant:{}".format( variants[project] ) )
 		for variantProject, variant in variants.items() :
 			__applyConfigOverrides( config, "variant:{}:{}".format( variantProject, variant ) )
-		__applyConfigOverrides( config, "platform:macos" if sys.platform == "darwin" else "platform:linux" )
+		__applyConfigOverrides( config, { "darwin": "platform:macos", "win32": "platform:windows" }.get( sys.platform, "platform:linux" ) )
 		if config.get( "enabled", True ) :
 			configs[project] = config
 
@@ -278,9 +284,10 @@ def __buildProject( project, config, buildDir ) :
 		if os.path.exists( archivePath ) :
 			continue
 
-		downloadCommand = "curl -L {0} > {1}".format( download, archivePath )
-		sys.stderr.write( downloadCommand + "\n" )
-		subprocess.check_call( downloadCommand, shell = True )
+		# downloadCommand = "curl -L {0} > {1}".format( download, archivePath )
+		# sys.stderr.write( downloadCommand + "\n" )
+		# subprocess.check_call( downloadCommand, shell = True )
+		urlretrieve( download, archivePath )
 
 	workingDir = project + "/working"
 	if os.path.exists( workingDir ) :
@@ -303,13 +310,14 @@ def __buildProject( project, config, buildDir ) :
 				shutil.rmtree( licenseDest )
 			shutil.copytree( config["license"], licenseDest )
 
-	for patch in glob.glob( "../../patches/*.patch" ) :
+	for patch in glob.glob( "../../patches/{}/*.patch".format( config["platform"] ) ) + glob.glob( "../../patches/*.patch" ) :
+		# subprocess.check_call( "git apply --ignore-space-change --ignore-whitespace --whitespace=nowarn {patch}".format( patch = patch ), shell = True )
 		subprocess.check_call( "patch -p1 < {patch}".format( patch = patch ), shell = True )
 
 	environment = os.environ.copy()
 	for k, v in config.get( "environment", {} ).items() :
 		environment[k] = os.path.expandvars( v )
-
+	
 	for command in config["commands"] :
 		sys.stderr.write( command + "\n" )
 		subprocess.check_call( command, shell = True, env = environment )
@@ -406,10 +414,25 @@ def __buildPackage( projects, configs, buildDir, package ) :
 	with open( os.path.join( buildDir, "doc", "licenses", "manifest.json" ), "w" ) as file :
 		json.dump( projectManifest, file, indent = 4 )
 
-	rootName = os.path.basename( package ).replace( ".tar.gz", "" )
-	with tarfile.open( package, "w:gz" ) as file :
-		for m in files :
-			file.add( os.path.join( buildDir, m ), arcname = os.path.join( rootName, m ) )
+	if sys.platform == "win32" :
+		rootName = os.path.basename( package ).replace( ".zip", "" )
+		buildDirLength = len( buildDir )
+		with zipfile.ZipFile( package, "w", zipfile.ZIP_DEFLATED ) as file:
+			for m in files :
+				path = os.path.join( buildDir, m )
+				if os.path.isfile( path ) :
+					file.write( os.path.join( buildDir, m ), arcname = os.path.join( rootName, m ) )
+				elif os.path.isdir( path ) :
+					for root, dirs, files in os.walk( path ):
+						for f in files:
+							fullPath = os.path.join( root, f )
+							relativePath = fullPath[ buildDirLength : ].lstrip( "\\" )
+							file.write( fullPath, arcname = os.path.join( rootName, relativePath ) )
+	else :
+		rootName = os.path.basename( package ).replace( ".tar.gz", "" )
+		with tarfile.open( package, "w:gz" ) as file :
+			for m in files :
+				file.add( os.path.join( buildDir, m ), arcname = os.path.join( rootName, m ) )
 
 parser = argparse.ArgumentParser()
 
@@ -429,7 +452,7 @@ parser.add_argument(
 
 parser.add_argument(
 	"--package",
-	default = "gafferDependencies-{version}{variants}-{platform}.tar.gz",
+	default = "gafferDependencies-{version}{variants}-{platform}" + ( ".zip" if sys.platform == "win32" else ".tar.gz" ),
 	help = "The filename of the tarball package to create.",
 )
 
@@ -464,13 +487,20 @@ for key, value in vars( args ).items() :
 
 variables = {
 	"buildDir" : os.path.abspath( args.buildDir ),
+	"buildDirFwd" : args.buildDir.replace("\\", "/"),
 	"jobs" : args.jobs,
 	"path" : os.environ["PATH"],
 	"version" : __version,
-	"platform" : "macos" if sys.platform == "darwin" else "linux",
-	"sharedLibraryExtension" : ".dylib" if sys.platform == "darwin" else ".so",
+	"platform" : { "darwin": "macos", "win32": "windows" }.get( sys.platform, "linux" ),
+	"sharedLibraryExtension" : { "darwin": ".dylib", "win32": ".dll" }.get( sys.platform, ".so" ),
+	"staticLibraryExtension" : ".lib" if sys.platform == "win32" else ".a",
+	"pythonModuleExtension" : ".pyd" if sys.platform == "win32" else ".so",
+	"executableExtension" : ".exe" if sys.platform == "win32" else "",
+	"libraryPrefix" : "" if sys.platform == "win32" else "lib",
 	"c++Standard" : "17",
 	"compilerRoot" : __compilerRoot(),
+	"cmakeGenerator" : "\"NMake Makefiles JOM\"" if sys.platform == "win32" else "\"Unix Makefiles\"",
+	"cmakeBuildType": "Release",
 	"variants" : "".join( "-{}{}".format( key, variants[key] ) for key in sorted( variants.keys() ) ),
 }
 
