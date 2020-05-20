@@ -54,14 +54,15 @@
 
 	"manifest" : [
 
-		"bin/moc",
-		"bin/qmake",
-		"bin/rcc",
-		"bin/uic",
+		"bin/moc{executableExtension}",
+		"bin/qmake{executableExtension}",
+		"bin/rcc{executableExtension}",
+		"bin/uic{executableExtension}",
 
 		"include/Qt*",
 
-		"lib/libQt*",
+		"{sharedLibraryDir}/{libraryPrefix}Qt*{sharedLibraryExtension}",
+		"lib/{libraryPrefix}Qt*",
 		"lib/Qt*.framework",
 
 		"mkspecs",
@@ -95,5 +96,54 @@
 		},
 
 	},
+
+	"platform:windows" : {
+
+		"environment" : {
+
+			"PATH" : "%ROOT_DIR%\\Qt\\working\\qt-everywhere-src-5.15.14\\qtbase\\lib;{buildDir}\\lib;{buildDir}\\bin;%PATH%",
+
+		},
+
+		"commands" : [
+
+			lambda c : shutil.copy( c["variables"]["buildDir"] + "/lib/zlib.lib", c["variables"]["buildDir"] + "/lib/zdll.lib" ),
+			lambda c : shutil.copy( c["variables"]["buildDir"] + "/lib/libpng16.lib", c["variables"]["buildDir"] + "/lib/libpng.lib" ),
+			lambda c : shutil.copy( c["variables"]["buildDir"] + "/lib/jpeg.lib", c["variables"]["buildDir"] + "/lib/libjpeg.lib" ),
+			# help Qt find the right zlib.dll
+			lambda c : shutil.copy( c["variables"]["buildDir"] + "/bin/zlib.dll", os.environ["ROOT_DIR"] + "/Qt/working/qt-everywhere-src-5.15.14/qtbase/bin/zlib.dll" ),
+			"call configure.bat"
+				" -prefix {buildDir}"
+				" -plugindir {buildDir}\\qt\\plugins"
+				" -release"
+				" -opensource"
+				" -confirm-license"
+				" -opengl desktop"
+				" -no-angle"
+				" -no-rpath"
+				" -no-dbus"
+				" -skip qtconnectivity"
+				" -skip qtwebengine"
+				" -skip qt3d"
+				" -skip qtdeclarative"
+				" -skip qtwebchannel"
+				" -skip qtpurchasing"
+				" -skip qtgamepad"
+				" -skip qtspeech"
+				" -skip qtdatavis3d"
+				" -skip qtcharts"
+				" -no-libudev"
+				" -no-icu"
+				" -qt-pcre"
+				" -nomake examples"
+				" -nomake tests"
+				" -system-zlib"
+				" -I {buildDir}\\include"
+				" -L {buildDir}\\lib",
+			"jom.exe",
+			"jom.exe install",
+
+		]
+	}
 
 }
