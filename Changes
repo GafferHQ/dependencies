@@ -12,7 +12,8 @@ This major version introduces the concept of build variants, and provides packag
 - Six : Added version 1.14.0.
 - PySetProcTitle : Added version 1.1.10.
 - Subprocess32 : Updated to version 3.5.4.
-- Appleseed : Updated to version 2.1.0-beta
+- Appleseed : Updated to version 2.1.0-beta.
+- LZ4 : Added version 1.9.2.
 - Cortex : Updated to version 10.0.0-a77.
 
 1.2.0

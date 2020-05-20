@@ -10,7 +10,7 @@
 
 	"license" : "LICENSE.txt",
 
-	"dependencies" : [ "Python", "Xerces", "OpenShadingLanguage", "OpenImageIO", "Boost", "LibPNG", "OpenEXR" ],
+	"dependencies" : [ "Python", "Xerces", "OpenShadingLanguage", "OpenImageIO", "Boost", "LibPNG", "OpenEXR", "LZ4" ],
 
 	"environment" : {
 
