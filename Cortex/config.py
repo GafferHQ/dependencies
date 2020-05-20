@@ -36,6 +36,7 @@
 			" INSTALL_ARNOLDOUTPUTDRIVER_NAME={buildDir}/arnold/plugins/ieOutputDriver.so"
 			" INSTALL_IECORE_OPS=''"
 			" PYTHON_CONFIG={buildDir}/bin/python{pythonMajorVersion}-config"
+			" PYTHON={buildDir}/bin/python"
 			" BOOST_INCLUDE_PATH={buildDir}/include/boost"
 			" LIBPATH={buildDir}/lib"
 			" BOOST_LIB_SUFFIX=''"
