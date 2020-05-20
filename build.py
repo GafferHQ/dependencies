@@ -414,7 +414,7 @@ parser.add_argument(
 
 parser.add_argument(
 	"--buildDir",
-	required = True,
+	default = "gafferDependencies-{version}{variants}-{platform}",
 	help = "The directory to put the builds in."
 )
 
@@ -447,7 +447,7 @@ for key, value in vars( args ).items() :
 		variants[key[8:]] = value[0]
 
 variables = {
-	"buildDir" : args.buildDir,
+	"buildDir" : os.path.abspath( args.buildDir ),
 	"jobs" : multiprocessing.cpu_count(),
 	"path" : os.environ["PATH"],
 	"version" : __version,
@@ -464,7 +464,9 @@ if args.projects is None :
 	args.projects = sorted( configs.keys() )
 
 __checkConfigs( args.projects, configs )
-__buildProjects( args.projects, configs, args.buildDir )
+
+buildDir = variables["buildDir"].format( **variables )
+__buildProjects( args.projects, configs, buildDir )
 
 if args.package :
-	__buildPackage( args.projects, configs, args.buildDir, args.package.format( **variables ) )
+	__buildPackage( args.projects, configs, buildDir, args.package.format( **variables ) )
