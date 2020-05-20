@@ -53,6 +53,7 @@
 			" -D WARNINGS_AS_ERRORS=OFF"
 			" -D CMAKE_PREFIX_PATH={buildDir}"
 			" -D CMAKE_INSTALL_PREFIX={buildDir}/appleseed"
+			" -D CMAKE_LIBRARY_PATH={pythonLibDir}"
 			" ..",
 
 		"cd build && make install -j {jobs} VERBOSE=1"
@@ -67,6 +68,7 @@
 				" -D WITH_PYTHON2_BINDINGS=ON"
 				" -D WITH_PYTHON3_BINDINGS=OFF"
 				" -D PYTHON_INCLUDE_DIR={pythonIncludeDir}"
+				" -D Boost_PYTHON_LIBRARY={buildDir}/lib/libboost_python{pythonMajorVersion}{pythonMinorVersion}{sharedLibraryExtension}"
 			,
 
 		},
@@ -83,6 +85,7 @@
 				" -D PYTHON3_INCLUDE_DIR={pythonIncludeDir}"
 				" -D PYTHON_MAJOR_VERSION={pythonMajorVersion}"
 				" -D PYTHON_MINOR_VERSION={pythonMinorVersion}"
+				" -D Boost_PYTHON3_LIBRARY={buildDir}/lib/libboost_python{pythonMajorVersion}{pythonMinorVersion}{sharedLibraryExtension}"
 			,
 
 		},
