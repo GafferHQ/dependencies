@@ -27,7 +27,7 @@
 
 	"manifest" : [
 
-		"python/setproctitle*{sharedLibraryExtension}"
+		"python/setproctitle*"
 
 	],
 
