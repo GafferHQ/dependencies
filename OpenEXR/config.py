@@ -32,7 +32,7 @@
 			" -D Python_ROOT_DIR={buildDir}"
 			" -D Python2_ROOT_DIR={buildDir}"
 			" -D Python3_ROOT_DIR={buildDir}"
-			"."
+			" ."
 		,
 
 		"make VERBOSE=1 -j {jobs}",
