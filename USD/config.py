@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/PixarAnimationStudios/USD/archive/v20.02.tar.gz"
+		"https://github.com/PixarAnimationStudios/USD/archive/v20.05.tar.gz"
 
 	],
 
@@ -15,6 +15,12 @@
 	"environment" : {
 
 		"LD_LIBRARY_PATH" : "{buildDir}/lib",
+
+	},
+
+	"variables" : {
+
+		"extraArguments" : "",
 
 	},
 
@@ -31,15 +37,17 @@
 			" -D PXR_ENABLE_HDF5_SUPPORT=FALSE"
 			" -D ALEMBIC_DIR={buildDir}/lib"
 			" -D OPENEXR_LOCATION={buildDir}/lib"
-			# Disable Python support until USD supports Python 3.
-			" -D PXR_ENABLE_PYTHON_SUPPORT=FALSE"
 			# Needed to prevent CMake picking up system python libraries on Mac.
 			" -D CMAKE_FRAMEWORK_PATH={pythonLibDir}"
+			" {extraArguments}"
 			" ."
 		,
 
 		"make VERBOSE=1 -j {jobs}",
 		"make install",
+
+		"rm -rf {buildDir}/python/pxr",
+		"mv {buildDir}/lib/python/pxr {buildDir}/python",
 
 	],
 
@@ -70,5 +78,15 @@
 		"share/usd",
 
 	],
+
+	"variant:Python:3" : {
+
+		"variables" : {
+
+			"extraArguments" : "-D PXR_USE_PYTHON_3=TRUE",
+
+		},
+
+	},
 
 }
