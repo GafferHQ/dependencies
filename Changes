@@ -16,6 +16,7 @@ This major version introduces the concept of build variants, and provides packag
 - Cortex : Updated to version 10.0.0-a78.
 - USD : Updated to version 20.05.
 - LibRaw : Added version 0.19.5.
+- Build : Switched standard to C++14.
 
 1.2.0
 -----

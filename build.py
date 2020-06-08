@@ -453,6 +453,7 @@ variables = {
 	"version" : __version,
 	"platform" : "osx" if sys.platform == "darwin" else "linux",
 	"sharedLibraryExtension" : ".dylib" if sys.platform == "darwin" else ".so",
+	"c++Standard" : "c++14",
 	"variants" : "".join( "-{}{}".format( key, variants[key] ) for key in sorted( variants.keys() ) ),
 }
 
