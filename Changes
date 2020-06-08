@@ -14,6 +14,7 @@ This major version introduces the concept of build variants, and provides packag
 - Appleseed : Updated to version 2.1.0-beta.
 - LZ4 : Added version 1.9.2.
 - Cortex : Updated to version 10.0.0-a78.
+- USD : Updated to version 20.05.
 
 1.2.0
 -----
