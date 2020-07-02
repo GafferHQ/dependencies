@@ -1,3 +1,8 @@
+1.4.1
+-----
+
+- Cortex : Added patch to back-port support for 3D samplers in IECoreGL::Shader.
+
 1.4.0
 -----
 
