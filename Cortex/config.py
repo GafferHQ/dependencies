@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/ImageEngine/cortex/archive/10.0.0-a76.tar.gz"
+		"https://github.com/ImageEngine/cortex/archive/10.0.0-a79.tar.gz"
 
 	],
 
@@ -12,7 +12,7 @@
 
 	"dependencies" : [
 		"Python", "OpenImageIO", "IlmBase", "PyIlmBase", "Boost", "OpenShadingLanguage",
-		"Blosc", "FreeType", "GLEW", "Appleseed", "TBB", "OpenVDB", "USD"
+		"Blosc", "FreeType", "GLEW", "Appleseed", "TBB", "OpenVDB", "USD", "Six"
 	],
 
 	"environment" : {
