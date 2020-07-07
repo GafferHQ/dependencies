@@ -351,11 +351,18 @@ parser.add_argument(
 	help = "The filename of the tarball package to create.",
 )
 
+parser.add_argument(
+	"--jobs",
+	type = int,
+	default = multiprocessing.cpu_count(),
+	help = "The number of build jobs to run in parallel. Defaults to cpu_count."
+)
+
 args = parser.parse_args()
 
 variables = {
 	"buildDir" : args.buildDir,
-	"jobs" : multiprocessing.cpu_count(),
+	"jobs" : args.jobs,
 	"path" : os.environ["PATH"],
 	"version" : __version,
 	"platform" : "osx" if sys.platform == "darwin" else "linux",
