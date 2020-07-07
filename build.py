@@ -144,7 +144,7 @@ def __applyConfigOverrides( config, key ) :
 
 def __substitute( config, variables, forDigest = False ) :
 
-	if not forDigest :
+	if forDigest :
 		# These shouldn't affect the output of the build, so
 		# hold them constant when computing a digest.
 		variables = variables.copy()
