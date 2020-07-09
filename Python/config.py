@@ -62,6 +62,12 @@
 
 		},
 
+		"environment" : {
+
+			"LDFLAGS" : "-L{buildDir}/lib -L/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib",
+			"CPPFLAGS" : "-I{buildDir}/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include"
+		},
+
 		"publicVariables" : {
 
 			"pythonIncludeDir" : "{buildDir}/lib/Python.framework/Headers",
