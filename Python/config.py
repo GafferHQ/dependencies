@@ -48,6 +48,12 @@
 
 	},
 
+	"environment" : {
+
+		"LDFLAGS" : "-L{buildDir}/lib",
+		"CPPFLAGS" : "-I{buildDir}/include"
+	},
+
 	"platform:osx" : {
 
 		"variables" : {
