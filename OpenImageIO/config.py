@@ -20,6 +20,7 @@
 			" -D CMAKE_INSTALL_PREFIX={buildDir}"
 			" -D CMAKE_INSTALL_LIBDIR={buildDir}/lib"
 			" -D CMAKE_PREFIX_PATH={buildDir}"
+			" -D CMAKE_CXX_FLAGS=\"-Wno-deprecated-declarations\""
 			" -D USE_FFMPEG=NO"
 			" -D USE_PYTHON=NO"
 			" ..",
