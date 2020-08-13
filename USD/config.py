@@ -10,11 +10,12 @@
 
 	"license" : "LICENSE.txt",
 
-	"dependencies" : [ "Boost", "Python", "OpenImageIO", "TBB", "Alembic" ],
+	"dependencies" : [ "Boost", "Python", "OpenImageIO", "TBB", "Alembic", "OpenSubdiv", "PyOpenGL", "GLEW", "PySide" ],
 
 	"environment" : {
 
 		"LD_LIBRARY_PATH" : "{buildDir}/lib",
+		"PYTHONPATH" : "{buildDir}/python",
 
 	},
 
@@ -31,7 +32,7 @@
 			" -D CMAKE_PREFIX_PATH={buildDir}"
 			" -D Boost_NO_SYSTEM_PATHS=TRUE"
 			" -D Boost_NO_BOOST_CMAKE=TRUE"
-			" -D PXR_BUILD_IMAGING=FALSE"
+			" -D PXR_ENABLE_PTEX_SUPPORT=FALSE"
 			" -D PXR_BUILD_TESTS=FALSE"
 			" -D PXR_BUILD_ALEMBIC_PLUGIN=TRUE"
 			" -D PXR_ENABLE_HDF5_SUPPORT=FALSE"
