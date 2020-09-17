@@ -21,9 +21,6 @@
 
 	"commands" : [
 
-		# Installs `setuptools`, which is required by
-		# the next command.
-		"python -m ensurepip --default-pip",
 		"python setup.py install",
 
 	],

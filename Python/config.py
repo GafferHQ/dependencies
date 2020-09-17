@@ -17,7 +17,7 @@
 
 	"commands" : [
 
-		"./configure --prefix={buildDir} {libraryType} --enable-unicode=ucs4",
+		"./configure --prefix={buildDir} {libraryType} --enable-unicode=ucs4 --with-ensurepip=install",
 		"make -j {jobs}",
 		"make install",
 
