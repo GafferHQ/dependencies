@@ -7,7 +7,7 @@ This major version introduces the concept of build variants, and provides packag
 - PySide : Updated to version 5.12.6.
 - Qt.py : Updated to version 1.2.5.
 - Boost : Updated to version 1.68.0.
-- OpenEXR : Updated to version 1.4.1.
+- OpenEXR : Updated to version 2.4.1.
 - Python : Added version 3.7.6.
 - Six : Added version 1.14.0.
 - Subprocess32 : Updated to version 3.5.4.
