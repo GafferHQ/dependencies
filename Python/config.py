@@ -13,11 +13,19 @@
 
 	"license" : "LICENSE",
 
-	"dependencies" : [ "OpenSSL" ],
+	"dependencies" : [ "OpenSSL", "LibFFI" ],
+
+	"environment" : {
+
+		"LDFLAGS" : "-L{buildDir}/lib",
+		"CPPFLAGS" : "-I{buildDir}/include",
+		"LD_LIBRARY_PATH" : "{buildDir}/lib",
+
+	},
 
 	"commands" : [
 
-		"./configure --prefix={buildDir} {libraryType} --enable-unicode=ucs4 --with-ensurepip=install",
+		"./configure --prefix={buildDir} {libraryType} --enable-unicode=ucs4 --with-ensurepip=install --with-system-ffi",
 		"make -j {jobs}",
 		"make install",
 
