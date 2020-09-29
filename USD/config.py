@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/PixarAnimationStudios/USD/archive/v20.05.tar.gz"
+		"https://github.com/PixarAnimationStudios/USD/archive/v20.08.tar.gz"
 
 	],
 
@@ -82,6 +82,7 @@
 		"lib/libglf{sharedLibraryExtension}",
 		"lib/libgarch{sharedLibraryExtension}",
 		"lib/libhgi{sharedLibraryExtension}",
+		"lib/libhgiInterop{sharedLibraryExtension}",
 		"lib/libhgiGL{sharedLibraryExtension}",
 		"lib/libhf{sharedLibraryExtension}",
 		"lib/libcameraUtil{sharedLibraryExtension}",
