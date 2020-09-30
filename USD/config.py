@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/PixarAnimationStudios/USD/archive/v20.05.tar.gz"
+		"https://github.com/PixarAnimationStudios/USD/archive/v20.08.tar.gz"
 
 	],
 
@@ -36,6 +36,7 @@
 			" -D PXR_BUILD_TESTS=FALSE"
 			" -D PXR_BUILD_ALEMBIC_PLUGIN=TRUE"
 			" -D PXR_ENABLE_HDF5_SUPPORT=FALSE"
+			" -D PXR_PYTHON_SHEBANG='/usr/bin/env python'"
 			" -D ALEMBIC_DIR={buildDir}/lib"
 			" -D OPENEXR_LOCATION={buildDir}/lib"
 			# Needed to prevent CMake picking up system python libraries on Mac.
@@ -72,10 +73,25 @@
 		"lib/libsdf{sharedLibraryExtension}",
 		"lib/libpcp{sharedLibraryExtension}",
 		"lib/libusd*{sharedLibraryExtension}",
+		"lib/libndr{sharedLibraryExtension}",
+		"lib/libsdr{sharedLibraryExtension}",
+		"lib/libhd{sharedLibraryExtension}",
+		"lib/libhdx{sharedLibraryExtension}",
+		"lib/libhdSt{sharedLibraryExtension}",
+		"lib/libhio{sharedLibraryExtension}",
+		"lib/libglf{sharedLibraryExtension}",
+		"lib/libgarch{sharedLibraryExtension}",
+		"lib/libhgi{sharedLibraryExtension}",
+		"lib/libhgiInterop{sharedLibraryExtension}",
+		"lib/libhgiGL{sharedLibraryExtension}",
+		"lib/libhf{sharedLibraryExtension}",
+		"lib/libcameraUtil{sharedLibraryExtension}",
+		"lib/libpxOsd{sharedLibraryExtension}",
 		"lib/usd",
 
 		"python/pxr",
 
+		"plugin/usd",
 		"share/usd",
 
 	],

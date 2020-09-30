@@ -14,7 +14,7 @@ This major version introduces the concept of build variants, and provides packag
 - Appleseed : Updated to version 2.1.0-beta.
 - LZ4 : Added version 1.9.2.
 - Cortex : Updated to version 10.0.0-a79.
-- USD : Updated to version 20.05 and added usdImaging.
+- USD : Updated to version 20.08 and added usdImaging.
 - LibRaw : Added version 0.19.5.
 - OpenSubdiv : Added version 3.4.3.
 - LibFFI : Added version 3.3.
