@@ -18,6 +18,7 @@ This major version introduces the concept of build variants, and provides packag
 - LibRaw : Added version 0.19.5.
 - OpenSubdiv : Added version 3.4.3.
 - LibFFI : Added version 3.3.
+- Jemalloc : Added version 3.6.0.
 - Build : Switched standard to C++14.
 
 1.2.0
