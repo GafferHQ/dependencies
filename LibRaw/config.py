@@ -18,11 +18,31 @@
 
 	],
 
+	# The "lib" prefix is correct for all platforms including Windows
 	"manifest" : [
 
 		"include/libraw",
-		"lib/libraw*{sharedLibraryExtension}*",
+		"{sharedLibraryDir}/libraw*{sharedLibraryExtension}*",
+		"lib/libraw{staticLibraryExtension}",
 
 	],
+
+	"platform:windows" : {
+
+		"commands" : [
+
+			"msbuild LibRaw.sln -target:libraw /property:Configuration=\"Release\" /property:PlatformToolset=v143 /property:WindowsTargetPlatformVersion=10.0.20348.0",
+
+		],
+		
+		"postMovePaths" : {
+			"libraw/*.h" : "{buildDir}/include/libraw",
+			"buildfiles/release-x86_64/libraw.dll" : "{buildDir}/lib",
+			"buildfiles/release-x86_64/libraw.lib" : "{buildDir}/lib",
+		}
+
+	},
+
+	
 
 }
