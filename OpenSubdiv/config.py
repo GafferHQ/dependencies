@@ -36,8 +36,42 @@
 	"manifest" : [
 
 		"include/opensubdiv",
-		"lib/libosd*{sharedLibraryExtension}*",
+		"lib/{libraryPrefix}osd*{sharedLibraryExtension}*",
+
+		"lib/{libraryPrefix}osd*.lib",
 
 	],
+
+	"platform:windows" : {
+
+		"variables" : {
+			"cmakeGenerator" : "\"Visual Studio 15 2017 Win64\"",
+		},
+
+		"commands" : [
+
+			"mkdir gafferBuild",
+			"cd gafferBuild && cmake"
+				" -G {cmakeGenerator}"
+				" -D CMAKE_INSTALL_PREFIX={buildDir}"
+				" -D CMAKE_PREFIX_PATH={buildDir}"
+				" -D NO_DOC=1"
+				" -D NO_OMP=1"
+				" -D NO_CUDA=1"
+				" -D NO_OPENCL=1"
+				" -D NO_GLEW=1"
+				" -D NO_GLFW=1"
+				" -D NO_DX=1"
+				" -D NO_TESTS=1"
+				" -D NO_TBB=1"
+				" -D OPENEXR_LOCATION={buildDir}/lib"
+				" .."
+			,
+
+			"cd gafferBuild && cmake --build . --config {cmakeBuildType} --target install",
+
+	],
+
+	},
 
 }
