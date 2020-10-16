@@ -43,6 +43,12 @@
 
 		},
 
+		"symbolicLinks" : [
+
+			( "{buildDir}/bin/pyside2-uic", "../lib/Python.framework/Versions/Current/bin/pyside2-uic" ),
+
+		]
+
 	},
 
 }
