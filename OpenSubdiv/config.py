@@ -36,8 +36,45 @@
 	"manifest" : [
 
 		"include/opensubdiv",
-		"lib/libosd*{sharedLibraryExtension}*",
+		"{sharedLibraryDir}/{libraryPrefix}osd*{sharedLibraryExtension}*",
+
+		"lib/{libraryPrefix}osd*.lib",
 
 	],
+
+	"platform:windows" : {
+
+		# "variables" : {
+		# 	"cmakeGenerator" : "\"Visual Studio 17 2022\"",
+		# },
+
+		"commands" : [
+
+			"mkdir build",
+			"cd build && cmake"
+				" -G {cmakeGenerator}"
+				" -D CMAKE_BUILD_TYPE={cmakeBuildType}"
+				" -D CMAKE_INSTALL_PREFIX={buildDir}"
+				" -D CMAKE_PREFIX_PATH={buildDir}"
+				" -D BUILD_SHARED_LIBS=1"
+				" -D NO_DOC=1"
+				" -D NO_OMP=1"
+				" -D NO_CUDA=1"
+				" -D NO_OPENCL=1"
+				" -D NO_GLEW=1"
+				" -D NO_GLFW=1"
+				" -D NO_DX=1"
+				" -D NO_TESTS=1"
+				" -D NO_TBB=1"
+				" -D OPENEXR_LOCATION={buildDir}/lib"
+                " -D CMAKE_CXX_FLAGS=\"-Zc:inline -EHsc\""
+				" .."
+			,
+
+			"cd build && cmake --build . --config {cmakeBuildType} --target install",
+
+	],
+
+	},
 
 }
