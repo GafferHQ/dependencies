@@ -1,4 +1,4 @@
-2.x.x
+2.0.0
 -----
 
 This major version introduces the concept of build variants, and provides package variants for both Python 2 and 3.
