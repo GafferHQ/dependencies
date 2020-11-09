@@ -1,3 +1,8 @@
+2.x.x
+-----
+
+- LibFFI : Fixed compatibility with pre-haswell era processors.
+
 2.0.0
 -----
 
