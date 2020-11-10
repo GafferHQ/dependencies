@@ -11,7 +11,7 @@
 
 	"commands" : [
 
-		"./configure --prefix={buildDir} --libdir={buildDir}/lib --disable-multi-os-directory",
+		"./configure --prefix={buildDir} --libdir={buildDir}/lib --disable-multi-os-directory --without-gcc-arch",
 		"make -j {jobs}",
 		"make install",
 
