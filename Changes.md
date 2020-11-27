@@ -2,6 +2,7 @@
 -----
 
 - LibFFI : Fixed compatibility with pre-haswell era processors.
+- OpenSSL : Updated to version 1.1.1h.
 
 2.0.0
 -----
