@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://www.openssl.org/source/old/1.0.2/openssl-1.0.2h.tar.gz",
+		"https://www.openssl.org/source/openssl-1.1.1h.tar.gz",
 
 	],
 
