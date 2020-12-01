@@ -18,6 +18,13 @@
 
 	],
 
+	"manifest" : [
+
+		"lib/libssl{sharedLibraryExtension}*",
+		"lib/libcrypto{sharedLibraryExtension}*",
+
+	],
+
 	"platform:osx" : {
 
 		"environment" : {
