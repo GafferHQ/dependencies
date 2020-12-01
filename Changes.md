@@ -1,4 +1,4 @@
-2.x.x
+2.1.0
 -----
 
 - Cortex : Updated to version 10.1.2.0.
