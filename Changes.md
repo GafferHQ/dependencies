@@ -1,6 +1,7 @@
 2.x.x
 -----
 
+- Cortex : Updated to version 10.1.2.0.
 - LibFFI : Fixed compatibility with pre-haswell era processors.
 - OpenSSL : Updated to version 1.1.1h.
 
