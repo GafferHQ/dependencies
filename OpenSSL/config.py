@@ -20,8 +20,8 @@
 
 	"manifest" : [
 
-		"lib/libssl{sharedLibraryExtension}*",
-		"lib/libcrypto{sharedLibraryExtension}*",
+		"lib/libssl*{sharedLibraryExtension}*",
+		"lib/libcrypto*{sharedLibraryExtension}*",
 
 	],
 
