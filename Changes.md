@@ -1,3 +1,8 @@
+2.1.1
+-----
+
+- OpenSSL : Fixed packaging of missing libraries.
+
 2.1.0
 -----
 
