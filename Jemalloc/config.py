@@ -21,7 +21,8 @@
 	"manifest" : [
 
 		"include/jemalloc",
-		"lib/libjemalloc*{sharedLibraryExtension}*",
+		"{sharedLibraryDir}/{libraryPrefix}jemalloc*{sharedLibraryExtension}*",
+		"lib/{libraryPrefix}jemalloc*.obj",
 
 	],
 
@@ -30,4 +31,11 @@
 		"enabled" : False,
 
 	},
+
+	"platform:windows" : {
+
+		"enabled" : False,
+
+	},
+
 }
