@@ -2,6 +2,7 @@
 -----
 
 - PyBind11 : Added version 2.6.2.
+- PugiXML : Added version 1.11.
 
 2.2.0
 -----
