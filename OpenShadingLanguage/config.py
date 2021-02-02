@@ -26,6 +26,7 @@
 		"mkdir gafferBuild",
 		"cd gafferBuild &&"
 			" cmake"
+			" -D CMAKE_CXX_STANDARD={c++Standard}"
 			" -D CMAKE_INSTALL_PREFIX={buildDir}"
 			" -D CMAKE_INSTALL_LIBDIR={buildDir}/lib"
 			" -D CMAKE_PREFIX_PATH={buildDir}"
