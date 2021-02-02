@@ -1,3 +1,8 @@
+3.x.x
+-----
+
+- PyBind11 : Added version 2.6.2.
+
 2.2.0
 -----
 
