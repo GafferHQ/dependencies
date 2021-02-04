@@ -1,4 +1,4 @@
-2.x.x
+2.2.0
 -----
 
 - Qt : Updated to version 5.12.10.
