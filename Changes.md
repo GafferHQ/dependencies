@@ -2,6 +2,7 @@
 -----
 
 - Qt : Updated to version 5.12.10.
+- Cortex : Updated to version 10.1.4.0.
 
 2.1.1
 -----
