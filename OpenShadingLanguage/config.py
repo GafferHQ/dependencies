@@ -2,15 +2,15 @@
 
 	"downloads" : [
 
-		"https://github.com/imageworks/OpenShadingLanguage/archive/Release-1.9.9.tar.gz"
+		"https://github.com/imageworks/OpenShadingLanguage/archive/Release-1.11.11.0.tar.gz"
 
 	],
 
 	"url" : "https://github.com/imageworks/OpenShadingLanguage",
 
-	"license" : "LICENSE",
+	"license" : "LICENSE.md",
 
-	"dependencies" : [ "OpenImageIO", "LLVM" ],
+	"dependencies" : [ "OpenImageIO", "LLVM", "PugiXML" ],
 
 	"environment" : {
 
@@ -33,6 +33,8 @@
 			" -D STOP_ON_WARNING=0"
 			" -D ENABLERTTI=1"
 			" -D LLVM_STATIC=1"
+			" -D OSL_BUILD_MATERIALX=1"
+			" -D OSL_SHADER_INSTALL_DIR={buildDir}/shaders"
 			" ..",
 		"cd gafferBuild && make install -j {jobs} VERBOSE=1",
 		"cp {buildDir}/share/doc/OSL/osl-languagespec.pdf {buildDir}/doc",
