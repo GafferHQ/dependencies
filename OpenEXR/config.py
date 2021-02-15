@@ -14,6 +14,7 @@
 
 	"environment" : {
 
+		"PATH" : "{buildDir}/bin:$PATH",
 		"LD_LIBRARY_PATH" : "{buildDir}/lib",
 
 	},
@@ -32,6 +33,7 @@
 			" -D Python_ROOT_DIR={buildDir}"
 			" -D Python2_ROOT_DIR={buildDir}"
 			" -D Python3_ROOT_DIR={buildDir}"
+			" -D Python3_FIND_STRATEGY=LOCATION"
 			" ."
 		,
 
