@@ -2,8 +2,8 @@
 
 	"downloads" : [
 
-		"http://releases.llvm.org/5.0.1/llvm-5.0.1.src.tar.xz",
-		"http://releases.llvm.org/5.0.1/cfe-5.0.1.src.tar.xz"
+		"https://github.com/llvm/llvm-project/releases/download/llvmorg-10.0.1/llvm-10.0.1.src.tar.xz",
+		"https://github.com/llvm/llvm-project/releases/download/llvmorg-10.0.1/clang-10.0.1.src.tar.xz"
 
 	],
 
@@ -13,7 +13,7 @@
 
 	"commands" : [
 
-		"mv ../cfe* tools/clang",
+		"mv ../clang* tools/clang",
 		"mkdir build",
 		"cd build &&"
 			" cmake"

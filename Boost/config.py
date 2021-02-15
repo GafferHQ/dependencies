@@ -28,7 +28,7 @@
 	"commands" : [
 
 		"./bootstrap.sh --prefix={buildDir} --with-python={buildDir}/bin/python --with-python-root={buildDir} --without-libraries=log --without-icu",
-		"./bjam -d+2 -j {jobs} --disable-icu cxxflags='-std={c++Standard}' variant=release link=shared threading=multi install",
+		"./bjam -d+2 -j {jobs} --disable-icu cxxflags='-std=c++{c++Standard}' variant=release link=shared threading=multi install",
 
 	],
 

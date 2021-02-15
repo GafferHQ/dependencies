@@ -1,0 +1,10 @@
+--- a/src/appleseed.shaders/CMakeLists.txt	2021-02-02 15:12:45.265188178 +0000
++++ b/src/appleseed.shaders/CMakeLists.txt	2021-02-02 15:12:39.967166892 +0000
+@@ -380,6 +380,7 @@
+         OUTPUT ${oso_dir}/${oso_filename}
+         COMMAND ${CMAKE_COMMAND} -E make_directory ${oso_dir}
+         COMMAND ${PROJECT_SOURCE_DIR}/sandbox/bin/oslc ${OSLC_OPTIONS}
++            -I"${PROJECT_SOURCE_DIR}/src/appleseed.shaders"
+             -I"${PROJECT_SOURCE_DIR}/src/appleseed.shaders/include"
+             -o "${oso_dir}/${oso_filename}" "${PROJECT_SOURCE_DIR}/src/appleseed.shaders/${osl_source}"
+         MAIN_DEPENDENCY ${PROJECT_SOURCE_DIR}/src/appleseed.shaders/${osl_source}

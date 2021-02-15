@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://download.osgeo.org/libtiff/old/tiff-3.8.2.tar.gz",
+		"https://download.osgeo.org/libtiff/tiff-4.1.0.zip",
 
 	],
 

@@ -1,0 +1,23 @@
+--- a/cmake/config/linux-gcc-clang.txt
++++ b/cmake/config/linux-gcc-clang.txt
+@@ -193,7 +193,7 @@
+ endmacro ()
+
+ macro (link_against_osl target)
+-    target_link_libraries (${target} ${OSL_EXEC_LIBRARY} ${OSL_COMP_LIBRARY} ${OSL_QUERY_LIBRARY})
++    target_link_libraries (${target} ${OSL_EXEC_LIBRARY} ${OSL_QUERY_LIBRARY})
+ endmacro ()
+
+ macro (link_against_seexpr target)
+
+--- a/cmake/config/mac-clang.txt
++++ b/cmake/config/mac-clang.txt
+@@ -145,7 +145,7 @@
+ endmacro ()
+
+ macro (link_against_osl target)
+-    target_link_libraries (${target} ${OSL_EXEC_LIBRARY} ${OSL_COMP_LIBRARY} ${OSL_QUERY_LIBRARY})
++    target_link_libraries (${target} ${OSL_EXEC_LIBRARY} ${OSL_QUERY_LIBRARY})
+ endmacro ()
+
+ macro (link_against_seexpr target)

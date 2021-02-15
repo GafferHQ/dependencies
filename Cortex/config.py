@@ -28,7 +28,7 @@
 		"scons install installDoc"
 			" -j {jobs}"
 			" CXX=`which g++`"
-			" CXXSTD={c++Standard}"
+			" CXXSTD=c++{c++Standard}"
 			" INSTALL_PREFIX={buildDir}"
 			" INSTALL_DOC_DIR={buildDir}/doc/cortex"
 			" INSTALL_RMANPROCEDURAL_NAME={buildDir}/renderMan/procedurals/iePython"

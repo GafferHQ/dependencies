@@ -12,7 +12,7 @@
 
 	"commands" : [
 
-		"make -j {jobs} stdver={c++Standard}",
+		"make -j {jobs} stdver=c++{c++Standard}",
 		"cp -r include/tbb {buildDir}/include",
 		"{installLibsCommand}",
 
