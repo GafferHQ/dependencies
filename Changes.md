@@ -1,5 +1,5 @@
-3.x.x
------
+3.0.0 alpha 1
+-------------
 
 - PyBind11 : Added version 2.6.2.
 - PugiXML : Added version 1.11.
