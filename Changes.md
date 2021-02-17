@@ -1,3 +1,8 @@
+3.0.0 alpha 2
+-------------
+
+- OpenVDB : Updated to version 7.2.2.
+
 3.0.0 alpha 1
 -------------
 

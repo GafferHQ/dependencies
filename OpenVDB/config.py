@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/AcademySoftwareFoundation/openvdb/archive/v7.0.0.tar.gz"
+		"https://github.com/AcademySoftwareFoundation/openvdb/archive/v7.2.2.tar.gz"
 
 	],
 
@@ -10,7 +10,7 @@
 
 	"license" : "LICENSE",
 
-	"dependencies" : [ "Blosc", "TBB", "OpenEXR", "Python" ],
+	"dependencies" : [ "Blosc", "TBB", "OpenEXR", "Python", "Boost" ],
 
 	"environment" : {
 
@@ -28,6 +28,8 @@
 			# puts the libraries in `lib64`. Coax them back.
 			" -D CMAKE_INSTALL_LIBDIR={buildDir}/lib"
 			" -D OPENVDB_BUILD_PYTHON_MODULE=ON"
+			" -D OPENVDB_ENABLE_RPATH=OFF"
+			" -D CONCURRENT_MALLOC=None"
 			" -D PYOPENVDB_INSTALL_DIRECTORY={buildDir}/python"
 			" .."
 		,
