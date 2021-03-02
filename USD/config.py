@@ -145,10 +145,15 @@
 	},
 
 	"platform:windows" : {
+        
+		# "variables" : {
+        #     "cmakeGenerator" : "\"NMake Makefiles JOM\"",
+            
+		# },
 
 		"environment" : {
 
-			"PATH" : "{buildDir}\\bin;%PATH%",
+			"PATH" : "%PATH%",
 			"PXR_PLUGINPATH_NAME" : "{buildDir}/bin/usd",
 
 		},
