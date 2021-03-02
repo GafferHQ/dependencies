@@ -22,6 +22,7 @@
 	"commands" : [
 
 		"cmake"
+		" -G {cmakeGenerator}"
 		" -D CMAKE_INSTALL_PREFIX={buildDir} ."
 		" -D PYBIND11_TEST=0"
 		" -D PYBIND11_FINDPYTHON=1"
@@ -36,5 +37,26 @@
 		"include/pybind11",
 
 	],
+
+	"platform:windows" : {
+
+		"environment" : {
+
+			"PATH" : "{buildDir}\\bin;%PATH%"
+
+		},
+
+		# using make instead of nmake causes an error "Makefile:35 missing separator. Stop."
+		"commands" : [
+
+			"cmake"
+			" -G {cmakeGenerator}"
+			" -D CMAKE_INSTALL_PREFIX={buildDir} ."
+			" -D PYBIND11_TEST=0",
+			"nmake install",
+
+		],
+
+	},
 
 }
