@@ -1,0 +1,26 @@
+diff --git a/SConstruct b/SConstruct
+index c0f7e3c7f..e886e40b9 100644
+--- a/SConstruct
++++ b/SConstruct
+@@ -3055,7 +3055,8 @@ else :
+ 		"plug",
+ 		"trace",
+ 		"kind",
+-		"work"
++		"work",
++		"python",
+ 	]
+ 
+ if usdEnv["USD_LIB_PREFIX"] :
+diff --git a/src/IECoreScene/ShaderNetworkAlgo.cpp b/src/IECoreScene/ShaderNetworkAlgo.cpp
+index 51230dc99..3676ba363 100644
+--- a/src/IECoreScene/ShaderNetworkAlgo.cpp
++++ b/src/IECoreScene/ShaderNetworkAlgo.cpp
+@@ -49,6 +49,7 @@
+ #include "boost/container/flat_map.hpp"
+ #include "boost/regex.hpp"
+ 
++#include <array>
+ #include <unordered_map>
+ #include <unordered_set>
+ 
