@@ -1,0 +1,1863 @@
+From ec3060c72de6ab6992269318d92764199856e5fe Mon Sep 17 00:00:00 2001
+From: Ilya Biryukov <ibiryukov@google.com>
+Date: Mon, 2 Mar 2020 16:07:09 +0100
+Subject: [PATCH] [AST] Refactor propagation of dependency bits. NFC
+
+Summary:
+This changes introduces an enum to represent dependencies as a bitmask
+and extract common patterns from code that computes dependency bits into
+helper functions.
+
+Reviewers: rsmith, martong, shafik, ilya-biryukov, hokein
+
+Subscribers: hokein, sammccall, Mordante, riccibruno, merge_guards_bot, rnkovacs, cfe-commits
+
+Tags: #clang
+
+Differential Revision: https://reviews.llvm.org/D71920
+---
+ clang/include/clang/AST/DependencyFlags.h     | 138 +++++++++++
+ clang/include/clang/AST/Expr.h                |  78 +++---
+ clang/include/clang/AST/ExprConcepts.h        |   1 +
+ clang/include/clang/AST/NestedNameSpecifier.h |   3 +
+ clang/include/clang/AST/Stmt.h                |   8 +-
+ clang/include/clang/AST/TemplateBase.h        |   8 +-
+ clang/include/clang/AST/TemplateName.h        |   3 +
+ clang/include/clang/AST/Type.h                |  82 ++++---
+ clang/lib/AST/ASTImporter.cpp                 |   6 +-
+ clang/lib/AST/Expr.cpp                        | 227 +++++-------------
+ clang/lib/AST/ExprCXX.cpp                     |  88 ++-----
+ clang/lib/AST/ExprConcepts.cpp                |  33 +--
+ clang/lib/AST/ExprObjC.cpp                    |  34 +--
+ clang/lib/AST/NestedNameSpecifier.cpp         |  67 ++----
+ clang/lib/AST/TemplateBase.cpp                | 130 +++-------
+ clang/lib/AST/TemplateName.cpp                |  70 +++---
+ clang/lib/Sema/SemaOverload.cpp               |   7 +-
+ clang/lib/Serialization/ASTReaderStmt.cpp     |  24 +-
+ 18 files changed, 471 insertions(+), 536 deletions(-)
+ create mode 100644 clang/include/clang/AST/DependencyFlags.h
+
+diff --git a/../clang-10.0.1.src/include/clang/AST/DependencyFlags.h b/../clang-10.0.1.src/include/clang/AST/DependencyFlags.h
+new file mode 100644
+index 0000000000000..c27016aa9aec4
+--- /dev/null
++++ b/../clang-10.0.1.src/include/clang/AST/DependencyFlags.h
+@@ -0,0 +1,138 @@
++//===--- DependencyFlags.h ------------------------------------------------===//
++//
++// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
++// See https://llvm.org/LICENSE.txt for license information.
++// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
++//
++//===----------------------------------------------------------------------===//
++#ifndef LLVM_CLANG_AST_DEPENDENCYFLAGS_H
++#define LLVM_CLANG_AST_DEPENDENCYFLAGS_H
++
++#include "clang/Basic/BitmaskEnum.h"
++#include "llvm/ADT/BitmaskEnum.h"
++#include <cstdint>
++
++namespace clang {
++struct ExprDependenceScope {
++  enum ExprDependence : uint8_t {
++    UnexpandedPack = 1,
++    Instantiation = 2,
++    Type = 4,
++    Value = 8,
++
++    None = 0,
++    All = 15,
++
++    TypeInstantiation = Type | Instantiation,
++    ValueInstantiation = Value | Instantiation,
++    TypeValueInstantiation = Type | Value | Instantiation,
++
++    LLVM_MARK_AS_BITMASK_ENUM(/*LargestValue=*/Value)
++  };
++};
++using ExprDependence = ExprDependenceScope::ExprDependence;
++static constexpr unsigned ExprDependenceBits = 4;
++
++struct TypeDependenceScope {
++  enum TypeDependence : uint8_t {
++    /// Whether this type contains an unexpanded parameter pack
++    /// (for C++11 variadic templates)
++    UnexpandedPack = 1,
++    /// Whether this type somehow involves a template parameter, even
++    /// if the resolution of the type does not depend on a template parameter.
++    Instantiation = 2,
++    /// Whether this type is a dependent type (C++ [temp.dep.type]).
++    Dependent = 4,
++    /// Whether this type is a variably-modified type (C99 6.7.5).
++    VariablyModified = 8,
++
++    None = 0,
++    All = 15,
++
++    DependentInstantiation = Dependent | Instantiation,
++
++    LLVM_MARK_AS_BITMASK_ENUM(/*LargestValue=*/VariablyModified)
++  };
++};
++using TypeDependence = TypeDependenceScope::TypeDependence;
++static constexpr unsigned TypeDependenceBits = 4;
++
++#define LLVM_COMMON_DEPENDENCE(NAME)                                           \
++  struct NAME##Scope {                                                         \
++    enum NAME : uint8_t {                                                      \
++      UnexpandedPack = 1,                                                      \
++      Instantiation = 2,                                                       \
++      Dependent = 4,                                                           \
++                                                                               \
++      None = 0,                                                                \
++      DependentInstantiation = Dependent | Instantiation,                      \
++      All = 7,                                                                 \
++                                                                               \
++      LLVM_MARK_AS_BITMASK_ENUM(/*LargestValue=*/Dependent)                    \
++    };                                                                         \
++  };                                                                           \
++  using NAME = NAME##Scope::NAME;                                              \
++  static constexpr unsigned NAME##Bits = 3;
++
++LLVM_COMMON_DEPENDENCE(NestedNameSpecifierDependence)
++LLVM_COMMON_DEPENDENCE(TemplateNameDependence)
++LLVM_COMMON_DEPENDENCE(TemplateArgumentDependence)
++#undef LLVM_COMMON_DEPENDENCE
++
++/// Computes dependencies of a reference with the name having template arguments
++/// with \p TA dependencies.
++inline ExprDependence toExprDependence(TemplateArgumentDependence TA) {
++  auto E =
++      static_cast<ExprDependence>(TA & ~TemplateArgumentDependence::Dependent);
++  if (TA & TemplateArgumentDependence::Dependent)
++    return E | ExprDependence::Type | ExprDependence::Value;
++  return E;
++}
++inline ExprDependence toExprDependence(TypeDependence TD) {
++  // This hack works because TypeDependence and TemplateArgumentDependence
++  // share the same bit representation, apart from variably-modified.
++  return toExprDependence(static_cast<TemplateArgumentDependence>(
++      TD & ~TypeDependence::VariablyModified));
++}
++inline ExprDependence turnTypeToValueDependence(ExprDependence D) {
++  // Type-dependent expressions are always be value-dependent, so we simply drop
++  // type dependency.
++  return D & ~ExprDependence::Type;
++}
++
++inline NestedNameSpecifierDependence
++toNestedNameSpecifierDependendence(TypeDependence D) {
++  // This works because both classes share the same bit representation.
++  return static_cast<NestedNameSpecifierDependence>(
++      D & ~TypeDependence::VariablyModified);
++}
++
++inline TemplateArgumentDependence
++toTemplateArgumentDependence(TypeDependence D) {
++  // This works because both classes share the same bit representation.
++  return static_cast<TemplateArgumentDependence>(
++      D & ~TypeDependence::VariablyModified);
++}
++inline TemplateArgumentDependence
++toTemplateArgumentDependence(TemplateNameDependence D) {
++  // This works because both classes share the same bit representation.
++  return static_cast<TemplateArgumentDependence>(D);
++}
++inline TemplateArgumentDependence
++toTemplateArgumentDependence(ExprDependence ED) {
++  TemplateArgumentDependence TAD = static_cast<TemplateArgumentDependence>(
++      ED & ~(ExprDependence::Type | ExprDependence::Value));
++  if (ED & (ExprDependence::Type | ExprDependence::Value))
++    TAD |= TemplateArgumentDependence::Dependent;
++  return TAD;
++}
++
++inline TemplateNameDependence
++toTemplateNameDependence(NestedNameSpecifierDependence D) {
++  return static_cast<TemplateNameDependence>(D);
++}
++
++LLVM_ENABLE_BITMASK_ENUMS_IN_NAMESPACE();
++
++} // namespace clang
++#endif
+diff --git a/../clang-10.0.1.src/include/clang/AST/Expr.h b/../clang-10.0.1.src/include/clang/AST/Expr.h
+index 87f9b883486af..ffc1f54fe82d4 100644
+--- a/../clang-10.0.1.src/include/clang/AST/Expr.h
++++ b/../clang-10.0.1.src/include/clang/AST/Expr.h
+@@ -17,6 +17,7 @@
+ #include "clang/AST/ASTVector.h"
+ #include "clang/AST/Decl.h"
+ #include "clang/AST/DeclAccessPair.h"
++#include "clang/AST/DependencyFlags.h"
+ #include "clang/AST/OperationKinds.h"
+ #include "clang/AST/Stmt.h"
+ #include "clang/AST/TemplateBase.h"
+@@ -28,10 +29,10 @@
+ #include "clang/Basic/TypeTraits.h"
+ #include "llvm/ADT/APFloat.h"
+ #include "llvm/ADT/APSInt.h"
+-#include "llvm/ADT/iterator.h"
+-#include "llvm/ADT/iterator_range.h"
+ #include "llvm/ADT/SmallVector.h"
+ #include "llvm/ADT/StringRef.h"
++#include "llvm/ADT/iterator.h"
++#include "llvm/ADT/iterator_range.h"
+ #include "llvm/Support/AtomicOrdering.h"
+ #include "llvm/Support/Compiler.h"
+ #include "llvm/Support/TrailingObjects.h"
+@@ -120,13 +121,20 @@ class Expr : public ValueStmt {
+        bool TD, bool VD, bool ID, bool ContainsUnexpandedParameterPack)
+     : ValueStmt(SC)
+   {
+-    ExprBits.TypeDependent = TD;
+-    ExprBits.ValueDependent = VD;
+-    ExprBits.InstantiationDependent = ID;
++    auto D = ExprDependence::None;
++    if (TD)
++      D |= ExprDependence::Type;
++    if (VD)
++      D |= ExprDependence::Value;
++    if (ID)
++      D |= ExprDependence::Instantiation;
++    if (ContainsUnexpandedParameterPack)
++      D |= ExprDependence::UnexpandedPack;
++
++    ExprBits.Dependent = static_cast<unsigned>(D);
+     ExprBits.ValueKind = VK;
+     ExprBits.ObjectKind = OK;
+     assert(ExprBits.ObjectKind == OK && "truncated kind");
+-    ExprBits.ContainsUnexpandedParameterPack = ContainsUnexpandedParameterPack;
+     setType(T);
+   }
+ 
+@@ -148,6 +156,20 @@ class Expr : public ValueStmt {
+     TR = t;
+   }
+ 
++  ExprDependence getDependence() const {
++    return static_cast<ExprDependence>(ExprBits.Dependent);
++  }
++
++  void setDependence(ExprDependence Deps) {
++    ExprBits.Dependent = static_cast<unsigned>(Deps);
++  }
++  void addDependence(ExprDependence Deps) {
++    ExprBits.Dependent |= static_cast<unsigned>(Deps);
++  }
++  void removeDependence(ExprDependence Deps) {
++    ExprBits.Dependent &= ~static_cast<unsigned>(Deps);
++  }
++
+   /// isValueDependent - Determines whether this expression is
+   /// value-dependent (C++ [temp.dep.constexpr]). For example, the
+   /// array bound of "Chars" in the following example is
+@@ -155,11 +177,8 @@ class Expr : public ValueStmt {
+   /// @code
+   /// template<int Size, char (&Chars)[Size]> struct meta_string;
+   /// @endcode
+-  bool isValueDependent() const { return ExprBits.ValueDependent; }
+-
+-  /// Set whether this expression is value-dependent or not.
+-  void setValueDependent(bool VD) {
+-    ExprBits.ValueDependent = VD;
++  bool isValueDependent() const {
++    return static_cast<bool>(getDependence() & ExprDependence::Value);
+   }
+ 
+   /// isTypeDependent - Determines whether this expression is
+@@ -173,11 +192,8 @@ class Expr : public ValueStmt {
+   ///   x + y;
+   /// }
+   /// @endcode
+-  bool isTypeDependent() const { return ExprBits.TypeDependent; }
+-
+-  /// Set whether this expression is type-dependent or not.
+-  void setTypeDependent(bool TD) {
+-    ExprBits.TypeDependent = TD;
++  bool isTypeDependent() const {
++    return static_cast<bool>(getDependence() & ExprDependence::Type);
+   }
+ 
+   /// Whether this expression is instantiation-dependent, meaning that
+@@ -198,12 +214,7 @@ class Expr : public ValueStmt {
+   /// \endcode
+   ///
+   bool isInstantiationDependent() const {
+-    return ExprBits.InstantiationDependent;
+-  }
+-
+-  /// Set whether this expression is instantiation-dependent or not.
+-  void setInstantiationDependent(bool ID) {
+-    ExprBits.InstantiationDependent = ID;
++    return static_cast<bool>(getDependence() & ExprDependence::Instantiation);
+   }
+ 
+   /// Whether this expression contains an unexpanded parameter
+@@ -221,13 +232,7 @@ class Expr : public ValueStmt {
+   /// The expressions \c args and \c static_cast<Types&&>(args) both
+   /// contain parameter packs.
+   bool containsUnexpandedParameterPack() const {
+-    return ExprBits.ContainsUnexpandedParameterPack;
+-  }
+-
+-  /// Set the bit that describes whether this expression
+-  /// contains an unexpanded parameter pack.
+-  void setContainsUnexpandedParameterPack(bool PP = true) {
+-    ExprBits.ContainsUnexpandedParameterPack = PP;
++    return static_cast<bool>(getDependence() & ExprDependence::UnexpandedPack);
+   }
+ 
+   /// getExprLoc - Return the preferred location for the arrow when diagnosing
+@@ -1215,10 +1220,6 @@ class DeclRefExpr final
+   /// Construct an empty declaration reference expression.
+   explicit DeclRefExpr(EmptyShell Empty) : Expr(DeclRefExprClass, Empty) {}
+ 
+-  /// Computes the type- and value-dependence flags for this
+-  /// declaration reference expression.
+-  void computeDependence(const ASTContext &Ctx);
+-
+ public:
+   DeclRefExpr(const ASTContext &Ctx, ValueDecl *D,
+               bool RefersToEnclosingVariableOrCapture, QualType T,
+@@ -2558,8 +2559,6 @@ class CallExpr : public Expr {
+   /// the derived classes of CallExpr.
+   SourceLocation RParenLoc;
+ 
+-  void updateDependenciesFromArg(Expr *Arg);
+-
+   // CallExpr store some data in trailing objects. However since CallExpr
+   // is used a base of other expression classes we cannot use
+   // llvm::TrailingObjects. Instead we manually perform the pointer arithmetic
+@@ -4467,13 +4466,8 @@ class InitListExpr : public Expr {
+     assert(Init < getNumInits() && "Initializer access out of range!");
+     InitExprs[Init] = expr;
+ 
+-    if (expr) {
+-      ExprBits.TypeDependent |= expr->isTypeDependent();
+-      ExprBits.ValueDependent |= expr->isValueDependent();
+-      ExprBits.InstantiationDependent |= expr->isInstantiationDependent();
+-      ExprBits.ContainsUnexpandedParameterPack |=
+-          expr->containsUnexpandedParameterPack();
+-    }
++    if (expr)
++      addDependence(expr->getDependence());
+   }
+ 
+   /// Reserve space for some number of initializers.
+diff --git a/../clang-10.0.1.src/include/clang/AST/ExprConcepts.h b/../clang-10.0.1.src/include/clang/AST/ExprConcepts.h
+index 6137e0e4082bd..2a88ed5175d24 100644
+--- a/../clang-10.0.1.src/include/clang/AST/ExprConcepts.h
++++ b/../clang-10.0.1.src/include/clang/AST/ExprConcepts.h
+@@ -149,6 +149,7 @@ class Requirement {
+   enum RequirementKind { RK_Type, RK_Simple, RK_Compound, RK_Nested };
+ private:
+   const RequirementKind Kind;
++  // FIXME: use RequirementDependence to model dependence?
+   bool Dependent : 1;
+   bool ContainsUnexpandedParameterPack : 1;
+   bool Satisfied : 1;
+diff --git a/../clang-10.0.1.src/include/clang/AST/NestedNameSpecifier.h b/../clang-10.0.1.src/include/clang/AST/NestedNameSpecifier.h
+index c6fae6f465ff6..e465c33e2cc5f 100644
+--- a/../clang-10.0.1.src/include/clang/AST/NestedNameSpecifier.h
++++ b/../clang-10.0.1.src/include/clang/AST/NestedNameSpecifier.h
+@@ -14,6 +14,7 @@
+ #ifndef LLVM_CLANG_AST_NESTEDNAMESPECIFIER_H
+ #define LLVM_CLANG_AST_NESTEDNAMESPECIFIER_H
+ 
++#include "clang/AST/DependencyFlags.h"
+ #include "clang/Basic/Diagnostic.h"
+ #include "clang/Basic/SourceLocation.h"
+ #include "llvm/ADT/FoldingSet.h"
+@@ -199,6 +200,8 @@ class NestedNameSpecifier : public llvm::FoldingSetNode {
+     return nullptr;
+   }
+ 
++  NestedNameSpecifierDependence getDependence() const;
++
+   /// Whether this nested name specifier refers to a dependent
+   /// type or not.
+   bool isDependent() const;
+diff --git a/../clang-10.0.1.src/include/clang/AST/Stmt.h b/../clang-10.0.1.src/include/clang/AST/Stmt.h
+index 5cc4eb8a46dfc..5191a8261f869 100644
+--- a/../clang-10.0.1.src/include/clang/AST/Stmt.h
++++ b/../clang-10.0.1.src/include/clang/AST/Stmt.h
+@@ -14,6 +14,7 @@
+ #define LLVM_CLANG_AST_STMT_H
+ 
+ #include "clang/AST/DeclGroup.h"
++#include "clang/AST/DependencyFlags.h"
+ #include "clang/AST/StmtIterator.h"
+ #include "clang/Basic/CapturedStmt.h"
+ #include "clang/Basic/IdentifierTable.h"
+@@ -315,12 +316,9 @@ class alignas(void *) Stmt {
+ 
+     unsigned ValueKind : 2;
+     unsigned ObjectKind : 3;
+-    unsigned TypeDependent : 1;
+-    unsigned ValueDependent : 1;
+-    unsigned InstantiationDependent : 1;
+-    unsigned ContainsUnexpandedParameterPack : 1;
++    unsigned /*ExprDependence*/ Dependent : ExprDependenceBits;
+   };
+-  enum { NumExprBits = NumStmtBits + 9 };
++  enum { NumExprBits = NumStmtBits + 5 + ExprDependenceBits };
+ 
+   class ConstantExprBitfields {
+     friend class ASTStmtReader;
+diff --git a/../clang-10.0.1.src/include/clang/AST/TemplateBase.h b/../clang-10.0.1.src/include/clang/AST/TemplateBase.h
+index 93f7b62b8aea2..e5fd1ca9dd461 100644
+--- a/../clang-10.0.1.src/include/clang/AST/TemplateBase.h
++++ b/../clang-10.0.1.src/include/clang/AST/TemplateBase.h
+@@ -14,6 +14,7 @@
+ #ifndef LLVM_CLANG_AST_TEMPLATEBASE_H
+ #define LLVM_CLANG_AST_TEMPLATEBASE_H
+ 
++#include "clang/AST/DependencyFlags.h"
+ #include "clang/AST/NestedNameSpecifier.h"
+ #include "clang/AST/TemplateName.h"
+ #include "clang/AST/Type.h"
+@@ -236,6 +237,8 @@ class TemplateArgument {
+   /// Determine whether this template argument has no value.
+   bool isNull() const { return getKind() == Null; }
+ 
++  TemplateArgumentDependence getDependence() const;
++
+   /// Whether this template argument is dependent on a template
+   /// parameter such that its result can change from one instantiation to
+   /// another.
+@@ -668,9 +671,8 @@ struct alignas(void *) ASTTemplateKWAndArgsInfo {
+                       TemplateArgumentLoc *OutArgArray);
+   void initializeFrom(SourceLocation TemplateKWLoc,
+                       const TemplateArgumentListInfo &List,
+-                      TemplateArgumentLoc *OutArgArray, bool &Dependent,
+-                      bool &InstantiationDependent,
+-                      bool &ContainsUnexpandedParameterPack);
++                      TemplateArgumentLoc *OutArgArray,
++                      TemplateArgumentDependence &Deps);
+   void initializeFrom(SourceLocation TemplateKWLoc);
+ 
+   void copyInto(const TemplateArgumentLoc *ArgArray,
+diff --git a/../clang-10.0.1.src/include/clang/AST/TemplateName.h b/../clang-10.0.1.src/include/clang/AST/TemplateName.h
+index e1315facc9664..bf917788477f7 100644
+--- a/../clang-10.0.1.src/include/clang/AST/TemplateName.h
++++ b/../clang-10.0.1.src/include/clang/AST/TemplateName.h
+@@ -13,6 +13,7 @@
+ #ifndef LLVM_CLANG_AST_TEMPLATENAME_H
+ #define LLVM_CLANG_AST_TEMPLATENAME_H
+ 
++#include "clang/AST/DependencyFlags.h"
+ #include "clang/AST/NestedNameSpecifier.h"
+ #include "clang/Basic/LLVM.h"
+ #include "llvm/ADT/FoldingSet.h"
+@@ -295,6 +296,8 @@ class TemplateName {
+   /// the template, including any default template arguments.
+   TemplateName getNameToSubstitute() const;
+ 
++  TemplateNameDependence getDependence() const;
++
+   /// Determines whether this is a dependent template name.
+   bool isDependent() const;
+ 
+diff --git a/../clang-10.0.1.src/include/clang/AST/Type.h b/../clang-10.0.1.src/include/clang/AST/Type.h
+index e8248147f9ad4..e589d3fa4e643 100644
+--- a/../clang-10.0.1.src/include/clang/AST/Type.h
++++ b/../clang-10.0.1.src/include/clang/AST/Type.h
+@@ -17,6 +17,7 @@
+ #ifndef LLVM_CLANG_AST_TYPE_H
+ #define LLVM_CLANG_AST_TYPE_H
+ 
++#include "clang/AST/DependencyFlags.h"
+ #include "clang/AST/NestedNameSpecifier.h"
+ #include "clang/AST/TemplateName.h"
+ #include "clang/Basic/AddressSpaces.h"
+@@ -44,8 +45,8 @@
+ #include "llvm/Support/Compiler.h"
+ #include "llvm/Support/ErrorHandling.h"
+ #include "llvm/Support/PointerLikeTypeTraits.h"
+-#include "llvm/Support/type_traits.h"
+ #include "llvm/Support/TrailingObjects.h"
++#include "llvm/Support/type_traits.h"
+ #include <cassert>
+ #include <cstddef>
+ #include <cstdint>
+@@ -1465,19 +1466,8 @@ class alignas(8) Type : public ExtQualsTypeCommonBase {
+     /// TypeClass bitfield - Enum that specifies what subclass this belongs to.
+     unsigned TC : 8;
+ 
+-    /// Whether this type is a dependent type (C++ [temp.dep.type]).
+-    unsigned Dependent : 1;
+-
+-    /// Whether this type somehow involves a template parameter, even
+-    /// if the resolution of the type does not depend on a template parameter.
+-    unsigned InstantiationDependent : 1;
+-
+-    /// Whether this type is a variably-modified type (C99 6.7.5).
+-    unsigned VariablyModified : 1;
+-
+-    /// Whether this type contains an unexpanded parameter pack
+-    /// (for C++11 variadic templates).
+-    unsigned ContainsUnexpandedParameterPack : 1;
++    /// Store information on the type dependency.
++    /*TypeDependence*/ unsigned Dependence : TypeDependenceBits;
+ 
+     /// True if the cache (i.e. the bitfields here starting with
+     /// 'Cache') is valid.
+@@ -1833,11 +1823,18 @@ class alignas(8) Type : public ExtQualsTypeCommonBase {
+        bool ContainsUnexpandedParameterPack)
+       : ExtQualsTypeCommonBase(this,
+                                canon.isNull() ? QualType(this_(), 0) : canon) {
++    auto Deps = TypeDependence::None;
++    if (Dependent)
++      Deps |= TypeDependence::Dependent | TypeDependence::Instantiation;
++    if (InstantiationDependent)
++      Deps |= TypeDependence::Instantiation;
++    if (ContainsUnexpandedParameterPack)
++      Deps |= TypeDependence::UnexpandedPack;
++    if (VariablyModified)
++      Deps |= TypeDependence::VariablyModified;
++
+     TypeBits.TC = tc;
+-    TypeBits.Dependent = Dependent;
+-    TypeBits.InstantiationDependent = Dependent || InstantiationDependent;
+-    TypeBits.VariablyModified = VariablyModified;
+-    TypeBits.ContainsUnexpandedParameterPack = ContainsUnexpandedParameterPack;
++    TypeBits.Dependence = static_cast<unsigned>(Deps);
+     TypeBits.CacheValid = false;
+     TypeBits.CachedLocalOrUnnamed = false;
+     TypeBits.CachedLinkage = NoLinkage;
+@@ -1848,18 +1845,39 @@ class alignas(8) Type : public ExtQualsTypeCommonBase {
+   Type *this_() { return this; }
+ 
+   void setDependent(bool D = true) {
+-    TypeBits.Dependent = D;
+-    if (D)
+-      TypeBits.InstantiationDependent = true;
++    if (!D) {
++      TypeBits.Dependence &= ~static_cast<unsigned>(TypeDependence::Dependent);
++      return;
++    }
++    TypeBits.Dependence |= static_cast<unsigned>(TypeDependence::Dependent |
++                                                 TypeDependence::Instantiation);
+   }
+ 
+   void setInstantiationDependent(bool D = true) {
+-    TypeBits.InstantiationDependent = D; }
++    if (D)
++      TypeBits.Dependence |=
++          static_cast<unsigned>(TypeDependence::Instantiation);
++    else
++      TypeBits.Dependence &=
++          ~static_cast<unsigned>(TypeDependence::Instantiation);
++  }
+ 
+-  void setVariablyModified(bool VM = true) { TypeBits.VariablyModified = VM; }
++  void setVariablyModified(bool VM = true) {
++    if (VM)
++      TypeBits.Dependence |=
++          static_cast<unsigned>(TypeDependence::VariablyModified);
++    else
++      TypeBits.Dependence &=
++          ~static_cast<unsigned>(TypeDependence::VariablyModified);
++  }
+ 
+   void setContainsUnexpandedParameterPack(bool PP = true) {
+-    TypeBits.ContainsUnexpandedParameterPack = PP;
++    if (PP)
++      TypeBits.Dependence |=
++          static_cast<unsigned>(TypeDependence::UnexpandedPack);
++    else
++      TypeBits.Dependence &=
++          ~static_cast<unsigned>(TypeDependence::UnexpandedPack);
+   }
+ 
+ public:
+@@ -1894,7 +1912,7 @@ class alignas(8) Type : public ExtQualsTypeCommonBase {
+   ///
+   /// Note that this routine does not specify which
+   bool containsUnexpandedParameterPack() const {
+-    return TypeBits.ContainsUnexpandedParameterPack;
++    return getDependence() & TypeDependence::UnexpandedPack;
+   }
+ 
+   /// Determines if this type would be canonical if it had no further
+@@ -2145,16 +2163,22 @@ class alignas(8) Type : public ExtQualsTypeCommonBase {
+   /// Given that this is a scalar type, classify it.
+   ScalarTypeKind getScalarTypeKind() const;
+ 
++  TypeDependence getDependence() const {
++    return static_cast<TypeDependence>(TypeBits.Dependence);
++  }
++
+   /// Whether this type is a dependent type, meaning that its definition
+   /// somehow depends on a template parameter (C++ [temp.dep.type]).
+-  bool isDependentType() const { return TypeBits.Dependent; }
++  bool isDependentType() const {
++    return getDependence() & TypeDependence::Dependent;
++  }
+ 
+   /// Determine whether this type is an instantiation-dependent type,
+   /// meaning that the type involves a template parameter (even if the
+   /// definition does not actually depend on the type substituted for that
+   /// template parameter).
+   bool isInstantiationDependentType() const {
+-    return TypeBits.InstantiationDependent;
++    return getDependence() & TypeDependence::Instantiation;
+   }
+ 
+   /// Determine whether this type is an undeduced type, meaning that
+@@ -2163,7 +2187,9 @@ class alignas(8) Type : public ExtQualsTypeCommonBase {
+   bool isUndeducedType() const;
+ 
+   /// Whether this type is a variably-modified type (C99 6.7.5).
+-  bool isVariablyModifiedType() const { return TypeBits.VariablyModified; }
++  bool isVariablyModifiedType() const {
++    return getDependence() & TypeDependence::VariablyModified;
++  }
+ 
+   /// Whether this type involves a variable-length array type
+   /// with a definite size.
+diff --git a/../clang-10.0.1.src/lib/AST/ASTImporter.cpp b/../clang-10.0.1.src/lib/AST/ASTImporter.cpp
+index 0cf00f6ca15bc..ddbd3699bdc2f 100644
+--- a/../clang-10.0.1.src/lib/AST/ASTImporter.cpp
++++ b/../clang-10.0.1.src/lib/AST/ASTImporter.cpp
+@@ -8221,11 +8221,7 @@ Expected<Stmt *> ASTImporter::Import(Stmt *FromS) {
+     // constructors.
+     ToE->setValueKind(FromE->getValueKind());
+     ToE->setObjectKind(FromE->getObjectKind());
+-    ToE->setTypeDependent(FromE->isTypeDependent());
+-    ToE->setValueDependent(FromE->isValueDependent());
+-    ToE->setInstantiationDependent(FromE->isInstantiationDependent());
+-    ToE->setContainsUnexpandedParameterPack(
+-        FromE->containsUnexpandedParameterPack());
++    ToE->setDependence(FromE->getDependence());
+   }
+ 
+   // Record the imported statement object.
+diff --git a/../clang-10.0.1.src/lib/AST/Expr.cpp b/../clang-10.0.1.src/lib/AST/Expr.cpp
+index 7e8808f84ead0..79f9f42224d08 100644
+--- a/../clang-10.0.1.src/lib/AST/Expr.cpp
++++ b/../clang-10.0.1.src/lib/AST/Expr.cpp
+@@ -17,6 +17,7 @@
+ #include "clang/AST/DeclCXX.h"
+ #include "clang/AST/DeclObjC.h"
+ #include "clang/AST/DeclTemplate.h"
++#include "clang/AST/DependencyFlags.h"
+ #include "clang/AST/EvaluatedExprVisitor.h"
+ #include "clang/AST/ExprCXX.h"
+ #include "clang/AST/Mangle.h"
+@@ -371,13 +372,11 @@ APValue ConstantExpr::getAPValueResult() const {
+ /// Compute the type-, value-, and instantiation-dependence of a
+ /// declaration reference
+ /// based on the declaration being referenced.
+-static void computeDeclRefDependence(const ASTContext &Ctx, NamedDecl *D,
+-                                     QualType T, bool &TypeDependent,
+-                                     bool &ValueDependent,
+-                                     bool &InstantiationDependent) {
+-  TypeDependent = false;
+-  ValueDependent = false;
+-  InstantiationDependent = false;
++static ExprDependence computeDeclRefDependence(const ASTContext &Ctx,
++                                               NamedDecl *D, QualType T) {
++  auto R = ExprDependence::None;
++  if (D->isParameterPack())
++    R |= ExprDependence::UnexpandedPack;
+ 
+   // (TD) C++ [temp.dep.expr]p3:
+   //   An id-expression is type-dependent if it contains:
+@@ -389,36 +388,25 @@ static void computeDeclRefDependence(const ASTContext &Ctx, NamedDecl *D,
+ 
+   //  (TD)  - an identifier that was declared with dependent type
+   //  (VD)  - a name declared with a dependent type,
+-  if (T->isDependentType()) {
+-    TypeDependent = true;
+-    ValueDependent = true;
+-    InstantiationDependent = true;
+-    return;
+-  } else if (T->isInstantiationDependentType()) {
+-    InstantiationDependent = true;
+-  }
++  if (T->isDependentType())
++    return R | ExprDependence::TypeValueInstantiation;
++  else if (T->isInstantiationDependentType())
++    R |= ExprDependence::Instantiation;
+ 
+   //  (TD)  - a conversion-function-id that specifies a dependent type
+   if (D->getDeclName().getNameKind()
+                                 == DeclarationName::CXXConversionFunctionName) {
+     QualType T = D->getDeclName().getCXXNameType();
+-    if (T->isDependentType()) {
+-      TypeDependent = true;
+-      ValueDependent = true;
+-      InstantiationDependent = true;
+-      return;
+-    }
++    if (T->isDependentType())
++      return R | ExprDependence::TypeValueInstantiation;
+ 
+     if (T->isInstantiationDependentType())
+-      InstantiationDependent = true;
++      R |= ExprDependence::Instantiation;
+   }
+ 
+   //  (VD)  - the name of a non-type template parameter,
+-  if (isa<NonTypeTemplateParmDecl>(D)) {
+-    ValueDependent = true;
+-    InstantiationDependent = true;
+-    return;
+-  }
++  if (isa<NonTypeTemplateParmDecl>(D))
++    return R | ExprDependence::ValueInstantiation;
+ 
+   //  (VD) - a constant with integral or enumeration type and is
+   //         initialized with an expression that is value-dependent.
+@@ -435,8 +423,7 @@ static void computeDeclRefDependence(const ASTContext &Ctx, NamedDecl *D,
+          Var->getType()->isReferenceType())) {
+       if (const Expr *Init = Var->getAnyInitializer())
+         if (Init->isValueDependent()) {
+-          ValueDependent = true;
+-          InstantiationDependent = true;
++          R |= ExprDependence::ValueInstantiation;
+         }
+     }
+ 
+@@ -445,39 +432,21 @@ static void computeDeclRefDependence(const ASTContext &Ctx, NamedDecl *D,
+     //         instantiation
+     if (Var->isStaticDataMember() &&
+         Var->getDeclContext()->isDependentContext()) {
+-      ValueDependent = true;
+-      InstantiationDependent = true;
++      R |= ExprDependence::ValueInstantiation;
+       TypeSourceInfo *TInfo = Var->getFirstDecl()->getTypeSourceInfo();
+       if (TInfo->getType()->isIncompleteArrayType())
+-        TypeDependent = true;
++        R |= ExprDependence::Type;
+     }
+ 
+-    return;
++    return R;
+   }
+ 
+   // (VD) - FIXME: Missing from the standard:
+   //      -  a member function or a static data member of the current
+   //         instantiation
+-  if (isa<CXXMethodDecl>(D) && D->getDeclContext()->isDependentContext()) {
+-    ValueDependent = true;
+-    InstantiationDependent = true;
+-  }
+-}
+-
+-void DeclRefExpr::computeDependence(const ASTContext &Ctx) {
+-  bool TypeDependent = false;
+-  bool ValueDependent = false;
+-  bool InstantiationDependent = false;
+-  computeDeclRefDependence(Ctx, getDecl(), getType(), TypeDependent,
+-                           ValueDependent, InstantiationDependent);
+-
+-  ExprBits.TypeDependent |= TypeDependent;
+-  ExprBits.ValueDependent |= ValueDependent;
+-  ExprBits.InstantiationDependent |= InstantiationDependent;
+-
+-  // Is the declaration a parameter pack?
+-  if (getDecl()->isParameterPack())
+-    ExprBits.ContainsUnexpandedParameterPack = true;
++  if (isa<CXXMethodDecl>(D) && D->getDeclContext()->isDependentContext())
++    R |= ExprDependence::ValueInstantiation;
++  return R;
+ }
+ 
+ DeclRefExpr::DeclRefExpr(const ASTContext &Ctx, ValueDecl *D,
+@@ -495,7 +464,7 @@ DeclRefExpr::DeclRefExpr(const ASTContext &Ctx, ValueDecl *D,
+       RefersToEnclosingVariableOrCapture;
+   DeclRefExprBits.NonOdrUseReason = NOUR;
+   DeclRefExprBits.Loc = L;
+-  computeDependence(Ctx);
++  addDependence(computeDeclRefDependence(Ctx, getDecl(), getType()));
+ }
+ 
+ DeclRefExpr::DeclRefExpr(const ASTContext &Ctx,
+@@ -514,9 +483,9 @@ DeclRefExpr::DeclRefExpr(const ASTContext &Ctx,
+         NestedNameSpecifierLoc(QualifierLoc);
+     auto *NNS = QualifierLoc.getNestedNameSpecifier();
+     if (NNS->isInstantiationDependent())
+-      ExprBits.InstantiationDependent = true;
++      addDependence(ExprDependence::Instantiation);
+     if (NNS->containsUnexpandedParameterPack())
+-      ExprBits.ContainsUnexpandedParameterPack = true;
++      addDependence(ExprDependence::UnexpandedPack);
+   }
+   DeclRefExprBits.HasFoundDecl = FoundD ? 1 : 0;
+   if (FoundD)
+@@ -527,22 +496,19 @@ DeclRefExpr::DeclRefExpr(const ASTContext &Ctx,
+       RefersToEnclosingVariableOrCapture;
+   DeclRefExprBits.NonOdrUseReason = NOUR;
+   if (TemplateArgs) {
+-    bool Dependent = false;
+-    bool InstantiationDependent = false;
+-    bool ContainsUnexpandedParameterPack = false;
++    auto Deps = TemplateArgumentDependence::None;
+     getTrailingObjects<ASTTemplateKWAndArgsInfo>()->initializeFrom(
+         TemplateKWLoc, *TemplateArgs, getTrailingObjects<TemplateArgumentLoc>(),
+-        Dependent, InstantiationDependent, ContainsUnexpandedParameterPack);
+-    assert(!Dependent && "built a DeclRefExpr with dependent template args");
+-    ExprBits.InstantiationDependent |= InstantiationDependent;
+-    ExprBits.ContainsUnexpandedParameterPack |= ContainsUnexpandedParameterPack;
++        Deps);
++    assert(!(Deps & TemplateArgumentDependence::Dependent) &&
++           "built a DeclRefExpr with dependent template args");
++    addDependence(toExprDependence(Deps));
+   } else if (TemplateKWLoc.isValid()) {
+     getTrailingObjects<ASTTemplateKWAndArgsInfo>()->initializeFrom(
+         TemplateKWLoc);
+   }
+   DeclRefExprBits.HadMultipleCandidates = 0;
+-
+-  computeDependence(Ctx);
++  addDependence(computeDeclRefDependence(Ctx, getDecl(), getType()));
+ }
+ 
+ DeclRefExpr *DeclRefExpr::Create(const ASTContext &Context,
+@@ -1360,11 +1326,11 @@ CallExpr::CallExpr(StmtClass SC, Expr *Fn, ArrayRef<Expr *> PreArgs,
+ 
+   setCallee(Fn);
+   for (unsigned I = 0; I != NumPreArgs; ++I) {
+-    updateDependenciesFromArg(PreArgs[I]);
++    addDependence(PreArgs[I]->getDependence());
+     setPreArg(I, PreArgs[I]);
+   }
+   for (unsigned I = 0; I != Args.size(); ++I) {
+-    updateDependenciesFromArg(Args[I]);
++    addDependence(Args[I]->getDependence());
+     setArg(I, Args[I]);
+   }
+   for (unsigned I = Args.size(); I != NumArgs; ++I) {
+@@ -1432,17 +1398,6 @@ unsigned CallExpr::offsetToTrailingObjects(StmtClass SC) {
+   }
+ }
+ 
+-void CallExpr::updateDependenciesFromArg(Expr *Arg) {
+-  if (Arg->isTypeDependent())
+-    ExprBits.TypeDependent = true;
+-  if (Arg->isValueDependent())
+-    ExprBits.ValueDependent = true;
+-  if (Arg->isInstantiationDependent())
+-    ExprBits.InstantiationDependent = true;
+-  if (Arg->containsUnexpandedParameterPack())
+-    ExprBits.ContainsUnexpandedParameterPack = true;
+-}
+-
+ Decl *Expr::getReferencedDeclOfCallee() {
+   Expr *CEE = IgnoreParenImpCasts();
+ 
+@@ -1580,9 +1535,9 @@ OffsetOfExpr::OffsetOfExpr(const ASTContext &C, QualType type,
+ 
+   for (unsigned i = 0; i != exprs.size(); ++i) {
+     if (exprs[i]->isTypeDependent() || exprs[i]->isValueDependent())
+-      ExprBits.ValueDependent = true;
++      addDependence(ExprDependence::Value);
+     if (exprs[i]->containsUnexpandedParameterPack())
+-      ExprBits.ContainsUnexpandedParameterPack = true;
++      addDependence(ExprDependence ::UnexpandedPack);
+ 
+     setIndexExpr(i, exprs[i]);
+   }
+@@ -1624,8 +1579,7 @@ UnaryExprOrTypeTraitExpr::UnaryExprOrTypeTraitExpr(
+       if (D) {
+         for (const auto *I : D->specific_attrs<AlignedAttr>()) {
+           if (I->isAlignmentDependent()) {
+-            setValueDependent(true);
+-            setInstantiationDependent(true);
++            addDependence(ExprDependence::ValueInstantiation);
+             break;
+           }
+         }
+@@ -1678,25 +1632,23 @@ MemberExpr *MemberExpr::Create(
+     // dyn_cast_or_null is used to handle objC variables which do not
+     // have a declaration context.
+     CXXRecordDecl *RD = dyn_cast_or_null<CXXRecordDecl>(DC);
+-    if (RD && RD->isDependentContext() && RD->isCurrentInstantiation(DC))
+-      E->setTypeDependent(T->isDependentType());
+-
++    if (RD && RD->isDependentContext() && RD->isCurrentInstantiation(DC)) {
++      if (E->isTypeDependent() && !T->isDependentType())
++        E->removeDependence(ExprDependence::Type);
++    }
+     // Bitfield with value-dependent width is type-dependent.
+     FieldDecl *FD = dyn_cast<FieldDecl>(MemberDecl);
+     if (FD && FD->isBitField() && FD->getBitWidth()->isValueDependent())
+-      E->setTypeDependent(true);
++      E->addDependence(ExprDependence::Type);
+   }
+ 
+   if (HasQualOrFound) {
+     // FIXME: Wrong. We should be looking at the member declaration we found.
+-    if (QualifierLoc && QualifierLoc.getNestedNameSpecifier()->isDependent()) {
+-      E->setValueDependent(true);
+-      E->setTypeDependent(true);
+-      E->setInstantiationDependent(true);
+-    }
++    if (QualifierLoc && QualifierLoc.getNestedNameSpecifier()->isDependent())
++      E->addDependence(ExprDependence::TypeValueInstantiation);
+     else if (QualifierLoc &&
+              QualifierLoc.getNestedNameSpecifier()->isInstantiationDependent())
+-      E->setInstantiationDependent(true);
++      E->addDependence(ExprDependence::Instantiation);
+ 
+     E->MemberExprBits.HasQualifierOrFoundDecl = true;
+ 
+@@ -1710,15 +1662,12 @@ MemberExpr *MemberExpr::Create(
+       TemplateArgs || TemplateKWLoc.isValid();
+ 
+   if (TemplateArgs) {
+-    bool Dependent = false;
+-    bool InstantiationDependent = false;
+-    bool ContainsUnexpandedParameterPack = false;
++    auto Deps = TemplateArgumentDependence::None;
+     E->getTrailingObjects<ASTTemplateKWAndArgsInfo>()->initializeFrom(
+         TemplateKWLoc, *TemplateArgs,
+-        E->getTrailingObjects<TemplateArgumentLoc>(), Dependent,
+-        InstantiationDependent, ContainsUnexpandedParameterPack);
+-    if (InstantiationDependent)
+-      E->setInstantiationDependent(true);
++        E->getTrailingObjects<TemplateArgumentLoc>(), Deps);
++    if (Deps & TemplateArgumentDependence::Instantiation)
++      E->addDependence(ExprDependence::Instantiation);
+   } else if (TemplateKWLoc.isValid()) {
+     E->getTrailingObjects<ASTTemplateKWAndArgsInfo>()->initializeFrom(
+         TemplateKWLoc);
+@@ -2236,16 +2185,8 @@ InitListExpr::InitListExpr(const ASTContext &C, SourceLocation lbraceloc,
+     LBraceLoc(lbraceloc), RBraceLoc(rbraceloc), AltForm(nullptr, true)
+ {
+   sawArrayRangeDesignator(false);
+-  for (unsigned I = 0; I != initExprs.size(); ++I) {
+-    if (initExprs[I]->isTypeDependent())
+-      ExprBits.TypeDependent = true;
+-    if (initExprs[I]->isValueDependent())
+-      ExprBits.ValueDependent = true;
+-    if (initExprs[I]->isInstantiationDependent())
+-      ExprBits.InstantiationDependent = true;
+-    if (initExprs[I]->containsUnexpandedParameterPack())
+-      ExprBits.ContainsUnexpandedParameterPack = true;
+-  }
++  for (unsigned I = 0; I != initExprs.size(); ++I)
++    addDependence(initExprs[I]->getDependence());
+ 
+   InitExprs.insert(C, InitExprs.end(), initExprs.begin(), initExprs.end());
+ }
+@@ -4167,15 +4108,7 @@ ShuffleVectorExpr::ShuffleVectorExpr(const ASTContext &C, ArrayRef<Expr*> args,
+ {
+   SubExprs = new (C) Stmt*[args.size()];
+   for (unsigned i = 0; i != args.size(); i++) {
+-    if (args[i]->isTypeDependent())
+-      ExprBits.TypeDependent = true;
+-    if (args[i]->isValueDependent())
+-      ExprBits.ValueDependent = true;
+-    if (args[i]->isInstantiationDependent())
+-      ExprBits.InstantiationDependent = true;
+-    if (args[i]->containsUnexpandedParameterPack())
+-      ExprBits.ContainsUnexpandedParameterPack = true;
+-
++    addDependence(args[i]->getDependence());
+     SubExprs[i] = args[i];
+   }
+ }
+@@ -4319,13 +4252,12 @@ DesignatedInitExpr::DesignatedInitExpr(const ASTContext &C, QualType Ty,
+     if (this->Designators[I].isArrayDesignator()) {
+       // Compute type- and value-dependence.
+       Expr *Index = IndexExprs[IndexIdx];
+-      if (Index->isTypeDependent() || Index->isValueDependent())
+-        ExprBits.TypeDependent = ExprBits.ValueDependent = true;
+-      if (Index->isInstantiationDependent())
+-        ExprBits.InstantiationDependent = true;
+-      // Propagate unexpanded parameter packs.
+-      if (Index->containsUnexpandedParameterPack())
+-        ExprBits.ContainsUnexpandedParameterPack = true;
++
++      // Propagate dependence flags.
++      auto Deps = Index->getDependence();
++      if (Deps & (ExprDependence::Type | ExprDependence::Value))
++        Deps |= ExprDependence::Type | ExprDependence::Value;
++      addDependence(Deps);
+ 
+       // Copy the index expressions into permanent storage.
+       *Child++ = IndexExprs[IndexIdx++];
+@@ -4333,19 +4265,11 @@ DesignatedInitExpr::DesignatedInitExpr(const ASTContext &C, QualType Ty,
+       // Compute type- and value-dependence.
+       Expr *Start = IndexExprs[IndexIdx];
+       Expr *End = IndexExprs[IndexIdx + 1];
+-      if (Start->isTypeDependent() || Start->isValueDependent() ||
+-          End->isTypeDependent() || End->isValueDependent()) {
+-        ExprBits.TypeDependent = ExprBits.ValueDependent = true;
+-        ExprBits.InstantiationDependent = true;
+-      } else if (Start->isInstantiationDependent() ||
+-                 End->isInstantiationDependent()) {
+-        ExprBits.InstantiationDependent = true;
+-      }
+ 
+-      // Propagate unexpanded parameter packs.
+-      if (Start->containsUnexpandedParameterPack() ||
+-          End->containsUnexpandedParameterPack())
+-        ExprBits.ContainsUnexpandedParameterPack = true;
++      auto Deps = Start->getDependence() | End->getDependence();
++      if (Deps & (ExprDependence::Type | ExprDependence::Value))
++        Deps |= ExprDependence::TypeValueInstantiation;
++      addDependence(Deps);
+ 
+       // Copy the start/end expressions into permanent storage.
+       *Child++ = IndexExprs[IndexIdx++];
+@@ -4483,15 +4407,7 @@ ParenListExpr::ParenListExpr(SourceLocation LParenLoc, ArrayRef<Expr *> Exprs,
+   ParenListExprBits.NumExprs = Exprs.size();
+ 
+   for (unsigned I = 0, N = Exprs.size(); I != N; ++I) {
+-    if (Exprs[I]->isTypeDependent())
+-      ExprBits.TypeDependent = true;
+-    if (Exprs[I]->isValueDependent())
+-      ExprBits.ValueDependent = true;
+-    if (Exprs[I]->isInstantiationDependent())
+-      ExprBits.InstantiationDependent = true;
+-    if (Exprs[I]->containsUnexpandedParameterPack())
+-      ExprBits.ContainsUnexpandedParameterPack = true;
+-
++    addDependence(Exprs[I]->getDependence());
+     getTrailingObjects<Stmt *>()[I] = Exprs[I];
+   }
+ }
+@@ -4578,14 +4494,7 @@ PseudoObjectExpr::PseudoObjectExpr(QualType type, ExprValueKind VK,
+     Expr *E = (i == 0 ? syntax : semantics[i-1]);
+     getSubExprsBuffer()[i] = E;
+ 
+-    if (E->isTypeDependent())
+-      ExprBits.TypeDependent = true;
+-    if (E->isValueDependent())
+-      ExprBits.ValueDependent = true;
+-    if (E->isInstantiationDependent())
+-      ExprBits.InstantiationDependent = true;
+-    if (E->containsUnexpandedParameterPack())
+-      ExprBits.ContainsUnexpandedParameterPack = true;
++    addDependence(E->getDependence());
+ 
+     if (isa<OpaqueValueExpr>(E))
+       assert(cast<OpaqueValueExpr>(E)->getSourceExpr() != nullptr &&
+@@ -4626,15 +4535,7 @@ AtomicExpr::AtomicExpr(SourceLocation BLoc, ArrayRef<Expr*> args,
+ {
+   assert(args.size() == getNumSubExprs(op) && "wrong number of subexpressions");
+   for (unsigned i = 0; i != args.size(); i++) {
+-    if (args[i]->isTypeDependent())
+-      ExprBits.TypeDependent = true;
+-    if (args[i]->isValueDependent())
+-      ExprBits.ValueDependent = true;
+-    if (args[i]->isInstantiationDependent())
+-      ExprBits.InstantiationDependent = true;
+-    if (args[i]->containsUnexpandedParameterPack())
+-      ExprBits.ContainsUnexpandedParameterPack = true;
+-
++    addDependence(args[i]->getDependence());
+     SubExprs[i] = args[i];
+   }
+ }
+diff --git a/../clang-10.0.1.src/lib/AST/ExprCXX.cpp b/../clang-10.0.1.src/lib/AST/ExprCXX.cpp
+index e4bd218ae2d36..38cdfcf752df5 100644
+--- a/../clang-10.0.1.src/lib/AST/ExprCXX.cpp
++++ b/../clang-10.0.1.src/lib/AST/ExprCXX.cpp
+@@ -19,6 +19,7 @@
+ #include "clang/AST/DeclCXX.h"
+ #include "clang/AST/DeclTemplate.h"
+ #include "clang/AST/DeclarationName.h"
++#include "clang/AST/DependencyFlags.h"
+ #include "clang/AST/Expr.h"
+ #include "clang/AST/LambdaCapture.h"
+ #include "clang/AST/NestedNameSpecifier.h"
+@@ -194,36 +195,20 @@ CXXNewExpr::CXXNewExpr(bool IsGlobalNew, FunctionDecl *OperatorNew,
+   CXXNewExprBits.NumPlacementArgs = PlacementArgs.size();
+ 
+   if (ArraySize) {
+-    if (Expr *SizeExpr = *ArraySize) {
+-      if (SizeExpr->isValueDependent())
+-        ExprBits.ValueDependent = true;
+-      if (SizeExpr->isInstantiationDependent())
+-        ExprBits.InstantiationDependent = true;
+-      if (SizeExpr->containsUnexpandedParameterPack())
+-        ExprBits.ContainsUnexpandedParameterPack = true;
+-    }
++    if (Expr *SizeExpr = *ArraySize)
++      addDependence(SizeExpr->getDependence() & ~ExprDependence::Type);
+ 
+     getTrailingObjects<Stmt *>()[arraySizeOffset()] = *ArraySize;
+   }
+ 
+   if (Initializer) {
+-    if (Initializer->isValueDependent())
+-      ExprBits.ValueDependent = true;
+-    if (Initializer->isInstantiationDependent())
+-      ExprBits.InstantiationDependent = true;
+-    if (Initializer->containsUnexpandedParameterPack())
+-      ExprBits.ContainsUnexpandedParameterPack = true;
++    addDependence(Initializer->getDependence() & ~ExprDependence::Type);
+ 
+     getTrailingObjects<Stmt *>()[initExprOffset()] = Initializer;
+   }
+ 
+   for (unsigned I = 0; I != PlacementArgs.size(); ++I) {
+-    if (PlacementArgs[I]->isValueDependent())
+-      ExprBits.ValueDependent = true;
+-    if (PlacementArgs[I]->isInstantiationDependent())
+-      ExprBits.InstantiationDependent = true;
+-    if (PlacementArgs[I]->containsUnexpandedParameterPack())
+-      ExprBits.ContainsUnexpandedParameterPack = true;
++    addDependence(PlacementArgs[I]->getDependence() & ~ExprDependence::Type);
+ 
+     getTrailingObjects<Stmt *>()[placementNewArgsOffset() + I] =
+         PlacementArgs[I];
+@@ -474,11 +459,8 @@ OverloadExpr::OverloadExpr(StmtClass SC, const ASTContext &Context,
+     // Determine whether this expression is type-dependent.
+     for (UnresolvedSetImpl::const_iterator I = Begin; I != End; ++I) {
+       if ((*I)->getDeclContext()->isDependentContext() ||
+-          isa<UnresolvedUsingValueDecl>(*I)) {
+-        ExprBits.TypeDependent = true;
+-        ExprBits.ValueDependent = true;
+-        ExprBits.InstantiationDependent = true;
+-      }
++          isa<UnresolvedUsingValueDecl>(*I))
++        addDependence(ExprDependence::TypeValueInstantiation);
+     }
+ 
+     // Copy the results to the trailing array past UnresolvedLookupExpr
+@@ -491,21 +473,11 @@ OverloadExpr::OverloadExpr(StmtClass SC, const ASTContext &Context,
+   // template arguments and whether they contain any unexpanded pack
+   // expansions.
+   if (TemplateArgs) {
+-    bool Dependent = false;
+-    bool InstantiationDependent = false;
+-    bool ContainsUnexpandedParameterPack = false;
++    auto Deps = TemplateArgumentDependence::None;
+     getTrailingASTTemplateKWAndArgsInfo()->initializeFrom(
+-        TemplateKWLoc, *TemplateArgs, getTrailingTemplateArgumentLoc(),
+-        Dependent, InstantiationDependent, ContainsUnexpandedParameterPack);
++        TemplateKWLoc, *TemplateArgs, getTrailingTemplateArgumentLoc(), Deps);
++    addDependence(toExprDependence(Deps));
+ 
+-    if (Dependent) {
+-      ExprBits.TypeDependent = true;
+-      ExprBits.ValueDependent = true;
+-    }
+-    if (InstantiationDependent)
+-      ExprBits.InstantiationDependent = true;
+-    if (ContainsUnexpandedParameterPack)
+-      ExprBits.ContainsUnexpandedParameterPack = true;
+   } else if (TemplateKWLoc.isValid()) {
+     getTrailingASTTemplateKWAndArgsInfo()->initializeFrom(TemplateKWLoc);
+   }
+@@ -539,14 +511,11 @@ DependentScopeDeclRefExpr::DependentScopeDeclRefExpr(
+   DependentScopeDeclRefExprBits.HasTemplateKWAndArgsInfo =
+       (Args != nullptr) || TemplateKWLoc.isValid();
+   if (Args) {
+-    bool Dependent = true;
+-    bool InstantiationDependent = true;
+-    bool ContainsUnexpandedParameterPack
+-      = ExprBits.ContainsUnexpandedParameterPack;
++    auto Deps = TemplateArgumentDependence::None;
+     getTrailingObjects<ASTTemplateKWAndArgsInfo>()->initializeFrom(
+-        TemplateKWLoc, *Args, getTrailingObjects<TemplateArgumentLoc>(),
+-        Dependent, InstantiationDependent, ContainsUnexpandedParameterPack);
+-    ExprBits.ContainsUnexpandedParameterPack = ContainsUnexpandedParameterPack;
++        TemplateKWLoc, *Args, getTrailingObjects<TemplateArgumentLoc>(), Deps);
++    if (Deps & TemplateArgumentDependence::UnexpandedPack)
++      addDependence(ExprDependence::UnexpandedPack);
+   } else if (TemplateKWLoc.isValid()) {
+     getTrailingObjects<ASTTemplateKWAndArgsInfo>()->initializeFrom(
+         TemplateKWLoc);
+@@ -1114,13 +1083,7 @@ CXXConstructExpr::CXXConstructExpr(
+   Stmt **TrailingArgs = getTrailingArgs();
+   for (unsigned I = 0, N = Args.size(); I != N; ++I) {
+     assert(Args[I] && "NULL argument in CXXConstructExpr!");
+-
+-    if (Args[I]->isValueDependent())
+-      ExprBits.ValueDependent = true;
+-    if (Args[I]->isInstantiationDependent())
+-      ExprBits.InstantiationDependent = true;
+-    if (Args[I]->containsUnexpandedParameterPack())
+-      ExprBits.ContainsUnexpandedParameterPack = true;
++    addDependence(Args[I]->getDependence() & ~ExprDependence::Type);
+ 
+     TrailingArgs[I] = Args[I];
+   }
+@@ -1370,7 +1333,7 @@ CXXUnresolvedConstructExpr::CXXUnresolvedConstructExpr(TypeSourceInfo *TSI,
+   auto **StoredArgs = getTrailingObjects<Expr *>();
+   for (unsigned I = 0; I != Args.size(); ++I) {
+     if (Args[I]->containsUnexpandedParameterPack())
+-      ExprBits.ContainsUnexpandedParameterPack = true;
++      addDependence(ExprDependence::UnexpandedPack);
+ 
+     StoredArgs[I] = Args[I];
+   }
+@@ -1416,14 +1379,12 @@ CXXDependentScopeMemberExpr::CXXDependentScopeMemberExpr(
+   CXXDependentScopeMemberExprBits.OperatorLoc = OperatorLoc;
+ 
+   if (TemplateArgs) {
+-    bool Dependent = true;
+-    bool InstantiationDependent = true;
+-    bool ContainsUnexpandedParameterPack = false;
++    auto Deps = TemplateArgumentDependence::None;
+     getTrailingObjects<ASTTemplateKWAndArgsInfo>()->initializeFrom(
+         TemplateKWLoc, *TemplateArgs, getTrailingObjects<TemplateArgumentLoc>(),
+-        Dependent, InstantiationDependent, ContainsUnexpandedParameterPack);
+-    if (ContainsUnexpandedParameterPack)
+-      ExprBits.ContainsUnexpandedParameterPack = true;
++        Deps);
++    if (Deps & TemplateArgumentDependence::UnexpandedPack)
++      addDependence(ExprDependence::UnexpandedPack);
+   } else if (TemplateKWLoc.isValid()) {
+     getTrailingObjects<ASTTemplateKWAndArgsInfo>()->initializeFrom(
+         TemplateKWLoc);
+@@ -1704,13 +1665,8 @@ TypeTraitExpr::TypeTraitExpr(QualType T, SourceLocation Loc, TypeTrait Kind,
+   auto **ToArgs = getTrailingObjects<TypeSourceInfo *>();
+ 
+   for (unsigned I = 0, N = Args.size(); I != N; ++I) {
+-    if (Args[I]->getType()->isDependentType())
+-      setValueDependent(true);
+-    if (Args[I]->getType()->isInstantiationDependentType())
+-      setInstantiationDependent(true);
+-    if (Args[I]->getType()->containsUnexpandedParameterPack())
+-      setContainsUnexpandedParameterPack(true);
+-
++    addDependence(toExprDependence(Args[I]->getType()->getDependence()) &
++                  ~ExprDependence::Type);
+     ToArgs[I] = Args[I];
+   }
+ }
+diff --git a/../clang-10.0.1.src/lib/AST/ExprConcepts.cpp b/../clang-10.0.1.src/lib/AST/ExprConcepts.cpp
+index b5a3686dc99a5..42cc4576562e4 100644
+--- a/../clang-10.0.1.src/lib/AST/ExprConcepts.cpp
++++ b/../clang-10.0.1.src/lib/AST/ExprConcepts.cpp
+@@ -11,11 +11,12 @@
+ //===----------------------------------------------------------------------===//
+ 
+ #include "clang/AST/ExprConcepts.h"
+-#include "clang/AST/ASTContext.h"
+ #include "clang/AST/ASTConcept.h"
++#include "clang/AST/ASTContext.h"
+ #include "clang/AST/Decl.h"
+-#include "clang/AST/DeclarationName.h"
+ #include "clang/AST/DeclTemplate.h"
++#include "clang/AST/DeclarationName.h"
++#include "clang/AST/DependencyFlags.h"
+ #include "clang/AST/Expr.h"
+ #include "clang/AST/NestedNameSpecifier.h"
+ #include "clang/AST/TemplateBase.h"
+@@ -23,8 +24,8 @@
+ #include "clang/Basic/SourceLocation.h"
+ #include "llvm/Support/TrailingObjects.h"
+ #include <algorithm>
+-#include <utility>
+ #include <string>
++#include <utility>
+ 
+ using namespace clang;
+ 
+@@ -46,14 +47,12 @@ ConceptSpecializationExpr::ConceptSpecializationExpr(const ASTContext &C,
+                    ASTConstraintSatisfaction::Create(C, *Satisfaction) :
+                    nullptr) {
+   setTemplateArguments(ConvertedArgs);
+-  bool IsInstantiationDependent = false;
+-  bool ContainsUnexpandedParameterPack = false;
++  auto Deps = TemplateArgumentDependence::None;
++  const auto InterestingDeps = TemplateArgumentDependence::Instantiation |
++                               TemplateArgumentDependence::UnexpandedPack;
+   for (const TemplateArgumentLoc& ArgLoc : ArgsAsWritten->arguments()) {
+-    if (ArgLoc.getArgument().isInstantiationDependent())
+-      IsInstantiationDependent = true;
+-    if (ArgLoc.getArgument().containsUnexpandedParameterPack())
+-      ContainsUnexpandedParameterPack = true;
+-    if (ContainsUnexpandedParameterPack && IsInstantiationDependent)
++    Deps |= ArgLoc.getArgument().getDependence() & InterestingDeps;
++    if (Deps == InterestingDeps)
+       break;
+   }
+ 
+@@ -62,8 +61,7 @@ ConceptSpecializationExpr::ConceptSpecializationExpr(const ASTContext &C,
+          (!NestedNameSpec.getNestedNameSpecifier()->isInstantiationDependent() &&
+           !NestedNameSpec.getNestedNameSpecifier()
+               ->containsUnexpandedParameterPack()));
+-  setInstantiationDependent(IsInstantiationDependent);
+-  setContainsUnexpandedParameterPack(ContainsUnexpandedParameterPack);
++  addDependence(toExprDependence(Deps));
+   assert((!isValueDependent() || isInstantiationDependent()) &&
+          "should not be value-dependent");
+ }
+@@ -182,9 +180,14 @@ RequiresExpr::RequiresExpr(ASTContext &C, SourceLocation RequiresKWLoc,
+   std::copy(Requirements.begin(), Requirements.end(),
+             getTrailingObjects<concepts::Requirement *>());
+   RequiresExprBits.IsSatisfied |= Dependent;
+-  setValueDependent(Dependent);
+-  setInstantiationDependent(Dependent);
+-  setContainsUnexpandedParameterPack(ContainsUnexpandedParameterPack);
++  if (ContainsUnexpandedParameterPack)
++    addDependence(ExprDependence::UnexpandedPack);
++  // FIXME: this is incorrect for cases where we have a non-dependent
++  // requirement, but its parameters are instantiation-dependent. RequiresExpr
++  // should be instantiation-dependent if it has instantiation-dependent
++  // parameters.
++  if (Dependent)
++    addDependence(ExprDependence::ValueInstantiation);
+ }
+ 
+ RequiresExpr::RequiresExpr(ASTContext &C, EmptyShell Empty,
+diff --git a/../clang-10.0.1.src/lib/AST/ExprObjC.cpp b/../clang-10.0.1.src/lib/AST/ExprObjC.cpp
+index 53d0e873f8c9e..6d98429bc89dc 100644
+--- a/../clang-10.0.1.src/lib/AST/ExprObjC.cpp
++++ b/../clang-10.0.1.src/lib/AST/ExprObjC.cpp
+@@ -12,6 +12,7 @@
+ 
+ #include "clang/AST/ExprObjC.h"
+ #include "clang/AST/ASTContext.h"
++#include "clang/AST/DependencyFlags.h"
+ #include "clang/AST/SelectorLocationsKind.h"
+ #include "clang/AST/Type.h"
+ #include "clang/AST/TypeLoc.h"
+@@ -30,13 +31,7 @@ ObjCArrayLiteral::ObjCArrayLiteral(ArrayRef<Expr *> Elements, QualType T,
+       NumElements(Elements.size()), Range(SR), ArrayWithObjectsMethod(Method) {
+   Expr **SaveElements = getElements();
+   for (unsigned I = 0, N = Elements.size(); I != N; ++I) {
+-    if (Elements[I]->isTypeDependent() || Elements[I]->isValueDependent())
+-      ExprBits.ValueDependent = true;
+-    if (Elements[I]->isInstantiationDependent())
+-      ExprBits.InstantiationDependent = true;
+-    if (Elements[I]->containsUnexpandedParameterPack())
+-      ExprBits.ContainsUnexpandedParameterPack = true;
+-
++    addDependence(turnTypeToValueDependence(Elements[I]->getDependence()));
+     SaveElements[I] = Elements[I];
+   }
+ }
+@@ -67,16 +62,11 @@ ObjCDictionaryLiteral::ObjCDictionaryLiteral(ArrayRef<ObjCDictionaryElement> VK,
+   ExpansionData *Expansions =
+       HasPackExpansions ? getTrailingObjects<ExpansionData>() : nullptr;
+   for (unsigned I = 0; I < NumElements; I++) {
+-    if (VK[I].Key->isTypeDependent() || VK[I].Key->isValueDependent() ||
+-        VK[I].Value->isTypeDependent() || VK[I].Value->isValueDependent())
+-      ExprBits.ValueDependent = true;
+-    if (VK[I].Key->isInstantiationDependent() ||
+-        VK[I].Value->isInstantiationDependent())
+-      ExprBits.InstantiationDependent = true;
+-    if (VK[I].EllipsisLoc.isInvalid() &&
+-        (VK[I].Key->containsUnexpandedParameterPack() ||
+-         VK[I].Value->containsUnexpandedParameterPack()))
+-      ExprBits.ContainsUnexpandedParameterPack = true;
++    auto Deps = turnTypeToValueDependence(VK[I].Key->getDependence() |
++                                          VK[I].Value->getDependence());
++    if (VK[I].EllipsisLoc.isValid())
++      Deps &= ~ExprDependence::UnexpandedPack;
++    addDependence(Deps);
+ 
+     KeyValues[I].Key = VK[I].Key;
+     KeyValues[I].Value = VK[I].Value;
+@@ -183,15 +173,7 @@ void ObjCMessageExpr::initArgsAndSelLocs(ArrayRef<Expr *> Args,
+   setNumArgs(Args.size());
+   Expr **MyArgs = getArgs();
+   for (unsigned I = 0; I != Args.size(); ++I) {
+-    if (Args[I]->isTypeDependent())
+-      ExprBits.TypeDependent = true;
+-    if (Args[I]->isValueDependent())
+-      ExprBits.ValueDependent = true;
+-    if (Args[I]->isInstantiationDependent())
+-      ExprBits.InstantiationDependent = true;
+-    if (Args[I]->containsUnexpandedParameterPack())
+-      ExprBits.ContainsUnexpandedParameterPack = true;
+-
++    addDependence(Args[I]->getDependence());
+     MyArgs[I] = Args[I];
+   }
+ 
+diff --git a/../clang-10.0.1.src/lib/AST/NestedNameSpecifier.cpp b/../clang-10.0.1.src/lib/AST/NestedNameSpecifier.cpp
+index 06008b2f32ac2..8cd65a857beb4 100644
+--- a/../clang-10.0.1.src/lib/AST/NestedNameSpecifier.cpp
++++ b/../clang-10.0.1.src/lib/AST/NestedNameSpecifier.cpp
+@@ -16,6 +16,7 @@
+ #include "clang/AST/Decl.h"
+ #include "clang/AST/DeclCXX.h"
+ #include "clang/AST/DeclTemplate.h"
++#include "clang/AST/DependencyFlags.h"
+ #include "clang/AST/PrettyPrinter.h"
+ #include "clang/AST/TemplateName.h"
+ #include "clang/AST/Type.h"
+@@ -197,75 +198,49 @@ CXXRecordDecl *NestedNameSpecifier::getAsRecordDecl() const {
+   llvm_unreachable("Invalid NNS Kind!");
+ }
+ 
+-/// Whether this nested name specifier refers to a dependent
+-/// type or not.
+-bool NestedNameSpecifier::isDependent() const {
++NestedNameSpecifierDependence NestedNameSpecifier::getDependence() const {
+   switch (getKind()) {
+-  case Identifier:
++  case Identifier: {
+     // Identifier specifiers always represent dependent types
+-    return true;
++    auto F = NestedNameSpecifierDependence::Dependent |
++             NestedNameSpecifierDependence::Instantiation;
++    // Prefix can contain unexpanded template parameters.
++    if (getPrefix())
++      return F | getPrefix()->getDependence();
++    return F;
++  }
+ 
+   case Namespace:
+   case NamespaceAlias:
+   case Global:
+-    return false;
++    return NestedNameSpecifierDependence::None;
+ 
+   case Super: {
+     CXXRecordDecl *RD = static_cast<CXXRecordDecl *>(Specifier);
+     for (const auto &Base : RD->bases())
+       if (Base.getType()->isDependentType())
+-        return true;
+-
+-    return false;
++        // FIXME: must also be instantiation-dependent.
++        return NestedNameSpecifierDependence::Dependent;
++    return NestedNameSpecifierDependence::None;
+   }
+ 
+   case TypeSpec:
+   case TypeSpecWithTemplate:
+-    return getAsType()->isDependentType();
++    return toNestedNameSpecifierDependendence(getAsType()->getDependence());
+   }
+-
+   llvm_unreachable("Invalid NNS Kind!");
+ }
+ 
+-/// Whether this nested name specifier refers to a dependent
+-/// type or not.
+-bool NestedNameSpecifier::isInstantiationDependent() const {
+-  switch (getKind()) {
+-  case Identifier:
+-    // Identifier specifiers always represent dependent types
+-    return true;
+-
+-  case Namespace:
+-  case NamespaceAlias:
+-  case Global:
+-  case Super:
+-    return false;
+-
+-  case TypeSpec:
+-  case TypeSpecWithTemplate:
+-    return getAsType()->isInstantiationDependentType();
+-  }
++bool NestedNameSpecifier::isDependent() const {
++  return getDependence() & NestedNameSpecifierDependence::Dependent;
++}
+ 
+-  llvm_unreachable("Invalid NNS Kind!");
++bool NestedNameSpecifier::isInstantiationDependent() const {
++  return getDependence() & NestedNameSpecifierDependence::Instantiation;
+ }
+ 
+ bool NestedNameSpecifier::containsUnexpandedParameterPack() const {
+-  switch (getKind()) {
+-  case Identifier:
+-    return getPrefix() && getPrefix()->containsUnexpandedParameterPack();
+-
+-  case Namespace:
+-  case NamespaceAlias:
+-  case Global:
+-  case Super:
+-    return false;
+-
+-  case TypeSpec:
+-  case TypeSpecWithTemplate:
+-    return getAsType()->containsUnexpandedParameterPack();
+-  }
+-
+-  llvm_unreachable("Invalid NNS Kind!");
++  return getDependence() & NestedNameSpecifierDependence::UnexpandedPack;
+ }
+ 
+ /// Print this nested name specifier to the given output
+diff --git a/../clang-10.0.1.src/lib/AST/TemplateBase.cpp b/../clang-10.0.1.src/lib/AST/TemplateBase.cpp
+index 6f0ebf232e77c..3c550bddaff8c 100644
+--- a/../clang-10.0.1.src/lib/AST/TemplateBase.cpp
++++ b/../clang-10.0.1.src/lib/AST/TemplateBase.cpp
+@@ -16,6 +16,7 @@
+ #include "clang/AST/Decl.h"
+ #include "clang/AST/DeclBase.h"
+ #include "clang/AST/DeclTemplate.h"
++#include "clang/AST/DependencyFlags.h"
+ #include "clang/AST/Expr.h"
+ #include "clang/AST/ExprCXX.h"
+ #include "clang/AST/PrettyPrinter.h"
+@@ -111,84 +112,60 @@ TemplateArgument::CreatePackCopy(ASTContext &Context,
+   return TemplateArgument(Args.copy(Context));
+ }
+ 
+-bool TemplateArgument::isDependent() const {
++TemplateArgumentDependence TemplateArgument::getDependence() const {
++  auto Deps = TemplateArgumentDependence::None;
+   switch (getKind()) {
+   case Null:
+     llvm_unreachable("Should not have a NULL template argument");
+ 
+   case Type:
+-    return getAsType()->isDependentType() ||
+-           isa<PackExpansionType>(getAsType());
++    Deps = toTemplateArgumentDependence(getAsType()->getDependence());
++    if (isa<PackExpansionType>(getAsType()))
++      Deps |= TemplateArgumentDependence::Dependent;
++    return Deps;
+ 
+   case Template:
+-    return getAsTemplate().isDependent();
++    return toTemplateArgumentDependence(getAsTemplate().getDependence());
+ 
+   case TemplateExpansion:
+-    return true;
++    return TemplateArgumentDependence::Dependent |
++           TemplateArgumentDependence::Instantiation;
+ 
+-  case Declaration:
+-    if (DeclContext *DC = dyn_cast<DeclContext>(getAsDecl()))
+-      return DC->isDependentContext();
+-    return getAsDecl()->getDeclContext()->isDependentContext();
++  case Declaration: {
++    auto *DC = dyn_cast<DeclContext>(getAsDecl());
++    if (!DC)
++      DC = getAsDecl()->getDeclContext();
++    if (DC->isDependentContext())
++      Deps = TemplateArgumentDependence::Dependent |
++             TemplateArgumentDependence::Instantiation;
++    return Deps;
++  }
+ 
+   case NullPtr:
+-    return false;
+-
+   case Integral:
+-    // Never dependent
+-    return false;
++    return TemplateArgumentDependence::None;
+ 
+   case Expression:
+-    return (getAsExpr()->isTypeDependent() || getAsExpr()->isValueDependent() ||
+-            isa<PackExpansionExpr>(getAsExpr()));
++    Deps = toTemplateArgumentDependence(getAsExpr()->getDependence());
++    if (isa<PackExpansionExpr>(getAsExpr()))
++      Deps |= TemplateArgumentDependence::Dependent |
++              TemplateArgumentDependence::Instantiation;
++    return Deps;
+ 
+   case Pack:
+     for (const auto &P : pack_elements())
+-      if (P.isDependent())
+-        return true;
+-    return false;
++      Deps |= P.getDependence();
++    return Deps;
+   }
++  llvm_unreachable("unhandled ArgKind");
++}
+ 
+-  llvm_unreachable("Invalid TemplateArgument Kind!");
++bool TemplateArgument::isDependent() const {
++  return getDependence() & TemplateArgumentDependence::Dependent;
+ }
+ 
+ bool TemplateArgument::isInstantiationDependent() const {
+-  switch (getKind()) {
+-  case Null:
+-    llvm_unreachable("Should not have a NULL template argument");
+-
+-  case Type:
+-    return getAsType()->isInstantiationDependentType();
+-
+-  case Template:
+-    return getAsTemplate().isInstantiationDependent();
+-
+-  case TemplateExpansion:
+-    return true;
+-
+-  case Declaration:
+-    if (DeclContext *DC = dyn_cast<DeclContext>(getAsDecl()))
+-      return DC->isDependentContext();
+-    return getAsDecl()->getDeclContext()->isDependentContext();
+-
+-  case NullPtr:
+-    return false;
+-
+-  case Integral:
+-    // Never dependent
+-    return false;
+-
+-  case Expression:
+-    return getAsExpr()->isInstantiationDependent();
+-
+-  case Pack:
+-    for (const auto &P : pack_elements())
+-      if (P.isInstantiationDependent())
+-        return true;
+-    return false;
+-  }
+-
+-  llvm_unreachable("Invalid TemplateArgument Kind!");
++  return getDependence() & TemplateArgumentDependence::Instantiation;
+ }
+ 
+ bool TemplateArgument::isPackExpansion() const {
+@@ -215,38 +192,7 @@ bool TemplateArgument::isPackExpansion() const {
+ }
+ 
+ bool TemplateArgument::containsUnexpandedParameterPack() const {
+-  switch (getKind()) {
+-  case Null:
+-  case Declaration:
+-  case Integral:
+-  case TemplateExpansion:
+-  case NullPtr:
+-    break;
+-
+-  case Type:
+-    if (getAsType()->containsUnexpandedParameterPack())
+-      return true;
+-    break;
+-
+-  case Template:
+-    if (getAsTemplate().containsUnexpandedParameterPack())
+-      return true;
+-    break;
+-
+-  case Expression:
+-    if (getAsExpr()->containsUnexpandedParameterPack())
+-      return true;
+-    break;
+-
+-  case Pack:
+-    for (const auto &P : pack_elements())
+-      if (P.containsUnexpandedParameterPack())
+-        return true;
+-
+-    break;
+-  }
+-
+-  return false;
++  return getDependence() & TemplateArgumentDependence::UnexpandedPack;
+ }
+ 
+ Optional<unsigned> TemplateArgument::getNumTemplateExpansions() const {
+@@ -601,20 +547,14 @@ void ASTTemplateKWAndArgsInfo::initializeFrom(SourceLocation TemplateKWLoc) {
+ 
+ void ASTTemplateKWAndArgsInfo::initializeFrom(
+     SourceLocation TemplateKWLoc, const TemplateArgumentListInfo &Info,
+-    TemplateArgumentLoc *OutArgArray, bool &Dependent,
+-    bool &InstantiationDependent, bool &ContainsUnexpandedParameterPack) {
++    TemplateArgumentLoc *OutArgArray, TemplateArgumentDependence &Deps) {
+   this->TemplateKWLoc = TemplateKWLoc;
+   LAngleLoc = Info.getLAngleLoc();
+   RAngleLoc = Info.getRAngleLoc();
+   NumTemplateArgs = Info.size();
+ 
+   for (unsigned i = 0; i != NumTemplateArgs; ++i) {
+-    Dependent = Dependent || Info[i].getArgument().isDependent();
+-    InstantiationDependent = InstantiationDependent ||
+-                             Info[i].getArgument().isInstantiationDependent();
+-    ContainsUnexpandedParameterPack =
+-        ContainsUnexpandedParameterPack ||
+-        Info[i].getArgument().containsUnexpandedParameterPack();
++    Deps |= Info[i].getArgument().getDependence();
+ 
+     new (&OutArgArray[i]) TemplateArgumentLoc(Info[i]);
+   }
+diff --git a/../clang-10.0.1.src/lib/AST/TemplateName.cpp b/../clang-10.0.1.src/lib/AST/TemplateName.cpp
+index 06e1dcec74492..afabc575b1647 100644
+--- a/../clang-10.0.1.src/lib/AST/TemplateName.cpp
++++ b/../clang-10.0.1.src/lib/AST/TemplateName.cpp
+@@ -11,8 +11,10 @@
+ //===----------------------------------------------------------------------===//
+ 
+ #include "clang/AST/TemplateName.h"
++#include "clang/AST/Decl.h"
+ #include "clang/AST/DeclBase.h"
+ #include "clang/AST/DeclTemplate.h"
++#include "clang/AST/DependencyFlags.h"
+ #include "clang/AST/NestedNameSpecifier.h"
+ #include "clang/AST/PrettyPrinter.h"
+ #include "clang/AST/TemplateBase.h"
+@@ -168,52 +170,54 @@ TemplateName TemplateName::getNameToSubstitute() const {
+   return TemplateName(Decl);
+ }
+ 
+-bool TemplateName::isDependent() const {
++TemplateNameDependence TemplateName::getDependence() const {
++  auto D = TemplateNameDependence::None;
++  switch (getKind()) {
++  case TemplateName::NameKind::QualifiedTemplate:
++    D |= toTemplateNameDependence(
++        getAsQualifiedTemplateName()->getQualifier()->getDependence());
++    break;
++  case TemplateName::NameKind::DependentTemplate:
++    D |= toTemplateNameDependence(
++        getAsDependentTemplateName()->getQualifier()->getDependence());
++    break;
++  case TemplateName::NameKind::SubstTemplateTemplateParmPack:
++    D |= TemplateNameDependence::UnexpandedPack;
++    break;
++  case TemplateName::NameKind::OverloadedTemplate:
++    assert(false && "overloaded templates shouldn't survive to here.");
++  default:
++    break;
++  }
+   if (TemplateDecl *Template = getAsTemplateDecl()) {
+-    if (isa<TemplateTemplateParmDecl>(Template))
+-      return true;
++    if (auto *TTP = dyn_cast<TemplateTemplateParmDecl>(Template)) {
++      D |= TemplateNameDependence::DependentInstantiation;
++      if (TTP->isParameterPack())
++        D |= TemplateNameDependence::UnexpandedPack;
++    }
+     // FIXME: Hack, getDeclContext() can be null if Template is still
+     // initializing due to PCH reading, so we check it before using it.
+     // Should probably modify TemplateSpecializationType to allow constructing
+     // it without the isDependent() checking.
+-    return Template->getDeclContext() &&
+-           Template->getDeclContext()->isDependentContext();
++    if (Template->getDeclContext() &&
++        Template->getDeclContext()->isDependentContext())
++      D |= TemplateNameDependence::DependentInstantiation;
++  } else {
++    D |= TemplateNameDependence::DependentInstantiation;
+   }
++  return D;
++}
+ 
+-  assert(!getAsOverloadedTemplate() &&
+-         "overloaded templates shouldn't survive to here");
+-
+-  return true;
++bool TemplateName::isDependent() const {
++  return getDependence() & TemplateNameDependence::Dependent;
+ }
+ 
+ bool TemplateName::isInstantiationDependent() const {
+-  if (QualifiedTemplateName *QTN = getAsQualifiedTemplateName()) {
+-    if (QTN->getQualifier()->isInstantiationDependent())
+-      return true;
+-  }
+-
+-  return isDependent();
++  return getDependence() & TemplateNameDependence::Instantiation;
+ }
+ 
+ bool TemplateName::containsUnexpandedParameterPack() const {
+-  if (QualifiedTemplateName *QTN = getAsQualifiedTemplateName()) {
+-    if (QTN->getQualifier()->containsUnexpandedParameterPack())
+-      return true;
+-  }
+-
+-  if (TemplateDecl *Template = getAsTemplateDecl()) {
+-    if (TemplateTemplateParmDecl *TTP
+-                                  = dyn_cast<TemplateTemplateParmDecl>(Template))
+-      return TTP->isParameterPack();
+-
+-    return false;
+-  }
+-
+-  if (DependentTemplateName *DTN = getAsDependentTemplateName())
+-    return DTN->getQualifier() &&
+-      DTN->getQualifier()->containsUnexpandedParameterPack();
+-
+-  return getAsSubstTemplateTemplateParmPack() != nullptr;
++  return getDependence() & TemplateNameDependence::UnexpandedPack;
+ }
+ 
+ void
+diff --git a/../clang-10.0.1.src/lib/Sema/SemaOverload.cpp b/../clang-10.0.1.src/lib/Sema/SemaOverload.cpp
+index b4be10deda322..9ecf5867e9661 100644
+--- a/../clang-10.0.1.src/lib/Sema/SemaOverload.cpp
++++ b/../clang-10.0.1.src/lib/Sema/SemaOverload.cpp
+@@ -10,10 +10,10 @@
+ //
+ //===----------------------------------------------------------------------===//
+ 
+-#include "clang/Sema/Overload.h"
+ #include "clang/AST/ASTContext.h"
+ #include "clang/AST/CXXInheritance.h"
+ #include "clang/AST/DeclObjC.h"
++#include "clang/AST/DependencyFlags.h"
+ #include "clang/AST/Expr.h"
+ #include "clang/AST/ExprCXX.h"
+ #include "clang/AST/ExprObjC.h"
+@@ -25,6 +25,7 @@
+ #include "clang/Basic/TargetInfo.h"
+ #include "clang/Sema/Initialization.h"
+ #include "clang/Sema/Lookup.h"
++#include "clang/Sema/Overload.h"
+ #include "clang/Sema/SemaInternal.h"
+ #include "clang/Sema/Template.h"
+ #include "clang/Sema/TemplateDeduction.h"
+@@ -12719,9 +12720,7 @@ bool Sema::buildOverloadedCallSet(Scope *S, Expr *Fn,
+       // base classes.
+       CallExpr *CE = CallExpr::Create(Context, Fn, Args, Context.DependentTy,
+                                       VK_RValue, RParenLoc);
+-      CE->setTypeDependent(true);
+-      CE->setValueDependent(true);
+-      CE->setInstantiationDependent(true);
++      CE->addDependence(ExprDependence::TypeValueInstantiation);
+       *Result = CE;
+       return true;
+     }
+diff --git a/../clang-10.0.1.src/lib/Serialization/ASTReaderStmt.cpp b/../clang-10.0.1.src/lib/Serialization/ASTReaderStmt.cpp
+index fc83dc42d4d15..42803b1a39181 100644
+--- a/../clang-10.0.1.src/lib/Serialization/ASTReaderStmt.cpp
++++ b/../clang-10.0.1.src/lib/Serialization/ASTReaderStmt.cpp
+@@ -11,7 +11,6 @@
+ //
+ //===----------------------------------------------------------------------===//
+ 
+-#include "clang/Serialization/ASTRecordReader.h"
+ #include "clang/AST/ASTConcept.h"
+ #include "clang/AST/ASTContext.h"
+ #include "clang/AST/AttrIterator.h"
+@@ -22,6 +21,7 @@
+ #include "clang/AST/DeclObjC.h"
+ #include "clang/AST/DeclTemplate.h"
+ #include "clang/AST/DeclarationName.h"
++#include "clang/AST/DependencyFlags.h"
+ #include "clang/AST/Expr.h"
+ #include "clang/AST/ExprCXX.h"
+ #include "clang/AST/ExprObjC.h"
+@@ -49,6 +49,7 @@
+ #include "clang/Basic/TypeTraits.h"
+ #include "clang/Lex/Token.h"
+ #include "clang/Serialization/ASTBitCodes.h"
++#include "clang/Serialization/ASTRecordReader.h"
+ #include "llvm/ADT/DenseMap.h"
+ #include "llvm/ADT/SmallString.h"
+ #include "llvm/ADT/SmallVector.h"
+@@ -511,10 +512,23 @@ void ASTStmtReader::VisitCapturedStmt(CapturedStmt *S) {
+ void ASTStmtReader::VisitExpr(Expr *E) {
+   VisitStmt(E);
+   E->setType(Record.readType());
+-  E->setTypeDependent(Record.readInt());
+-  E->setValueDependent(Record.readInt());
+-  E->setInstantiationDependent(Record.readInt());
+-  E->ExprBits.ContainsUnexpandedParameterPack = Record.readInt();
++
++  // FIXME: write and read all DependentFlags with a single call.
++  bool TypeDependent = Record.readInt();
++  bool ValueDependent = Record.readInt();
++  bool InstantiationDependent = Record.readInt();
++  bool ContainsUnexpandedTemplateParameters = Record.readInt();
++  auto Deps = ExprDependence::None;
++  if (TypeDependent)
++    Deps |= ExprDependence::Type;
++  if (ValueDependent)
++    Deps |= ExprDependence::Value;
++  if (InstantiationDependent)
++    Deps |= ExprDependence::Instantiation;
++  if (ContainsUnexpandedTemplateParameters)
++    Deps |= ExprDependence::UnexpandedPack;
++  E->setDependence(Deps);
++
+   E->setValueKind(static_cast<ExprValueKind>(Record.readInt()));
+   E->setObjectKind(static_cast<ExprObjectKind>(Record.readInt()));
+   assert(Record.getIdx() == NumExprFields &&

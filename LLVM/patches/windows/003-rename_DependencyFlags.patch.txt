@@ -1,0 +1,244 @@
+From 67d25914b2a42cef88124fe267c7a89cce9e7987 Mon Sep 17 00:00:00 2001
+From: Haojian Wu <hokein.wu@gmail.com>
+Date: Mon, 16 Mar 2020 13:43:40 +0100
+Subject: [PATCH] [AST] rename DependencyFlags.h => DependenceFlags.h, NFC
+
+We forgot to fix in the previous patch.
+---
+ .../clang/AST/{DependencyFlags.h => DependenceFlags.h}      | 6 +++---
+ clang/include/clang/AST/Expr.h                              | 2 +-
+ clang/include/clang/AST/NestedNameSpecifier.h               | 2 +-
+ clang/include/clang/AST/Stmt.h                              | 2 +-
+ clang/include/clang/AST/TemplateBase.h                      | 2 +-
+ clang/include/clang/AST/TemplateName.h                      | 2 +-
+ clang/include/clang/AST/Type.h                              | 2 +-
+ clang/lib/AST/Expr.cpp                                      | 2 +-
+ clang/lib/AST/ExprCXX.cpp                                   | 2 +-
+ clang/lib/AST/ExprConcepts.cpp                              | 2 +-
+ clang/lib/AST/ExprObjC.cpp                                  | 2 +-
+ clang/lib/AST/NestedNameSpecifier.cpp                       | 2 +-
+ clang/lib/AST/TemplateBase.cpp                              | 2 +-
+ clang/lib/AST/TemplateName.cpp                              | 2 +-
+ clang/lib/Sema/SemaOverload.cpp                             | 2 +-
+ clang/lib/Serialization/ASTReaderStmt.cpp                   | 2 +-
+ 16 files changed, 18 insertions(+), 18 deletions(-)
+ rename clang/include/clang/AST/{DependencyFlags.h => DependenceFlags.h} (97%)
+
+diff --git a/../clang-10.0.1.src/include/clang/AST/DependencyFlags.h b/../clang-10.0.1.src/include/clang/AST/DependenceFlags.h
+similarity index 97%
+rename from clang/include/clang/AST/DependencyFlags.h
+rename to clang/include/clang/AST/DependenceFlags.h
+index c27016aa9aec4..8aeb828b8e8c1 100644
+--- a/../clang-10.0.1.src/include/clang/AST/DependencyFlags.h
++++ b/../clang-10.0.1.src/include/clang/AST/DependenceFlags.h
+@@ -1,12 +1,12 @@
+-//===--- DependencyFlags.h ------------------------------------------------===//
++//===--- DependenceFlags.h ------------------------------------------------===//
+ //
+ // Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+ // See https://llvm.org/LICENSE.txt for license information.
+ // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+ //
+ //===----------------------------------------------------------------------===//
+-#ifndef LLVM_CLANG_AST_DEPENDENCYFLAGS_H
+-#define LLVM_CLANG_AST_DEPENDENCYFLAGS_H
++#ifndef LLVM_CLANG_AST_DEPENDENCEFLAGS_H
++#define LLVM_CLANG_AST_DEPENDENCEFLAGS_H
+ 
+ #include "clang/Basic/BitmaskEnum.h"
+ #include "llvm/ADT/BitmaskEnum.h"
+diff --git a/../clang-10.0.1.src/include/clang/AST/Expr.h b/../clang-10.0.1.src/include/clang/AST/Expr.h
+index b1f17631c8925..372d64763c4bc 100644
+--- a/../clang-10.0.1.src/include/clang/AST/Expr.h
++++ b/../clang-10.0.1.src/include/clang/AST/Expr.h
+@@ -17,7 +17,7 @@
+ #include "clang/AST/ASTVector.h"
+ #include "clang/AST/Decl.h"
+ #include "clang/AST/DeclAccessPair.h"
+-#include "clang/AST/DependencyFlags.h"
++#include "clang/AST/DependenceFlags.h"
+ #include "clang/AST/OperationKinds.h"
+ #include "clang/AST/Stmt.h"
+ #include "clang/AST/TemplateBase.h"
+diff --git a/../clang-10.0.1.src/include/clang/AST/NestedNameSpecifier.h b/../clang-10.0.1.src/include/clang/AST/NestedNameSpecifier.h
+index e465c33e2cc5f..47f5268c938b5 100644
+--- a/../clang-10.0.1.src/include/clang/AST/NestedNameSpecifier.h
++++ b/../clang-10.0.1.src/include/clang/AST/NestedNameSpecifier.h
+@@ -14,7 +14,7 @@
+ #ifndef LLVM_CLANG_AST_NESTEDNAMESPECIFIER_H
+ #define LLVM_CLANG_AST_NESTEDNAMESPECIFIER_H
+ 
+-#include "clang/AST/DependencyFlags.h"
++#include "clang/AST/DependenceFlags.h"
+ #include "clang/Basic/Diagnostic.h"
+ #include "clang/Basic/SourceLocation.h"
+ #include "llvm/ADT/FoldingSet.h"
+diff --git a/../clang-10.0.1.src/include/clang/AST/Stmt.h b/../clang-10.0.1.src/include/clang/AST/Stmt.h
+index d0efad03e42fc..87e1d7f26a168 100644
+--- a/../clang-10.0.1.src/include/clang/AST/Stmt.h
++++ b/../clang-10.0.1.src/include/clang/AST/Stmt.h
+@@ -14,7 +14,7 @@
+ #define LLVM_CLANG_AST_STMT_H
+ 
+ #include "clang/AST/DeclGroup.h"
+-#include "clang/AST/DependencyFlags.h"
++#include "clang/AST/DependenceFlags.h"
+ #include "clang/AST/StmtIterator.h"
+ #include "clang/Basic/CapturedStmt.h"
+ #include "clang/Basic/IdentifierTable.h"
+diff --git a/../clang-10.0.1.src/include/clang/AST/TemplateBase.h b/../clang-10.0.1.src/include/clang/AST/TemplateBase.h
+index e5fd1ca9dd461..1875e3eda0395 100644
+--- a/../clang-10.0.1.src/include/clang/AST/TemplateBase.h
++++ b/../clang-10.0.1.src/include/clang/AST/TemplateBase.h
+@@ -14,7 +14,7 @@
+ #ifndef LLVM_CLANG_AST_TEMPLATEBASE_H
+ #define LLVM_CLANG_AST_TEMPLATEBASE_H
+ 
+-#include "clang/AST/DependencyFlags.h"
++#include "clang/AST/DependenceFlags.h"
+ #include "clang/AST/NestedNameSpecifier.h"
+ #include "clang/AST/TemplateName.h"
+ #include "clang/AST/Type.h"
+diff --git a/../clang-10.0.1.src/include/clang/AST/TemplateName.h b/../clang-10.0.1.src/include/clang/AST/TemplateName.h
+index bf917788477f7..9bcf2838dcf13 100644
+--- a/../clang-10.0.1.src/include/clang/AST/TemplateName.h
++++ b/../clang-10.0.1.src/include/clang/AST/TemplateName.h
+@@ -13,7 +13,7 @@
+ #ifndef LLVM_CLANG_AST_TEMPLATENAME_H
+ #define LLVM_CLANG_AST_TEMPLATENAME_H
+ 
+-#include "clang/AST/DependencyFlags.h"
++#include "clang/AST/DependenceFlags.h"
+ #include "clang/AST/NestedNameSpecifier.h"
+ #include "clang/Basic/LLVM.h"
+ #include "llvm/ADT/FoldingSet.h"
+diff --git a/../clang-10.0.1.src/include/clang/AST/Type.h b/../clang-10.0.1.src/include/clang/AST/Type.h
+index f9a269e12d2d8..e72b44fbb31ff 100644
+--- a/../clang-10.0.1.src/include/clang/AST/Type.h
++++ b/../clang-10.0.1.src/include/clang/AST/Type.h
+@@ -17,7 +17,7 @@
+ #ifndef LLVM_CLANG_AST_TYPE_H
+ #define LLVM_CLANG_AST_TYPE_H
+ 
+-#include "clang/AST/DependencyFlags.h"
++#include "clang/AST/DependenceFlags.h"
+ #include "clang/AST/NestedNameSpecifier.h"
+ #include "clang/AST/TemplateName.h"
+ #include "clang/Basic/AddressSpaces.h"
+diff --git a/../clang-10.0.1.src/lib/AST/Expr.cpp b/../clang-10.0.1.src/lib/AST/Expr.cpp
+index 4eb7a177de004..4b2b9e4d5eb33 100644
+--- a/../clang-10.0.1.src/lib/AST/Expr.cpp
++++ b/../clang-10.0.1.src/lib/AST/Expr.cpp
+@@ -17,7 +17,7 @@
+ #include "clang/AST/DeclCXX.h"
+ #include "clang/AST/DeclObjC.h"
+ #include "clang/AST/DeclTemplate.h"
+-#include "clang/AST/DependencyFlags.h"
++#include "clang/AST/DependenceFlags.h"
+ #include "clang/AST/EvaluatedExprVisitor.h"
+ #include "clang/AST/ExprCXX.h"
+ #include "clang/AST/Mangle.h"
+diff --git a/../clang-10.0.1.src/lib/AST/ExprCXX.cpp b/../clang-10.0.1.src/lib/AST/ExprCXX.cpp
+index 38cdfcf752df5..69db80f452aaa 100644
+--- a/../clang-10.0.1.src/lib/AST/ExprCXX.cpp
++++ b/../clang-10.0.1.src/lib/AST/ExprCXX.cpp
+@@ -19,7 +19,7 @@
+ #include "clang/AST/DeclCXX.h"
+ #include "clang/AST/DeclTemplate.h"
+ #include "clang/AST/DeclarationName.h"
+-#include "clang/AST/DependencyFlags.h"
++#include "clang/AST/DependenceFlags.h"
+ #include "clang/AST/Expr.h"
+ #include "clang/AST/LambdaCapture.h"
+ #include "clang/AST/NestedNameSpecifier.h"
+diff --git a/../clang-10.0.1.src/lib/AST/ExprConcepts.cpp b/../clang-10.0.1.src/lib/AST/ExprConcepts.cpp
+index 42cc4576562e4..479a88a14ecae 100644
+--- a/../clang-10.0.1.src/lib/AST/ExprConcepts.cpp
++++ b/../clang-10.0.1.src/lib/AST/ExprConcepts.cpp
+@@ -16,7 +16,7 @@
+ #include "clang/AST/Decl.h"
+ #include "clang/AST/DeclTemplate.h"
+ #include "clang/AST/DeclarationName.h"
+-#include "clang/AST/DependencyFlags.h"
++#include "clang/AST/DependenceFlags.h"
+ #include "clang/AST/Expr.h"
+ #include "clang/AST/NestedNameSpecifier.h"
+ #include "clang/AST/TemplateBase.h"
+diff --git a/../clang-10.0.1.src/lib/AST/ExprObjC.cpp b/../clang-10.0.1.src/lib/AST/ExprObjC.cpp
+index 6d98429bc89dc..f2c060a084f66 100644
+--- a/../clang-10.0.1.src/lib/AST/ExprObjC.cpp
++++ b/../clang-10.0.1.src/lib/AST/ExprObjC.cpp
+@@ -12,7 +12,7 @@
+ 
+ #include "clang/AST/ExprObjC.h"
+ #include "clang/AST/ASTContext.h"
+-#include "clang/AST/DependencyFlags.h"
++#include "clang/AST/DependenceFlags.h"
+ #include "clang/AST/SelectorLocationsKind.h"
+ #include "clang/AST/Type.h"
+ #include "clang/AST/TypeLoc.h"
+diff --git a/../clang-10.0.1.src/lib/AST/NestedNameSpecifier.cpp b/../clang-10.0.1.src/lib/AST/NestedNameSpecifier.cpp
+index 8cd65a857beb4..af53c7fd9ba42 100644
+--- a/../clang-10.0.1.src/lib/AST/NestedNameSpecifier.cpp
++++ b/../clang-10.0.1.src/lib/AST/NestedNameSpecifier.cpp
+@@ -16,7 +16,7 @@
+ #include "clang/AST/Decl.h"
+ #include "clang/AST/DeclCXX.h"
+ #include "clang/AST/DeclTemplate.h"
+-#include "clang/AST/DependencyFlags.h"
++#include "clang/AST/DependenceFlags.h"
+ #include "clang/AST/PrettyPrinter.h"
+ #include "clang/AST/TemplateName.h"
+ #include "clang/AST/Type.h"
+diff --git a/../clang-10.0.1.src/lib/AST/TemplateBase.cpp b/../clang-10.0.1.src/lib/AST/TemplateBase.cpp
+index 3c550bddaff8c..c122213766915 100644
+--- a/../clang-10.0.1.src/lib/AST/TemplateBase.cpp
++++ b/../clang-10.0.1.src/lib/AST/TemplateBase.cpp
+@@ -16,7 +16,7 @@
+ #include "clang/AST/Decl.h"
+ #include "clang/AST/DeclBase.h"
+ #include "clang/AST/DeclTemplate.h"
+-#include "clang/AST/DependencyFlags.h"
++#include "clang/AST/DependenceFlags.h"
+ #include "clang/AST/Expr.h"
+ #include "clang/AST/ExprCXX.h"
+ #include "clang/AST/PrettyPrinter.h"
+diff --git a/../clang-10.0.1.src/lib/AST/TemplateName.cpp b/../clang-10.0.1.src/lib/AST/TemplateName.cpp
+index 3b8ae06c63397..40a8736ae1afd 100644
+--- a/../clang-10.0.1.src/lib/AST/TemplateName.cpp
++++ b/../clang-10.0.1.src/lib/AST/TemplateName.cpp
+@@ -14,7 +14,7 @@
+ #include "clang/AST/Decl.h"
+ #include "clang/AST/DeclBase.h"
+ #include "clang/AST/DeclTemplate.h"
+-#include "clang/AST/DependencyFlags.h"
++#include "clang/AST/DependenceFlags.h"
+ #include "clang/AST/NestedNameSpecifier.h"
+ #include "clang/AST/PrettyPrinter.h"
+ #include "clang/AST/TemplateBase.h"
+diff --git a/../clang-10.0.1.src/lib/Sema/SemaOverload.cpp b/../clang-10.0.1.src/lib/Sema/SemaOverload.cpp
+index 9ecf5867e9661..d80aac9d703ac 100644
+--- a/../clang-10.0.1.src/lib/Sema/SemaOverload.cpp
++++ b/../clang-10.0.1.src/lib/Sema/SemaOverload.cpp
+@@ -13,7 +13,7 @@
+ #include "clang/AST/ASTContext.h"
+ #include "clang/AST/CXXInheritance.h"
+ #include "clang/AST/DeclObjC.h"
+-#include "clang/AST/DependencyFlags.h"
++#include "clang/AST/DependenceFlags.h"
+ #include "clang/AST/Expr.h"
+ #include "clang/AST/ExprCXX.h"
+ #include "clang/AST/ExprObjC.h"
+diff --git a/../clang-10.0.1.src/lib/Serialization/ASTReaderStmt.cpp b/../clang-10.0.1.src/lib/Serialization/ASTReaderStmt.cpp
+index 4efd337650b29..d74b0d514eda0 100644
+--- a/../clang-10.0.1.src/lib/Serialization/ASTReaderStmt.cpp
++++ b/../clang-10.0.1.src/lib/Serialization/ASTReaderStmt.cpp
+@@ -21,7 +21,7 @@
+ #include "clang/AST/DeclObjC.h"
+ #include "clang/AST/DeclTemplate.h"
+ #include "clang/AST/DeclarationName.h"
+-#include "clang/AST/DependencyFlags.h"
++#include "clang/AST/DependenceFlags.h"
+ #include "clang/AST/Expr.h"
+ #include "clang/AST/ExprCXX.h"
+ #include "clang/AST/ExprObjC.h"
