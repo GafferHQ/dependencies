@@ -70,7 +70,8 @@
 	"manifest" : [
 
 		"include/IECore*",
-		"lib/libIECore*{sharedLibraryExtension}",
+		"{sharedLibraryDir}/{libraryPrefix}IECore*{sharedLibraryExtension}",
+		"lib/{libraryPrefix}IECore*.lib",
 		"python/IECore*",
 		"glsl/IECoreGL",
 		"glsl/*.frag",
@@ -92,5 +93,67 @@
 
 	},
 
+    "platform:windows" : {
+
+		"dependencies" : [
+			"Python", "OpenImageIO", "OpenEXR", "Boost", "OpenShadingLanguage",
+			"Blosc", "FreeType", "GLEW", "TBB", "OpenVDB", "USD",
+		],
+
+		"environment" : {
+
+			"PATH" : "{buildDir}\\bin;%PATH%",
+
+		},
+
+		"commands" : [
+
+			"scons install installDoc --debug=findlibs"
+				" -j {jobs}"
+				" CXXSTD=c++{c++Standard}"
+				" ENV_VARS_TO_IMPORT='PATH'"
+				" INSTALL_PREFIX={buildDir}"
+				" INSTALL_DOC_DIR={buildDir}\\doc\\cortex"
+				" INSTALL_PYTHON_DIR={buildDir}\\python"
+				" BUILD_TYPE=RELEASE"
+				" PYTHON={buildDir}\\bin\\python.exe"
+				" PYTHON_INCLUDE_PATH={buildDir}\\include"
+				" PYTHON_LIB_PATH={buildDir}\\libs"
+				" PYTHON_LINK_FLAGS="
+				" BOOST_INCLUDE_PATH={buildDir}\\include"
+				" BOOST_LIB_PATH={buildDir}\\lib"
+				" BOOST_LIB_SUFFIX="
+				" OPENEXR_INCLUDE_PATH={buildDir}\\include"
+				" ILMBASE_INCLUDE_PATH={buildDir}\\include\\Imath"
+				" OPENEXR_LIB_SUFFIX="
+				" OIIO_INCLUDE_PATH={buildDir}\\include\\OpenImageIO"
+				" OIIO_LIB_PATH={buildDir}\\lib"
+				" OSL_INCLUDE_PATH={buildDir}\\include"
+				" BLOSC_INCLUDE_PATH={buildDir}\\include"
+				" FREETYPE_INCLUDE_PATH={buildDir}\\include\\freetype2"
+				" FREETYPE_LIB_PATH={buildDir}\\lib"
+				" WITH_GL=1"
+				" GLEW_INCLUDE_PATH={buildDir}\\include"
+				" GLEW_LIB_SUFFIX=32"
+				" VDB_INCLUDE_PATH={buildDir}\\include"
+				" TBB_INCLUDE_PATH={buildDir}\\include"
+				" ALEMBIC_INCLUDE_PATH={buildDir}\\include"
+				" ARNOLD_ROOT=%ARNOLD_ROOT%"
+				" RMAN_ROOT=%RMAN_ROOT%"
+				" USD_INCLUDE_PATH={buildDir}\\include"
+				" USD_LIB_PATH={buildDir}\\lib"
+				" USD_LIB_PREFIX=usd_"
+				" PYTHONPATH={buildDir}\\python"
+				" OPTIONS="
+				" WARNINGS_AS_ERRORS=1"
+		],
+
+		"postMovePaths" : {
+
+			"{buildDir}/lib/IECore*.dll" : "{buildDir}/bin",
+
+		}
+
+	},
 
 }
