@@ -1,0 +1,13 @@
+diff --git a/SConstruct b/SConstruct
+index fbc0461ef..2f943dd97 100644
+--- a/SConstruct
++++ b/SConstruct
+@@ -967,7 +967,7 @@ o.Add(
+ ###########################################################################################
+ 
+ env = Environment(
+-	MSVC_VERSION = "14.2",
++	MSVC_VERSION = "14.3",
+ 	options = o
+ )
+ 
