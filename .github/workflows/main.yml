@@ -93,6 +93,35 @@ jobs:
       shell: bash
       if: runner.os == 'macOS'
 
+    - name: Install toolchain (Windows)
+      run: |
+        # Required msys2 packages.
+        /c/msys64/usr/bin/pacman -S autoconf bison flex make nasm patch unzip wget --noconfirm
+        echo "C:/msys64/usr/bin" >> $GITHUB_PATH
+  
+        # JOM, for Qt
+        /c/msys64/usr/bin/wget http://download.qt.io/official_releases/jom/jom.zip
+        /c/msys64/usr/bin/unzip jom.zip -d /c/jom
+        echo "C:/jom" >> $GITHUB_PATH
+
+        # Doxygen
+        /c/msys64/usr/bin/wget https://www.doxygen.nl/files/doxygen-1.14.0-setup.exe
+        ./doxygen-1.14.0-setup.exe //VERYSILENT
+
+        # Install Strawberry PERL?
+
+      shell: bash
+      if: runner.os == 'Windows'
+
+    - name: Set BUILD_DIR (Windows)
+      run: |
+        import os
+        with open( os.environ["GITHUB_ENV"], "a" ) as f :
+          f.write( "ROOT_DIR={}\n".format( os.getcwd() ) )
+
+      shell: python
+      if: runner.os == 'Windows'
+
     - name: 'Install Python Modules'
       run: |
         python --version
