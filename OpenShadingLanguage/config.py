@@ -47,6 +47,7 @@
 		"bin/oslinfo",
 		"include/OSL",
 		"lib/libosl*",
+		"lib/osl.imageio.*",
 		"doc/osl*",
 		"shaders",
 
