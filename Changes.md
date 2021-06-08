@@ -1,3 +1,9 @@
+3.0.0 alpha x
+-------------
+
+- OpenShadingLanguage : Updated to version 1.11.14.1.
+- OpenImageIO : Updated to version 2.2.15.1.
+
 3.0.0 alpha 2
 -------------
 
