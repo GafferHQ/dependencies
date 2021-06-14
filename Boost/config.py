@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://dl.bintray.com/boostorg/release/1.68.0/source/boost_1_68_0.tar.gz"
+		"https://boostorg.jfrog.io/artifactory/main/release/1.68.0/source/boost_1_68_0.tar.gz"
 
 	],
 

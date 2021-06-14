@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/PixarAnimationStudios/USD/archive/v20.11.tar.gz"
+		"https://github.com/PixarAnimationStudios/USD/archive/refs/tags/v21.05.tar.gz"
 
 	],
 

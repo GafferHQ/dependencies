@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/OpenImageIO/oiio/archive/Release-2.2.11.1.tar.gz"
+		"https://github.com/OpenImageIO/oiio/archive/Release-2.2.15.1.tar.gz"
 
 	],
 
