@@ -2,6 +2,7 @@
 -----
 
 - Python : Fixed `ssl` module for Python 3.
+- USD : Enabled OpenVDB support
 
 3.0.0
 -----
