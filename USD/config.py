@@ -10,7 +10,7 @@
 
 	"license" : "LICENSE.txt",
 
-	"dependencies" : [ "Boost", "Python", "OpenImageIO", "TBB", "Alembic", "OpenSubdiv", "PyOpenGL", "GLEW", "PySide" ],
+	"dependencies" : [ "Boost", "Python", "OpenImageIO", "TBB", "Alembic", "OpenSubdiv", "PyOpenGL", "GLEW", "PySide", "MaterialX" ],
 
 	"environment" : {
 
@@ -36,6 +36,7 @@
 			" -D PXR_BUILD_TESTS=FALSE"
 			" -D PXR_BUILD_ALEMBIC_PLUGIN=TRUE"
 			" -D PXR_ENABLE_HDF5_SUPPORT=FALSE"
+			" -D PXR_ENABLE_MATERIALX_SUPPORT=TRUE"
 			" -D PXR_PYTHON_SHEBANG='/usr/bin/env python'"
 			" -D ALEMBIC_DIR={buildDir}/lib"
 			" -D OPENEXR_LOCATION={buildDir}/lib"

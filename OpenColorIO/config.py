@@ -11,7 +11,7 @@
 
 	"license" : "LICENSE",
 
-	"dependencies" : [ "Python" ],
+	"dependencies" : [ "Boost", "Python" ],
 
 	"environment" : {
 

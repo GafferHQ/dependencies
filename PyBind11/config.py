@@ -22,8 +22,9 @@
 	"commands" : [
 
 		"cmake"
-		" -D CMAKE_INSTALL_PREFIX={buildDir} ."
-		" -D PYBIND11_TEST=0",
+		" -D CMAKE_INSTALL_PREFIX={buildDir}"
+		" -D PYBIND11_TEST=0"
+		" .",
 		"make install",
 
 	],
@@ -31,7 +32,7 @@
 	"manifest" : [
 
 		"include/pybind11",
-
+		"share/cmake/pybind11"
 	],
 
 }
