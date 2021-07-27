@@ -40,6 +40,8 @@
 			" -D PXR_PYTHON_SHEBANG='/usr/bin/env python'"
 			" -D ALEMBIC_DIR={buildDir}/lib"
 			" -D OPENEXR_LOCATION={buildDir}/lib"
+			" -D MATERIALX_ROOT={buildDir}"
+			" -D MATERIALX_DATA_ROOT={buildDir}/materialX"
 			# Needed to prevent CMake picking up system python libraries on Mac.
 			" -D CMAKE_FRAMEWORK_PATH={pythonLibDir}"
 			" {extraArguments}"
