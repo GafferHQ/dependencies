@@ -1,4 +1,4 @@
-3.x.x
+3.1.0
 -----
 
 - Python : Fixed `ssl` module for Python 3.
