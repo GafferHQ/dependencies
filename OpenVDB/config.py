@@ -31,6 +31,8 @@
 			" -D OPENVDB_ENABLE_RPATH=OFF"
 			" -D CONCURRENT_MALLOC=None"
 			" -D PYOPENVDB_INSTALL_DIRECTORY={buildDir}/python"
+			" -D Python_ROOT_DIR={buildDir}"
+			" -D Python_FIND_STRATEGY=LOCATION"
 			" .."
 		,
 
