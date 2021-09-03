@@ -54,6 +54,8 @@
 			" -D CMAKE_PREFIX_PATH={buildDir}"
 			" -D CMAKE_INSTALL_PREFIX={buildDir}/appleseed"
 			" -D CMAKE_LIBRARY_PATH={pythonLibDir}"
+			" -D BOOST_ROOT={buildDir}"
+			" -D Boost_NO_SYSTEM_PATHS=ON"
 			" ..",
 
 		"cd build && make install -j {jobs} VERBOSE=1"
