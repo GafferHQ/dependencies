@@ -35,6 +35,8 @@
 			" -D LLVM_STATIC=1"
 			" -D OSL_BUILD_MATERIALX=1"
 			" -D OSL_SHADER_INSTALL_DIR={buildDir}/shaders"
+			" -D Python_ROOT_DIR={buildDir}"
+			" -D Python_FIND_STRATEGY=LOCATION"
 			" ..",
 		"cd gafferBuild && make install -j {jobs} VERBOSE=1",
 		"cp {buildDir}/share/doc/OSL/osl-languagespec.pdf {buildDir}/doc",

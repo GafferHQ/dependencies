@@ -23,7 +23,10 @@
 
 		"cmake"
 		" -D CMAKE_INSTALL_PREFIX={buildDir} ."
-		" -D PYBIND11_TEST=0",
+		" -D PYBIND11_TEST=0"
+		" -D PYBIND11_FINDPYTHON=1"
+		" -D Python_ROOT_DIR={buildDir}"
+		" -D Python_FIND_STRATEGY=LOCATION",
 		"make install",
 
 	],
