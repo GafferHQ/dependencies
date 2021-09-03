@@ -10,7 +10,7 @@
 
 	"license" : "LICENSE.txt",
 
-	"dependencies" : [ "Boost", "Python", "OpenImageIO", "TBB", "Alembic", "OpenSubdiv", "OpenVDB", "PyOpenGL", "GLEW", "PySide", "Embree", "MaterialX" ],
+	"dependencies" : [ "Boost", "Python", "OpenImageIO", "TBB", "Alembic", "OpenSubdiv", "OpenVDB", "PyOpenGL", "GLEW", "PySide", "Embree", "MaterialX", "Jinja2" ],
 
 	"environment" : {
 
