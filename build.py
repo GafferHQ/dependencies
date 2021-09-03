@@ -405,6 +405,16 @@ def __buildPackage( projects, configs, buildDir, package ) :
 		for m in files :
 			file.add( os.path.join( buildDir, m ), arcname = os.path.join( rootName, m ) )
 
+def __getCompilerRoot():
+
+	# GCC 6.3.1 is located in /opt/rh/devtoolset-6/root for CentOS 7.
+
+	command = "which c++"
+	sys.stderr.write( command + "\n" )
+	output = subprocess.check_output( command, stderr=subprocess.STDOUT, shell = True, universal_newlines = True )
+	dirPath = os.path.dirname( os.path.realpath( output ) )
+	return dirPath.replace( "/bin", "" )
+
 parser = argparse.ArgumentParser()
 
 parser.add_argument(
@@ -464,6 +474,7 @@ variables = {
 	"platform" : "osx" if sys.platform == "darwin" else "linux",
 	"sharedLibraryExtension" : ".dylib" if sys.platform == "darwin" else ".so",
 	"c++Standard" : "14",
+	"compilerRoot" : __getCompilerRoot(),
 	"variants" : "".join( "-{}{}".format( key, variants[key] ) for key in sorted( variants.keys() ) ),
 }
 
