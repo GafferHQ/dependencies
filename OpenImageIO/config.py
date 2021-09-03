@@ -33,6 +33,8 @@
 			" -D USE_EXTERNAL_PUGIXML=YES"
 			" -D OIIO_BUILD_TESTS=NO"
 			" {pythonArguments}"
+			" -D Python_ROOT_DIR={buildDir}"
+			" -D Python_FIND_STRATEGY=LOCATION"
 			# These next two disable `iv`. This fails to
 			# build on Mac due to OpenGL deprecations, and
 			# we've never packaged it anyway.
