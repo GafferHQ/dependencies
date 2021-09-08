@@ -6,7 +6,7 @@
 
 	],
 
-	"dependencies" : [ "LibPNG", "LibTIFF", "LibJPEG-Turbo", "FreeType" ],
+	"dependencies" : [ "LibPNG", "LibTIFF", "LibJPEG-Turbo", "FreeType", "VulkanHeaders" ],
 
 	"url" : "https://www.qt.io",
 
@@ -37,6 +37,7 @@
 			" -qt-pcre"
 			" -nomake examples"
 			" -nomake tests"
+			" -feature-vulkan"
 			" {extraArgs}"
 			" -I {buildDir}/include -I {buildDir}/include/freetype2"
 			" -L {buildDir}/lib"
