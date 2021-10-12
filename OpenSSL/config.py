@@ -14,7 +14,7 @@
 
 		"./config --prefix={buildDir} -fPIC",
 		"make -j {jobs}",
-		"make install",
+		"make install_sw",
 
 	],
 

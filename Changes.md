@@ -1,3 +1,10 @@
+3.1.0
+-----
+
+- Python : Fixed `ssl` module for Python 3.
+- USD : Enabled OpenVDB support.
+- Cortex : updated to version 10.2.2.0.
+
 3.0.0
 -----
 
