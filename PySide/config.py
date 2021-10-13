@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://download.qt.io/official_releases/QtForPython/pyside2/PySide2-5.12.6-src/pyside-setup-everywhere-src-5.12.6.tar.xz"
+		"https://download.qt.io/official_releases/QtForPython/pyside2/PySide2-5.15.2-src/pyside-setup-opensource-src-5.15.2.tar.xz"
 
 	],
 
@@ -21,7 +21,7 @@
 
 	"commands" : [
 
-		"python setup.py --verbose-build --ignore-git --no-examples --parallel {jobs} install",
+		"python setup.py --parallel {jobs} install",
 
 	],
 

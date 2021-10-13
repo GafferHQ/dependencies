@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"http://download.qt.io/official_releases/qt/5.12/5.12.10/single/qt-everywhere-src-5.12.10.tar.xz"
+		"http://download.qt.io/official_releases/qt/5.15/5.15.2/single/qt-everywhere-src-5.15.2.tar.xz"
 
 	],
 
@@ -21,7 +21,7 @@
 	"commands" : [
 
 		"./configure"
-			" -prefix {buildDir}"
+			" -prefix {buildDir} "
 			" -plugindir {buildDir}/qt/plugins"
 			" -release"
 			" -opensource -confirm-license"
@@ -74,7 +74,7 @@
 
 		"variables" : {
 
-			"extraArgs" : "-qt-xcb",
+			"extraArgs" : "-xcb -bundled-xcb-xinput",
 
 		},
 
