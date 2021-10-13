@@ -2,6 +2,7 @@
 -----
 
 - OpenVDB : Updated to version 8.1.0.
+- TBB : Updated to version 2020.2.
 
 3.1.0
 -----

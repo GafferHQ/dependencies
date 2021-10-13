@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/01org/tbb/archive/2018_U5.tar.gz"
+		"https://github.com/oneapi-src/oneTBB/archive/refs/tags/v2020.2.tar.gz"
 
 	],
 
