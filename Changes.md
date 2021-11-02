@@ -1,3 +1,11 @@
+4.x.x
+-----
+
+- OpenVDB : Updated to version 8.1.0.
+- TBB : Updated to version 2020.2.
+- Qt : Updated to version 5.15.2.
+- PySide : Updated to version 5.15.2.
+
 3.1.0
 -----
 
