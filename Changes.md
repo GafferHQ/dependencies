@@ -5,6 +5,7 @@
 - TBB : Updated to version 2020.2.
 - Qt : Updated to version 5.15.2.
 - PySide : Updated to version 5.15.2.
+- Cortex : Removed. This will now be provided by packages published on the Cortex repo.
 
 3.1.0
 -----
