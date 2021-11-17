@@ -1,4 +1,4 @@
-4.x.x
+4.0.0
 -----
 
 - OpenVDB : Updated to version 8.1.0.
