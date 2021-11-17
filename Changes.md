@@ -5,6 +5,7 @@
 - TBB : Updated to version 2020.2.
 - Qt : Updated to version 5.15.2.
 - PySide : Updated to version 5.15.2.
+- Cortex : Updated to version 10.3.0.0.
 
 3.1.0
 -----
