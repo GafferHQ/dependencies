@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 import argparse
 import functools
@@ -81,6 +81,12 @@ permutations of the build.
 - variant:<ProjectName>:<VariantName> : Dictionary of overrides to apply
   based on the current variant of another project specified by `ProjectName`.
 """
+
+def __compilerRoot() :
+
+	compiler = shutil.which( "g++" )
+	binDir = os.path.dirname( compiler )
+	return os.path.dirname( binDir )
 
 def __projects() :
 
@@ -464,6 +470,7 @@ variables = {
 	"platform" : "osx" if sys.platform == "darwin" else "linux",
 	"sharedLibraryExtension" : ".dylib" if sys.platform == "darwin" else ".so",
 	"c++Standard" : "14",
+	"compilerRoot" : __compilerRoot(),
 	"variants" : "".join( "-{}{}".format( key, variants[key] ) for key in sorted( variants.keys() ) ),
 }
 
