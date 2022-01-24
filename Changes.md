@@ -2,6 +2,7 @@ x.x.x
 -----
 
 - C++ : Updated to c++17.
+- Boost : Updated to version 1.76.0.
 
 4.0.0
 -----

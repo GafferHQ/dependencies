@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://boostorg.jfrog.io/artifactory/main/release/1.68.0/source/boost_1_68_0.tar.gz"
+		"https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.gz"
 
 	],
 
@@ -28,7 +28,7 @@
 	"commands" : [
 
 		"./bootstrap.sh --prefix={buildDir} --with-python={buildDir}/bin/python --with-python-root={buildDir} --without-libraries=log --without-icu",
-		"./bjam -d+2 -j {jobs} --disable-icu cxxflags='-std=c++{c++Standard}' cxxstd={c++Standard} variant=release link=shared threading=multi install",
+		"./b2 -d+2 -j {jobs} --disable-icu cxxflags='-std=c++{c++Standard}' cxxstd={c++Standard} variant=release link=shared threading=multi install",
 
 	],
 

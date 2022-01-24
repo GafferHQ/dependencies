@@ -1,0 +1,32 @@
+--- a/src/appleseed/foundation/platform/path.h	2019-08-31 16:49:01.000000000 +0100
++++ b/src/appleseed/foundation/platform/path.h	2022-01-25 18:01:04.042637656 +0000
+@@ -40,6 +40,7 @@
+ #include "main/dllsymbol.h"
+ 
+ // Boost headers.
++#include "boost/filesystem/exception.hpp"
+ #include "boost/filesystem/operations.hpp"
+ #include "boost/filesystem/path.hpp"
+ 
+--- a/src/appleseed/foundation/utility/benchmark/benchmarkaggregator.cpp	2019-08-31 16:49:01.000000000 +0100
++++ b/src/appleseed/foundation/utility/benchmark/benchmarkaggregator.cpp	2022-01-25 18:03:50.692067431 +0000
+@@ -40,6 +40,7 @@
+ 
+ // Boost headers.
+ #include "boost/date_time/posix_time/posix_time.hpp"
++#include "boost/filesystem/directory.hpp"
+ #include "boost/filesystem/operations.hpp"
+ #include "boost/filesystem/path.hpp"
+ #include "boost/regex.hpp"
+
+--- a/src/appleseed/renderer/modeling/project/assethandler.cpp	2019-08-31 16:49:01.000000000 +0100
++++ b/src/appleseed/renderer/modeling/project/assethandler.cpp	2022-01-25 18:07:51.654134776 +0000
+@@ -80,7 +80,7 @@
+         try
+         {
+             create_directories(dest_path.parent_path());
+-            copy_file(source_path, dest_path, copy_option::overwrite_if_exists);
++            copy_file(source_path, dest_path, copy_options::overwrite_existing);
+             return true;
+         }
+         catch (const std::exception& e)     // namespace qualification required
