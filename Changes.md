@@ -6,6 +6,7 @@ x.x.x
 - Alembic : Updated to version 1.8.3.
 - TBB : Updated to version 2020.3.
 - USD : Updated to version 21.11.
+- OpenImageIO : Updated to version 2.3.11.0.
 
 4.0.0
 -----
