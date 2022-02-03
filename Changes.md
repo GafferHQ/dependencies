@@ -8,6 +8,7 @@ x.x.x
 - USD : Updated to version 21.11.
 - OpenImageIO : Updated to version 2.3.11.0.
 - OpenShadingLanguage : Updated to version 1.11.17.0.
+- OpenVDB : Updated to version 9.0.0.
 
 4.0.0
 -----
