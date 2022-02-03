@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/alembic/alembic/archive/1.7.8.tar.gz"
+		"https://github.com/alembic/alembic/archive/refs/tags/1.8.3.tar.gz"
 
 	],
 
@@ -24,6 +24,7 @@
 			" -D HDF5_ROOT={buildDir}"
 			" -D ALEMBIC_PYILMBASE_INCLUDE_DIRECTORY={buildDir}/include/OpenEXR"
 			" -D USE_HDF5=TRUE"
+			" -D USE_TESTS=FALSE"
 			" -D USE_ARNOLD=FALSE"
 			" -D USE_PRMAN=FALSE"
 			" -D USE_MAYA=FALSE"
