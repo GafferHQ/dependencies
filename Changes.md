@@ -9,6 +9,7 @@ x.x.x
 - OpenImageIO : Updated to version 2.3.11.0.
 - OpenShadingLanguage : Updated to version 1.11.17.0.
 - OpenVDB : Updated to version 9.0.0.
+- OpenColorIO : Updated to version 2.1.1.
 
 4.0.0
 -----
