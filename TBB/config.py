@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/oneapi-src/oneTBB/archive/refs/tags/v2020.2.tar.gz"
+		"https://github.com/oneapi-src/oneTBB/archive/refs/tags/v2020.3.tar.gz"
 
 	],
 
