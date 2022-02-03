@@ -7,6 +7,7 @@ x.x.x
 - TBB : Updated to version 2020.3.
 - USD : Updated to version 21.11.
 - OpenImageIO : Updated to version 2.3.11.0.
+- OpenShadingLanguage : Updated to version 1.11.17.0.
 
 4.0.0
 -----
