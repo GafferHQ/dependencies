@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/ImageEngine/cortex/archive/refs/tags/10.3.0.0.tar.gz"
+		"https://github.com/ImageEngine/cortex/archive/8882ea1.tar.gz"
 
 	],
 
@@ -52,7 +52,7 @@
 			" APPLESEED_ROOT={buildDir}/appleseed"
 			" APPLESEED_INCLUDE_PATH={buildDir}/appleseed/include"
 			" APPLESEED_LIB_PATH={buildDir}/appleseed/lib"
-			" ENV_VARS_TO_IMPORT=LD_LIBRARY_PATH"
+			" ENV_VARS_TO_IMPORT='LD_LIBRARY_PATH TERM'"
 			" OPTIONS=''"
 			" SAVE_OPTIONS=gaffer.options",
 
