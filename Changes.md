@@ -6,6 +6,7 @@
 - Qt : Updated to version 5.15.2.
 - PySide : Updated to version 5.15.2.
 - Cortex : Updated to version 10.3.0.0.
+- Embree : Added version 3.13.3.
 
 3.1.0
 -----
