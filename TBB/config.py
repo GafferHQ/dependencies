@@ -13,7 +13,9 @@
 	"commands" : [
 
 		"make -j {jobs} stdver=c++{c++Standard}",
+		"mkdir -p {buildDir}/include",
 		"cp -r include/tbb {buildDir}/include",
+		"mkdir -p {buildDir}/lib",
 		"{installLibsCommand}",
 
 	],
