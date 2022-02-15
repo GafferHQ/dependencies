@@ -18,6 +18,7 @@
 		"cd build &&"
 			" cmake"
 			" -DCMAKE_INSTALL_PREFIX={buildDir}"
+			" -DGCC_INSTALL_PREFIX={compilerRoot}"
 			" -DCMAKE_BUILD_TYPE=Release"
 			" -DLLVM_ENABLE_RTTI=ON"
 			" ..",
