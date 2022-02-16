@@ -14,7 +14,7 @@ import sys
 import tarfile
 import zipfile
 
-__version = "4.0.0"
+__version = "5.0.0"
 
 """
 Config file format
@@ -469,7 +469,7 @@ variables = {
 	"version" : __version,
 	"platform" : "osx" if sys.platform == "darwin" else "linux",
 	"sharedLibraryExtension" : ".dylib" if sys.platform == "darwin" else ".so",
-	"c++Standard" : "14",
+	"c++Standard" : "17",
 	"compilerRoot" : __compilerRoot(),
 	"variants" : "".join( "-{}{}".format( key, variants[key] ) for key in sorted( variants.keys() ) ),
 }

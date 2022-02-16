@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/OpenImageIO/oiio/archive/Release-2.2.15.1.tar.gz"
+		"https://github.com/OpenImageIO/oiio/archive/refs/tags/v2.3.11.0.tar.gz"
 
 	],
 
@@ -34,6 +34,7 @@
 			" -D USE_PYTHON=YES"
 			" -D USE_EXTERNAL_PUGIXML=YES"
 			" -D OIIO_BUILD_TESTS=NO"
+			" -D OIIO_DOWNLOAD_MISSING_TESTDATA=NO"
 			" {pythonArguments}"
 			" -D Python_ROOT_DIR={buildDir}"
 			" -D Python_FIND_STRATEGY=LOCATION"

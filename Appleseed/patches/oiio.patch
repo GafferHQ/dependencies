@@ -1,0 +1,10 @@
+--- a/src/appleseed/renderer/kernel/rendering/final/texturecontrolledpixelrenderer.cpp	2022-02-03 14:23:35.584430758 +0000
++++ b/src/appleseed/renderer/kernel/rendering/final/texturecontrolledpixelrenderer.cpp	2022-02-03 14:25:26.098466723 +0000
+@@ -61,6 +61,7 @@
+ // OpenImageIO headers.
+ #include "foundation/platform/_beginoiioheaders.h"
+ #include "OpenImageIO/imagebufalgo.h"
++#include "OpenImageIO/imagecache.h"
+ #include "OpenImageIO/typedesc.h"
+ #include "foundation/platform/_endoiioheaders.h"
+
