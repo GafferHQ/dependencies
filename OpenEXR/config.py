@@ -33,7 +33,12 @@
 			" -D Python_ROOT_DIR={buildDir}"
 			" -D Python2_ROOT_DIR={buildDir}"
 			" -D Python3_ROOT_DIR={buildDir}"
+			" -D Python_FIND_STRATEGY=LOCATION"
+			" -D Python2_FIND_STRATEGY=LOCATION"
 			" -D Python3_FIND_STRATEGY=LOCATION"
+			# Stop Mac build finding a system Python 3 install
+			# that causes a Python 2 build to fail.
+			" -D Python3_FIND_VERSION_MAJOR={pythonMajorVersion}"
 			" ."
 		,
 
