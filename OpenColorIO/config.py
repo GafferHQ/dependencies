@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/imageworks/OpenColorIO/archive/v1.0.9.tar.gz",
+		"https://github.com/AcademySoftwareFoundation/OpenColorIO/archive/refs/tags/v2.1.1.tar.gz",
 		"https://github.com/imageworks/OpenColorIO-Configs/archive/v1.0_r2.tar.gz",
 
 	],
@@ -11,35 +11,37 @@
 
 	"license" : "LICENSE",
 
-	"dependencies" : [ "Python" ],
+	"dependencies" : [ "Python", "PyBind11" ],
 
 	"environment" : {
 
-		"LD_LIBRARY_PATH" : "{buildDir}/lib",
+		"LD_LIBRARY_PATH" : "{buildDir}/lib:$LD_LIBRARY_PATH",
 
 	},
 
 	"commands" : [
 
-		"cmake"
+		"mkdir build",
+		"cd build && cmake"
+			" -D CMAKE_CXX_STANDARD={c++Standard}"
 		 	" -D CMAKE_INSTALL_PREFIX={buildDir}"
-		 	" -D PYTHON={buildDir}/bin/python"
-		 	# By default, OCIO will use tr1::shared_ptr. But Maya (2015 and 2016 at least)
-			# ships with a libOpenColorIO built using boost::shared_ptr instead. We'd like
-			# Gaffer's default packages to be useable in Maya, so we pass OCIO_USE_BOOST_PTR=1
-			# to match Maya's build. Even though both Gaffer and Maya respect the VFXPlatform
-			# 2016 by using OCIO 1.0.9, this is an example of where the platform is under
-			# specified, and we must go the extra mile to get compatibility.
-			" -D OCIO_USE_BOOST_PTR=1"
-			" -D OCIO_BUILD_TRUELIGHT=OFF"
+			" -D CMAKE_PREFIX_PATH={buildDir}"
+			" -D BUILD_SHARED_LIBS=ON"
 			" -D OCIO_BUILD_APPS=OFF"
 			" -D OCIO_BUILD_NUKE=OFF"
-			" .",
+			# Will need removing when we update to OpenEXR 3
+			" -D OCIO_USE_OPENEXR_HALF=ON"
+			" ..",
 
-		"make clean && make -j {jobs} && make install",
+		"cd build && make clean && make VERBOSE=1 -j {jobs} && make install",
 
 		"mkdir -p {buildDir}/python",
-		"mv {buildDir}/lib/python*/site-packages/PyOpenColorIO* {buildDir}/python",
+		# OpenColorIO's CMake setup uses GNUInstallDirs, which unhelpfully
+		# puts the libraries in `lib64`. Move them back. We'd like to do this
+		# in the build itself by passing `-D CMAKE_INSTALL_LIBDIR={buildDir}/lib`
+		# but that breaks OpenColorIO's internal libexpat setup.
+		"mv {buildDir}/lib64/libOpenColorIO* {buildDir}/lib",
+		"mv {buildDir}/lib64/python*/site-packages/PyOpenColorIO* {buildDir}/python",
 
 		"mkdir -p {buildDir}/openColorIO",
 		"cp ../OpenColorIO-Configs-1.0_r2/nuke-default/config.ocio {buildDir}/openColorIO",
