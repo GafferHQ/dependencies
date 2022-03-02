@@ -3,6 +3,8 @@ x.x.x (relative to 6.x.x)
 
 - Appleseed : Removed.
 - Boost : Updated to version 1.80.0.
+- Imath : Added version 3.1.7.
+- OpenEXR : Updated to version 3.1.7.
 - PyBind11 : Updated to version 2.10.4.
 - Subprocess32 : Removed.
 - Six : Removed.

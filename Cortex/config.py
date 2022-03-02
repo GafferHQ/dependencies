@@ -47,7 +47,7 @@
 			" LIBPATH={buildDir}/lib"
 			" BOOST_LIB_SUFFIX=''"
 			" OPENEXR_INCLUDE_PATH={buildDir}/include"
-			" ILMBASE_INCLUDE_PATH={buildDir}/include"
+			" ILMBASE_INCLUDE_PATH={buildDir}/include/Imath"
 			" VDB_INCLUDE_PATH={buildDir}/include"
 			" TBB_INCLUDE_PATH={buildDir}/include"
 			" OIIO_INCLUDE_PATH={buildDir}/include"
