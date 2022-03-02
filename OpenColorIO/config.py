@@ -15,6 +15,7 @@
 
 	"environment" : {
 
+		"PATH" : "{buildDir}/bin:$PATH",
 		"LD_LIBRARY_PATH" : "{buildDir}/lib:$LD_LIBRARY_PATH",
 
 	},
@@ -26,22 +27,21 @@
 			" -D CMAKE_CXX_STANDARD={c++Standard}"
 		 	" -D CMAKE_INSTALL_PREFIX={buildDir}"
 			" -D CMAKE_PREFIX_PATH={buildDir}"
+			" -D Python_ROOT_DIR={buildDir}"
 			" -D BUILD_SHARED_LIBS=ON"
 			" -D OCIO_BUILD_APPS=OFF"
 			" -D OCIO_BUILD_NUKE=OFF"
+			" -D OCIO_BUILD_TESTS=OFF"
+			" -D OCIO_BUILD_GPU_TESTS=OFF"
 			# Will need removing when we update to OpenEXR 3
 			" -D OCIO_USE_OPENEXR_HALF=ON"
+			" -D OCIO_PYTHON_VERSION={pythonMajorVersion}"
 			" ..",
 
 		"cd build && make clean && make VERBOSE=1 -j {jobs} && make install",
 
 		"mkdir -p {buildDir}/python",
-		# OpenColorIO's CMake setup uses GNUInstallDirs, which unhelpfully
-		# puts the libraries in `lib64`. Move them back. We'd like to do this
-		# in the build itself by passing `-D CMAKE_INSTALL_LIBDIR={buildDir}/lib`
-		# but that breaks OpenColorIO's internal libexpat setup.
-		"mv {buildDir}/lib64/libOpenColorIO* {buildDir}/lib",
-		"mv {buildDir}/lib64/python*/site-packages/PyOpenColorIO* {buildDir}/python",
+		"{libCopyCommands}",
 
 		"mkdir -p {buildDir}/openColorIO",
 		"cp ../OpenColorIO-Configs-1.0_r2/nuke-default/config.ocio {buildDir}/openColorIO",
@@ -57,5 +57,31 @@
 		"python/PyOpenColorIO*",
 
 	],
+
+	"platform:linux" : {
+
+		"variables" : {
+
+			"libCopyCommands" :
+			# OpenColorIO's CMake setup uses GNUInstallDirs, which unhelpfully
+			# puts the libraries in `lib64`. Move them back. We'd like to do this
+			# in the build itself by passing `-D CMAKE_INSTALL_LIBDIR={buildDir}/lib`
+			# but that breaks OpenColorIO's internal libexpat setup.
+			"mv {buildDir}/lib*/libOpenColorIO* {buildDir}/lib;"
+			"mv {buildDir}/lib*/python*/site-packages/PyOpenColorIO* {buildDir}/python",
+
+		}
+
+	},
+
+	"platform:osx" : {
+
+		"variables" : {
+
+			"libCopyCommands" : "",
+
+		}
+
+	},
 
 }
