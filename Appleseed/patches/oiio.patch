@@ -8,3 +8,14 @@
  #include "OpenImageIO/typedesc.h"
  #include "foundation/platform/_endoiioheaders.h"
 
+--- a/cmake/modules/FindOpenImageIO.cmake	2022-03-03 10:25:16.000000000 +0000
++++ b/cmake/modules/FindOpenImageIO.cmake	2022-03-03 10:24:35.000000000 +0000
+@@ -57,7 +57,7 @@
+ # Set the output variables.
+ if (OPENIMAGEIO_FOUND)
+     set (OPENIMAGEIO_INCLUDE_DIRS ${OPENIMAGEIO_INCLUDE_DIR})
+-    set (OPENIMAGEIO_LIBRARIES ${OPENIMAGEIO_LIBRARY})
++    set (OPENIMAGEIO_LIBRARIES ${OPENIMAGEIO_LIBRARY} OpenImageIO_Util)
+ else ()
+     set (OPENIMAGEIO_INCLUDE_DIRS)
+     set (OPENIMAGEIO_LIBRARIES)
