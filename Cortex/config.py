@@ -52,6 +52,7 @@
 			" APPLESEED_ROOT={buildDir}/appleseed"
 			" APPLESEED_INCLUDE_PATH={buildDir}/appleseed/include"
 			" APPLESEED_LIB_PATH={buildDir}/appleseed/lib"
+			" USD_LIB_PREFIX=usd_"
 			" ENV_VARS_TO_IMPORT='LD_LIBRARY_PATH TERM'"
 			" OPTIONS=''"
 			" SAVE_OPTIONS=gaffer.options",

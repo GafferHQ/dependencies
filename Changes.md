@@ -1,3 +1,12 @@
+5.0.0a2 (relative to 5.0.0a1)
+-------
+
+- Appleseed : Fixed MacOS build.
+- Cortex : Fixed IECoreUSD build.
+- OpenColorIO : Fixed MacOS build and Linux Python 3 build.
+- OpenEXR : Fixed MacOS build.
+- OpenVDB : Fixed MacOS build.
+
 5.0.0a1 (relative to 4.0.0)
 -------
 
