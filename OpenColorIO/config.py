@@ -28,6 +28,7 @@
 		 	" -D CMAKE_INSTALL_PREFIX={buildDir}"
 			" -D CMAKE_PREFIX_PATH={buildDir}"
 			" -D Python_ROOT_DIR={buildDir}"
+			" -D Python_FIND_STRATEGY=LOCATION"
 			" -D BUILD_SHARED_LIBS=ON"
 			" -D OCIO_BUILD_APPS=OFF"
 			" -D OCIO_BUILD_NUKE=OFF"
@@ -35,7 +36,7 @@
 			" -D OCIO_BUILD_GPU_TESTS=OFF"
 			# Will need removing when we update to OpenEXR 3
 			" -D OCIO_USE_OPENEXR_HALF=ON"
-			" -D OCIO_PYTHON_VERSION={pythonMajorVersion}"
+			" -D OCIO_PYTHON_VERSION={pythonVersion}"
 			" ..",
 
 		"cd build && make clean && make VERBOSE=1 -j {jobs} && make install",
