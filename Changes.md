@@ -1,3 +1,10 @@
+5.0.0a2 (relative to 5.0.0a2)
+-------
+
+- Cortex
+	- Updated to "version" 4a44b88.
+	- Fixed MacOS build.
+
 5.0.0a2 (relative to 5.0.0a1)
 -------
 
