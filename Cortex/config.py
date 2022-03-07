@@ -33,7 +33,7 @@
 			" CXXSTD=c++14"
 			" INSTALL_PREFIX={buildDir}"
 			" INSTALL_DOC_DIR={buildDir}/doc/cortex"
-			" INSTALL_RMANPROCEDURAL_NAME={buildDir}/render Man/procedurals/iePython"
+			" INSTALL_RMANPROCEDURAL_NAME={buildDir}/renderMan/procedurals/iePython"
 			" INSTALL_RMANDISPLAY_NAME={buildDir}/renderMan/displayDrivers/ieDisplay"
 			" INSTALL_PYTHON_DIR={buildDir}/python"
 			" INSTALL_IECORE_OPS=''"
