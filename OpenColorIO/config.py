@@ -42,7 +42,9 @@
 		"cd build && make clean && make VERBOSE=1 -j {jobs} && make install",
 
 		"mkdir -p {buildDir}/python",
-		"{libCopyCommands}",
+		"mv {buildDir}/lib*/python*/site-packages/PyOpenColorIO* {buildDir}/python",
+
+		"{libCopyCommand}",
 
 		"mkdir -p {buildDir}/openColorIO",
 		"cp ../OpenColorIO-Configs-1.0_r2/nuke-default/config.ocio {buildDir}/openColorIO",
@@ -63,13 +65,12 @@
 
 		"variables" : {
 
-			"libCopyCommands" :
+			"libCopyCommand" :
 			# OpenColorIO's CMake setup uses GNUInstallDirs, which unhelpfully
 			# puts the libraries in `lib64`. Move them back. We'd like to do this
 			# in the build itself by passing `-D CMAKE_INSTALL_LIBDIR={buildDir}/lib`
 			# but that breaks OpenColorIO's internal libexpat setup.
-			"mv {buildDir}/lib*/libOpenColorIO* {buildDir}/lib;"
-			"mv {buildDir}/lib*/python*/site-packages/PyOpenColorIO* {buildDir}/python",
+			"mv {buildDir}/lib*/libOpenColorIO* {buildDir}/lib"
 
 		}
 
@@ -79,7 +80,7 @@
 
 		"variables" : {
 
-			"libCopyCommands" : "",
+			"libCopyCommand" : "",
 
 		}
 
