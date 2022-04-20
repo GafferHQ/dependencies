@@ -1,4 +1,9 @@
-5.0.0a2 (relative to 5.0.0a2)
+5.0.0a4 (relative to 5.0.0a3)
+-------
+
+- LLVM : Upated to version 11.1.0.
+
+5.0.0a3 (relative to 5.0.0a2)
 -------
 
 - Cortex
