@@ -1,3 +1,8 @@
+5.0.0ax (relative to 5.0.0a4)
+-------
+
+- OpenJPEG : Added version 2.4.0.
+
 5.0.0a4 (relative to 5.0.0a3)
 -------
 
