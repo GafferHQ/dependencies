@@ -1,13 +1,10 @@
-5.0.0ax (relative to 5.0.0a4)
+5.0.0ax (relative to 5.0.0a3)
 -------
 
 - Cycles : Added version 3.1.1.
 - OpenJPEG : Added version 2.4.0.
-
-5.0.0a4 (relative to 5.0.0a3)
--------
-
 - LLVM : Upated to version 11.1.0.
+- Qt : Updated to version 5.15.3.
 
 5.0.0a3 (relative to 5.0.0a2)
 -------
