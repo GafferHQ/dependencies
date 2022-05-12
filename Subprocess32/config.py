@@ -21,7 +21,7 @@
 
 	"commands" : [
 
-		"python setup.py install",
+		"python setup.py install --single-version-externally-managed --root /",
 
 	],
 
