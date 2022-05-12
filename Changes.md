@@ -5,6 +5,7 @@
 - OpenJPEG : Added version 2.4.0.
 - LLVM : Upated to version 11.1.0.
 - Qt : Updated to version 5.15.3.
+- Cortex : Updated to version 10.4.0.0a4.
 - Subprocess32 : Changed to regular install rather than `.egg`.
 
 5.0.0a3 (relative to 5.0.0a2)
