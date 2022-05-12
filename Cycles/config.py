@@ -28,7 +28,7 @@
 		"cd build && make install -j {jobs} VERBOSE=1",
 
 		"mkdir -p {buildDir}/cycles/include",
-		"cd src && cp --parents */*.h */*/*.h {buildDir}/cycles/include",
+		"cd src && find . -name '*.h' | cpio -pdm {buildDir}/cycles/include",
 		"cp -r third_party/atomic/* {buildDir}/cycles/include",
 		"cp -r build/bin {buildDir}/cycles ",
 		"cp -r build/lib {buildDir}/cycles",
