@@ -10,7 +10,7 @@
 
 	"license" : "LICENSE",
 
-	"dependencies" : [ "Boost", "OpenJPEG", "OpenImageIO", "TBB", "Alembic", "Embree", "OpenColorIO", "OpenVDB", "OpenShadingLanguage", "OpenSubdiv", "OpenPGL", "LibWebP", "Zstandard" ],
+	"dependencies" : [ "Boost", "OpenJPEG", "OpenImageIO", "TBB", "Alembic", "Embree", "OpenColorIO", "OpenVDB", "OpenShadingLanguage", "OpenSubdiv", "OpenPGL", "LibWebP", "Zstandard", "Optix" ],
 
 	"commands" : [
 
@@ -53,5 +53,61 @@
 		"cycles",
 
 	],
+
+	"platform:windows" : {
+
+		"environment" : {
+
+			"PATH" : "{buildDir}\\bin;%PATH%",
+
+		},
+
+		"commands" : [
+
+			"rmdir lib\\windows_x64",
+			"mkdir build",
+			"cd build &&"
+				" cmake"
+				" -W-nodev -G {cmakeGenerator}"
+				" -D CMAKE_CXX_COMPILER={cmakeCompiler}"
+				" -D CMAKE_C_COMPILER={cmakeCompiler}"
+				" -D CMAKE_INSTALL_PREFIX={buildDir}/cycles"
+				" -D CMAKE_PREFIX_PATH={buildDir}"
+				" -D CMAKE_BUILD_TYPE={cmakeBuildType}"
+				" -D WITH_CYCLES_OPENIMAGEDENOISE=OFF"
+				" -D WITH_CYCLES_PATH_GUIDING=ON"
+				" -D WITH_CYCLES_CUDA_BINARIES=ON"
+				" -D WITH_CYCLES_DEVICE_CUDA=ON"
+				" -D WITH_CYCLES_DEVICE_HIP=OFF"
+				" -D WITH_CYCLES_DEVICE_OPTIX=ON"
+				" -D OPTIX_ROOT_DIR={buildDir}"
+				" -D CUDA_TOOLKIT_ROOT_DIR=\"%CUDA_TOOLKIT_ROOT_DIR%\""
+				" -D CMAKE_POSITION_INDEPENDENT_CODE=ON"
+				" -D TBB_ROOT_DIR={buildDir}"
+				" -D OPENVDB_ROOT_DIR={buildDir}"
+				" -D NANOVDB_INCLUDE_DIR={buildDir}/include"
+				" -D OPENPGL_ROOT_DIR={buildDir}"
+				" -D JPEG_ROOT_DIR={buildDir}"
+				" -D WITH_CYCLES_HYDRA_RENDER_DELEGATE=OFF"
+				" -D WITH_CYCLES_USD=OFF"
+				" -D PLATFORM_BUNDLED_LIBRARY_DIRS={buildDir}\\bin;{buildDir}\\lib;%PATH%"
+				" ..",
+			"cd build && cmake --build . --config {cmakeBuildType} --target install",
+			# Copy headers to their own location for `postMovePaths`. We don't copy to `buildDir`
+			# because the `/`s in `buildDir` are interpreted by `xcopy` as switches and it gets
+			# confused.
+			"xcopy /syi src\*.h include",
+		],
+
+		"postMovePaths" : {
+
+			"build/bin/cycles.*" : "{buildDir}/cycles/bin",
+			"build/lib/*" : "{buildDir}/cycles/lib",
+			"third_party/atomic/*" : "{buildDir}/cycles/include",
+			"include" : "{buildDir}/cycles"
+
+		}
+
+	}
 
 }
