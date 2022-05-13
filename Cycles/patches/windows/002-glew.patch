@@ -1,0 +1,13 @@
+diff --git /src/cmake/Modules/FindGLEW.cmake b/src/cmake/Modules/FindGLEW.cmake
+index 33b989ec49..3c95738d74 100644
+--- a/src/cmake/Modules/FindGLEW.cmake
++++ b/src/cmake/Modules/FindGLEW.cmake
+@@ -33,7 +33,7 @@ FIND_PATH(GLEW_INCLUDE_DIR
+ 
+ FIND_LIBRARY(GLEW_LIBRARY
+   NAMES
+-    GLEW
++    GLEW glew32
+   HINTS
+     ${_glew_SEARCH_DIRS}
+   PATH_SUFFIXES
