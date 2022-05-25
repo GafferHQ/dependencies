@@ -60,6 +60,7 @@
 			" USD_LIB_PREFIX=usd_"
 			" ENV_VARS_TO_IMPORT='LD_LIBRARY_PATH TERM'"
 			" OPTIONS=''"
+			" {extraArgs}"
 			" SAVE_OPTIONS=gaffer.options",
 
 		# Symlink for RenderMan, which uses a different convention to 3Delight.
@@ -80,5 +81,25 @@
 		"doc/cortex/html",
 
 	],
+
+	"variables" : {
+
+		"extraArgs" : "",
+
+	},
+
+	"platform:osx" : {
+
+		"variables" : {
+
+			# On Mac, `python3-config --ldflags` is broken, so we specify the flags explicitly.
+			"extraArgs" :
+				" PYTHON_LIB_PATH={buildDir}/lib/Python.framework/Versions/{pythonVersion}/lib"
+				" PYTHON_LINK_FLAGS=-lpython{pythonVersion}"
+
+		},
+
+	},
+
 
 }
