@@ -1,0 +1,12 @@
+--- a/src/device/CMakeLists.txt 2022-04-06 12:11:18.000000000 -0700
++++ b/src/device/CMakeLists.txt 2022-05-07 12:38:45.000000000 -0700
+@@ -187,6 +187,9 @@
+   list(APPEND LIB
+     ${METAL_LIBRARY}
+   )
++  list(APPEND LIB
++    "-framework Foundation"
++  )
+   add_definitions(-DWITH_METAL)
+   list(APPEND SRC
+     ${SRC_METAL}
