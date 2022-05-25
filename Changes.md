@@ -9,6 +9,7 @@
 - LibPNG : Updated to 1.6.37.
 - OpenSSL : Updated to 1.1.1i.
 - Qt : Updated to 5.15.4.
+- PySide : Updated to 5.15.4.
 
 5.0.0a4 (relative to 5.0.0a3)
 -------
