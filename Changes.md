@@ -7,6 +7,7 @@
 - HDF5 : Updated to 1.12.0.
 - LibFFI : Updated to 3.4.2.
 - LibPNG : Updated to 1.6.37.
+- OpenSSL : Updated to 1.1.1i.
 
 5.0.0a4 (relative to 5.0.0a3)
 -------
