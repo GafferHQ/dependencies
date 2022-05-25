@@ -30,3 +30,24 @@
              return true;
          }
          catch (const std::exception& e)     // namespace qualification required
+
+--- a/src/appleseed/renderer/modeling/project/projectfilewriter.cpp	2019-08-31 08:49:01.000000000 -0700
++++ b/src/appleseed/renderer/modeling/project/projectfilewriter.cpp	2022-05-01 09:47:34.000000000 -0700
+@@ -125,7 +125,7 @@
+             const char*         filepath,
+             FILE*               file,
+             const int           options)
+-          : m_project_new_root_dir(filesystem::path(filepath).parent_path())
++          : m_project_new_root_dir(bf::path(filepath).parent_path())
+           , m_file(file)
+           , m_options(options)
+           , m_indenter(4)
+@@ -152,7 +152,7 @@
+         }
+ 
+       private:
+-        const filesystem::path  m_project_new_root_dir;
++        const bf::path  m_project_new_root_dir;
+         FILE*                   m_file;
+         const int               m_options;
+         Indenter                m_indenter;
