@@ -122,12 +122,12 @@
 	- Added `usdGenSchema`.
 	- Disabled Embree Hydra delegate, since it is incompatible with Embree 4.
 
-7.x.x (relative to 7.0.0)
+8.x.x (relative to 8.0.0)
 -----
 
 - MaterialX : Fixed linking on MacOS.
 
-7.0.0 (relative to 6.0.0)
+8.0.0 (relative to 7.0.0)
 -----
 
 - Appleseed : Removed.
@@ -146,13 +146,13 @@
 - PyBind11 : Updated to version 2.10.4.
 - PySide : Updated to version 5.15.8.
 - Qt : Updated to version 5.15.8.
-- Subprocess32 : Removed.
 - Six : Removed.
+- Subprocess32 : Removed.
 - USD : Updated to version 23.05.
 - Xerces : Removed.
 - ZLib : Added version 1.2.13.
 
-6.0.0 (relative to 5.1.0)
+7.0.0 (relative to 6.2.0)
 -----
 
 - Cortex : Updated to version 10.4.5.0.
@@ -176,8 +176,9 @@
 
 - Cortex : Updated to 10.4.1.0.
 - Qt : Reintroduced QtUiTools module (missing in 5.0.0).
+- Cycles : Added headers for Windows build.
 
-5.0.0 (relative to 4.0.0)
+6.0.0 (relative to 5.0.0)
 -----
 
 - C++ : Updated to c++17.
@@ -203,6 +204,12 @@
 - Subprocess32 : Changed to regular install rather than `.egg`.
 - TBB : Updated to version 2020.3.
 - USD : Updated to version 21.11.
+- Update compiler to Visual Studio 2019.
+
+5.0.0
+-----
+
+- Boost : Remove version and build configuration suffixes from libraries and header directories.
 
 4.0.0
 -----
