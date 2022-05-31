@@ -97,6 +97,7 @@
 
 - Cortex : Updated to 10.4.1.0.
 - Qt : Reintroduced QtUiTools module (missing in 5.0.0).
+- Cycles : Added headers for Windows build.
 
 5.0.0 (relative to 4.0.0)
 -----
@@ -124,6 +125,8 @@
 - Subprocess32 : Changed to regular install rather than `.egg`.
 - TBB : Updated to version 2020.3.
 - USD : Updated to version 21.11.
+- Update compiler to Visual Studio 2019.
+- Boost : Remove version and build configuration suffixes from libraries and header directories.
 
 4.0.0
 -----
