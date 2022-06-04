@@ -25,7 +25,7 @@
 
 	"commands" : [
 
-		"scons install installDoc"
+		"scons install"
 			" -j {jobs}"
 			" CXX=`which g++`"
 			# \todo We should be using `c++Standard` here, but Cortex is
@@ -78,7 +78,6 @@
 		"glsl/IECoreGL",
 		"glsl/*.frag",
 		"glsl/*.vert",
-		"doc/cortex/html",
 
 	],
 
