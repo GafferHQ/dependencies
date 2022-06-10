@@ -1,3 +1,8 @@
+5.x.x (relative to 5.0.0a4)
+-----
+
+- OpenVDB : Updated to version 9.1.0, and added `nanovdb`.
+
 5.0.0a4 (relative to 5.0.0a3)
 -------
 
