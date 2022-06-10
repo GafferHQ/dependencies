@@ -1,0 +1,20 @@
+--- a/src/util/path.cpp
++++ b/src/util/path.cpp
+@@ -341,8 +341,15 @@ string path_get(const string &sub)
+   if (special != NULL)
+     return special;
+ 
+-  if (cached_path == "")
+-    cached_path = path_dirname(Sysutil::this_program_path());
++  if (cached_path == "") {
++    string path = path_dirname(Sysutil::this_program_path());
++    vector<string> tokens;
++    string_split(tokens, path, "/");
++    if (tokens.back() == "bin")
++      cached_path = Filesystem::parent_path(path);
++    else
++      cached_path = path;
++  }
+ 
+   return path_join(cached_path, sub);
+ }
