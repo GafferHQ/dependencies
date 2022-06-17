@@ -1,5 +1,5 @@
-5.x.x (relative to 5.0.0a4)
------
+5.0.0a5 (relative to 5.0.0a4)
+-------
 
 - Blosc : Updated to 1.21.1.
 - OpenVDB : Updated to version 9.1.0, and added `nanovdb`.
