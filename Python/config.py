@@ -99,7 +99,16 @@
 
 	},
 
-	"platform:osx" : {
+	"platform:macos" : {
+
+		# Python 3.7 doesn't compile for M1, so we use 3.8 on Mac until
+		# we upgrade all platforms to a mutually compatible version. We
+		# don't support the Python 2 variant at all on Mac.
+		"downloads" : [
+
+			"https://www.python.org/ftp/python/3.8.13/Python-3.8.13.tar.xz",
+
+		],
 
 		"variables" : {
 
@@ -107,7 +116,19 @@
 
 		},
 
+		"environment" : {
+
+			"MACOSX_DEPLOYMENT_TARGET" : "11.0",
+
+		},
+
 		"publicVariables" : {
+
+			# See `downloads`.
+			"pythonVersion" : "3.8",
+			"pythonABIVersion" : "3.8m",
+			"pythonMajorVersion" : "3",
+			"pythonMinorVersion" : "8",
 
 			"pythonIncludeDir" : "{buildDir}/lib/Python.framework/Headers",
 			"pythonLibDir" : "{buildDir}/lib/Python.framework/Versions/{pythonVersion}/lib",

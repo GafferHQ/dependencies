@@ -49,7 +49,7 @@
 			" -D USE_EXTERNAL_XERCES=ON"
 			" -D USE_EXTERNAL_OSL=ON"
 			" -D USE_EXTERNAL_OIIO=ON"
-			" -D USE_SSE=ON"
+			" {sseArguments}"
 			" -D WARNINGS_AS_ERRORS=OFF"
 			" -D CMAKE_PREFIX_PATH={buildDir}"
 			" -D CMAKE_INSTALL_PREFIX={buildDir}/appleseed"
@@ -105,5 +105,25 @@
 		"appleseed/shaders",
 
 	],
+
+	"platform:linux" : {
+
+		"variables" : {
+
+			"sseArguments" : "-D USE_SSE=ON",
+
+		},
+
+	},
+
+	"platform:macos" : {
+
+		"variables" : {
+
+			"sseArguments" : "-D USE_SSE=OFF",
+
+		},
+
+	},
 
 }

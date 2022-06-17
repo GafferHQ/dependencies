@@ -10,7 +10,7 @@
 
 	"license" : "LICENSE.md",
 
-	"dependencies" : [ "OpenImageIO", "LLVM", "PugiXML" ],
+	"dependencies" : [ "OpenImageIO", "LLVM", "PugiXML", "Python" ],
 
 	"environment" : {
 
@@ -18,6 +18,7 @@
 		# needs to link to the OIIO libraries.
 		"DYLD_FALLBACK_LIBRARY_PATH" : "{buildDir}/lib",
 		"LD_LIBRARY_PATH" : "{buildDir}/lib",
+		"PATH" : "{buildDir}/bin:$PATH",
 
 	},
 

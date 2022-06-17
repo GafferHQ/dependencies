@@ -21,6 +21,7 @@
 			" -DGCC_INSTALL_PREFIX={compilerRoot}"
 			" -DCMAKE_BUILD_TYPE=Release"
 			" -DLLVM_ENABLE_RTTI=ON"
+			" -DLLVM_ENABLE_LIBXML2=OFF"
 			" ..",
 		"cd build && make install -j {jobs}"
 

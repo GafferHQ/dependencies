@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://www.openssl.org/source/openssl-1.1.1h.tar.gz",
+		"https://www.openssl.org/source/openssl-1.1.1i.tar.gz",
 
 	],
 
@@ -25,7 +25,7 @@
 
 	],
 
-	"platform:osx" : {
+	"platform:macos" : {
 
 		"environment" : {
 

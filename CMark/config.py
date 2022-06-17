@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/github/cmark/archive/0.28.3.gfm.12.tar.gz",
+		"https://github.com/github/cmark-gfm/archive/refs/tags/0.29.0.gfm.2.tar.gz",
 
 	],
 

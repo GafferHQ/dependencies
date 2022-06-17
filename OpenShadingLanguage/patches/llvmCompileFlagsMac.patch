@@ -1,6 +1,6 @@
 --- a/src/liboslexec/CMakeLists.txt
 +++ b/src/liboslexec/CMakeLists.txt
-@@ -88,15 +88,11 @@
+@@ -88,15 +88,12 @@
      # LLVM/libc++ installed -- for some reason, LLVM 3.4 wasn't finding it,
      # so in that specific case, append another -I to point it in the right
      # direction.
@@ -14,8 +14,9 @@
 -    #    endif ()
 -    #endif ()
 +    if (APPLE)
-+      if ((EXISTS "/Library/Developer/CommandLineTools/usr/include/c++/v1"))
-+        set (LLVM_COMPILE_FLAGS ${LLVM_COMPILE_FLAGS} "-I/Library/Developer/CommandLineTools/usr/include/c++/v1")
++      if ((EXISTS "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include"))
++        set (LLVM_COMPILE_FLAGS ${LLVM_COMPILE_FLAGS} "-I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1")
++        set (LLVM_COMPILE_FLAGS ${LLVM_COMPILE_FLAGS} "-I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include")
 +      endif ()
 +    endif ()
 

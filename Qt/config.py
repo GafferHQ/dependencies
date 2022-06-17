@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://download.qt.io/official_releases/qt/5.15/5.15.3/single/qt-everywhere-opensource-src-5.15.3.tar.xz"
+		"https://download.qt.io/official_releases/qt/5.15/5.15.4/single/qt-everywhere-opensource-src-5.15.4.tar.xz"
 
 	],
 
@@ -31,6 +31,7 @@
 			" -skip qtwebengine"
 			" -skip qt3d"
 			" -skip qtdeclarative"
+			" -skip qttools"
 			" -skip qtwebchannel"
 			" -no-libudev"
 			" -no-icu"
@@ -80,11 +81,11 @@
 
 	},
 
-	"platform:osx" : {
+	"platform:macos" : {
 
 		"variables" : {
 
-			"extraArgs" : "-no-freetype",
+			"extraArgs" : "-no-freetype QMAKE_APPLE_DEVICE_ARCHS=arm64",
 
 		},
 

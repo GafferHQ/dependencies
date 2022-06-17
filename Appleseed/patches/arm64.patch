@@ -1,0 +1,33 @@
+--- a/src/appleseed/foundation/platform/system.cpp	2021-12-04 10:55:14.000000000 -0800
++++ b/src/appleseed/foundation/platform/system.cpp	2021-12-04 10:53:42.000000000 -0800
+@@ -70,7 +70,12 @@
+     #include <sys/param.h>
+     #include <sys/sysctl.h>
+     #include <sys/types.h>
++    
++    #ifdef APPLESEED_X86
++
+     #include <cpuid.h>
++    
++    #endif
+ 
+ // Linux.
+ #elif defined __linux__
+@@ -269,6 +274,8 @@
+ 
+ namespace
+ {
++    #ifdef APPLESEED_X86
++
+     // EAX is set to the value of `index`. Results are returned in `cpuinfo`:
+     //   cpuinfo[0] == EAX
+     //   cpuinfo[1] == EBX
+@@ -292,6 +299,8 @@
+         return (static_cast<uint64>(edx) << 32) | eax;
+     }
+ 
++    #endif
++
+     size_t get_system_value(const char* name)
+     {
+         size_t value = 0;

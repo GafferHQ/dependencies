@@ -1,7 +1,17 @@
 5.x.x (relative to 5.0.0a4)
 -----
 
+- Blosc : Updated to 1.21.1.
 - OpenVDB : Updated to version 9.1.0, and added `nanovdb`.
+- CMark : Updated to 0.29.0.
+- HDF5 : Updated to 1.12.0.
+- LibFFI : Updated to 3.4.2.
+- LibPNG : Updated to 1.6.37.
+- OpenSSL : Updated to 1.1.1i.
+- Qt : Updated to 5.15.4.
+- PySide : Updated to 5.15.4.
+- Python : Updated to 3.8.13 (MacOS only).
+- Cortex : Updated to 10.4.0.0a6.
 
 5.0.0a4 (relative to 5.0.0a3)
 -------
