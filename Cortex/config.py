@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/ImageEngine/cortex/archive/refs/tags/10.4.0.0a4.tar.gz"
+		"https://github.com/ImageEngine/cortex/archive/refs/tags/10.4.0.0a6.tar.gz"
 
 	],
 
@@ -28,9 +28,7 @@
 		"scons install"
 			" -j {jobs}"
 			" CXX=`which g++`"
-			# \todo We should be using `c++Standard` here, but Cortex is
-			# still using `std::random_shuffle` which is deprecated in C++17.
-			" CXXSTD=c++14"
+			" CXXSTD=c++{c++Standard}"
 			" INSTALL_PREFIX={buildDir}"
 			" INSTALL_DOC_DIR={buildDir}/doc/cortex"
 			" INSTALL_RMANPROCEDURAL_NAME={buildDir}/renderMan/procedurals/iePython"
