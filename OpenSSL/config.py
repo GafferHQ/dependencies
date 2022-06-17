@@ -25,7 +25,7 @@
 
 	],
 
-	"platform:osx" : {
+	"platform:macos" : {
 
 		"environment" : {
 

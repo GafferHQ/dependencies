@@ -81,7 +81,7 @@
 
 	},
 
-	"platform:osx" : {
+	"platform:macos" : {
 
 		"variables" : {
 

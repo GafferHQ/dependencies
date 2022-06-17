@@ -99,7 +99,7 @@
 
 	},
 
-	"platform:osx" : {
+	"platform:macos" : {
 
 		# Python 3.7 doesn't compile for M1, so we use 3.8 on Mac until
 		# we upgrade all platforms to a mutually compatible version. We

@@ -62,7 +62,7 @@ addition to the standard global variables :
 ### Platform overrides
 
 Configs may specify platform-specific overrides in a dictionary named
-"platform:osx" or "platform:linux". Where a config setting is a dictionary,
+"platform:macos" or "platform:linux". Where a config setting is a dictionary,
 overrides are merged in via `dict.update()`, otherwise they completely
 replace the original value.
 
@@ -207,7 +207,7 @@ def __loadConfigs( variables, variants ) :
 			__applyConfigOverrides( config, "variant:{}".format( variants[project] ) )
 		for variantProject, variant in variants.items() :
 			__applyConfigOverrides( config, "variant:{}:{}".format( variantProject, variant ) )
-		__applyConfigOverrides( config, "platform:osx" if sys.platform == "darwin" else "platform:linux" )
+		__applyConfigOverrides( config, "platform:macos" if sys.platform == "darwin" else "platform:linux" )
 		if config.get( "enabled", True ) :
 			configs[project] = config
 
@@ -467,7 +467,7 @@ variables = {
 	"jobs" : args.jobs,
 	"path" : os.environ["PATH"],
 	"version" : __version,
-	"platform" : "osx" if sys.platform == "darwin" else "linux",
+	"platform" : "macos" if sys.platform == "darwin" else "linux",
 	"sharedLibraryExtension" : ".dylib" if sys.platform == "darwin" else ".so",
 	"c++Standard" : "17",
 	"compilerRoot" : __compilerRoot(),
