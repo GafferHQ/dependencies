@@ -1,56 +1,29 @@
-5.0.0a5 (relative to 5.0.0a4)
--------
+5.0.0 (relative to 4.0.0)
+-----
 
+- C++ : Updated to c++17.
+- Alembic : Updated to version 1.8.3.
 - Blosc : Updated to 1.21.1.
-- OpenVDB : Updated to version 9.1.0, and added `nanovdb`.
+- Boost : Updated to version 1.76.0.
+- Cycles : Added version 3.1.1.
+- Cortex : Updated to 10.4.0.0.
 - CMark : Updated to 0.29.0.
 - HDF5 : Updated to 1.12.0.
 - LibFFI : Updated to 3.4.2.
 - LibPNG : Updated to 1.6.37.
+- LLVM : Upated to version 11.1.0.
+- OpenColorIO : Updated to version 2.1.1.
+- OpenImageIO : Updated to version 2.3.11.0.
+- OpenJPEG : Added version 2.4.0.
+- OpenShadingLanguage : Updated to version 1.11.17.0.
 - OpenSSL : Updated to 1.1.1i.
-- Qt : Updated to 5.15.4.
+- OpenVDB : Updated to version 9.1.0, and added `nanovdb`.
 - PySide : Updated to 5.15.4.
 - Python : Updated to 3.8.13 (MacOS only).
-- Cortex : Updated to 10.4.0.0a6.
-
-5.0.0a4 (relative to 5.0.0a3)
--------
-
-- Cycles : Added version 3.1.1.
-- OpenJPEG : Added version 2.4.0.
-- LLVM : Upated to version 11.1.0.
-- Qt : Updated to version 5.15.3.
-- Cortex : Updated to version 10.4.0.0a4.
+- Qt : Updated to 5.15.4.
 - Subprocess32 : Changed to regular install rather than `.egg`.
-
-5.0.0a3 (relative to 5.0.0a2)
--------
-
-- Cortex
-	- Updated to "version" 4a44b88.
-	- Fixed MacOS build.
-
-5.0.0a2 (relative to 5.0.0a1)
--------
-
-- Appleseed : Fixed MacOS build.
-- Cortex : Fixed IECoreUSD build.
-- OpenColorIO : Fixed MacOS build and Linux Python 3 build.
-- OpenEXR : Fixed MacOS build.
-- OpenVDB : Fixed MacOS build.
-
-5.0.0a1 (relative to 4.0.0)
--------
-
-- C++ : Updated to c++17.
-- Boost : Updated to version 1.76.0.
-- Alembic : Updated to version 1.8.3.
 - TBB : Updated to version 2020.3.
 - USD : Updated to version 21.11.
-- OpenImageIO : Updated to version 2.3.11.0.
-- OpenShadingLanguage : Updated to version 1.11.17.0.
-- OpenVDB : Updated to version 9.0.0.
-- OpenColorIO : Updated to version 2.1.1.
 
 4.0.0
 -----
