@@ -2,6 +2,7 @@
 -----
 
 - Cortex : Updated to 10.4.1.0.
+- Qt : Reintroduced QtUiTools module (missing in 5.0.0).
 
 5.0.0 (relative to 4.0.0)
 -----
