@@ -1,4 +1,4 @@
-5.x.x (relative to 5.0.0)
+5.1.0 (relative to 5.0.0)
 -----
 
 - Cortex : Updated to 10.4.1.0.
