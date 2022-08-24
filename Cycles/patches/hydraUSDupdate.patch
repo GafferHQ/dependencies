@@ -1,0 +1,15 @@
+--- a/src/hydra/material.cpp
++++ b/src/hydra/material.cpp
+@@ -234,8 +234,12 @@ void HdCyclesMaterial::Sync(HdSceneDelegate *sceneDelegate,
+         _shader->tag_modified();
+       }
+       else {
++#if PXR_VERSION >= 2205
++        *networkConverted = HdConvertToHdMaterialNetwork2(networkOld);
++#else
+         networkConverted = std::make_unique<HdMaterialNetwork2>();
+         HdMaterialNetwork2ConvertFromHdMaterialNetworkMap(networkOld, networkConverted.get());
++#endif
+         network = networkConverted.get();
+       }
+     }
