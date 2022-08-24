@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://download.qt.io/official_releases/qt/5.15/5.15.4/single/qt-everywhere-opensource-src-5.15.4.tar.xz"
+		"https://download.qt.io/official_releases/qt/5.15/5.15.5/single/qt-everywhere-opensource-src-5.15.5.tar.xz"
 
 	],
 
