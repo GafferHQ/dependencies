@@ -1,3 +1,8 @@
+5.x.x (relative to 5.1.0)
+-----
+
+- USD : Enabled the OpenImageIO plugin. Among other things, this allows OpenEXR textures to be shown in `usdview`.
+
 5.1.0 (relative to 5.0.0)
 -----
 
