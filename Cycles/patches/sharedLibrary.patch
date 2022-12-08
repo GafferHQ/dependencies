@@ -1,0 +1,302 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 70c9955e..1b5150a1 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -159,6 +159,9 @@ option(WITH_CYCLES_HYDRA_RENDER_DELEGATE "Build Cycles Hydra render delegate" ON
+ # Error Checking
+ option(WITH_STRICT_BUILD_OPTIONS "When requirements for a build option are not met, error instead of disabling the option" OFF)
+ 
++# Cycles Shared Library
++option(WITH_CYCLES_SHARED_LIBRARY "Build the Cycles library as a shared library. App and the Hydra delegate will link to this instead of static-linking." OFF)
++
+ ###########################################################################
+ # Configuration.
+ 
+diff --git a/src/app/CMakeLists.txt b/src/app/CMakeLists.txt
+index fb69328c..835372ec 100644
+--- a/src/app/CMakeLists.txt
++++ b/src/app/CMakeLists.txt
+@@ -12,6 +12,9 @@ set(INC_SYS
+ )
+ 
+ set(LIB
++)
++
++set(CYCLES_LIB
+   cycles_device
+   cycles_kernel
+   cycles_scene
+@@ -20,8 +23,11 @@ set(LIB
+   cycles_subd
+   cycles_graph
+   cycles_util
++  cycles_integrator
+ )
+ 
++set(USD_LIB)
++
+ if(WITH_ALEMBIC)
+   add_definitions(-DWITH_ALEMBIC)
+   list(APPEND INC_SYS
+@@ -33,7 +39,7 @@ if(WITH_ALEMBIC)
+ endif()
+ 
+ if(WITH_CYCLES_OSL)
+-  list(APPEND LIB cycles_kernel_osl)
++  list(APPEND CYCLES_LIB cycles_kernel_osl)
+ endif()
+ 
+ if(CYCLES_STANDALONE_REPOSITORY)
+@@ -54,7 +60,7 @@ if(WITH_USD)
+   list(APPEND INC_SYS
+     ${USD_INCLUDE_DIRS}
+   )
+-  list(APPEND LIB
++  list(APPEND USD_LIB
+     cycles_hydra
+     ${USD_LIBRARIES}
+   )
+@@ -92,7 +98,19 @@ if(WITH_CYCLES_STANDALONE)
+   add_executable(cycles ${SRC} ${INC} ${INC_SYS})
+   unset(SRC)
+ 
+-  target_link_libraries(cycles PRIVATE ${LIB})
++  if(WITH_CYCLES_SHARED_LIBRARY)
++    set(OBJECT_LIB)
++    foreach(_LIB ${CYCLES_LIB})
++      list(APPEND OBJECT_LIB "$<TARGET_OBJECTS:${_LIB}>" )
++    endforeach()
++    add_library(cycles_library SHARED ${OBJECT_LIB})
++    set_target_properties(cycles_library PROPERTIES OUTPUT_NAME "cycles")
++    set_target_properties(cycles_library PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS true)
++    target_link_libraries(cycles_library PRIVATE ${LIB})
++    target_link_libraries(cycles PUBLIC cycles_library ${USD_LIB})
++  else()
++    target_link_libraries(cycles PRIVATE ${CYCLES_LIB} ${LIB} ${USD_LIB})
++  endif()
+ 
+   if(APPLE)
+     if(WITH_CYCLES_STANDALONE_GUI)
+@@ -103,6 +121,9 @@ if(WITH_CYCLES_STANDALONE)
+ 
+   if(UNIX AND NOT APPLE)
+     set_target_properties(cycles PROPERTIES INSTALL_RPATH $ORIGIN/lib)
++    if(WITH_CYCLES_SHARED_LIBRARY)
++      set_target_properties(cycles_library PROPERTIES INSTALL_RPATH $ORIGIN/lib)
++    endif()
+   endif()
+ 
+   if(CYCLES_STANDALONE_REPOSITORY)
+@@ -124,4 +145,8 @@ if(WITH_CYCLES_STANDALONE)
+   install(PROGRAMS
+     $<TARGET_FILE:cycles>
+     DESTINATION ${CMAKE_INSTALL_PREFIX})
++
++  install(TARGETS
++    cycles_library
++    DESTINATION ${CMAKE_INSTALL_PREFIX})
+ endif()
+diff --git a/src/bvh/CMakeLists.txt b/src/bvh/CMakeLists.txt
+index 0c3499df..56b0cb45 100644
+--- a/src/bvh/CMakeLists.txt
++++ b/src/bvh/CMakeLists.txt
+@@ -63,4 +63,8 @@ if(WITH_CYCLES_EMBREE)
+   )
+ endif()
+ 
+-cycles_add_library(cycles_bvh "${LIB}" ${SRC} ${SRC_HEADERS})
++if(WITH_CYCLES_SHARED_LIBRARY)
++  cycles_add_library(cycles_bvh OBJECT ${SRC} ${SRC_HEADERS})
++else()
++  cycles_add_library(cycles_bvh "${LIB}" ${SRC} ${SRC_HEADERS})
++endif()
+diff --git a/src/device/CMakeLists.txt b/src/device/CMakeLists.txt
+index bfca3ab6..77ef65b6 100644
+--- a/src/device/CMakeLists.txt
++++ b/src/device/CMakeLists.txt
+@@ -221,7 +221,11 @@ endif()
+ include_directories(${INC})
+ include_directories(SYSTEM ${INC_SYS})
+ 
+-cycles_add_library(cycles_device "${LIB}" ${SRC})
++if(WITH_CYCLES_SHARED_LIBRARY)
++  cycles_add_library(cycles_device OBJECT ${SRC})
++else()
++  cycles_add_library(cycles_device "${LIB}" ${SRC})
++endif()
+ 
+ if(WITH_CYCLES_DEVICE_ONEAPI)
+   # Need to have proper rebuilding in case of changes
+diff --git a/src/graph/CMakeLists.txt b/src/graph/CMakeLists.txt
+index ca4f996e..e0f2cc00 100644
+--- a/src/graph/CMakeLists.txt
++++ b/src/graph/CMakeLists.txt
+@@ -25,4 +25,8 @@ set(LIB
+ include_directories(${INC})
+ include_directories(SYSTEM ${INC_SYS})
+ 
+-cycles_add_library(cycles_graph "${LIB}" ${SRC} ${SRC_HEADERS})
++if(WITH_CYCLES_SHARED_LIBRARY)
++  cycles_add_library(cycles_graph OBJECT ${SRC} ${SRC_HEADERS})
++else()
++  cycles_add_library(cycles_graph "${LIB}" ${SRC} ${SRC_HEADERS})
++endif()
+diff --git a/src/hydra/CMakeLists.txt b/src/hydra/CMakeLists.txt
+index 41741c9e..9405911d 100644
+--- a/src/hydra/CMakeLists.txt
++++ b/src/hydra/CMakeLists.txt
+@@ -13,10 +13,13 @@ set(INC_SYS
+   ${Epoxy_INCLUDE_DIRS}
+ )
+ 
+-set(LIB
++set(CYCLES_LIB
+   cycles_scene
+   cycles_session
+   cycles_graph
++)
++
++set(LIB
+   ${Epoxy_LIBRARIES}
+ )
+ cycles_external_libraries_append(LIB)
+@@ -100,12 +103,23 @@ target_compile_definitions(cycles_hydra
+   $<$<CXX_COMPILER_ID:MSVC>:NOMINMAX=1>
+ )
+ 
+-target_link_libraries(cycles_hydra
+-  PUBLIC
+-  ${USD_LIBRARIES}
+-  PRIVATE
+-  ${LIB}
+-)
++if(WITH_CYCLES_SHARED_LIBRARY)
++  target_link_libraries(cycles_hydra
++    PUBLIC
++    ${USD_LIBRARIES}
++    cycles_library
++    PRIVATE
++    ${LIB}
++  )
++else()
++  target_link_libraries(cycles_hydra
++    PUBLIC
++    ${USD_LIBRARIES}
++    PRIVATE
++    ${CYCLES_LIB}
++    ${LIB}
++  )
++endif()
+ 
+ if(WITH_CYCLES_HYDRA_RENDER_DELEGATE)
+   set(HdCyclesPluginName hdCycles)
+diff --git a/src/integrator/CMakeLists.txt b/src/integrator/CMakeLists.txt
+index ef2a0785..d49c800b 100644
+--- a/src/integrator/CMakeLists.txt
++++ b/src/integrator/CMakeLists.txt
+@@ -74,4 +74,8 @@ endif()
+ include_directories(${INC})
+ include_directories(SYSTEM ${INC_SYS})
+ 
++if(WITH_CYCLES_SHARED_LIBRARY)
++  cycles_add_library(cycles_integrator OBJECT ${SRC} ${SRC_HEADERS})
++else()
+ cycles_add_library(cycles_integrator "${LIB}" ${SRC} ${SRC_HEADERS})
++endif()
+diff --git a/src/kernel/CMakeLists.txt b/src/kernel/CMakeLists.txt
+index 39edb561..9ac33252 100644
+--- a/src/kernel/CMakeLists.txt
++++ b/src/kernel/CMakeLists.txt
+@@ -915,7 +915,7 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_C_COMPILER_ID MATCHES "Clang")
+   unset(_has_cxxflag_double_promotion)
+ endif()
+ 
+-cycles_add_library(cycles_kernel "${LIB}"
++set(SRC_KERNELS
+   ${SRC_KERNEL_DEVICE_CPU}
+   ${SRC_KERNEL_DEVICE_CUDA}
+   ${SRC_KERNEL_DEVICE_HIP}
+@@ -931,6 +931,12 @@ cycles_add_library(cycles_kernel "${LIB}"
+   ${SRC_KERNEL_DEVICE_ONEAPI_HEADERS}
+ )
+ 
++if(WITH_CYCLES_SHARED_LIBRARY)
++  cycles_add_library(cycles_kernel OBJECT ${SRC_KERNELS})
++else()
++  cycles_add_library(cycles_kernel "${LIB}" ${SRC_KERNELS})
++endif()
++
+ source_group("bake" FILES ${SRC_KERNEL_BAKE_HEADERS})
+ source_group("bvh" FILES ${SRC_KERNEL_BVH_HEADERS})
+ source_group("camera" FILES ${SRC_KERNEL_CAMERA_HEADERS})
+diff --git a/src/kernel/osl/CMakeLists.txt b/src/kernel/osl/CMakeLists.txt
+index 5075e4e1..d5f2385b 100644
+--- a/src/kernel/osl/CMakeLists.txt
++++ b/src/kernel/osl/CMakeLists.txt
+@@ -49,4 +49,8 @@ endif()
+ include_directories(${INC})
+ include_directories(SYSTEM ${INC_SYS})
+ 
+-cycles_add_library(cycles_kernel_osl "${LIB}" ${SRC} ${HEADER_SRC})
++if(WITH_CYCLES_SHARED_LIBRARY)
++  cycles_add_library(cycles_kernel_osl OBJECT ${SRC} ${HEADER_SRC})
++else()
++  cycles_add_library(cycles_kernel_osl "${LIB}" ${SRC} ${HEADER_SRC})
++endif()
+diff --git a/src/scene/CMakeLists.txt b/src/scene/CMakeLists.txt
+index ad45b9ed..d6331a33 100644
+--- a/src/scene/CMakeLists.txt
++++ b/src/scene/CMakeLists.txt
+@@ -146,4 +146,8 @@ endif()
+ include_directories(${INC})
+ include_directories(SYSTEM ${INC_SYS})
+ 
+-cycles_add_library(cycles_scene "${LIB}" ${SRC} ${SRC_HEADERS})
++if(WITH_CYCLES_SHARED_LIBRARY)
++  cycles_add_library(cycles_scene OBJECT ${SRC} ${SRC_HEADERS})
++else()
++  cycles_add_library(cycles_scene "${LIB}" ${SRC} ${SRC_HEADERS})
++endif()
+diff --git a/src/session/CMakeLists.txt b/src/session/CMakeLists.txt
+index 4f3a0a99..b872c906 100644
+--- a/src/session/CMakeLists.txt
++++ b/src/session/CMakeLists.txt
+@@ -32,4 +32,8 @@ set(LIB
+ include_directories(${INC})
+ include_directories(SYSTEM ${INC_SYS})
+ 
+-cycles_add_library(cycles_session "${LIB}" ${SRC} ${SRC_HEADERS})
++if(WITH_CYCLES_SHARED_LIBRARY)
++  cycles_add_library(cycles_session OBJECT ${SRC} ${SRC_HEADERS})
++else()
++  cycles_add_library(cycles_session "${LIB}" ${SRC} ${SRC_HEADERS})
++endif()
+diff --git a/src/subd/CMakeLists.txt b/src/subd/CMakeLists.txt
+index c7674adb..0dda93ca 100644
+--- a/src/subd/CMakeLists.txt
++++ b/src/subd/CMakeLists.txt
+@@ -31,4 +31,8 @@ set(LIB
+ include_directories(${INC})
+ include_directories(SYSTEM ${INC_SYS})
+ 
+-cycles_add_library(cycles_subd "${LIB}" ${SRC} ${SRC_HEADERS})
++if(WITH_CYCLES_SHARED_LIBRARY)
++  cycles_add_library(cycles_subd OBJECT ${SRC} ${SRC_HEADERS})
++else()
++  cycles_add_library(cycles_subd "${LIB}" ${SRC} ${SRC_HEADERS})
++endif()
+diff --git a/src/util/CMakeLists.txt b/src/util/CMakeLists.txt
+index 57628f99..159f9ed0 100644
+--- a/src/util/CMakeLists.txt
++++ b/src/util/CMakeLists.txt
+@@ -149,4 +149,8 @@ endif()
+ include_directories(${INC})
+ include_directories(SYSTEM ${INC_SYS})
+ 
+-cycles_add_library(cycles_util "${LIB}" ${SRC} ${SRC_HEADERS})
++if(WITH_CYCLES_SHARED_LIBRARY)
++  cycles_add_library(cycles_util OBJECT ${SRC} ${SRC_HEADERS})
++else()
++  cycles_add_library(cycles_util "${LIB}" ${SRC} ${SRC_HEADERS})
++endif()
+

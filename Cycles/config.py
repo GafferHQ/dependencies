@@ -25,6 +25,7 @@
 			" -D WITH_CYCLES_DEVICE_OPTIX=OFF"
 			" -D CMAKE_POSITION_INDEPENDENT_CODE=ON"
 			" -D PXR_ROOT={buildDir}"
+			" -D WITH_CYCLES_SHARED_LIBRARY=ON"
 			" ..",
 		"cd build && make install -j {jobs} VERBOSE=1",
 
@@ -32,8 +33,7 @@
 		"cd src && find . -name '*.h' | cpio -pdm {buildDir}/cycles/include",
 		"cp -r third_party/atomic/* {buildDir}/cycles/include",
 		"mkdir -p {buildDir}/cycles/bin",
-		"mv {buildDir}/cycles/cycles {buildDir}/cycles/bin/cycles",
-		"cp -r build/lib {buildDir}/cycles",
+		"mv {buildDir}/cycles/*cycles* {buildDir}/cycles/bin/",
 
 	],
 
