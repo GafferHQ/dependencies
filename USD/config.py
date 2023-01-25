@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/PixarAnimationStudios/USD/archive/refs/tags/v21.11.tar.gz"
+		"https://github.com/PixarAnimationStudios/USD/archive/refs/tags/v23.02.tar.gz"
 
 	],
 
@@ -40,6 +40,8 @@
 			" -D PXR_BUILD_EMBREE_PLUGIN=TRUE"
 			" -D PXR_ENABLE_HDF5_SUPPORT=FALSE"
 			" -D PXR_PYTHON_SHEBANG='/usr/bin/env python'"
+			" -D Python3_ROOT_DIR={buildDir}"
+			" -D Python3_FIND_STRATEGY=LOCATION"
 			" -D ALEMBIC_DIR={buildDir}/lib"
 			" -D OPENEXR_LOCATION={buildDir}/lib"
 			# Needed to prevent CMake picking up system python libraries on Mac.
