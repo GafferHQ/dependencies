@@ -1,7 +1,8 @@
 x.x.x (relative to 5.x.x)
 -----
 
-USD : Updated to version 23.02.
+- USD : Updated to version 23.02.
+- OpenColorIO : Updated to version 2.1.2.
 
 5.x.x (relative to 5.1.0)
 -----
