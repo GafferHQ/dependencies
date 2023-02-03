@@ -7,6 +7,7 @@ x.x.x (relative to 5.x.x)
 - OpenColorIO : Updated to version 2.1.2.
 - OpenImageIO : Updated to version 2.4.8.0.
 - OpenShadingLanguage : Updated to version 1.12.9.0.
+- OpenSubdiv : Updated to version 3.4.4.
 - Expat : Added version 2.5.0.
 - PyString : Added version 1.1.4.
 - YAML-CPP : Added version 0.7.0.
