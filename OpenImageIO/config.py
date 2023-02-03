@@ -35,7 +35,7 @@
 			" -D USE_EXTERNAL_PUGIXML=YES"
 			" -D OIIO_BUILD_TESTS=NO"
 			" -D OIIO_DOWNLOAD_MISSING_TESTDATA=NO"
-			" {pythonArguments}"
+			" -D PYTHON_VERSION={pythonMajorVersion}"
 			" -D Python_ROOT_DIR={buildDir}"
 			" -D Python_FIND_STRATEGY=LOCATION"
 			# These next two disable `iv`. This fails to
@@ -47,26 +47,6 @@
 		"cd gafferBuild && make install -j {jobs} VERBOSE=1",
 
 	],
-
-	"variant:Python:2" : {
-
-		"variables" : {
-
-			"pythonArguments" : "-D PYTHON_VERSION=2",
-
-		},
-
-	},
-
-	"variant:Python:3" : {
-
-			"variables" : {
-
-			"pythonArguments" : "-D PYTHON_VERSION=3",
-
-		},
-
-	},
 
 	"manifest" : [
 
