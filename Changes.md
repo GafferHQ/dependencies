@@ -3,6 +3,7 @@ x.x.x (relative to 5.x.x)
 
 - USD : Updated to version 23.02.
 - OpenColorIO : Updated to version 2.1.2.
+- OpenImageIO : Updated to version 2.4.8.0.
 - Expat : Added version 2.5.0.
 - PyString : Added version 1.1.4.
 - YAML-CPP : Added version 0.7.0.
