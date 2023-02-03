@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/AcademySoftwareFoundation/OpenColorIO/archive/refs/tags/v2.2.1.tar.gz",
+		"https://github.com/AcademySoftwareFoundation/OpenColorIO/archive/refs/tags/v2.1.2.tar.gz",
 		"https://github.com/imageworks/OpenColorIO-Configs/archive/v1.0_r2.tar.gz",
 
 	],
@@ -11,7 +11,7 @@
 
 	"license" : "LICENSE",
 
-	"dependencies" : [ "Python", "PyBind11" ],
+	"dependencies" : [ "Python", "PyBind11", "OpenEXR", "Expat", "YAML-CPP", "PyString" ],
 
 	"environment" : {
 
@@ -26,10 +26,13 @@
 		"cd build && cmake"
 			" -D CMAKE_CXX_STANDARD={c++Standard}"
 		 	" -D CMAKE_INSTALL_PREFIX={buildDir}"
+			" -D CMAKE_INSTALL_LIBDIR={buildDir}/lib"
 			" -D CMAKE_PREFIX_PATH={buildDir}"
 			" -D Python_ROOT_DIR={buildDir}"
 			" -D Python_FIND_STRATEGY=LOCATION"
+			" -D pystring_INCLUDE_DIR={buildDir}/include"
 			" -D BUILD_SHARED_LIBS=ON"
+			" -D OCIO_INSTALL_EXT_PACKAGES=NONE"
 			" -D OCIO_BUILD_APPS=OFF"
 			" -D OCIO_BUILD_NUKE=OFF"
 			" -D OCIO_BUILD_TESTS=OFF"
@@ -43,8 +46,6 @@
 
 		"mkdir -p {buildDir}/python",
 		"mv {buildDir}/lib*/python*/site-packages/PyOpenColorIO* {buildDir}/python",
-
-		"{libCopyCommand}",
 
 		"mkdir -p {buildDir}/openColorIO",
 		"cp ../OpenColorIO-Configs-1.0_r2/nuke-default/config.ocio {buildDir}/openColorIO",
@@ -60,30 +61,5 @@
 		"python/PyOpenColorIO*",
 
 	],
-
-	"platform:linux" : {
-
-		"variables" : {
-
-			"libCopyCommand" :
-			# OpenColorIO's CMake setup uses GNUInstallDirs, which unhelpfully
-			# puts the libraries in `lib64`. Move them back. We'd like to do this
-			# in the build itself by passing `-D CMAKE_INSTALL_LIBDIR={buildDir}/lib`
-			# but that breaks OpenColorIO's internal libexpat setup.
-			"mv {buildDir}/lib*/libOpenColorIO* {buildDir}/lib"
-
-		}
-
-	},
-
-	"platform:macos" : {
-
-		"variables" : {
-
-			"libCopyCommand" : "",
-
-		}
-
-	},
 
 }
