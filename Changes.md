@@ -2,6 +2,7 @@ x.x.x (relative to 5.x.x)
 -----
 
 - Cycles : Updated to version 3.4.
+- Embree : Updated to version 3.13.4.
 - USD : Updated to version 23.02.
 - OpenColorIO : Updated to version 2.1.2.
 - OpenImageIO : Updated to version 2.4.8.0.
