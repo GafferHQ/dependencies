@@ -23,7 +23,17 @@
 
 	"commands" : [
 
-		"scons install"
+		# Build first.
+		"scons {args}",
+		# The install separately. This avoids a problem with parallel builds - see
+		# https://github.com/ImageEngine/cortex/issues/1308.
+		"scons install {args}",
+
+	],
+
+	"variables" : {
+
+		"args" :
 			" -j {jobs}"
 			" CXX=`which g++`"
 			" CXXSTD=c++{c++Standard}"
@@ -56,7 +66,9 @@
 			" {extraArgs}"
 			" SAVE_OPTIONS=gaffer.options",
 
-	],
+		"extraArgs" : "",
+
+	},
 
 	"manifest" : [
 
@@ -69,12 +81,6 @@
 		"glsl/*.vert",
 
 	],
-
-	"variables" : {
-
-		"extraArgs" : "",
-
-	},
 
 	"platform:macos" : {
 
