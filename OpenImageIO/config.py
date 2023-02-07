@@ -10,7 +10,7 @@
 
 	"license" : "LICENSE.md",
 
-	"dependencies" : [ "Boost", "Python", "PyBind11", "OpenEXR", "LibTIFF", "LibPNG", "OpenJPEG", "LibJPEG-Turbo", "OpenColorIO", "LibRaw", "PugiXML" ],
+	"dependencies" : [ "Boost", "Python", "PyBind11", "OpenEXR", "LibTIFF", "LibPNG", "OpenJPEG", "LibJPEG-Turbo", "OpenColorIO", "LibRaw", "PugiXML", "Fmt" ],
 
 	"environment" : {
 
@@ -33,6 +33,7 @@
 			" -D USE_WEBP=0"
 			" -D USE_PYTHON=YES"
 			" -D USE_EXTERNAL_PUGIXML=YES"
+			" -D BUILD_MISSING_FMT=NO"
 			" -D OIIO_BUILD_TESTS=NO"
 			" -D OIIO_DOWNLOAD_MISSING_TESTDATA=NO"
 			" -D PYTHON_VERSION={pythonMajorVersion}"

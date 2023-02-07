@@ -6,6 +6,7 @@ x.x.x (relative to 5.x.x)
 - Expat : Added version 2.5.0.
 - PyString : Added version 1.1.4.
 - YAML-CPP : Added version 0.7.0.
+- Fmt : Added version 9.1.0.
 
 5.x.x (relative to 5.1.0)
 -----
