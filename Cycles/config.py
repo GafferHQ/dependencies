@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/blender/cycles/archive/refs/tags/v3.2.0.tar.gz",
+		"https://github.com/blender/cycles/archive/refs/tags/v3.4.0.tar.gz",
 
 	],
 
@@ -10,7 +10,7 @@
 
 	"license" : "LICENSE",
 
-	"dependencies" : [ "Boost", "OpenJPEG", "OpenImageIO", "TBB", "Alembic", "Embree", "OpenColorIO", "OpenVDB", "OpenShadingLanguage", "USD" ],
+	"dependencies" : [ "Boost", "OpenJPEG", "OpenImageIO", "TBB", "Alembic", "Embree", "OpenColorIO", "OpenVDB", "OpenShadingLanguage" ],
 
 	"commands" : [
 
@@ -23,8 +23,8 @@
 			" -D WITH_CYCLES_OPENIMAGEDENOISE=OFF"
 			" -D WITH_CYCLES_DEVICE_CUDA=OFF"
 			" -D WITH_CYCLES_DEVICE_OPTIX=OFF"
+			" -D WITH_CYCLES_HYDRA_RENDER_DELEGATE=OFF"
 			" -D CMAKE_POSITION_INDEPENDENT_CODE=ON"
-			" -D PXR_ROOT={buildDir}"
 			" ..",
 		"cd build && make install -j {jobs} VERBOSE=1",
 
