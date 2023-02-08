@@ -1,6 +1,7 @@
 x.x.x (relative to 5.x.x)
 -----
 
+- Cortex : Updated to version 10.4.5.0.
 - Cycles : Updated to version 3.4.
 - Embree : Updated to version 3.13.4.
 - USD : Updated to version 23.02.
