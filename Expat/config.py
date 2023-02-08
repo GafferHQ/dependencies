@@ -30,7 +30,32 @@
 	"manifest" : [
 
 		"lib/libexpat*{sharedLibraryExtension}*",
+        "lib/libexpat*.lib",
+		"lib/libexpat*"
 
 	],
+
+	"platform:windows" : {
+
+		"commands" : [
+
+			"mkdir build",
+			"cd build &&"
+				" cmake"
+				" -G {cmakeGenerator}"
+				" -D CMAKE_INSTALL_PREFIX={buildDir}"
+				" -D CMAKE_INSTALL_LIBDIR={buildDir}/lib"
+				" -D CMAKE_BUILD_TYPE=Release"
+				" -D EXPAT_BUILD_TOOLS=OFF"
+				" -D EXPAT_BUILD_EXAMPLES=OFF"
+				" -D DEXPAT_BUILD_TESTS=OFF"
+				" -D DEXPAT_BUILD_DOCS=OFF"
+				" ../expat",
+			"cd build && cmake --build . --config {cmakeBuildType} --target install -- -j {jobs}",
+            "copy {buildDir}\\bin\\libexpat.dll {buildDir}\\lib\\",
+
+		],
+
+	},
 
 }
