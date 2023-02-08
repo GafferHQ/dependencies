@@ -26,8 +26,28 @@
 
 	"manifest" : [
 
-		"lib/libpystring*{sharedLibraryExtension}*",
+		"{sharedLibraryDir}/{libraryPrefix}pystring*{sharedLibraryExtension}*",
+		"lib/{libraryPrefix}pystring*.lib",
 
 	],
+
+	"platform:windows" : {
+		
+		"commands" : [
+
+			"mkdir build",
+			"cd build &&"
+				" cmake"
+				" -G {cmakeGenerator}"
+				" -D CMAKE_INSTALL_PREFIX={buildDir}"
+				" -D CMAKE_INSTALL_LIBDIR={buildDir}/lib"
+				" -D CMAKE_BUILD_TYPE={cmakeBuildType}"
+				" -D BUILD_SHARED_LIBS=ON"
+				" ..",
+			"cd build && cmake --build . --config {cmakeBuildType} --target install -- -j {jobs}",
+
+		],
+
+	},
 
 }
