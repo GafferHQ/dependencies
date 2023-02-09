@@ -61,6 +61,7 @@
 			" -D CMAKE_LIBRARY_PATH={pythonLibDir}"
 			" -D BOOST_ROOT={buildDir}"
 			" -D Boost_NO_SYSTEM_PATHS=ON"
+			" {extraArguments}"
 			" ..",
 
 		"cd build && make install -j {jobs} VERBOSE=1"
@@ -79,6 +80,12 @@
 
 	],
 
+	"variables" : {
+
+		"extraArguments" : "",
+
+	},
+
 	"platform:linux" : {
 
 		"variables" : {
@@ -94,6 +101,8 @@
 		"variables" : {
 
 			"sseArguments" : "-D USE_SSE=OFF",
+			# Stop Mac build finding system Python library
+			"extraArguments" : "-D PYTHON3_LIBRARY={pythonLibDir}/libpython{pythonMajorVersion}{sharedLibraryExtension}"
 
 		},
 
