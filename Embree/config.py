@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/embree/embree/archive/v3.13.3.tar.gz"
+		"https://github.com/embree/embree/archive/v3.13.4.tar.gz"
 
 	],
 

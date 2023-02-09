@@ -1,7 +1,18 @@
 x.x.x (relative to 5.x.x)
 -----
 
-USD : Updated to version 23.02.
+- Cortex : Updated to version 10.4.5.0.
+- Cycles : Updated to version 3.4.
+- Embree : Updated to version 3.13.4.
+- USD : Updated to version 23.02.
+- OpenColorIO : Updated to version 2.1.2.
+- OpenImageIO : Updated to version 2.4.8.0.
+- OpenShadingLanguage : Updated to version 1.12.9.0.
+- OpenSubdiv : Updated to version 3.4.4.
+- Expat : Added version 2.5.0.
+- PyString : Added version 1.1.4.
+- YAML-CPP : Added version 0.7.0.
+- Fmt : Added version 9.1.0.
 
 5.x.x (relative to 5.1.0)
 -----

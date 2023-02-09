@@ -16,6 +16,7 @@
 		"cd gafferBuild &&"
 			" cmake"
 			" -D CMAKE_INSTALL_PREFIX={buildDir}"
+			" -D CMAKE_INSTALL_LIBDIR={buildDir}/lib"
 			" ..",
 		"cd gafferBuild && make install -j {jobs} VERBOSE=1",
 
