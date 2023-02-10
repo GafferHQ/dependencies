@@ -34,7 +34,7 @@
 			" -D STOP_ON_WARNING=0"
 			" -D ENABLERTTI=1"
 			" -D LLVM_STATIC=1"
-			" -D OSL_BUILD_MATERIALX=1"
+			" -D USE_BATCHED=b8_AVX,b8_AVX_nFMA,b8_AVX2,b8_AVX2_noFMA,b8_AVX512,b8_AVX512_noFMA,b16_AVX512,b16_AVX512_noFMA"
 			" -D OSL_SHADER_INSTALL_DIR={buildDir}/shaders"
 			" -D Python_ROOT_DIR={buildDir}"
 			" -D Python_FIND_STRATEGY=LOCATION"
@@ -50,6 +50,7 @@
 		"bin/oslinfo",
 		"include/OSL",
 		"lib/libosl*",
+		"lib/lib*oslexec*",
 		"lib/osl.imageio.*",
 		"doc/osl*",
 		"shaders",
