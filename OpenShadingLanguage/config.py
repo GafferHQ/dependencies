@@ -46,7 +46,7 @@
 
 	"variables" : {
 
-		"useBatched" : "b8_AVX,b8_AVX_nFMA,b8_AVX2,b8_AVX2_noFMA,b8_AVX512,b8_AVX512_noFMA,b16_AVX512,b16_AVX512_noFMA",
+		"useBatched" : "b8_AVX,b8_AVX2,b8_AVX2_noFMA,b8_AVX512,b8_AVX512_noFMA,b16_AVX512,b16_AVX512_noFMA",
 
 	},
 
