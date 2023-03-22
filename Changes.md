@@ -1,3 +1,9 @@
+x.x.x (relative to 6.x.x)
+-----
+
+- Subprocess32 : Removed.
+- Six : Removed.
+
 6.0.0 (relative to 5.1.0)
 -----
 
