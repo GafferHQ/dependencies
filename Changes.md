@@ -1,6 +1,7 @@
 x.x.x (relative to 6.x.x)
 -----
 
+- Appleseed : Removed.
 - Boost : Updated to version 1.80.0.
 - PyBind11 : Updated to version 2.10.4.
 - Subprocess32 : Removed.

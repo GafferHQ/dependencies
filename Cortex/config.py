@@ -12,7 +12,7 @@
 
 	"dependencies" : [
 		"Python", "OpenImageIO", "OpenEXR", "Boost", "OpenShadingLanguage",
-		"Blosc", "FreeType", "GLEW", "Appleseed", "TBB", "OpenVDB", "USD"
+		"Blosc", "FreeType", "GLEW", "TBB", "OpenVDB", "USD"
 	],
 
 	"environment" : {
@@ -57,9 +57,6 @@
 			" WITH_GL=1"
 			" GLEW_INCLUDE_PATH={buildDir}/include/GL"
 			" NUKE_ROOT="
-			" APPLESEED_ROOT={buildDir}/appleseed"
-			" APPLESEED_INCLUDE_PATH={buildDir}/appleseed/include"
-			" APPLESEED_LIB_PATH={buildDir}/appleseed/lib"
 			" USD_LIB_PREFIX=usd_"
 			" ENV_VARS_TO_IMPORT='LD_LIBRARY_PATH TERM'"
 			" OPTIONS=''"
@@ -75,7 +72,6 @@
 		"include/IECore*",
 		"lib/libIECore*{sharedLibraryExtension}",
 		"python/IECore*",
-		"appleseedDisplays",
 		"glsl/IECoreGL",
 		"glsl/*.frag",
 		"glsl/*.vert",
