@@ -1,6 +1,7 @@
 x.x.x (relative to 6.x.x)
 -----
 
+- Boost : Updated to version 1.80.0.
 - Subprocess32 : Removed.
 - Six : Removed.
 
