@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/pybind/pybind11/archive/v2.6.2.tar.gz"
+		"https://github.com/pybind/pybind11/archive/v2.10.4.tar.gz"
 
 	],
 
