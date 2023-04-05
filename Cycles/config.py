@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/blender/cycles/archive/refs/tags/v3.4.0.tar.gz",
+		"https://github.com/blender/cycles/archive/refs/tags/v3.5.0.tar.gz",
 
 	],
 
@@ -25,6 +25,7 @@
 			" -D WITH_CYCLES_DEVICE_OPTIX=OFF"
 			" -D WITH_CYCLES_HYDRA_RENDER_DELEGATE=OFF"
 			" -D CMAKE_POSITION_INDEPENDENT_CODE=ON"
+			" -D WITH_CYCLES_USD=OFF"
 			" ..",
 		"cd build && make install -j {jobs} VERBOSE=1",
 
