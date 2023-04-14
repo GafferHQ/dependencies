@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/ImageEngine/cortex/archive/refs/tags/10.4.5.0.tar.gz"
+		"https://github.com/ImageEngine/cortex/archive/eb90825.tar.gz"
 
 	],
 
@@ -12,7 +12,7 @@
 
 	"dependencies" : [
 		"Python", "OpenImageIO", "OpenEXR", "Boost", "OpenShadingLanguage",
-		"Blosc", "FreeType", "GLEW", "Appleseed", "TBB", "OpenVDB", "USD", "Six"
+		"Blosc", "FreeType", "GLEW", "TBB", "OpenVDB", "USD"
 	],
 
 	"environment" : {
@@ -47,7 +47,7 @@
 			" LIBPATH={buildDir}/lib"
 			" BOOST_LIB_SUFFIX=''"
 			" OPENEXR_INCLUDE_PATH={buildDir}/include"
-			" ILMBASE_INCLUDE_PATH={buildDir}/include"
+			" ILMBASE_INCLUDE_PATH={buildDir}/include/Imath"
 			" VDB_INCLUDE_PATH={buildDir}/include"
 			" TBB_INCLUDE_PATH={buildDir}/include"
 			" OIIO_INCLUDE_PATH={buildDir}/include"
@@ -57,9 +57,6 @@
 			" WITH_GL=1"
 			" GLEW_INCLUDE_PATH={buildDir}/include/GL"
 			" NUKE_ROOT="
-			" APPLESEED_ROOT={buildDir}/appleseed"
-			" APPLESEED_INCLUDE_PATH={buildDir}/appleseed/include"
-			" APPLESEED_LIB_PATH={buildDir}/appleseed/lib"
 			" USD_LIB_PREFIX=usd_"
 			" ENV_VARS_TO_IMPORT='LD_LIBRARY_PATH TERM'"
 			" OPTIONS=''"
@@ -75,7 +72,6 @@
 		"include/IECore*",
 		"lib/libIECore*{sharedLibraryExtension}",
 		"python/IECore*",
-		"appleseedDisplays",
 		"glsl/IECoreGL",
 		"glsl/*.frag",
 		"glsl/*.vert",

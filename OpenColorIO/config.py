@@ -2,8 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/AcademySoftwareFoundation/OpenColorIO/archive/refs/tags/v2.1.2.tar.gz",
-		"https://github.com/imageworks/OpenColorIO-Configs/archive/v1.0_r2.tar.gz",
+		"https://github.com/AcademySoftwareFoundation/OpenColorIO/archive/refs/tags/v2.2.1.tar.gz",
 
 	],
 
@@ -11,7 +10,7 @@
 
 	"license" : "LICENSE",
 
-	"dependencies" : [ "Python", "PyBind11", "OpenEXR", "Expat", "YAML-CPP", "PyString" ],
+	"dependencies" : [ "Python", "PyBind11", "OpenEXR", "Expat", "YAML-CPP", "PyString", "ZLib", "Minizip" ],
 
 	"environment" : {
 
@@ -37,8 +36,6 @@
 			" -D OCIO_BUILD_NUKE=OFF"
 			" -D OCIO_BUILD_TESTS=OFF"
 			" -D OCIO_BUILD_GPU_TESTS=OFF"
-			# Will need removing when we update to OpenEXR 3
-			" -D OCIO_USE_OPENEXR_HALF=ON"
 			" -D OCIO_PYTHON_VERSION={pythonVersion}"
 			" ..",
 
@@ -47,17 +44,12 @@
 		"mkdir -p {buildDir}/python",
 		"mv {buildDir}/lib*/python*/site-packages/PyOpenColorIO* {buildDir}/python",
 
-		"mkdir -p {buildDir}/openColorIO",
-		"cp ../OpenColorIO-Configs-1.0_r2/nuke-default/config.ocio {buildDir}/openColorIO",
-		"cp -r ../OpenColorIO-Configs-1.0_r2/nuke-default/luts {buildDir}/openColorIO",
-
 	],
 
 	"manifest" : [
 
 		"include/OpenColorIO",
 		"lib/libOpenColorIO*{sharedLibraryExtension}*",
-		"openColorIO",
 		"python/PyOpenColorIO*",
 
 	],
