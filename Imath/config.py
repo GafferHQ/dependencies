@@ -34,14 +34,12 @@
 			" -D Python_ROOT_DIR={buildDir}"
 			" -D Python3_ROOT_DIR={buildDir}"
 			" -D Python3_FIND_STRATEGY=LOCATION"
+			" -D PYIMATH_OVERRIDE_PYTHON_INSTALL_DIR={buildDir}/python"
 			" ."
 		,
 
 		"make VERBOSE=1 -j {jobs}",
 		"make install",
-
-		"mkdir -p {buildDir}/python",
-		"mv {pythonLibDir}/python{pythonVersion}/site-packages/imath.so {buildDir}/python",
 
 	],
 
