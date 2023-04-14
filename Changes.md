@@ -3,10 +3,12 @@ x.x.x (relative to 6.x.x)
 
 - Appleseed : Removed.
 - Boost : Updated to version 1.80.0.
+- Cycles : Updated to version 3.5.0.
 - Imath : Added version 3.1.7.
 - Minizip : Added version 3.0.9.
 - OpenEXR : Updated to version 3.1.7.
 - OpenColorIO : Updated to version 2.2.1.
+- OpenPGL : Added version 0.4.1.
 - PyBind11 : Updated to version 2.10.4.
 - Subprocess32 : Removed.
 - Six : Removed.
