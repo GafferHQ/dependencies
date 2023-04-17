@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/ImageEngine/cortex/archive/eb90825.tar.gz"
+		"https://github.com/ImageEngine/cortex/archive/a117338.tar.gz"
 
 	],
 
