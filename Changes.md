@@ -10,6 +10,8 @@ x.x.x (relative to 6.x.x)
 - OpenColorIO : Updated to version 2.2.1.
 - OpenPGL : Added version 0.4.1.
 - PyBind11 : Updated to version 2.10.4.
+- PySide : Updated to version 5.15.8.
+- Qt : Updated to version 5.15.8.
 - Subprocess32 : Removed.
 - Six : Removed.
 - ZLib : Added version 1.2.13.
