@@ -1,5 +1,5 @@
-x.x.x (relative to 6.x.x)
------
+7.0.0a1 (relative to 6.0.0)
+-------
 
 - Appleseed : Removed.
 - Boost : Updated to version 1.80.0.
