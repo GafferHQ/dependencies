@@ -30,8 +30,29 @@
 	"manifest" : [
 
 		"include/openpgl",
-		"lib/libopenpgl*",
+		"lib/{libraryPrefix}openpgl*",
 
 	],
+    
+	"platform:windows" : {
+
+		"commands" : [
+
+			"mkdir gafferBuild",
+			"cd gafferBuild &&"
+				" cmake"
+				" -G {cmakeGenerator}"
+                " -D CMAKE_BUILD_TYPE={cmakeBuildType}"
+				" -D CMAKE_CXX_STANDARD={c++Standard}"
+				" -D CMAKE_INSTALL_PREFIX={buildDir}"
+				" -D CMAKE_INSTALL_LIBDIR={buildDir}/lib"
+				" -D CMAKE_PREFIX_PATH={buildDir}"
+				" -D OPENPGL_BUILD_STATIC=ON"
+				" ..",
+			"cd gafferBuild && cmake --build . --config {cmakeBuildType} --target install -- -j {jobs}",
+
+		],
+
+	},
 
 }
