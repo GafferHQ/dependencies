@@ -1,3 +1,8 @@
+7.x.x (relative to 7.0.0a1)
+-----
+
+- OpenImageIO : Updated to version 2.4.11.0.
+
 7.0.0a1 (relative to 6.0.0)
 -------
 
