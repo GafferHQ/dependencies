@@ -2,6 +2,7 @@
 -----
 
 - OpenImageIO : Updated to version 2.4.11.0.
+- Partio : Added version 1.14.6.
 
 7.0.0a1 (relative to 6.0.0)
 -------
