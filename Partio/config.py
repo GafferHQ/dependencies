@@ -27,8 +27,27 @@
 
 	"manifest" : [
 
-		"lib/libpartio{sharedLibraryExtension}*",
+		"lib/{libraryPrefix}partio{sharedLibraryExtension}*",
 
 	],
+    
+	"platform:windows" : {
+
+		"commands" : [
+
+			"mkdir build",
+			"cd build && cmake"
+				" -G {cmakeGenerator}"
+                " -D CMAKE_BUILD_TYPE={cmakeBuildType}"
+                " -D PARTIO_BUILD_SHARED_LIBS=ON"
+				" -D CMAKE_CXX_STANDARD={c++Standard}"
+				" -D CMAKE_INSTALL_PREFIX={buildDir}"
+				" -D CMAKE_INSTALL_LIBDIR={buildDir}/lib"
+				" ..",
+
+			"cd build && cmake --build . --config {cmakeBuildType} --target install -- -j {jobs}",
+
+		]
+	},
 
 }
