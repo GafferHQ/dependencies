@@ -1,5 +1,8 @@
-7.x.x (relative to 7.0.0a1)
+7.x.x (relative to 7.0.0a2)
 -----
+
+7.0.0a2 (relative to 7.0.0a1)
+-------
 
 - Cortex : Updated to commit 5c491aa.
 - OpenImageIO : Updated to version 2.4.11.0.
