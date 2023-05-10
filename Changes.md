@@ -1,6 +1,7 @@
 7.x.x (relative to 7.0.0a1)
 -----
 
+- Cortex : Updated to commit 5c491aa.
 - OpenImageIO : Updated to version 2.4.11.0.
 - Partio : Added version 1.14.6.
 

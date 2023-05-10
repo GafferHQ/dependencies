@@ -1,8 +1,7 @@
 {
 
 	"downloads" : [
-
-		"https://github.com/ImageEngine/cortex/archive/a117338.tar.gz"
+		"https://github.com/ImageEngine/cortex/archive/5c491aa.tar.gz"
 
 	],
 
