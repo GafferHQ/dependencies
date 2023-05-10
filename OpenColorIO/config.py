@@ -3,6 +3,7 @@
 	"downloads" : [
 
 		"https://github.com/AcademySoftwareFoundation/OpenColorIO/archive/refs/tags/v2.2.1.tar.gz",
+		"https://github.com/imageworks/OpenColorIO-Configs/archive/v1.0_r2.tar.gz",
 
 	],
 
@@ -44,12 +45,17 @@
 		"mkdir -p {buildDir}/python",
 		"mv {buildDir}/lib*/python*/site-packages/PyOpenColorIO* {buildDir}/python",
 
+		"mkdir -p {buildDir}/openColorIO",
+		"cp ../OpenColorIO-Configs-1.0_r2/nuke-default/config.ocio {buildDir}/openColorIO",
+		"cp -r ../OpenColorIO-Configs-1.0_r2/nuke-default/luts {buildDir}/openColorIO",
+
 	],
 
 	"manifest" : [
 
 		"include/OpenColorIO",
 		"lib/libOpenColorIO*{sharedLibraryExtension}*",
+		"openColorIO",
 		"python/PyOpenColorIO*",
 
 	],
