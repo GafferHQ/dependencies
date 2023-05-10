@@ -1,6 +1,8 @@
 7.x.x (relative to 7.0.0a2)
 -----
 
+- Xerces : Removed.
+
 7.0.0a2 (relative to 7.0.0a1)
 -------
 
