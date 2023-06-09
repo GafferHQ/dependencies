@@ -41,10 +41,48 @@
 	"manifest" : [
 
 		"include/MaterialX*",
-		"lib/libMaterialX*{sharedLibraryExtension}*",
+		"{sharedLibraryDir}/{libraryPrefix}MaterialX*{sharedLibraryExtension}*",
+		"lib/{libraryPrefix}MaterialX*{sharedLibraryExtension}*",
 		"materialX",
 		"python/MaterialX",
 
 	],
+
+	"platform:windows" : {
+
+		"manifest" : [
+
+			"include/MaterialX*",
+			"{sharedLibraryDir}/{libraryPrefix}MaterialX*{sharedLibraryExtension}*",
+			"lib/{libraryPrefix}MaterialX*{staticLibraryExtension}*",
+			"materialX",
+			"python/MaterialX",
+
+		],
+
+		"commands" : [
+
+			"mkdir build",
+			"cd build && cmake"
+				" -G {cmakeGenerator}"
+                " -D CMAKE_BUILD_TYPE={cmakeBuildType}"
+				" -D CMAKE_CXX_STANDARD={c++Standard}"
+				" -D CMAKE_INSTALL_PREFIX={buildDir}"
+                " -D CMAKE_PREFIX_PATH={buildDir}"
+				" -D MATERIALX_BUILD_SHARED_LIBS=ON"
+				" -D MATERIALX_BUILD_PYTHON=ON"
+				" -D MATERIALX_BUILD_OIIO=ON"
+				" -D MATERIALX_BUILD_TESTS=OFF"
+				" -D MATERIALX_INSTALL_LIB_PATH={buildDir}/lib"
+				" -D MATERIALX_INSTALL_STDLIB_PATH={buildDir}/materialX/libraries"
+				" -D MATERIALX_PYTHON_EXECUTABLE={buildDir}/bin/python"
+				" -D CMAKE_VERBOSE_MAKEFILE:BOOL=ON"
+				" ..",
+
+			"cd build && cmake --build . --config {cmakeBuildType} --target install -- -j {jobs}",
+
+		]
+
+	}
 
 }
