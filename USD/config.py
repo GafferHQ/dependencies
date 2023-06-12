@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/PixarAnimationStudios/USD/archive/refs/tags/v23.02.tar.gz"
+		"https://github.com/PixarAnimationStudios/USD/archive/refs/tags/v23.05.tar.gz"
 
 	],
 
@@ -10,7 +10,7 @@
 
 	"license" : "LICENSE.txt",
 
-	"dependencies" : [ "Boost", "Python", "OpenImageIO", "TBB", "Alembic", "OpenSubdiv", "OpenVDB", "PyOpenGL", "GLEW", "PySide", "Embree" ],
+	"dependencies" : [ "Boost", "Python", "OpenImageIO", "TBB", "Alembic", "OpenSubdiv", "OpenVDB", "PyOpenGL", "GLEW", "PySide", "Embree", "MaterialX" ],
 
 	"environment" : {
 
@@ -39,6 +39,8 @@
 			" -D PXR_BUILD_ALEMBIC_PLUGIN=TRUE"
 			" -D PXR_BUILD_EMBREE_PLUGIN=TRUE"
 			" -D PXR_ENABLE_HDF5_SUPPORT=FALSE"
+			" -D PXR_ENABLE_MATERIALX_SUPPORT=TRUE"
+			" -D MATERIALX_STDLIB_DIR={buildDir}/materialX"
 			" -D PXR_PYTHON_SHEBANG='/usr/bin/env python'"
 			" -D Python3_ROOT_DIR={buildDir}"
 			" -D Python3_FIND_STRATEGY=LOCATION"
