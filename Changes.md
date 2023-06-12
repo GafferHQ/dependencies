@@ -1,6 +1,7 @@
 7.x.x (relative to 7.0.0a2)
 -----
 
+- Cortex : Updated to commit 2f057d6.
 - MaterialX : Added version 1.38.4.
 - USD : Updated to version 23.05.
 - Xerces : Removed.
