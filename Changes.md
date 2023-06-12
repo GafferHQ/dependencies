@@ -1,5 +1,8 @@
-7.x.x (relative to 7.0.0a2)
+7.x.x (relative to 7.0.0a3)
 -----
+
+7.0.0a3 (relative to 7.0.0a2)
+-------
 
 - Cortex : Updated to commit 2f057d6.
 - MaterialX : Added version 1.38.4.
