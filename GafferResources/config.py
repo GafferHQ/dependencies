@@ -18,7 +18,13 @@
 
 	"manifest" : [
 
-		"resources",
+		"resources/hdri",
+		"resources/cow",
+		"resources/gafferBot",
+		# Can't include `resources/images` as a directory, because that
+		# catches a bunch of MaterialX stuff we don't want.
+		"resources/images/macaw.exr",
+		"resources/cortex",
 
 	],
 
