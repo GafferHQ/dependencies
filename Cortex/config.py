@@ -74,6 +74,7 @@
 		"glsl/IECoreGL",
 		"glsl/*.frag",
 		"glsl/*.vert",
+		"resources/IECoreUSD/plugInfo.json",
 
 	],
 
