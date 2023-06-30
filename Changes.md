@@ -1,6 +1,8 @@
 7.x.x (relative to 7.0.0a3)
 -----
 
+- PCG : Added "version" 428802d.
+
 7.0.0a3 (relative to 7.0.0a2)
 -------
 
