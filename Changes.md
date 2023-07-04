@@ -14,6 +14,8 @@
 - MaterialX : Added version 1.38.4.
 - USD : Updated to version 23.05.
 - Xerces : Removed.
+- ISPC : Added version 1.20.0.
+- OpenImageDenoise : Added version 1.4.3.
 
 7.0.0a2 (relative to 7.0.0a1)
 -------
