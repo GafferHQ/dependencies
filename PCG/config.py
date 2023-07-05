@@ -11,16 +11,19 @@
 	"license" : "LICENSE-MIT.txt",
 
 
-	"commands" : [
-		"mkdir -p {buildDir}/include/pcg",
-		"cp include/*.hpp {buildDir}/include/pcg",
+	"commands" : [],
+    
+	"postMovePaths" : {
 
-	],
+		"include/*.hpp" : "{buildDir}/include/pcg",
+
+	},
 
 	"manifest" : [
 
 		"include/pcg",
 
 	],
+
 
 }
