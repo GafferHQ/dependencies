@@ -22,5 +22,14 @@
 		"include/pcg",
 
 	],
+    
+	"platform:windows" : {
+
+		"commands" : [
+			"if not exist {buildDir}\\include\\pcg mkdir {buildDir}\\include\\pcg",
+			"copy include\\*.hpp {buildDir}\\include\\pcg",
+		],
+
+	},
 
 }
