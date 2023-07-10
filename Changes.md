@@ -1,6 +1,7 @@
 7.x.x (relative to 7.0.0a4)
 -----
 
+- Cortex : Updated to version 10.5.0.0.
 
 7.0.0a4 (relative to 7.0.0a3)
 -------
