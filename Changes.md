@@ -1,44 +1,26 @@
-7.x.x (relative to 7.0.0a4)
+7.0.0 (relative to 6.0.0)
 -----
-
-- Cortex : Updated to version 10.5.0.0.
-
-7.0.0a4 (relative to 7.0.0a3)
--------
-
-- PCG : Added "version" 428802d.
-
-7.0.0a3 (relative to 7.0.0a2)
--------
-
-- Cortex : Updated to commit 2f057d6.
-- MaterialX : Added version 1.38.4.
-- USD : Updated to version 23.05.
-- Xerces : Removed.
-
-7.0.0a2 (relative to 7.0.0a1)
--------
-
-- Cortex : Updated to commit 5c491aa.
-- OpenImageIO : Updated to version 2.4.11.0.
-- Partio : Added version 1.14.6.
-
-7.0.0a1 (relative to 6.0.0)
--------
 
 - Appleseed : Removed.
 - Boost : Updated to version 1.80.0.
+- Cortex : Updated to version 10.5.0.0.
 - Cycles : Updated to version 3.5.0.
 - Imath : Added version 3.1.7.
+- MaterialX : Added version 1.38.4.
 - Minizip : Added version 3.0.9.
-- OpenEXR : Updated to version 3.1.7.
 - OpenColorIO : Updated to version 2.2.1.
+- OpenEXR : Updated to version 3.1.7.
+- OpenImageIO : Updated to version 2.4.11.0.
 - OpenPGL : Added version 0.4.1.
+- Partio : Added version 1.14.6.
+- PCG : Added "version" 428802d.
 - PyBind11 : Updated to version 2.10.4.
 - PySide : Updated to version 5.15.8.
 - Qt : Updated to version 5.15.8.
 - Subprocess32 : Removed.
 - Six : Removed.
+- USD : Updated to version 23.05.
+- Xerces : Removed.
 - ZLib : Added version 1.2.13.
 
 6.0.0 (relative to 5.1.0)
