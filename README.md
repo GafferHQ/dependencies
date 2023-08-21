@@ -26,12 +26,7 @@ See https://github.com/GafferHQ/build for a Docker container which contains all 
 
 ### Invoking the build
 
-The build is controlled by several environment variables, which must be set up before running :
-
-- ARNOLD_ROOT : Path to the root of an Arnold installation
-- RMAN_ROOT : Path to the root of a 3delight installation
-
-The build is then initiated with `build.py`, which should be run from the root directory of the project :
+To build, run `build.py` from the root directory of the project :
 
 ```
 ./build.py --buildDir /path/to/build
