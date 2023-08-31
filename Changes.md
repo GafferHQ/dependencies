@@ -1,3 +1,8 @@
+7.x.x (relative to 7.0.0)
+-----
+
+- MaterialX : Fixed linking on MacOS.
+
 7.0.0 (relative to 6.0.0)
 -----
 
