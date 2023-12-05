@@ -2,6 +2,7 @@
 -------------
 
 - Cortex : Updated to 10.5.4.2.
+- PsUtil : Added version 5.9.6.
 
 7.x.x (relative to 7.0.0)
 -----
