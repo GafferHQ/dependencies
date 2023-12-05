@@ -1,7 +1,7 @@
 8.0.0 alpha 1
 -------------
 
-
+- Cortex : Updated to 10.5.4.2.
 
 7.x.x (relative to 7.0.0)
 -----
