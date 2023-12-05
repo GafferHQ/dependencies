@@ -1,6 +1,7 @@
 7.x.x (relative to 7.0.0)
 -----
 
+- Cortex : Updated to 10.5.4.2.
 - MaterialX : Fixed linking on MacOS.
 
 7.0.0 (relative to 6.0.0)
