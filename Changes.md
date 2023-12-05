@@ -3,6 +3,7 @@
 
 - Cortex : Updated to 10.5.4.2.
 - MaterialX : Fixed linking on MacOS.
+- PsUtil : Added version 5.9.6.
 
 7.0.0 (relative to 6.0.0)
 -----
