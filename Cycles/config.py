@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/blender/cycles/archive/refs/tags/v3.5.0.tar.gz",
+		"https://github.com/blender/cycles/archive/refs/tags/v4.0.2.tar.gz",
 
 	],
 
@@ -23,6 +23,7 @@
 			" -D WITH_CYCLES_OPENIMAGEDENOISE=OFF"
 			" -D WITH_CYCLES_PATH_GUIDING=ON"
 			" -D WITH_CYCLES_DEVICE_CUDA=OFF"
+			" -D WITH_CYCLES_DEVICE_HIP=OFF"
 			" -D WITH_CYCLES_DEVICE_OPTIX=OFF"
 			" -D WITH_CYCLES_HYDRA_RENDER_DELEGATE=OFF"
 			" -D CMAKE_POSITION_INDEPENDENT_CODE=ON"
