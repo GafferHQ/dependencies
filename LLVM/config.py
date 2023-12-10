@@ -22,6 +22,7 @@
 			" -DCMAKE_BUILD_TYPE=Release"
 			" -DLLVM_ENABLE_RTTI=ON"
 			" -DLLVM_ENABLE_LIBXML2=OFF"
+			" -DLLVM_ENABLE_TERMINFO=OFF"
 			" ..",
 		"cd build && make install -j {jobs}"
 
