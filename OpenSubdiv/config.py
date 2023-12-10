@@ -24,6 +24,7 @@
 			" -D NO_DX=1"
 			" -D NO_TESTS=1"
 			" -D NO_TBB=1"
+			" -D NO_PTEX=1"
 			" -D OPENEXR_LOCATION={buildDir}/lib"
 			" ."
 		,
