@@ -30,6 +30,7 @@
 			" -D CMAKE_PREFIX_PATH={buildDir}"
 			" -D USE_FFMPEG=NO"
 			" -D USE_GIF=0"
+			" -D USE_PTEX=0"
 			" -D USE_WEBP=0"
 			" -D USE_PYTHON=YES"
 			" -D USE_EXTERNAL_PUGIXML=YES"
