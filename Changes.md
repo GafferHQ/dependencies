@@ -1,6 +1,8 @@
 9.0.0 alpha x (relative to 9.0.0 alpha 2)
 -------------
 
+- Windows : Update compiler to MSVC 2022.
+
 
 
 9.0.0 alpha 2 (relative to 9.0.0 alpha 1)
