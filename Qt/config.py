@@ -36,6 +36,7 @@
 			" -skip qtwebchannel"
 			" -skip qtnetworkauth"
 			" -skip qtpurchasing"
+			" -skip wayland"
 			" -no-libudev"
 			" -no-icu"
 			" -qt-pcre"
