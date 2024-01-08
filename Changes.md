@@ -2,6 +2,7 @@
 -------------
 
 - OpenSSL : Removed.
+- LibWebP : Added version 1.3.2.
 
 8.0.0 alpha 1
 -------------
