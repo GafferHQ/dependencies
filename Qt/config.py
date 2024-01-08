@@ -35,6 +35,7 @@
 			" -no-libudev"
 			" -no-icu"
 			" -qt-pcre"
+			" -qt-harfbuzz"
 			" -nomake examples"
 			" -nomake tests"
 			" {extraArgs}"
