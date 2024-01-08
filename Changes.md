@@ -1,3 +1,8 @@
+8.0.0 alpha x (relative to 8.0.0 alpha 1)
+-------------
+
+- OpenSSL : Removed.
+
 8.0.0 alpha 1
 -------------
 
