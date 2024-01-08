@@ -27,6 +27,8 @@
 			" -opensource -confirm-license"
 			" -no-rpath"
 			" -no-dbus"
+			" -no-egl"
+			" -no-gstreamer"
 			" -skip qtconnectivity"
 			" -skip qtwebengine"
 			" -skip qt3d"
