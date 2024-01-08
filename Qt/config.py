@@ -34,6 +34,7 @@
 			" -skip qt3d"
 			" -skip qtdeclarative"
 			" -skip qtwebchannel"
+			" -skip qtnetworkauth"
 			" -skip qtpurchasing"
 			" -no-libudev"
 			" -no-icu"
