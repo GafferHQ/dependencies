@@ -22,7 +22,7 @@
 
 	"license" : "LICENSE",
 
-	"dependencies" : [ "OpenSSL", "LibFFI" ],
+	"dependencies" : [ "LibFFI" ],
 
 	"environment" : {
 
@@ -34,7 +34,7 @@
 
 	"commands" : [
 
-		"./configure --prefix={buildDir} {libraryType} --enable-unicode=ucs4 --with-ensurepip=install --with-system-ffi --with-openssl={buildDir}",
+		"./configure --prefix={buildDir} {libraryType} --enable-unicode=ucs4 --with-ensurepip=install --with-system-ffi",
 		"make -j {jobs}",
 		"make install",
 

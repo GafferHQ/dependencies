@@ -1,3 +1,12 @@
+8.0.0 alpha x (relative to 8.0.0 alpha 1)
+-------------
+
+- OpenSSL : Removed.
+- LibWebP : Added version 1.3.2.
+- Qt :
+	- Removed QtPurchasing library.
+	- Removed QtNetworkAuth library.
+
 8.0.0 alpha 1
 -------------
 
