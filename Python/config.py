@@ -113,15 +113,12 @@
 			"bin/msvcp140*{sharedLibraryExtension}",
 			"bin/vcruntime140*{sharedLibraryExtension}",
 
-			"lib/{libraryPrefix}python*.lib",
-			"lib/python{pythonVersion}",
-
 			"libs",
 
 			"DLLs",
 
 			# Gross. But here's the reasoning for now: we can't put the modules into a directory
-			# like `lib` as on Linux because it causes havoc with cmake finding the site-packages
+			# like `lib/` as on Linux because it causes havoc with cmake finding the site-packages
 			# directory for downstream projects that need to install their Python modules.
 			# If we just do `Lib/*` then the packager will sweep up everything in the `lib`
 			# folder at the end of the entire dependencies build, not at the time Python is built.
@@ -450,27 +447,13 @@
 
 			"call PCbuild/build.bat -p x64 --no-tkinter \"/p:PlatformToolset=v143\"",
 
-			# Recreate the typical Python 3 directory structure
-			"if not exist {buildDir}\\DLLs mkdir {buildDir}\\DLLs",
-			"if not exist {buildDir}\\bin mkdir {buildDir}\\bin",
-			"if not exist {buildDir}\\lib mkdir {buildDir}\\lib",
-			"if exist {buildDir}\\libs rmdir /Q /S {buildDir}\\libs",
-			"if not exist {buildDir}\\include mkdir {buildDir}\\include",
-			"if exist {buildDir}\\include\\openssl rmdir /S /Q {buildDir}\\include\\openssl",
-			"mkdir {buildDir}\\include\\openssl",
-
-			# Initially copy all components to `DLLs` to avoid needing to copy
-			# individual DLL files later
-			"PCbuild\\amd64\\python.exe PC\\layout -s . -b PCbuild\\amd64 -v --precompile --flat-dlls --include-pip --include-dev --copy {buildDir}\\DLLs",
-
-			"xcopy /sehyi {buildDir}\\DLLs\\include {buildDir}\\include",
-			"xcopy /sehyi {buildDir}\\DLLs\\Lib {buildDir}\\lib",
-			"move {buildDir}\\DLLs\\libs {buildDir}",
+			# Copy the directory layout to our build directory
+			"PCbuild\\amd64\\python.exe PC\\layout -s . -b PCbuild\\amd64 -v --precompile --include-pip --include-dev --copy {buildDir}",
 
 			# pythonw runs a script without an accompanying terminal which means we don't get
 			# stdout, stderr, etc.
-			"del {buildDir}\\DLLs\\pythonw.exe",
-			"del {buildDir}\\DLLs\\LICENSE.txt",  # build.py puts the license in the right place
+			lambda c : ( pathlib.Path( c["variables"]["buildDir"] ) / "pythonw.exe" ).unlink(),
+			lambda c : ( pathlib.Path( c["variables"]["buildDir"] ) / "LICENSE.txt" ).unlink(),  # build.py puts the license in the right place
 
 		],
 
