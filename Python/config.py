@@ -113,15 +113,12 @@
 			"bin/msvcp140*{sharedLibraryExtension}",
 			"bin/vcruntime140*{sharedLibraryExtension}",
 
-			"lib/{libraryPrefix}python*.lib",
-			"lib/python{pythonVersion}",
-
 			"libs",
 
 			"DLLs",
 
 			# Gross. But here's the reasoning for now: we can't put the modules into a directory
-			# like `lib` as on Linux because it causes havoc with cmake finding the site-packages
+			# like `lib/` as on Linux because it causes havoc with cmake finding the site-packages
 			# directory for downstream projects that need to install their Python modules.
 			# If we just do `Lib/*` then the packager will sweep up everything in the `lib`
 			# folder at the end of the entire dependencies build, not at the time Python is built.
@@ -421,8 +418,8 @@
 
 			# pythonw runs a script without an accompanying terminal which means we don't get
 			# stdout, stderr, etc.
-			"del {buildDir}\\DLLs\\pythonw.exe",
-			"del {buildDir}\\DLLs\\LICENSE.txt",  # build.py puts the license in the right place
+			lambda c : ( pathlib.Path( c["variables"]["buildDir"] ) / "pythonw.exe" ).unlink(),
+			lambda c : ( pathlib.Path( c["variables"]["buildDir"] ) / "LICENSE.txt" ).unlink(),  # build.py puts the license in the right place
 
 		],
 
