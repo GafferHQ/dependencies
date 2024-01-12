@@ -113,15 +113,12 @@
 			"bin/msvcp140*{sharedLibraryExtension}",
 			"bin/vcruntime140*{sharedLibraryExtension}",
 
-			"lib/{libraryPrefix}python*.lib",
-			"lib/python{pythonVersion}",
-
 			"libs",
 
 			"DLLs",
 
 			# Gross. But here's the reasoning for now: we can't put the modules into a directory
-			# like `lib` as on Linux because it causes havoc with cmake finding the site-packages
+			# like `lib/` as on Linux because it causes havoc with cmake finding the site-packages
 			# directory for downstream projects that need to install their Python modules.
 			# If we just do `Lib/*` then the packager will sweep up everything in the `lib`
 			# folder at the end of the entire dependencies build, not at the time Python is built.
@@ -411,6 +408,13 @@
 			"DLLs/libssl*{sharedLibraryExtension}*",
 			"DLLs/libcrypto*{sharedLibraryExtension}*",
 		],
+
+		"environment" : {
+
+			"PATH" : "{buildDir}\\bin;%PATH%",
+			"DefaultWindowsSDKVersion" : "10.0.20348.0",
+
+		},
 
 		"commands" : [
 
