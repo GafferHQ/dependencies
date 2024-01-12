@@ -1,6 +1,7 @@
 8.0.0 alpha x (relative to 8.0.0 alpha 2)
 -------------
 
+- Imath : Updated to version 3.1.9.
 - OpenEXR : Updated to version 3.1.9.
 
 8.0.0 alpha 2 (relative to 8.0.0 alpha 1)
