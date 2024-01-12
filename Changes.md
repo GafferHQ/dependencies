@@ -5,6 +5,8 @@
 - OpenEXR : Updated to version 3.1.9.
 - OpenSubdiv : Updated to version 3.5.1.
 - OpenVDB : Updated to version 10.0.1.
+- PySide : Updated to version 5.15.12.
+- Qt : Updated to version 5.15.12.
 
 8.0.0 alpha 2 (relative to 8.0.0 alpha 1)
 -------------
