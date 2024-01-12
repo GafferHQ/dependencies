@@ -4,10 +4,12 @@ import argparse
 import functools
 import glob
 import hashlib
+import inspect
 import json
 import os
 import operator
 import multiprocessing
+import pathlib
 import subprocess
 import shutil
 import sys
@@ -38,7 +40,12 @@ Dictionary fields
   externally before `build.py` is run.
 - environment : Dictionary of environment variables to provide to the
   build.
-- commands : List containing the build commands to be executed.
+- preCommands : List containing build commands to run immediately before `commands`.
+- commands : List containing the build commands to be executed. String items will
+  be run using a Python `subprocess`. Lambda items will be run as functions with the
+  project's `config` passed as an argument. All project variables, including global
+  variables, are included in `config["variables"]`.
+- postCommands : List containing build commands to run immediately after `commands`.
 - enabled : May be set to `False` to disable a project entirely. This is
   only expected to be useful in conjunction with platform overrides or
   variants.
@@ -175,6 +182,8 @@ def __substitute( config, variables, forDigest = False ) :
 
 def __appendHash( hash, value ) :
 
+	if isinstance( value, list ) :
+		value = [ v for v in value if not callable( v ) ]
 	hash.update( str( value ).encode( "utf-8" ) )
 
 def __updateDigest( project, config ) :
@@ -235,6 +244,7 @@ def __loadConfigs( variables, variants ) :
 
 		projectVariables.update( projectConfig.get( "publicVariables", {} ) )
 		projectVariables.update( projectConfig.get( "variables", {} ) )
+		projectConfig["variables"] = projectVariables
 
 		projectConfig = __substitute( projectConfig, projectVariables, forDigest = True )
 		__updateDigest( project, projectConfig )
@@ -309,9 +319,13 @@ def __buildProject( project, config, buildDir, cleanup ) :
 	environment = os.environ.copy()
 	for k, v in config.get( "environment", {} ).items() :
 		environment[k] = os.path.expandvars( v )
-	for command in config["commands"] :
-		sys.stderr.write( command + "\n" )
-		subprocess.check_call( command, shell = True, env = environment )
+
+	for command in config.get( "preCommands", [] ) + config["commands"] + config.get( "postCommands", [] ) :
+		if isinstance( command, str ) :
+			sys.stderr.write( command + "\n" )
+			subprocess.check_call( command, shell = True, env = environment )
+		elif callable( command ) :
+			command( config )
 
 	for link in config.get( "symbolicLinks", [] ) :
 		sys.stderr.write( "Linking {} to {}\n".format( link[0], link[1] ) )
