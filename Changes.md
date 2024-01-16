@@ -1,4 +1,4 @@
-8.0.0 alpha x (relative to 8.0.0 alpha 2)
+8.0.0 alpha 3 (relative to 8.0.0 alpha 2)
 -------------
 
 - Imath : Updated to version 3.1.9.
