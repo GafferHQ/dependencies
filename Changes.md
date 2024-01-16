@@ -1,3 +1,16 @@
+8.0.0 alpha x (relative to 8.0.0 alpha 2)
+-------------
+
+- Imath : Updated to version 3.1.9.
+- MaterialX : Updated to version 1.38.8.
+- OpenEXR : Updated to version 3.1.9.
+- OpenImageIO : Updated to version 2.4.17.0.
+- OpenSubdiv : Updated to version 3.5.1.
+- OpenVDB : Updated to version 10.0.1.
+- PySide : Updated to version 5.15.12.
+- Qt : Updated to version 5.15.12.
+- USD : Updated to version 23.11.
+
 8.0.0 alpha 2 (relative to 8.0.0 alpha 1)
 -------------
 
