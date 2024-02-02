@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/AcademySoftwareFoundation/openvdb/archive/refs/tags/v10.0.1.tar.gz"
+		"https://github.com/AcademySoftwareFoundation/openvdb/archive/refs/tags/v10.1.0.tar.gz"
 
 	],
 
@@ -10,7 +10,7 @@
 
 	"license" : "LICENSE",
 
-	"dependencies" : [ "Blosc", "TBB", "OpenEXR", "Python", "Boost" ],
+	"dependencies" : [ "Blosc", "TBB", "OpenEXR", "Python", "Boost", "PyBind11" ],
 
 	"environment" : {
 
