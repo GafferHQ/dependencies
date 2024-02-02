@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/embree/embree/archive/v3.13.4.tar.gz"
+		"https://github.com/embree/embree/archive/v4.3.0.tar.gz"
 
 	],
 
@@ -27,6 +27,9 @@
 			" -D EMBREE_RAY_MASK=ON"
 			" -D EMBREE_FILTER_FUNCTION=ON"
 			" -D EMBREE_BACKFACE_CULLING=OFF"
+			" -D EMBREE_BACKFACE_CULLING_CURVES=ON"
+			" -D EMBREE_BACKFACE_CULLING_SPHERES=ON"
+			" -D EMBREE_NO_SPLASH=ON"
 			" -D EMBREE_TASKING_SYSTEM=TBB"
 			" ..",
 		"cd gafferBuild && make install -j {jobs} VERBOSE=1",
@@ -35,9 +38,9 @@
 
 	"manifest" : [
 
-		"include/embree3",
+		"include/embree4",
 
-		"lib/libembree3*{sharedLibraryExtension}*",
+		"lib/libembree4*{sharedLibraryExtension}*",
 
 	],
 

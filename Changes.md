@@ -2,7 +2,11 @@
 -------------
 
 - Cortex : Updated to version 10.5.5.0.
+- Cycles : Updated to version 4.0.2.
+- Embree : Updated to version 4.3.0.
+- OpenPGL : Updated to version 0.5.0.
 - OpenVDB : Updated to version 10.1.0.
+- USD : Disabled Embree Hydra delegate, since it is incompatible with Embree 4.
 
 8.0.0 alpha 3 (relative to 8.0.0 alpha 2)
 -------------
