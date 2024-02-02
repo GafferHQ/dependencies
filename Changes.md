@@ -1,3 +1,9 @@
+8.0.0 alpha x (relative to 8.0.0 alpha 3)
+-------------
+
+- Cortex : Updated to version 10.5.5.0.
+- OpenVDB : Updated to version 10.1.0.
+
 8.0.0 alpha 3 (relative to 8.0.0 alpha 2)
 -------------
 
