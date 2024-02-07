@@ -1,19 +1,13 @@
 {
 
-	"downloads" : [ "https://www.python.org/ftp/python/3.7.6/Python-3.7.6.tgz" ],
+	"downloads" : [ "https://www.python.org/ftp/python/3.10.13/Python-3.10.13.tgz" ],
 
 	"publicVariables" : {
 
-		"pythonVersion" : "3.7",
-		# Python 3 unconditionally puts these infuriating "m" ABI suffixes on
-		# everything. This is intended to allow different types of Python builds
-		# to exist in the same place, but that's not a problem we have. The problem
-		# we _do_ have is that a bunch of our projects get tripped up by these
-		# suffixes. See : https://www.python.org/dev/peps/pep-3149.
-		"pythonABIVersion" : "3.7m",
+		"pythonVersion" : "3.10",
 		"pythonMajorVersion" : "3",
-		"pythonMinorVersion" : "7",
-		"pythonIncludeDir" : "{buildDir}/include/python{pythonABIVersion}",
+		"pythonMinorVersion" : "10",
+		"pythonIncludeDir" : "{buildDir}/include/python{pythonVersion}",
 		"pythonLibDir" : "{buildDir}/lib",
 
 	},
@@ -67,14 +61,6 @@
 
 	"platform:macos" : {
 
-		# Python 3.7 doesn't compile for M1, so we use 3.8 on Mac until
-		# we upgrade all platforms to a mutually compatible version. We
-		# don't support the Python 2 variant at all on Mac.
-		"downloads" : [
-
-			"https://www.python.org/ftp/python/3.8.13/Python-3.8.13.tar.xz",
-
-		],
 
 		"variables" : {
 
@@ -90,11 +76,6 @@
 
 		"publicVariables" : {
 
-			# See `downloads`.
-			"pythonVersion" : "3.8",
-			"pythonABIVersion" : "3.8m",
-			"pythonMajorVersion" : "3",
-			"pythonMinorVersion" : "8",
 
 			"pythonIncludeDir" : "{buildDir}/lib/Python.framework/Headers",
 			"pythonLibDir" : "{buildDir}/lib/Python.framework/Versions/{pythonVersion}/lib",
