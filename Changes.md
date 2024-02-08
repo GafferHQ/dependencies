@@ -1,7 +1,7 @@
 8.0.0 alpha x (relative to 8.0.0 alpha 4)
 -------------
 
-
+- Cortex : Updated to version 10.5.6.0.
 
 8.0.0 alpha 4 (relative to 8.0.0 alpha 3)
 -------------
