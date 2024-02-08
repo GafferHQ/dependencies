@@ -1,7 +1,7 @@
 {
 
 	"downloads" : [
-		"https://github.com/ImageEngine/cortex/archive/refs/tags/10.5.5.0.tar.gz"
+		"https://github.com/ImageEngine/cortex/archive/refs/tags/10.5.6.0.tar.gz"
 
 	],
 
