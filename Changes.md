@@ -2,6 +2,9 @@
 -------------
 
 - Cortex : Updated to version 10.5.6.0.
+- Cycles :
+	- Patched shader `IOR` values to default to 1.5.
+	- Enabled CUDA and Optix devices.
 
 8.0.0 alpha 4 (relative to 8.0.0 alpha 3)
 -------------
