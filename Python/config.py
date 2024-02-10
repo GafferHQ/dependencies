@@ -50,6 +50,7 @@
 	"variables" : {
 
 		"libraryType" : "--enable-shared",
+		"environmentCommand" : "",
 
 	},
 
