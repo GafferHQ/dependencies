@@ -1,4 +1,7 @@
-8.0.0 alpha x (relative to 8.0.0 alpha 5)
+8.0.0 alpha x (relative to 8.0.0 alpha 6)
+-------------
+
+8.0.0 alpha 6 (relative to 8.0.0 alpha 5)
 -------------
 
 - Python : Updated to version 3.10.13.
