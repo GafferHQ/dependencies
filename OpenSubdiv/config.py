@@ -12,7 +12,8 @@
 
 	"commands" : [
 
-		"cmake"
+		"mkdir build",
+		"cd build && cmake"
 			" -D CMAKE_INSTALL_PREFIX={buildDir}"
 			" -D CMAKE_PREFIX_PATH={buildDir}"
 			" -D NO_DOC=1"
@@ -25,11 +26,10 @@
 			" -D NO_TESTS=1"
 			" -D NO_TBB=1"
 			" -D OPENEXR_LOCATION={buildDir}/lib"
-			" ."
+			" .."
 		,
 
-		"make VERBOSE=1 -j {jobs}",
-		"make install",
+		"cd build && make VERBOSE=1 -j {jobs} && make install",
 
 	],
 
