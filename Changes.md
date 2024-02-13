@@ -1,6 +1,9 @@
 8.0.0 alpha x (relative to 8.0.0 alpha 6)
 -------------
 
+- Cortex : Updated to version 10.5.6.1.
+- OpenEXR : Updated to version 3.1.12.
+
 8.0.0 alpha 6 (relative to 8.0.0 alpha 5)
 -------------
 
