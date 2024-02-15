@@ -1,6 +1,11 @@
 8.0.0 alpha x (relative to 8.0.0 alpha 6)
 -------------
 
+- Cortex : Updated to version 10.5.6.1.
+- OpenEXR : Updated to version 3.1.12.
+- OpenImageIO : Updated to version 2.5.8.0.
+- OpenShadingLanguage : Updated to version 1.12.14.0.
+
 8.0.0 alpha 6 (relative to 8.0.0 alpha 5)
 -------------
 
