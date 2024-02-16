@@ -28,7 +28,7 @@
 
 	"commands" : [
 
-		"{environmentCommand} ./configure --prefix={buildDir} {libraryType} --enable-unicode=ucs4 --with-ensurepip=install --with-system-ffi",
+		"./configure --prefix={buildDir} {libraryType} --enable-unicode=ucs4 --with-ensurepip=install --with-system-ffi",
 		"make -j {jobs}",
 		"make install",
 
@@ -50,7 +50,6 @@
 	"variables" : {
 
 		"libraryType" : "--enable-shared",
-		"environmentCommand" : "",
 
 	},
 
@@ -59,17 +58,6 @@
 		( "{buildDir}/bin/python", "python3" ),
 
 	],
-
-	"platform:linux" : {
-
-		"variables" : {
-
-			# Needed to build Python with OpenSSL 1.1.1 support on Centos 7
-			"environmentCommand" : "CPPFLAGS=\"$(pkg-config --cflags openssl11)\" LDFLAGS=\"$(pkg-config --libs openssl11)\""
-
-		}
-
-	},
 
 	"platform:macos" : {
 

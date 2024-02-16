@@ -1,7 +1,7 @@
 8.0.0 alpha x (relative to 8.0.0 alpha 7)
 -------------
 
-
+- Python : Fixed python binary unnecessarily linking against libssl in gcc9 builds.
 
 8.0.0 alpha 7 (relative to 8.0.0 alpha 6)
 -------------
