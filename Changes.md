@@ -1,4 +1,9 @@
-8.0.0 alpha x (relative to 8.0.0 alpha 7)
+8.0.0 alpha x (relative to 8.0.0 alpha 8)
+-------------
+
+
+
+8.0.0 alpha 8 (relative to 8.0.0 alpha 7)
 -------------
 
 - Cortex : Updated to version 10.5.6.2.
