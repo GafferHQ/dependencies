@@ -1,6 +1,7 @@
 8.0.0 alpha x (relative to 8.0.0 alpha 8)
 -------------
 
+- Build : Added support for architecture-specific config overrides.
 - OpenImageIO : Updated to version 2.5.9.0.
 - Embree : Updated to version 4.3.1.
 
