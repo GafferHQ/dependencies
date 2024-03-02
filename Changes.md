@@ -1,6 +1,7 @@
 8.0.0 alpha x (relative to 8.0.0 alpha 8)
 -------------
 
+- OpenShadingLanguage : Disabled `USE_BATCHED` on `aarch64`.
 - Cycles : Disabled path guiding on `aarch64` pending OpenPGL update.
 - Build : Added support for architecture-specific config overrides.
 - OpenImageIO : Updated to version 2.5.9.0.
