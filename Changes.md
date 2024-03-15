@@ -1,3 +1,8 @@
+9.x.x (relative to 8.x.x)
+-----
+
+- CI : Added CI for linux-gcc11 and macos-arm64 (Xcode 14.3.1).
+
 8.0.0 (relative to 7.0.0)
 -----
 
