@@ -93,7 +93,7 @@ def __projects() :
 	configFiles = glob.glob( "*/config.py" )
 	return sorted( [ os.path.split( f )[0] for f in configFiles ] )
 
-def __decompress( archive ) :
+def __decompress( archive, cleanup = False ) :
 
 	if os.path.splitext( archive )[1] == ".zip" :
 		with zipfile.ZipFile( archive ) as f :
@@ -113,6 +113,9 @@ def __decompress( archive ) :
 		with tarfile.open( archive, "r:*" ) as f :
 			f.extractall()
 			files = f.getnames()
+
+	if cleanup :
+		os.unlink( archive )
 
 	dirs = { f.split( "/" )[0] for f in files }
 	if len( dirs ) == 1 :
@@ -261,7 +264,7 @@ def __preserveCurrentDirectory( f ) :
 	return decorated
 
 @__preserveCurrentDirectory
-def __buildProject( project, config, buildDir ) :
+def __buildProject( project, config, buildDir, cleanup ) :
 
 	sys.stderr.write( "Building project {}\n".format( project ) )
 
@@ -287,8 +290,9 @@ def __buildProject( project, config, buildDir ) :
 		shutil.rmtree( workingDir )
 	os.makedirs( workingDir )
 	os.chdir( workingDir )
+	fullWorkingDir = os.getcwd()
 
-	decompressedArchives = [ __decompress( "../../" + a ) for a in archives ]
+	decompressedArchives = [ __decompress( "../../" + a, cleanup ) for a in archives ]
 	os.chdir( config.get( "workingDir", decompressedArchives[0] ) )
 
 	if config["license"] is not None :
@@ -320,6 +324,9 @@ def __buildProject( project, config, buildDir ) :
 			os.remove( link[0] )
 		os.symlink( link[1], link[0] )
 
+	if cleanup :
+		shutil.rmtree( fullWorkingDir )
+
 def __checkConfigs( projects, configs ) :
 
 	def walk( project, configs ) :
@@ -336,7 +343,7 @@ def __checkConfigs( projects, configs ) :
 	for project in projects :
 		walk( project, configs )
 
-def __buildProjects( projects, configs, buildDir ) :
+def __buildProjects( projects, configs, buildDir, cleanup ) :
 
 	digestsFilename = os.path.join( buildDir, ".digests" )
 	if os.path.isfile( digestsFilename ) :
@@ -357,7 +364,7 @@ def __buildProjects( projects, configs, buildDir ) :
 		if digests.get( project ) == configs[project]["digest"].hexdigest() :
 			sys.stderr.write( "Project {} is up to date : skipping\n".format( project ) )
 		else :
-			__buildProject( project, configs[project], buildDir )
+			__buildProject( project, configs[project], buildDir, cleanup )
 			digests[project] = configs[project]["digest"].hexdigest()
 			with open( digestsFilename, "w" ) as digestsFile :
 				json.dump( digests, digestsFile, indent = 4 )
@@ -440,6 +447,12 @@ parser.add_argument(
 	help = "The number of build jobs to run in parallel. Defaults to cpu_count."
 )
 
+parser.add_argument(
+	"--cleanup",
+	action = "store_true",
+	help = "Delete archive files after extraction and 'working' directories after each project build completes."
+)
+
 for project in __projects() :
 
 	config = __loadJSON( project )
@@ -484,7 +497,7 @@ if args.projects is None :
 __checkConfigs( args.projects, configs )
 
 buildDir = variables["buildDir"].format( **variables )
-__buildProjects( args.projects, configs, buildDir )
+__buildProjects( args.projects, configs, buildDir, args.cleanup )
 
 if args.package :
 	__buildPackage( args.projects, configs, buildDir, args.package.format( **variables ) )

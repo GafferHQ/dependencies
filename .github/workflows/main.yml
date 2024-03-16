@@ -105,7 +105,7 @@ jobs:
 
     - name: Build Dependencies
       run: |
-        ./build.py --jobs ${{ matrix.jobs }} --buildDir ${{ env.DEPENDENCIES_BUILD_DIR }}/${{ env.DEPENDENCIES_BUILD_NAME }} --package ${{ env.DEPENDENCIES_BUILD_NAME }}.${{ env.PACKAGE_EXTENSION }}
+        ./build.py --cleanup --jobs ${{ matrix.jobs }} --buildDir ${{ env.DEPENDENCIES_BUILD_DIR }}/${{ env.DEPENDENCIES_BUILD_NAME }} --package ${{ env.DEPENDENCIES_BUILD_NAME }}.${{ env.PACKAGE_EXTENSION }}
       env:
         PYTHONUTF8: 1
 
