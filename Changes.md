@@ -2,6 +2,7 @@
 -----
 
 - CI : Added CI for linux-gcc11 and macos-arm64 (Xcode 14.3.1).
+- LLVM : Updated to version 15.0.7.
 
 8.0.0 (relative to 7.0.0)
 -----

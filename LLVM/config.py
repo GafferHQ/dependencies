@@ -2,8 +2,9 @@
 
 	"downloads" : [
 
-		"https://github.com/llvm/llvm-project/releases/download/llvmorg-11.1.0/llvm-11.1.0.src.tar.xz",
-		"https://github.com/llvm/llvm-project/releases/download/llvmorg-11.1.0/clang-11.1.0.src.tar.xz"
+		"https://github.com/llvm/llvm-project/releases/download/llvmorg-15.0.7/llvm-15.0.7.src.tar.xz",
+		"https://github.com/llvm/llvm-project/releases/download/llvmorg-15.0.7/clang-15.0.7.src.tar.xz",
+		"https://github.com/llvm/llvm-project/releases/download/llvmorg-15.0.7/cmake-15.0.7.src.tar.xz"
 
 	],
 
@@ -14,6 +15,7 @@
 	"commands" : [
 
 		"mv ../clang* tools/clang",
+		"mv ../cmake* ../cmake",
 		"mkdir build",
 		"cd build &&"
 			" cmake"
@@ -22,6 +24,10 @@
 			" -DCMAKE_BUILD_TYPE=Release"
 			" -DLLVM_ENABLE_RTTI=ON"
 			" -DLLVM_ENABLE_LIBXML2=OFF"
+			" -DLLVM_ENABLE_ZSTD=OFF"
+			" -DLLVM_INCLUDE_BENCHMARKS=OFF"
+			" -DLLVM_INCLUDE_TESTS=OFF"
+			" -DLLVM_TARGETS_TO_BUILD='Native'"
 			" ..",
 		"cd build && make install -j {jobs}"
 
