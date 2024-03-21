@@ -1,0 +1,13 @@
+diff --git a/src/lib/OpenEXRCore/internal_dwa_compressor.h b/src/lib/OpenEXRCore/internal_dwa_compressor.h
+index 705a036c5..f96d22b37 100644
+--- a/src/lib/OpenEXRCore/internal_dwa_compressor.h
++++ b/src/lib/OpenEXRCore/internal_dwa_compressor.h
+@@ -1600,7 +1600,7 @@ DwaCompressor_classifyChannels (DwaCompressor* me)
+             prefixMap,
+             me->_numChannels,
+             curc->channel_name,
+-            (size_t) (curc->channel_name - suffix));
++            (size_t) (suffix - curc->channel_name));
+ 
+         for (size_t i = 0; i < me->_channelRuleCount; ++i)
+         {
