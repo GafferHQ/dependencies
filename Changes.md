@@ -1,7 +1,9 @@
 8.0.0 alpha x (relative to 8.0.0 alpha 8)
 -------------
 
-
+- OpenEXR : Applied patches from the following pull requests :
+	- https://github.com/AcademySoftwareFoundation/openexr/pull/1591
+	- https://github.com/AcademySoftwareFoundation/openexr/pull/1684
 
 8.0.0 alpha 8 (relative to 8.0.0 alpha 7)
 -------------
