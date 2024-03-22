@@ -1,4 +1,9 @@
-8.0.0 alpha x (relative to 8.0.0 alpha 8)
+8.0.0 alpha x (relative to 8.0.0 alpha 9)
+-------------
+
+
+
+8.0.0 alpha 9 (relative to 8.0.0 alpha 8)
 -------------
 
 - OpenEXR : Applied patches from the following pull requests :
