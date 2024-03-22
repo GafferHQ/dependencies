@@ -21,7 +21,7 @@
 			" -D CMAKE_PREFIX_PATH={buildDir}"
 			" -D CMAKE_BUILD_TYPE=Release"
 			" -D WITH_CYCLES_OPENIMAGEDENOISE=OFF"
-			" -D WITH_CYCLES_PATH_GUIDING=ON"
+			" -D WITH_CYCLES_PATH_GUIDING={pathGuiding}"
 			" -D WITH_CYCLES_CUDA_BINARIES=ON"
 			" -D WITH_CYCLES_DEVICE_CUDA=ON"
 			" -D WITH_CYCLES_DEVICE_HIP=OFF"
@@ -41,7 +41,24 @@
 
 	],
 
-	"manifest" : [
+	"variables" : {
+
+        "pathGuiding" : "ON",
+
+	},
+
+    # OpenPGL 0.5 doesn't support aarch64, 0.6 does, but has API breaks
+    "arch:aarch64" : {
+
+		"variables" : {
+			"pathGuiding" : "OFF",
+		},
+
+	    "dependencies" : [ "Boost", "OpenJPEG", "OpenImageIO", "TBB", "Alembic", "Embree", "OpenColorIO", "OpenVDB", "OpenShadingLanguage", "OpenSubdiv", "LibWebP" ],
+
+	},
+
+    "manifest" : [
 
 		"cycles",
 

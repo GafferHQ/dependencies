@@ -69,6 +69,14 @@
 			"useBatched" : "0",
 		}
 
-	}
+	},
+
+	"arch:aarch64" : {
+
+		"variables" : {
+			"useBatched" : "0",
+		}
+
+	},
 
 }
