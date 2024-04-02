@@ -26,5 +26,16 @@
 		"{buildDir}/bin/python setup.py install --root / --prefix {buildDir}",
 
 	],
+	
+	"platform:windows" : {
+	
+		"environment" : {
+
+			"PATH" : "{buildDir}/bin;{buildDir}/lib;%PATH%",
+			"PYTHONPATH" : "{buildDir}/python"
+
+		},
+
+	}
 
 }
