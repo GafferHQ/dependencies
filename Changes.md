@@ -1,5 +1,10 @@
-8.0.0 alpha x (relative to 8.0.0 alpha 9)
+8.0.0 alpha x (relative to 8.0.0 alpha 10)
 -------------
+
+
+
+8.0.0 alpha 10 (relative to 8.0.0 alpha 9)
+--------------
 
 - Jinja2 : Added version 3.1.3.
 - MarkupSafe : Added version 2.1.5.
