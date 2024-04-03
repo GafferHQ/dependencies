@@ -7,6 +7,7 @@ import hashlib
 import json
 import os
 import operator
+import platform
 import multiprocessing
 import subprocess
 import shutil
@@ -64,7 +65,8 @@ addition to the standard global variables :
 Configs may specify platform-specific overrides in a dictionary named
 "platform:macos" or "platform:linux". Where a config setting is a dictionary,
 overrides are merged in via `dict.update()`, otherwise they completely
-replace the original value.
+replace the original value. Architecture-specific overrides can be
+provided with "arch:<arch>" e.g. "arch:aarch64".
 
 ### Variants
 
@@ -208,6 +210,7 @@ def __loadConfigs( variables, variants ) :
 		for variantProject, variant in variants.items() :
 			__applyConfigOverrides( config, "variant:{}:{}".format( variantProject, variant ) )
 		__applyConfigOverrides( config, "platform:macos" if sys.platform == "darwin" else "platform:linux" )
+		__applyConfigOverrides( config, "arch:{}".format( platform.machine() ) )
 		if config.get( "enabled", True ) :
 			configs[project] = config
 
