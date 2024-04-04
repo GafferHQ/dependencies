@@ -54,6 +54,7 @@
 
 		"bin/oslc",
 		"bin/oslinfo",
+		"bin/testshade",
 		"include/OSL",
 		"lib/libosl*",
 		"lib/lib*oslexec*",
