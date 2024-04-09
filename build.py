@@ -414,7 +414,7 @@ def __buildPackage( projects, configs, buildDir, package ) :
 		json.dump( projectManifest, file, indent = 4 )
 
 	rootName = os.path.basename( package ).replace( ".tar.gz", "" )
-	with tarfile.open( package, "w:gz" ) as file :
+	with tarfile.open( package, "w:gz", compresslevel = 6 ) as file :
 		for m in files :
 			file.add( os.path.join( buildDir, m ), arcname = os.path.join( rootName, m ) )
 
