@@ -2,6 +2,7 @@
 -------------
 
 - USD : Added `sdrOsl`, for inclusion of OSL shaders in the Sdr Registry.
+- OpenEXR : Updated to version 3.1.13.
 
 8.0.0 alpha 10 (relative to 8.0.0 alpha 9)
 --------------
