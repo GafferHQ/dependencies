@@ -1,7 +1,7 @@
 8.0.0 (relative to 7.0.0)
 -----
 
-- Cortex : Updated to version 10.5.6.2.
+- Cortex : Updated to version 10.5.7.0.
 - Cycles :
 	- Updated to version 4.0.2.
 	- Patched shader `IOR` values to default to 1.5.
