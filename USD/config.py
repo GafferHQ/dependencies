@@ -10,7 +10,7 @@
 
 	"license" : "LICENSE.txt",
 
-	"dependencies" : [ "Boost", "Python", "OpenImageIO", "TBB", "Alembic", "OpenSubdiv", "OpenVDB", "PyOpenGL", "GLEW", "PySide", "Embree", "MaterialX", "Jinja2" ],
+	"dependencies" : [ "Boost", "Python", "OpenImageIO", "TBB", "Alembic", "OpenSubdiv", "OpenVDB", "OpenShadingLanguage", "PyOpenGL", "GLEW", "PySide", "Embree", "MaterialX", "Jinja2" ],
 
 	"environment" : {
 
@@ -33,6 +33,7 @@
 			" -D Boost_NO_SYSTEM_PATHS=TRUE"
 			" -D Boost_NO_BOOST_CMAKE=TRUE"
 			" -D PXR_ENABLE_OPENVDB_SUPPORT=TRUE"
+			" -D PXR_ENABLE_OSL_SUPPORT=TRUE"
 			" -D PXR_ENABLE_PTEX_SUPPORT=FALSE"
 			" -D PXR_BUILD_TESTS=FALSE"
 			" -D PXR_BUILD_OPENIMAGEIO_PLUGIN=TRUE"

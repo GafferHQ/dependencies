@@ -1,86 +1,36 @@
-8.0.0 alpha x (relative to 8.0.0 alpha 10)
--------------
+8.0.0 (relative to 7.0.0)
+-----
 
-
-
-8.0.0 alpha 10 (relative to 8.0.0 alpha 9)
---------------
-
-- Jinja2 : Added version 3.1.3.
-- MarkupSafe : Added version 2.1.5.
-- USD : Added `usdGenSchema`.
-
-8.0.0 alpha 9 (relative to 8.0.0 alpha 8)
--------------
-
-- OpenEXR : Applied patches from the following pull requests :
-	- https://github.com/AcademySoftwareFoundation/openexr/pull/1591
-	- https://github.com/AcademySoftwareFoundation/openexr/pull/1684
-
-8.0.0 alpha 8 (relative to 8.0.0 alpha 7)
--------------
-
-- Cortex : Updated to version 10.5.6.2.
-- Python : Fixed python binary unnecessarily linking against libssl in gcc9 builds.
-
-8.0.0 alpha 7 (relative to 8.0.0 alpha 6)
--------------
-
-- Cortex : Updated to version 10.5.6.1.
-- OpenEXR : Updated to version 3.1.12.
-- OpenImageIO : Updated to version 2.5.8.0.
-- OpenShadingLanguage : Updated to version 1.12.14.0.
-
-8.0.0 alpha 6 (relative to 8.0.0 alpha 5)
--------------
-
-- Python : Updated to version 3.10.13.
-
-8.0.0 alpha 5 (relative to 8.0.0 alpha 4)
--------------
-
-- Cortex : Updated to version 10.5.6.0.
+- Cortex : Updated to version 10.5.7.0.
 - Cycles :
+	- Updated to version 4.0.2.
 	- Patched shader `IOR` values to default to 1.5.
 	- Enabled CUDA and Optix devices.
-
-8.0.0 alpha 4 (relative to 8.0.0 alpha 3)
--------------
-
-- Cortex : Updated to version 10.5.5.0.
-- Cycles : Updated to version 4.0.2.
 - Embree : Updated to version 4.3.0.
-- OpenPGL : Updated to version 0.5.0.
-- OpenVDB : Updated to version 10.1.0.
-- USD : Disabled Embree Hydra delegate, since it is incompatible with Embree 4.
-
-8.0.0 alpha 3 (relative to 8.0.0 alpha 2)
--------------
-
 - Imath : Updated to version 3.1.9.
-- MaterialX : Updated to version 1.38.8.
-- OpenEXR : Updated to version 3.1.9.
-- OpenImageIO : Updated to version 2.4.17.0.
-- OpenSubdiv : Updated to version 3.5.1.
-- OpenVDB : Updated to version 10.0.1.
-- PySide : Updated to version 5.15.12.
-- Qt : Updated to version 5.15.12.
-- USD : Updated to version 23.11.
-
-8.0.0 alpha 2 (relative to 8.0.0 alpha 1)
--------------
-
-- OpenSSL : Removed.
+- Jinja2 : Added version 3.1.3.
 - LibWebP : Added version 1.3.2.
+- MarkupSafe : Added version 2.1.5.
+- MaterialX : Updated to version 1.38.8.
+- OpenEXR : Updated to version 3.1.13.
+- OpenImageIO : Updated to version 2.5.8.0.
+- OpenPGL : Updated to version 0.5.0.
+- OpenShadingLanguage : Updated to version 1.12.14.0.
+- OpenSSL : Removed.
+- OpenSubdiv : Updated to version 3.5.1.
+- OpenVDB : Updated to version 10.1.0.
+- PsUtil : Added version 5.9.6.
+- PySide : Updated to version 5.15.12.
+- Python : Updated to version 3.10.13.
 - Qt :
+	- Updated to version 5.15.12.
 	- Removed QtPurchasing library.
 	- Removed QtNetworkAuth library.
-
-8.0.0 alpha 1
--------------
-
-- Cortex : Updated to 10.5.4.2.
-- PsUtil : Added version 5.9.6.
+- USD :
+	- Updated to version 23.11.
+	- Added `sdrOsl`, for inclusion of OSL shaders in the Sdr Registry.
+	- Added `usdGenSchema`.
+	- Disabled Embree Hydra delegate, since it is incompatible with Embree 4.
 
 7.x.x (relative to 7.0.0)
 -----
