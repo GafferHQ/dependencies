@@ -45,8 +45,15 @@
 			" -D USE_QT=NO"
 			" ..",
 		"cd gafferBuild && make install -j {jobs} VERBOSE=1",
+		"{extraCommands}",
 
 	],
+
+	"variables" : {
+
+		"extraCommands" : "",
+
+	},
 
 	"manifest" : [
 
@@ -59,5 +66,15 @@
 		"doc/openimageio.pdf",
 
 	],
+
+	"platform:macos" : {
+
+		"variables" : {
+
+			"extraCommands" : "mv {buildDir}/lib/python{pythonVersion}/site-packages/OpenImageIO {pythonLibDir}/python{pythonVersion}/site-packages/OpenImageIO"
+
+		},
+
+	},
 
 }
