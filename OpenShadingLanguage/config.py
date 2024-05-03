@@ -41,11 +41,13 @@
 			" ..",
 		"cd gafferBuild && make install -j {jobs} VERBOSE=1",
 		"cp {buildDir}/share/doc/OSL/osl-languagespec.pdf {buildDir}/doc",
+		"{extraCommands}",
 
 	],
 
 	"variables" : {
 
+		"extraCommands" : "",
 		"useBatched" : "b8_AVX,b8_AVX2,b8_AVX2_noFMA,b8_AVX512,b8_AVX512_noFMA,b16_AVX512,b16_AVX512_noFMA",
 
 	},
@@ -67,8 +69,11 @@
 	"platform:macos" : {
 
 		"variables" : {
+
+			"extraCommands" : "mv {buildDir}/lib/python{pythonVersion}/site-packages/oslquery.so {pythonLibDir}/python{pythonVersion}/site-packages/oslquery.so",
 			"useBatched" : "0",
-		}
+
+		},
 
 	}
 

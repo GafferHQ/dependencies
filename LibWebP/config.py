@@ -20,9 +20,9 @@
 	"manifest" : [
 
 		"include/webp",
-		"lib/libwebp{sharedLibraryExtension}*",
-		"lib/libwebpdemux{sharedLibraryExtension}*",
-		"lib/libsharpyuv{sharedLibraryExtension}*",
+		"lib/libwebp*{sharedLibraryExtension}*",
+		"lib/libwebpdemux*{sharedLibraryExtension}*",
+		"lib/libsharpyuv*{sharedLibraryExtension}*",
 
 	],
 

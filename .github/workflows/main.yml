@@ -1,0 +1,126 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - '*_maintenance'
+  pull_request:
+    branches:
+      - '*'
+  release:
+      types: [published]
+
+jobs:
+
+  build:
+
+    strategy:
+
+      # Don't cancel other jobs in the build matrix if one job fails.
+      fail-fast: false
+
+      matrix:
+
+        # Rather than generate all permutations of various settings,
+        # we want to explicitly list each of the variants we want to
+        # test. We can use `name` to declare the names of our variants,
+        # and then use `include` to define their settings.
+
+        name: [
+          linux-gcc11,
+          macos-arm64,
+        ]
+
+        include:
+
+          - name: linux-gcc11
+            os: ubuntu-20.04
+            publish: true
+            containerImage: ghcr.io/gafferhq/build/build:3.0.0
+            jobs: 4
+
+          - name: macos-arm64
+            os: macos-14
+            publish: true
+            containerImage:
+            jobs: 3
+
+    runs-on: ${{ matrix.os }}
+
+    container: ${{ matrix.containerImage }}
+
+    env:
+      DEPENDENCIES_BUILD_DIR: "./build"
+    steps:
+
+    - uses: actions/checkout@v4
+
+    - name: Install toolchain (Linux)
+      run: |
+        # The Docker container configures bash shells such that they enable the
+        # software collections we want. If we could set GitHub's
+        # `defaults.run.shell` to `bash` then all our build steps would pick up
+        # this environment automatically. But we can't do that because it will
+        # break future Windows builds, and we can't configure a different shell
+        # per platform because GitHub won't allow it. But we can run _this_
+        # Linux-only step in bash, and transfer the environment out to be used
+        # in later steps.
+        echo $PATH > $GITHUB_PATH
+        echo LD_LIBRARY_PATH=$LD_LIBRARY_PATH >> $GITHUB_ENV
+      shell: bash
+      if: runner.os == 'Linux'
+
+    - name: Install toolchain (macOS)
+      run: |
+        # Choose the earliest Xcode version available on a macos-14 runner.
+        sudo xcode-select -s /Applications/Xcode_14.3.1.app/Contents/Developer
+        # Install build requirements.
+        sudo pip3 install scons==4.6.0 --break-system-packages
+        brew install gpatch
+        brew install bison
+        # Make sure bison is discoverable.
+        echo BISON_ROOT=/opt/homebrew/opt/bison >> $GITHUB_ENV
+        # Make the location of the macOS platform SDK obvious to CMake.
+        # OpenShadingLanguage needs a little extra help finding `cstddef`.
+        echo SDKROOT=`xcrun --sdk macosx --show-sdk-path` >> $GITHUB_ENV
+        # Remove CommandLineTools so there is no potential for conflict with
+        # our selected Xcode version.
+        sudo rm -rf /Library/Developer/CommandLineTools
+      shell: bash
+      if: runner.os == 'macOS'
+
+    - name: 'Install Python Modules'
+      run: |
+        python --version
+        pip install PyJWT==1.7.1 PyGitHub==1.45
+
+    - name: Set Custom Variables
+      run: |
+        .github/workflows/main/setBuildVars.py
+      env:
+        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        DEPENDENCIES_BUILD_VARIANT: ${{ matrix.name }}
+      shell: bash
+
+    - name: Build Dependencies
+      run: |
+        ./build.py --cleanup --jobs ${{ matrix.jobs }} --buildDir ${{ env.DEPENDENCIES_BUILD_DIR }}/${{ env.DEPENDENCIES_BUILD_NAME }} --package ${{ env.DEPENDENCIES_BUILD_NAME }}.${{ env.PACKAGE_EXTENSION }}
+      env:
+        PYTHONUTF8: 1
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: ${{ env.DEPENDENCIES_BUILD_NAME }}
+        path: ${{ env.DEPENDENCIES_BUILD_NAME }}.${{ env.PACKAGE_EXTENSION }}
+        # Using compression-level 0 avoids compressing our already compressed
+        # package and results in a significantly faster upload.
+        compression-level: 0
+      if: matrix.publish
+
+    - name: Publish Release
+      run: |
+        python ./.github/workflows/main/publishRelease.py --archive ${{ env.DEPENDENCIES_BUILD_NAME }}.${{ env.PACKAGE_EXTENSION }} --repo ${{ github.repository }} --releaseId ${{ env.DEPENDENCIES_GITHUB_RELEASEID }}
+      if: matrix.publish && env.DEPENDENCIES_GITHUB_RELEASEID != ''
+      env:
+        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -28,7 +28,7 @@
 
 	"commands" : [
 
-		"./configure --prefix={buildDir} {libraryType} --enable-unicode=ucs4 --with-ensurepip=install --with-system-ffi",
+		"./configure --prefix={buildDir} {libraryType} --with-ensurepip=install",
 		"make -j {jobs}",
 		"make install",
 
