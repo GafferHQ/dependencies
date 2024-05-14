@@ -1,3 +1,8 @@
+8.x.x (relative to 8.0.0)
+-----
+
+- Jemalloc : Enabled `tls_model("initial-exec")` to prevent infinite recursion with dynamic TLS on Linux distributions with modern glibc versions.
+
 8.0.0 (relative to 7.0.0)
 -----
 
