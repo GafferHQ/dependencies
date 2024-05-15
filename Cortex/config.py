@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/ImageEngine/cortex/archive/refs/tags/10.5.7.0.tar.gz"
+		"https://github.com/ImageEngine/cortex/archive/refs/tags/10.5.7.1.tar.gz"
 
 	],
 
@@ -25,7 +25,7 @@
 
 		# Build first.
 		"scons {args}",
-		# The install separately. This avoids a problem with parallel builds - see
+		# Then install separately. This avoids a problem with parallel builds - see
 		# https://github.com/ImageEngine/cortex/issues/1308.
 		"scons install {args}",
 

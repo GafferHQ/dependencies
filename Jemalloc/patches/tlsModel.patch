@@ -1,0 +1,11 @@
+--- a/configure
++++ b/configure
+@@ -5079,7 +5079,7 @@
+ main ()
+ {
+ static __thread int
+-               __attribute__((tls_model("initial-exec"))) foo;
++               __attribute__((tls_model("initial-exec"), unused)) foo;
+                foo = 0;
+   ;
+   return 0;
