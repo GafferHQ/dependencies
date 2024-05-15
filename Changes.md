@@ -1,6 +1,7 @@
 8.x.x (relative to 8.0.0)
 -----
 
+- Cortex : Updated to version 10.5.7.1.
 - Jemalloc : Enabled `tls_model("initial-exec")` to prevent infinite recursion with dynamic TLS on Linux distributions with modern glibc versions.
 
 8.0.0 (relative to 7.0.0)
