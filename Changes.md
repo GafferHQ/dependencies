@@ -1,4 +1,9 @@
-8.x.x (relative to 8.0.0)
+8.x.x (relative to 8.0.1)
+-----
+
+
+
+8.0.1 (relative to 8.0.0)
 -----
 
 - Cortex : Updated to version 10.5.7.1.
