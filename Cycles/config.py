@@ -10,7 +10,7 @@
 
 	"license" : "LICENSE",
 
-	"dependencies" : [ "Boost", "OpenJPEG", "OpenImageIO", "TBB", "Alembic", "Embree", "OpenColorIO", "OpenVDB", "OpenShadingLanguage", "OpenSubdiv", "OpenPGL", "LibWebP", "Zstd" ],
+	"dependencies" : [ "Boost", "OpenJPEG", "OpenImageIO", "TBB", "Alembic", "Embree", "OpenColorIO", "OpenVDB", "OpenShadingLanguage", "OpenSubdiv", "OpenPGL", "LibWebP", "Zstd", "OpenImageDenoise" ],
 
 	"commands" : [
 
@@ -27,7 +27,7 @@
 			" -D CMAKE_INSTALL_PREFIX={buildDir}/cycles"
 			" -D CMAKE_PREFIX_PATH={buildDir}"
 			" -D CMAKE_BUILD_TYPE=Release"
-			" -D WITH_CYCLES_OPENIMAGEDENOISE=OFF"
+			" -D WITH_CYCLES_OPENIMAGEDENOISE=ON"
 			" -D WITH_CYCLES_PATH_GUIDING=ON"
 			" -D WITH_CYCLES_CUDA_BINARIES=ON"
 			" -D WITH_CYCLES_DEVICE_CUDA=ON"
