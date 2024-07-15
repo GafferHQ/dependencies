@@ -34,4 +34,12 @@
 
 	],
 
+	# OpenPGL 0.5 doesn't support aarch64, 0.6 does, but has API breaks
+	# that aren't compatible with Cycles (currently the only consumer).
+	"arch:aarch64" : {
+
+		"enabled": False
+
+	}
+
 }
