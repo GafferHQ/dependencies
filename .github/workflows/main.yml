@@ -87,6 +87,7 @@ jobs:
         # Remove CommandLineTools so there is no potential for conflict with
         # our selected Xcode version.
         sudo rm -rf /Library/Developer/CommandLineTools
+        sudo rm -rf /Applications/Python\ 3.10
       shell: bash
       if: runner.os == 'macOS'
 
