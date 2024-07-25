@@ -5,6 +5,7 @@
 - LLVM : Updated to version 15.0.7.
 - Cortex : Updated to version 10.5.9.1.
 - Cycles : Disabled CUDA binary generation for Kepler and Maxwell architecture GPUs.
+- Embree : Updated to version 4.3.2.
 - Imath : Updated to version 3.1.11.
 - LibJPEG-Turbo : Updated to version 3.0.3.
 - MaterialX : Updated to version 1.38.10.
