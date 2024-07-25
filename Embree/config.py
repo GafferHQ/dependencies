@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/embree/embree/archive/v4.3.0.tar.gz"
+		"https://github.com/RenderKit/embree/archive/refs/tags/v4.3.2.tar.gz"
 
 	],
 
