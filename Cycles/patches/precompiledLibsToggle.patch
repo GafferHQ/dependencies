@@ -1,0 +1,36 @@
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -92,6 +92,9 @@ set_property(DIRECTORY APPEND PROPERTY COMPILE_DEFINITIONS
+ ###########################################################################
+ # Options.
+ 
++# Use precompiled dependencies
++option(WITH_CYCLES_DEPENDENCIES     "Use precompiled dependencies" ON)
++
+ # Library dependencies
+ option(WITH_CYCLES_ALEMBIC          "Build with Alembic procedural support" ON)
+ option(WITH_CYCLES_EMBREE           "Build with Embree support" ON)
+--- a/src/cmake/external_libs.cmake
++++ b/src/cmake/external_libs.cmake
+@@ -67,7 +67,7 @@ else()
+   endif()
+ endif()
+ 
+-if(EXISTS ${_cycles_lib_dir})
++if(EXISTS ${_cycles_lib_dir} AND WITH_CYCLES_DEPENDENCIES)
+   message(STATUS "Using precompiled libraries at ${_cycles_lib_dir}")
+ 
+   _set_default(ALEMBIC_ROOT_DIR "${_cycles_lib_dir}/alembic")
+@@ -118,7 +118,11 @@ if(EXISTS ${_cycles_lib_dir})
+   # Ignore system libraries
+   set(CMAKE_IGNORE_PATH "${CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES};${CMAKE_SYSTEM_INCLUDE_PATH};${CMAKE_C_IMPLICIT_INCLUDE_DIRECTORIES};${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES}")
+ else()
+-  message(STATUS "No precompiled libraries found at ${_cycles_lib_dir}")
++  if(NOT WITH_CYCLES_DEPENDENCIES)
++    message(STATUS "Not using precompiled libraries")
++  else()
++    message(STATUS "No precompiled libraries found at ${_cycles_lib_dir}")
++  endif()
+   message(STATUS "Attempting to use system libraries instead")
+   unset(_cycles_lib_dir)
+ endif()
