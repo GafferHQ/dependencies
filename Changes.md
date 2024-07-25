@@ -10,6 +10,7 @@
 - LibJPEG-Turbo : Updated to version 3.0.3.
 - MaterialX : Updated to version 1.38.10.
 - OpenImageIO : Updated to version 2.5.10.1.
+- OpenPGL : Updated to version 0.6.0.
 - PySide : Updated to version 5.15.14.
 - Qt : Updated to version 5.15.14.
 - USD : Updated to version 24.08.
