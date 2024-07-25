@@ -4,6 +4,7 @@
 - CI : Added CI for linux-gcc11 and macos-arm64 (Xcode 14.3.1).
 - LLVM : Updated to version 15.0.7.
 - Cycles : Disabled CUDA binary generation for Kepler and Maxwell architecture GPUs.
+- Embree : Updated to version 4.3.2.
 
 8.x.x (relative to 8.0.1)
 -----
