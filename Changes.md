@@ -14,6 +14,7 @@
 - PySide : Updated to version 5.15.14.
 - Qt : Updated to version 5.15.14.
 - USD : Updated to version 24.08.
+- Zstandard : Added version 1.5.0.
 
 8.x.x (relative to 8.0.1)
 -----
