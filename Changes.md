@@ -5,6 +5,7 @@
 - LLVM : Updated to version 15.0.7.
 - Cycles : Disabled CUDA binary generation for Kepler and Maxwell architecture GPUs.
 - Embree : Updated to version 4.3.2.
+- OpenPGL : Updated to version 0.6.0.
 
 8.x.x (relative to 8.0.1)
 -----
