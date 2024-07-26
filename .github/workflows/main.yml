@@ -87,6 +87,9 @@ jobs:
         # Remove CommandLineTools so there is no potential for conflict with
         # our selected Xcode version.
         sudo rm -rf /Library/Developer/CommandLineTools
+        sudo rm -rf /Applications/Python\ 3.10
+        # Remove little-cms2 to prevent our LibRaw builds from finding it.
+        brew uninstall --ignore-dependencies little-cms2
       shell: bash
       if: runner.os == 'macOS'
 

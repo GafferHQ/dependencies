@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/blender/cycles/archive/refs/tags/v4.0.2.tar.gz",
+		"https://github.com/blender/cycles/archive/refs/tags/v4.2.0.tar.gz",
 
 	],
 
@@ -10,9 +10,16 @@
 
 	"license" : "LICENSE",
 
-	"dependencies" : [ "Boost", "OpenJPEG", "OpenImageIO", "TBB", "Alembic", "Embree", "OpenColorIO", "OpenVDB", "OpenShadingLanguage", "OpenSubdiv", "OpenPGL", "LibWebP" ],
+	"dependencies" : [ "Boost", "OpenJPEG", "OpenImageIO", "TBB", "Alembic", "Embree", "OpenColorIO", "OpenVDB", "OpenShadingLanguage", "OpenSubdiv", "OpenPGL", "LibWebP", "Zstd", "OpenImageDenoise" ],
 
 	"commands" : [
+
+		# The Cycles archive includes empty folders under `./lib`
+		# named `{platform}_{architecture}`. The existence of a folder
+		# in lib matching the current platform and architecture causes
+		# the build to only look for dependencies within it, so we
+		# remove them to allow dependencies to be found in `{buildDir}`.
+		"rmdir ./lib/*",
 
 		"mkdir build",
 		"cd build &&"
@@ -20,7 +27,7 @@
 			" -D CMAKE_INSTALL_PREFIX={buildDir}/cycles"
 			" -D CMAKE_PREFIX_PATH={buildDir}"
 			" -D CMAKE_BUILD_TYPE=Release"
-			" -D WITH_CYCLES_OPENIMAGEDENOISE=OFF"
+			" -D WITH_CYCLES_OPENIMAGEDENOISE=ON"
 			" -D WITH_CYCLES_PATH_GUIDING=ON"
 			" -D WITH_CYCLES_CUDA_BINARIES=ON"
 			" -D WITH_CYCLES_DEVICE_CUDA=ON"

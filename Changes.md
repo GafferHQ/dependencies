@@ -3,7 +3,14 @@
 
 - CI : Added CI for linux-gcc11 and macos-arm64 (Xcode 14.3.1).
 - LLVM : Updated to version 15.0.7.
-- Cycles : Disabled CUDA binary generation for Kepler and Maxwell architecture GPUs.
+- Cycles :
+  - Updated to version 4.2.0.
+  - Disabled CUDA binary generation for Kepler and Maxwell architecture GPUs.
+  - Enabled support for denoising with OpenImageDenoise.
+- Embree : Updated to version 4.3.2.
+- OpenPGL : Updated to version 0.6.0.
+- OpenImageDenoise : Added version 2.3.0.
+- Zstd : Added version 1.5.0.
 
 8.x.x (relative to 8.0.1)
 -----

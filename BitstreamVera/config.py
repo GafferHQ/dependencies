@@ -2,7 +2,8 @@
 
 	"downloads" : [
 
-		"https://ftp.gnome.org/pub/GNOME/sources/ttf-bitstream-vera/1.10/ttf-bitstream-vera-1.10.tar.gz"
+		"https://mirrors.dotsrc.org/gnome/sources/ttf-bitstream-vera/1.10/ttf-bitstream-vera-1.10.tar.gz"
+
 	],
 
 	"url" : "https://www.gnome.org/fonts",
