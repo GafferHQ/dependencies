@@ -6,6 +6,7 @@
 - Cortex : Updated to version 10.5.9.1.
 - Cycles : Disabled CUDA binary generation for Kepler and Maxwell architecture GPUs.
 - Imath : Updated to version 3.1.11.
+- OpenImageIO : Updated to version 2.5.10.1.
 
 8.x.x (relative to 8.0.1)
 -----
