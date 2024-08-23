@@ -7,6 +7,7 @@
 - Cycles : Disabled CUDA binary generation for Kepler and Maxwell architecture GPUs.
 - Imath : Updated to version 3.1.11.
 - LibJPEG-Turbo : Updated to version 3.0.3.
+- MaterialX : Updated to version 1.38.10.
 - OpenImageIO : Updated to version 2.5.10.1.
 
 8.x.x (relative to 8.0.1)
