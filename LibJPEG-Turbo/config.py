@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://download.sourceforge.net/project/libjpeg-turbo/1.5.2/libjpeg-turbo-1.5.2.tar.gz",
+		"https://github.com/libjpeg-turbo/libjpeg-turbo/releases/download/3.0.3/libjpeg-turbo-3.0.3.tar.gz",
 
 	],
 
@@ -11,9 +11,13 @@
 
 	"commands" : [
 
-		"./configure --prefix={buildDir}",
-		"make -j {jobs}",
-		"make install",
+		"mkdir build",
+		"cd build &&"
+			" cmake"
+			" -D CMAKE_INSTALL_PREFIX={buildDir}"
+			" -D CMAKE_INSTALL_LIBDIR={buildDir}/lib"
+			" ..",
+		"cd build && make -j {jobs} && make install",
 
 	],
 
