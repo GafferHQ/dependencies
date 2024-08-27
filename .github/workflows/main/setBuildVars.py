@@ -123,7 +123,7 @@ if releaseId :
 		for line in buildPy.readlines() :
 			versionMatch = versionRe.match( line )
 			if versionMatch :
-				version = versionMatch.group( 2 ).strip( "'\"" )
+				version = versionMatch.group( 1 ).strip( "'\"" )
 
 	if version != tag :
 		sys.stderr.write( "Tag \"{}\" does not match build.py __version \"{}\"\n".format( tag, version ) )
