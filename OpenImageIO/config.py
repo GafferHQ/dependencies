@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/OpenImageIO/oiio/archive/refs/tags/v2.5.8.0.tar.gz"
+		"https://github.com/OpenImageIO/oiio/archive/refs/tags/v2.5.10.1.tar.gz"
 
 	],
 
@@ -30,6 +30,7 @@
 			" -D CMAKE_PREFIX_PATH={buildDir}"
 			" -D USE_FFMPEG=NO"
 			" -D USE_GIF=0"
+			" -D USE_OPENVDB=NO"
 			" -D USE_PYTHON=YES"
 			" -D USE_EXTERNAL_PUGIXML=YES"
 			" -D BUILD_MISSING_FMT=NO"

@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/OpenPathGuidingLibrary/openpgl/archive/refs/tags/v0.5.0.tar.gz"
+		"https://github.com/OpenPathGuidingLibrary/openpgl/archive/refs/tags/v0.6.0.tar.gz"
 
 	],
 

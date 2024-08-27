@@ -23,8 +23,24 @@
 
 	"commands" : [
 
-		"{buildDir}/bin/python setup.py install --root / --prefix {buildDir}",
+		"{buildDir}/bin/python setup.py install --root / --prefix {buildDir} {extraArgs}",
 
 	],
+
+	"variables" : {
+
+		"extraArgs" : "",
+
+	},
+
+	"platform:macos" : {
+
+		"variables" : {
+
+			"extraArgs" : "--install-lib {pythonLibDir}/python{pythonVersion}/site-packages",
+
+		}
+
+	},
 
 }
