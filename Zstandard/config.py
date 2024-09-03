@@ -30,7 +30,7 @@
 	"manifest" : [
 
 		"include/zstd.h",
-		"lib/libzstd{sharedLibraryExtension}*"
+		"lib/libzstd*{sharedLibraryExtension}*"
 
 	],
 
