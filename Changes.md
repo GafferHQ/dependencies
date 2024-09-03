@@ -1,3 +1,8 @@
+9.0.0 alpha x (relative to 9.0.0 alpha 1)
+-------------
+
+- Zstandard : Fixed manifest path on macOS.
+
 9.0.0 alpha 1 (relative to 8.0.1)
 -------------
 
