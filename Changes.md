@@ -1,6 +1,7 @@
 9.0.0 alpha x (relative to 9.0.0 alpha 1)
 -------------
 
+- Cortex : Updated to version 10.5.9.2.
 - Zstandard : Fixed manifest path on macOS.
 
 9.0.0 alpha 1 (relative to 8.0.1)
