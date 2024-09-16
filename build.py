@@ -46,6 +46,10 @@ Dictionary fields
   project's `config` passed as an argument. All project variables, including global
   variables, are included in `config["variables"]`.
 - postCommands : List containing build commands to run immediately after `commands`.
+- postMovePaths : Dictionary of the form { sourcePath : destination } specifying
+  paths that should be copied after `postCommands` have run. Sources man be either
+  files or directories and may contain standard glob matching patterns.Destinations
+  should be directories, which will be created if needed.
 - enabled : May be set to `False` to disable a project entirely. This is
   only expected to be useful in conjunction with platform overrides or
   variants.
@@ -163,7 +167,7 @@ def __substitute( config, variables, forDigest = False ) :
 	def substituteWalk( o ) :
 
 		if isinstance( o, dict ) :
-			return { k : substituteWalk( v ) for k, v in o.items() }
+			return { substituteWalk( k ) : substituteWalk( v ) for k, v in o.items() }
 		elif isinstance( o, list ) :
 			return [ substituteWalk( x ) for x in o ]
 		elif isinstance( o, tuple ) :
@@ -196,6 +200,7 @@ def __updateDigest( project, config ) :
 	__appendHash( config["digest"], config.get( "environment" ) )
 	__appendHash( config["digest"], config.get( "commands" ) )
 	__appendHash( config["digest"], config.get( "symbolicLinks" ) )
+	__appendHash( config["digest"], config.get( "postMovePaths" ) )
 	for e in config.get( "requiredEnvironment", [] ) :
 		__appendHash( config["digest"], os.environ.get( e, "" ) )
 
@@ -326,6 +331,25 @@ def __buildProject( project, config, buildDir, cleanup ) :
 			subprocess.check_call( command, shell = True, env = environment )
 		elif callable( command ) :
 			command( config )
+
+	moves = {}
+	for src, dest in config.get( "postMovePaths", {} ).items() :
+		destPath = pathlib.Path( dest )
+
+		for f in glob.glob( src ) :
+			path = pathlib.Path( f )
+			if path.is_file() :
+				moves[path] = destPath / path.name
+			else :
+				# We could use `pathlib.Path.replace()` with the directory,
+				# but it will fail if the directory already exists. Instead
+				# we want to merge our directory with the existing contents.
+				for p in [ i for i in path.glob( "**/*" ) if i.is_file() ] :
+					moves[p] = destPath / p.relative_to( path.parent )
+
+	for src, dest in moves.items() :
+		dest.parent.mkdir( parents = True, exist_ok = True )
+		src.replace( dest )
 
 	for link in config.get( "symbolicLinks", [] ) :
 		sys.stderr.write( "Linking {} to {}\n".format( link[0], link[1] ) )
