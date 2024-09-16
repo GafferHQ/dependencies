@@ -62,13 +62,14 @@
 		"bin/oiiotool{executableExtension}",
 
 		"include/OpenImageIO",
-		"lib/{libraryPrefix}OpenImageIO*{sharedLibraryExtension}*",
+		"{sharedLibraryDir}/{libraryPrefix}OpenImageIO*{sharedLibraryExtension}*",
 		"lib/{libraryPrefix}OpenImageIO*.lib",
 		"python/OpenImageIO",
 
 		"doc/openimageio.pdf",
 
 	],
+
 	"platform:windows" : {
 
 		"environment" : {
@@ -76,20 +77,6 @@
 			"PATH" : "{buildDir}/bin;{buildDir}/lib;%PATH%",
 
 		},
-        
-		"manifest" : [
-
-			"bin/maketx{executableExtension}",
-			"bin/oiiotool{executableExtension}",
-
-			"include/OpenImageIO",
-			"lib/{libraryPrefix}OpenImageIO*{sharedLibraryExtension}*",
-			"lib/{libraryPrefix}OpenImageIO*.lib",
-            "python/OpenImageIO",
-
-			"doc/openimageio.pdf",
-
-		],
 
 		"commands" : [
 
@@ -129,11 +116,15 @@
 				" -D USE_SIMD=sse4.2"
 			 	" ..",
 			"cd gafferBuild && cmake --build . --config {cmakeBuildType} --target install -- -j {jobs}",
-			"copy {buildDir}\\bin\\{libraryPrefix}OpenImageIO*{sharedLibraryExtension}* {buildDir}\\lib\\",
-            "move {buildDir}\\lib\\python{pythonVersion}\\site-packages\\OpenImageIO {buildDir}\\python\\OpenImageIO",
-		]
+		],
 
-	}
+		"postMovePaths" : {
+
+			"{buildDir}/lib/python{pythonVersion}/site-packages/OpenImageIO" : "{buildDir}/python",
+
+		}
+
+	},
 
 	"platform:macos" : {
 
