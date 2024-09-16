@@ -1,7 +1,7 @@
 9.0.0 alpha x (relative to 9.0.0 alpha 2)
 -------------
 
-- Windows : Update compiler to MSVC 2022.
+- Windows : Update compiler to Visual Studio 2022 / MSVC 17.8.
 
 
 
