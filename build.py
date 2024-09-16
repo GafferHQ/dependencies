@@ -14,7 +14,7 @@ import sys
 import tarfile
 from telnetlib import STATUS
 import zipfile
-from urllib.request import urlretrieve
+import urllib.request
 import stat
 import pathlib
 
@@ -284,7 +284,10 @@ def __buildProject( project, config, buildDir, cleanup ) :
 			continue
 
 		sys.stderr.write( 'Retrieving URL: "{}" to "{}"'.format( download, archivePath ) )
-		urlretrieve( download, archivePath )
+		opener = urllib.request.build_opener()
+		opener.addheaders = [ ( "Accept", "*/*" ) ]
+		urllib.request.install_opener( opener )
+		urllib.request.urlretrieve( download, archivePath )
 
 	workingDir = project + "/working"
 	if os.path.exists( workingDir ) :
