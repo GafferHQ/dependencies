@@ -532,6 +532,7 @@ variables = {
 	"path" : os.environ["PATH"],
 	"version" : __version,
 	"platform" : { "darwin": "macos", "win32": "windows" }.get( sys.platform, "linux" ),
+	"sharedLibraryDir" : { "win32": "bin" }.get( sys.platform, "lib" ),
 	"sharedLibraryExtension" : { "darwin": ".dylib", "win32": ".dll" }.get( sys.platform, ".so" ),
 	"staticLibraryExtension" : ".lib" if sys.platform == "win32" else ".a",
 	"pythonModuleExtension" : ".pyd" if sys.platform == "win32" else ".so",
