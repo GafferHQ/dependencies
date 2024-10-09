@@ -76,6 +76,7 @@
 - Qt : Updated to version 5.15.14.
 - USD : Updated to version 24.08.
 - Zstandard : Added version 1.5.0.
+- Python (Windows) : Added `tbbmalloc_proxy.dll` to Python executable for significantly improved performance.
 
 8.x.x (relative to 8.0.1)
 -----

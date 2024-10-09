@@ -1,0 +1,10 @@
+--- "a/PCbuild/python.vcxproj"
++++ "b/PCBuild/python.vcxproj"
+@@ -96,6 +96,7 @@
+       <SubSystem>Console</SubSystem>
+       <StackReserveSize Condition="$(Configuration) != 'Debug'">2000000</StackReserveSize>
+       <StackReserveSize Condition="$(Configuration) == 'Debug'">8000000</StackReserveSize>
++      <AdditionalLibraryDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\..\..\$(DEPENDENCIES_BUILD_DIR)\$(DEPENDENCIES_BUILD_NAME)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+     </Link>
+   </ItemDefinitionGroup>
+   <ItemGroup>
