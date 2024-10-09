@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/AcademySoftwareFoundation/OpenShadingLanguage/archive/refs/tags/v1.12.14.0.tar.gz"
+		"https://github.com/AcademySoftwareFoundation/OpenShadingLanguage/archive/refs/tags/v1.13.11.0.tar.gz"
 
 	],
 
@@ -32,7 +32,6 @@
 			" -D CMAKE_INSTALL_LIBDIR={buildDir}/lib"
 			" -D CMAKE_PREFIX_PATH={buildDir}"
 			" -D STOP_ON_WARNING=0"
-			" -D ENABLERTTI=1"
 			" -D LLVM_STATIC=1"
 			" -D USE_BATCHED={useBatched}"
 			" -D OSL_SHADER_INSTALL_DIR={buildDir}/shaders"
