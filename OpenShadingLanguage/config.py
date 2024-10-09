@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/AcademySoftwareFoundation/OpenShadingLanguage/archive/refs/tags/v1.12.14.0.tar.gz"
+		"https://github.com/AcademySoftwareFoundation/OpenShadingLanguage/archive/refs/tags/v1.13.11.0.tar.gz"
 
 	],
 
@@ -19,6 +19,9 @@
 		"DYLD_FALLBACK_LIBRARY_PATH" : "{buildDir}/lib",
 		"LD_LIBRARY_PATH" : "{buildDir}/lib",
 		"PATH" : "{buildDir}/bin:$PATH",
+		# We define `OPTIX_ROOT_DIR` in the build container for
+		# Cycles to find it, but OSL wants `OPTIX_INSTALL_DIR`.
+		"OPTIX_INSTALL_DIR" : "$OPTIX_ROOT_DIR",
 
 	},
 
@@ -32,12 +35,12 @@
 			" -D CMAKE_INSTALL_LIBDIR={buildDir}/lib"
 			" -D CMAKE_PREFIX_PATH={buildDir}"
 			" -D STOP_ON_WARNING=0"
-			" -D ENABLERTTI=1"
 			" -D LLVM_STATIC=1"
 			" -D USE_BATCHED={useBatched}"
 			" -D OSL_SHADER_INSTALL_DIR={buildDir}/shaders"
 			" -D Python_ROOT_DIR={buildDir}"
 			" -D Python_FIND_STRATEGY=LOCATION"
+			" {extraArguments}"
 			" ..",
 		"cd gafferBuild && make install -j {jobs} VERBOSE=1",
 		"cp {buildDir}/share/doc/OSL/osl-languagespec.pdf {buildDir}/doc",
@@ -47,6 +50,7 @@
 
 	"variables" : {
 
+		"extraArguments" : "",
 		"extraCommands" : "",
 		"useBatched" : "b8_AVX,b8_AVX2,b8_AVX2_noFMA,b8_AVX512,b8_AVX512_noFMA,b16_AVX512,b16_AVX512_noFMA",
 
@@ -65,6 +69,15 @@
 		"shaders",
 
 	],
+
+	"platform:linux" : {
+
+		"variables" : {
+
+			"extraArguments" : "-D OSL_USE_OPTIX=1",
+
+		},
+	},
 
 	"platform:macos" : {
 
