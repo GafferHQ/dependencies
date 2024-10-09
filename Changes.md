@@ -1,6 +1,7 @@
 9.0.0 alpha x (relative to 9.0.0 alpha 3)
 -------------
 
+- Cortex : Updated to version 10.5.9.5.
 - OpenShadingLanguage :
   - Updated to version 1.13.11.0.
   - Enabled Optix support on Linux.
