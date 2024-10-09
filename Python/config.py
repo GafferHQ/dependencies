@@ -16,7 +16,7 @@
 
 	"license" : "LICENSE",
 
-	"dependencies" : [ "LibFFI" ],
+	"dependencies" : [ "LibFFI", "TBB" ],
 
 	"environment" : {
 
