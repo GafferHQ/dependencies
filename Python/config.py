@@ -16,7 +16,7 @@
 
 	"license" : "LICENSE",
 
-	"dependencies" : [ "LibFFI" ],
+	"dependencies" : [ "LibFFI", "TBB" ],
 
 	"environment" : {
 
@@ -408,6 +408,12 @@
 			"DLLs/libssl*{sharedLibraryExtension}*",
 			"DLLs/libcrypto*{sharedLibraryExtension}*",
 		],
+
+		"environment" : {
+
+			"PATH" : "{buildDir}\\bin;%PATH%",
+
+		},
 
 		"commands" : [
 
