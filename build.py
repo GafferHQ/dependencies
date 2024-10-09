@@ -322,7 +322,10 @@ def __buildProject( project, config, buildDir, cleanup ) :
 
 	for patch in glob.glob( "../../patches/*.patch" ) + glob.glob( "../../patches/{}/*.patch".format( config["platform"] ) ) :
 		# subprocess.check_call( "git apply --ignore-space-change --ignore-whitespace --whitespace=nowarn {patch}".format( patch = patch ), shell = True )
-		subprocess.check_call( "patch -p1 < {patch}".format( patch = patch ), shell = True )
+		try :
+			subprocess.check_call( "patch -p1 < {patch}".format( patch = patch ), shell = True )
+		except subprocess.CalledProcessError :
+			subprocess.check_call( "git apply {patch}".format( patch = patch ), shell = True )
 
 	environment = os.environ.copy()
 	for k, v in config.get( "environment", {} ).items() :
