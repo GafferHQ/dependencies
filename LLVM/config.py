@@ -27,10 +27,26 @@
 			" -DLLVM_ENABLE_ZSTD=OFF"
 			" -DLLVM_INCLUDE_BENCHMARKS=OFF"
 			" -DLLVM_INCLUDE_TESTS=OFF"
-			" -DLLVM_TARGETS_TO_BUILD='Native'"
+			" -DLLVM_TARGETS_TO_BUILD={buildTargets}"
 			" ..",
 		"cd build && make install -j {jobs}"
 
 	],
+
+	"variables" : {
+
+		"buildTargets" : "'Native'",
+
+	},
+
+	"platform:linux" : {
+
+		"variables" : {
+
+			"buildTargets" : "'Native;NVPTX'",
+
+		},
+
+	},
 
 }

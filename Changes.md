@@ -1,7 +1,9 @@
 9.0.0 alpha x (relative to 9.0.0 alpha 3)
 -------------
 
-- OpenShadingLanguage : Updated to version 1.13.11.0.
+- OpenShadingLanguage :
+  - Updated to version 1.13.11.0.
+  - Enabled Optix support on Linux.
 
 9.0.0 alpha 3 (relative to 9.0.0 alpha 2)
 -------------
