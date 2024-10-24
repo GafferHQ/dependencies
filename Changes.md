@@ -1,42 +1,21 @@
-9.0.0 alpha x (relative to 9.0.0 alpha 4)
--------------
-
-- Cortex : Updated to version 10.5.10.0.
-
-9.0.0 alpha 4 (relative to 9.0.0 alpha 3)
--------------
-
-- Cortex : Updated to version 10.5.9.5.
-- OpenShadingLanguage :
-  - Updated to version 1.13.11.0.
-  - Enabled Optix support on Linux.
-
-9.0.0 alpha 3 (relative to 9.0.0 alpha 2)
--------------
-
-- Cortex : Updated to version 10.5.9.4.
-
-9.0.0 alpha 2 (relative to 9.0.0 alpha 1)
--------------
-
-- Cortex : Updated to version 10.5.9.2.
-- Zstandard : Fixed manifest path on macOS.
-
-9.0.0 alpha 1 (relative to 8.0.1)
--------------
+9.0.0 (relative to 8.0.1)
+-----
 
 - CI : Added CI for linux-gcc11 and macos-arm64 (Xcode 14.3.1).
-- LLVM : Updated to version 15.0.7.
-- Cortex : Updated to version 10.5.9.1.
+- Cortex : Updated to version 10.5.10.0.
 - Cycles :
   - Updated to version 4.2.0.
   - Disabled CUDA binary generation for Kepler and Maxwell architecture GPUs.
 - Embree : Updated to version 4.3.2.
 - Imath : Updated to version 3.1.11.
 - LibJPEG-Turbo : Updated to version 3.0.3.
+- LLVM : Updated to version 15.0.7.
 - MaterialX : Updated to version 1.38.10.
 - OpenImageIO : Updated to version 2.5.10.1.
 - OpenPGL : Updated to version 0.6.0.
+- OpenShadingLanguage :
+  - Updated to version 1.13.11.0.
+  - Enabled Optix support on Linux.
 - PySide : Updated to version 5.15.14.
 - Qt : Updated to version 5.15.14.
 - USD : Updated to version 24.08.
