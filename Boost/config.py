@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://boostorg.jfrog.io/artifactory/main/release/1.80.0/source/boost_1_80_0.tar.gz"
+		"https://archives.boost.io/release/1.80.0/source/boost_1_80_0.tar.gz"
 
 	],
 
