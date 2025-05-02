@@ -1,7 +1,8 @@
 10.x.x (relative to 9.x.x)
 ------
 
-
+- Cortex : Updated to version 10.5.13.1.
+- USD : Updated to version 25.05.
 
 9.1.0 (relative to 9.0.0)
 -----
