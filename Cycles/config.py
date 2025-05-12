@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/blender/cycles/archive/refs/tags/v4.2.0.tar.gz",
+		"https://github.com/blender/cycles/archive/refs/tags/v4.4.0.tar.gz",
 
 	],
 
@@ -19,7 +19,7 @@
 		# in lib matching the current platform and architecture causes
 		# the build to only look for dependencies within it, so we
 		# remove them to allow dependencies to be found in `{buildDir}`.
-		"rmdir ./lib/*",
+		"rmdir --ignore-fail-on-non-empty ./lib/*",
 
 		"mkdir build",
 		"cd build &&"

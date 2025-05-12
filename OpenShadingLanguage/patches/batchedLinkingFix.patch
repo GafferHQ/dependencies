@@ -1,0 +1,12 @@
+diff --git a/src/liboslexec/CMakeLists.txt b/src/liboslexec/CMakeLists.txt
+index 57cb7d59..eb7c6cb0 100644
+--- a/src/liboslexec/CMakeLists.txt
++++ b/src/liboslexec/CMakeLists.txt
+@@ -521,6 +521,7 @@ foreach(batched_target ${BATCHED_TARGET_LIST})
+     target_link_libraries (${batched_target_lib}
+         PUBLIC
+             OpenImageIO::OpenImageIO
++            ${local_lib}
+         )
+     if (partio_FOUND)
+         target_link_libraries(${batched_target_lib} PRIVATE partio::partio ZLIB::ZLIB)

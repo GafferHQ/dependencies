@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/AcademySoftwareFoundation/OpenShadingLanguage/archive/refs/tags/v1.13.11.0.tar.gz"
+		"https://github.com/AcademySoftwareFoundation/OpenShadingLanguage/archive/refs/tags/v1.14.5.1.tar.gz"
 
 	],
 
@@ -43,7 +43,6 @@
 			" {extraArguments}"
 			" ..",
 		"cd gafferBuild && make install -j {jobs} VERBOSE=1",
-		"cp {buildDir}/share/doc/OSL/osl-languagespec.pdf {buildDir}/doc",
 		"{extraCommands}",
 
 	],
