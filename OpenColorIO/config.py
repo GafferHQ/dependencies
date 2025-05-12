@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/AcademySoftwareFoundation/OpenColorIO/archive/refs/tags/v2.2.1.tar.gz",
+		"https://github.com/AcademySoftwareFoundation/OpenColorIO/archive/refs/tags/v2.3.2.tar.gz",
 		"https://github.com/imageworks/OpenColorIO-Configs/archive/v1.0_r2.tar.gz",
 
 	],
@@ -30,7 +30,7 @@
 			" -D CMAKE_PREFIX_PATH={buildDir}"
 			" -D Python_ROOT_DIR={buildDir}"
 			" -D Python_FIND_STRATEGY=LOCATION"
-			" -D pystring_INCLUDE_DIR={buildDir}/include"
+			" -D pystring_INCLUDE_DIR={buildDir}/include/pystring"
 			" -D BUILD_SHARED_LIBS=ON"
 			" -D OCIO_INSTALL_EXT_PACKAGES=NONE"
 			" -D OCIO_BUILD_APPS=OFF"

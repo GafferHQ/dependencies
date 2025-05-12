@@ -1,0 +1,11 @@
+--- a/mz.h	2025-05-13 09:53:18.702514054 -0700
++++ b/mz.h	2025-05-13 09:53:29.271092945 -0700
+@@ -15,7 +15,7 @@
+
+ /* MZ_VERSION */
+ #define MZ_VERSION                      ("3.0.10")
+-#define MZ_VERSION_BUILD                (03000a)
++#define MZ_VERSION_BUILD                (030010)
+
+ /* MZ_ERROR */
+ #define MZ_OK                           (0)  /* zlib */
