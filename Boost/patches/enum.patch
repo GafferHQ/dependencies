@@ -1,0 +1,10 @@
+--- a/libs/python/src/object/enum.cpp	2025-05-13 11:34:50.838894911 -0700
++++ b/libs/python/src/object/enum.cpp	2025-05-13 11:35:07.317490405 -0700
+@@ -113,7 +113,6 @@
+ #if PY_VERSION_HEX < 0x03000000
+     | Py_TPFLAGS_CHECKTYPES
+ #endif
+-    | Py_TPFLAGS_HAVE_GC
+     | Py_TPFLAGS_BASETYPE,                  /* tp_flags */
+     0,                                      /* tp_doc */
+     0,                                      /* tp_traverse */
