@@ -1,12 +1,12 @@
 {
 
-	"downloads" : [ "https://www.python.org/ftp/python/3.10.13/Python-3.10.13.tgz" ],
+	"downloads" : [ "https://www.python.org/ftp/python/3.11.12/Python-3.11.12.tgz" ],
 
 	"publicVariables" : {
 
-		"pythonVersion" : "3.10",
+		"pythonVersion" : "3.11",
 		"pythonMajorVersion" : "3",
-		"pythonMinorVersion" : "10",
+		"pythonMinorVersion" : "11",
 		"pythonIncludeDir" : "{buildDir}/include/python{pythonVersion}",
 		"pythonLibDir" : "{buildDir}/lib",
 

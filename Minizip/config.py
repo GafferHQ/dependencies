@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/zlib-ng/minizip-ng/archive/refs/tags/3.0.9.tar.gz",
+		"https://github.com/zlib-ng/minizip-ng/archive/refs/tags/3.0.10.tar.gz",
 
 	],
 

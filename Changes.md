@@ -2,6 +2,14 @@
 ------
 
 - Cortex : Updated to version 10.5.13.1.
+- Minizip : Updated to version 3.0.10.
+- OpenColorIO : Updated to version 2.3.2.
+- OpenEXR : Updated to version 3.2.4.
+- OpenSubdiv : Updated to version 3.6.0.
+- OpenVDB : Updated to version 11.0.0.
+- Python : Updated to version 3.11.12.
+- PySide : Updated to version 5.15.16.
+- Qt : Updated to version 5.15.16.
 - USD : Updated to version 25.05.
 
 9.1.0 (relative to 9.0.0)
