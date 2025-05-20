@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://archives.boost.io/release/1.80.0/source/boost_1_80_0.tar.gz"
+		"https://archives.boost.io/release/1.82.0/source/boost_1_82_0.tar.gz"
 
 	],
 
