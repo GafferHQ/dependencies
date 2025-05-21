@@ -1,7 +1,8 @@
 10.x.x (relative to 9.x.x)
 ------
 
-- Cortex : Updated to version 10.5.13.1.
+- Boost : Updated to version 1.82.0.
+- Cortex : Updated to version 10.5.14.1.
 - Minizip : Updated to version 3.0.10.
 - OpenColorIO : Updated to version 2.3.2.
 - OpenEXR : Updated to version 3.2.4.
