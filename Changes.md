@@ -3,6 +3,7 @@
 
 - PySide : Updated to version 6.5.5.
 - Qt : Updated to version 6.5.5.
+- Qt.py : Updated to version 1.4.6.
 
 10.0.0 alpha 1 (relative to 9.1.0)
 --------------
