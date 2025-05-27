@@ -1,0 +1,40 @@
+--- a/build_scripts/main.py	2025-05-27 16:16:27.438449743 -0700
++++ b/build_scripts/main.py	2025-05-27 16:17:07.696048206 -0700
+@@ -8,7 +8,6 @@
+ import sys
+ import sysconfig
+ import time
+-from packaging.version import parse as parse_version
+ from pathlib import Path
+ from shutil import copytree
+ from textwrap import dedent
+@@ -341,8 +340,7 @@
+
+         # Add Clang to path for Windows.
+         # Revisit once Clang is bundled with Qt.
+-        if (sys.platform == "win32"
+-                and parse_version(self.qtinfo.version) >= parse_version("5.7.0")):
++        if (sys.platform == "win32"):
+             clang_dir, clang_source = detect_clang()
+             if clang_dir:
+                 clangBinDir = clang_dir / 'bin'
+
+--- a/build_scripts/wheel_utils.py	2025-05-27 16:22:09.565431712 -0700
++++ b/build_scripts/wheel_utils.py	2025-05-27 16:22:18.688946439 -0700
+@@ -5,7 +5,6 @@
+ from pathlib import Path
+ from sysconfig import get_config_var, get_platform
+
+-from packaging.version import parse as parse_version
+ from setuptools.errors import SetupError
+
+ from .options import OPTION
+@@ -30,9 +30,6 @@
+     if not qt_version:
+         raise SetupError("Failed to query the Qt version with qmake {qtinfo.qmake_command}")
+
+-    if parse_version(qtinfo.version) < parse_version("5.7"):
+-        raise SetupError(f"Incompatible Qt version detected: {qt_version}. "
+-                         "A Qt version >= 5.7 is required.")
+
+     return qt_version
