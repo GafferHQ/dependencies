@@ -37,7 +37,7 @@ jobs:
           - name: linux-gcc11
             os: ubuntu-24.04
             publish: true
-            containerImage: ghcr.io/gafferhq/build/build:3.2.0
+            containerImage: ghcr.io/gafferhq/build/build:3.3.0
             jobs: 4
 
           - name: macos-arm64
