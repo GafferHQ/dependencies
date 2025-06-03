@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/AcademySoftwareFoundation/MaterialX/archive/refs/tags/v1.38.10.tar.gz",
+		"https://github.com/AcademySoftwareFoundation/MaterialX/archive/refs/tags/v1.39.3.tar.gz",
 
 	],
 

@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://download.savannah.gnu.org/releases/freetype/freetype-2.9.1.tar.gz",
+		"https://download.savannah.gnu.org/releases/freetype/freetype-2.13.3.tar.gz",
 
 	],
 

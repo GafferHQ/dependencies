@@ -1,5 +1,15 @@
-10.x.x (relative to 9.x.x)
-------
+10.0.0 alpha x (relative to 10.0.0 alpha 1)
+--------------
+
+- Cycles : Updated to version 4.4.0.
+- FreeType : Updated to version 2.13.3.
+- LibRaw : Updated to version 0.21.4.
+- MaterialX : Updated to version 1.39.3.
+- OpenImageIO : Updated to version 3.0.6.1.
+- OpenShadingLanguage : Updated to version 1.14.5.1.
+
+10.0.0 alpha 1 (relative to 9.1.0)
+--------------
 
 - Boost : Updated to version 1.82.0.
 - Cortex : Updated to version 10.5.14.1.

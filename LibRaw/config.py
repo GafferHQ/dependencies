@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://www.libraw.org/data/LibRaw-0.19.5.tar.gz",
+		"https://www.libraw.org/data/LibRaw-0.21.4.tar.gz",
 
 	],
 
