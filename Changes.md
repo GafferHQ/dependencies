@@ -1,4 +1,9 @@
-10.0.0 alpha x (relative to 10.0.0 alpha 1)
+10.0.0 alpha x (relative to 10.0.0 alpha 2)
+--------------
+
+
+
+10.0.0 alpha 2 (relative to 10.0.0 alpha 1)
 --------------
 
 - Cycles : Updated to version 4.4.0.
