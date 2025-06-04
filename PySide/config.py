@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://download.qt.io/official_releases/QtForPython/pyside6/PySide6-6.5.5-src/pyside-setup-opensource-src-6.5.5.tar.xz"
+		"https://download.qt.io/official_releases/QtForPython/pyside6/PySide6-6.5.6-src/pyside-setup-opensource-src-6.5.6.tar.xz"
 
 	],
 

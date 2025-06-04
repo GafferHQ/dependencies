@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://download.qt.io/official_releases/qt/6.5/6.5.5/src/single/qt-everywhere-opensource-src-6.5.5.tar.xz"
+		"https://download.qt.io/official_releases/qt/6.5/6.5.6/src/single/qt-everywhere-opensource-src-6.5.6.tar.xz"
 
 	],
 
