@@ -1,4 +1,9 @@
-10.0.0 alpha x (relative to 10.0.0 alpha 2)
+10.0.0 alpha x (relative to 10.0.0 alpha 3)
+--------------
+
+
+
+10.0.0 alpha 3 (relative to 10.0.0 alpha 2)
 --------------
 
 - PySide : Updated to version 6.5.6.
