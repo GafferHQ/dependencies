@@ -2,15 +2,15 @@
 
 	"downloads" : [
 
-		"https://download.qt.io/official_releases/qt/5.15/5.15.16/single/qt-everywhere-opensource-src-5.15.16.tar.xz"
+		"https://download.qt.io/official_releases/qt/6.5/6.5.6/src/single/qt-everywhere-opensource-src-6.5.6.tar.xz"
 
 	],
 
-	"dependencies" : [ "LibPNG", "LibTIFF", "LibJPEG-Turbo", "FreeType" ],
+	"dependencies" : [ "LibPNG", "LibTIFF", "LibJPEG-Turbo", "FreeType", "LLVM" ],
 
 	"url" : "https://www.qt.io",
 
-	"license" : "LICENSE.LGPLv21",
+	"license" : "LICENSE.LGPL3",
 
 	"environment" : {
 
@@ -35,8 +35,20 @@
 			" -skip qtdeclarative"
 			" -skip qtwebchannel"
 			" -skip qtnetworkauth"
-			" -skip qtpurchasing"
-			" -skip wayland"
+			" -skip qtwayland"
+			" -skip qtdoc"
+			" -skip qthttpserver"
+			" -skip qtlocation"
+			" -skip qtlottie"
+			" -skip qtmqtt"
+			" -skip qtopcua"
+			" -skip qtquick3d"
+			" -skip qtquick3dphysics"
+			" -skip qtquickeffectmaker"
+			" -skip qtquicktimeline"
+			" -skip qtvirtualkeyboard"
+			" -skip qtwebsockets"
+			" -skip qtwebview"
 			" -no-libudev"
 			" -no-icu"
 			" -qt-pcre"
@@ -48,7 +60,11 @@
 			" -L {buildDir}/lib"
 		,
 
-		"make -j {jobs} && make install",
+		"cmake --build . --parallel {jobs} && cmake --install .",
+
+		"cp {buildDir}/libexec/moc {buildDir}/bin",
+		"cp {buildDir}/libexec/rcc {buildDir}/bin",
+		"cp {buildDir}/libexec/uic {buildDir}/bin",
 
 	],
 
@@ -75,6 +91,7 @@
 		"environment" : {
 
 			"LD_LIBRARY_PATH" : "{buildDir}/lib",
+			"LLVM_INSTALL_DIR" : "{buildDir}",
 
 		},
 

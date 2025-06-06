@@ -1,7 +1,9 @@
 10.0.0 alpha x (relative to 10.0.0 alpha 2)
 --------------
 
-
+- PySide : Updated to version 6.5.6.
+- Qt : Updated to version 6.5.6.
+- Qt.py : Updated to version 1.4.6.
 
 10.0.0 alpha 2 (relative to 10.0.0 alpha 1)
 --------------

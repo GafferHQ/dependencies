@@ -2,13 +2,13 @@
 
 	"downloads" : [
 
-		"https://download.qt.io/official_releases/QtForPython/pyside2/PySide2-5.15.16-src/pyside-setup-opensource-src-5.15.16.tar.xz"
+		"https://download.qt.io/official_releases/QtForPython/pyside6/PySide6-6.5.6-src/pyside-setup-opensource-src-6.5.6.tar.xz"
 
 	],
 
 	"url" : "http://www.pyside.org",
 
-	"license" : "LICENSE.LGPLv3",
+	"license" : "LICENSES/LGPL-3.0-only.txt",
 
 	# PySide uses clang for parsing headers, hence the LLVM dependency.
 	"dependencies" : [ "Python", "Qt", "LLVM" ],
@@ -21,7 +21,7 @@
 
 	"commands" : [
 
-		"python setup.py --parallel {jobs} install",
+		"python setup.py --parallel {jobs} --qtpaths={buildDir}/bin/qtpaths6 install",
 
 	],
 
@@ -45,7 +45,7 @@
 
 		"symbolicLinks" : [
 
-			( "{buildDir}/bin/pyside2-uic", "../lib/Python.framework/Versions/Current/bin/pyside2-uic" ),
+			( "{buildDir}/bin/pyside6-uic", "../lib/Python.framework/Versions/Current/bin/pyside6-uic" ),
 
 		]
 
