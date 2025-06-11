@@ -1,7 +1,7 @@
 10.0.0 alpha x (relative to 10.0.0 alpha 3)
 --------------
 
-
+- Cortex : Updated to version 10.5.15.0.
 
 10.0.0 alpha 3 (relative to 10.0.0 alpha 2)
 --------------
