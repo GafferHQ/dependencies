@@ -1,0 +1,131 @@
+From d4b40fa96bcb83eb8948c381bdae9c1ed0f223d0 Mon Sep 17 00:00:00 2001
+From: Axel Spoerl <axel.spoerl@qt.io>
+Date: Tue, 18 Apr 2023 10:02:33 +0200
+Subject: [PATCH 1/1] QTabBar: draw text within moving tab
+
+When a tab was moved by dragging, the tab's rectangle was drawn empty,
+without the tab text. When a tab was moved by animated snap back to
+its original position, the tab text was already drawn on the original
+position, while the rectangle was still moving due to animation.
+
+Adds the enum value QStyleOptionTab::TabPosition::Moving
+When this option is set, QCommonStyle draws the tab text at the
+current position instead of the original home position of the tab.
+
+The QMacStyle switches over the TabPosition enum. As a moving tab
+is laid out like the last tab in the given orientation, the enum value
+Moving is treated like End.
+
+
+Fixes: QTBUG-112277
+Change-Id: I42a2d9c269dadfe9819c12dbc69e3ae995a45b09
+Reviewed-by: Volker Hilsheimer <volker.hilsheimer@qt.io>
+---
+ src/plugins/styles/mac/qmacstyle_mac.mm |  1 +
+ src/widgets/styles/qcommonstyle.cpp     |  5 ++++-
+ src/widgets/styles/qstyleoption.cpp     |  2 ++
+ src/widgets/styles/qstyleoption.h       |  2 +-
+ src/widgets/widgets/qtabbar.cpp         | 27 ++++++++++++++++---------
+ 5 files changed, 26 insertions(+), 11 deletions(-)
+
+diff --git a/src/plugins/styles/mac/qmacstyle_mac.mm b/src/plugins/styles/mac/qmacstyle_mac.mm
+index 890dddbd1be..15dcea13bdf 100644
+--- a/qtbase/src/plugins/styles/mac/qmacstyle_mac.mm
++++ b/qtbase/src/plugins/styles/mac/qmacstyle_mac.mm
+@@ -3915,6 +3915,7 @@ void QMacStyle::drawControl(ControlElement ce, const QStyleOption *opt, QPainter
+                     frameRect = frameRect.adjusted(-1, 0, 1, 0);
+                 }
+                 break;
++            case QStyleOptionTab::Moving: // Moving tab treated like End
+             case QStyleOptionTab::End:
+                 // Pressed state hack: tweak adjustments in preparation for flip below
+                 if (isSelected || tabDirection == QMacStylePrivate::West)
+diff --git a/qtbase/src/widgets/styles/qcommonstyle.cpp b/qtbase/src/widgets/styles/qcommonstyle.cpp
+index 57365384430..08c22240925 100644
+--- a/qtbase/src/widgets/styles/qcommonstyle.cpp
++++ b/qtbase/src/widgets/styles/qcommonstyle.cpp
+@@ -2009,7 +2009,10 @@ void QCommonStyle::drawControl(ControlElement element, const QStyleOption *opt,
+             }
+             QRect iconRect;
+             d->tabLayout(tab, widget, &tr, &iconRect);
+-            tr = proxy()->subElementRect(SE_TabBarTabText, opt, widget); //we compute tr twice because the style may override subElementRect
++
++            // compute tr again, unless tab is moving, because the style may override subElementRect
++            if (tab->position != QStyleOptionTab::TabPosition::Moving)
++                tr = proxy()->subElementRect(SE_TabBarTabText, opt, widget);
+ 
+             if (!tab->icon.isNull()) {
+                 QPixmap tabIcon = tab->icon.pixmap(tab->iconSize, p->device()->devicePixelRatio(),
+diff --git a/qtbase/src/widgets/styles/qstyleoption.cpp b/qtbase/src/widgets/styles/qstyleoption.cpp
+index de7cd482a33..73164918bb1 100644
+--- a/qtbase/src/widgets/styles/qstyleoption.cpp
++++ b/qtbase/src/widgets/styles/qstyleoption.cpp
+@@ -1314,6 +1314,8 @@ QStyleOptionTab::QStyleOptionTab(int version)
+     \value Middle The tab is neither the first nor the last tab in the tab bar.
+     \value End The tab is the last tab in the tab bar.
+     \value OnlyOneTab The tab is both the first and the last tab in the tab bar.
++    \value Moving The tab is moving by mouse drag or animation.
++           This enum value was added in Qt 6.6.
+ 
+     \sa position
+ */
+diff --git a/qtbase/src/widgets/styles/qstyleoption.h b/qtbase/src/widgets/styles/qstyleoption.h
+index 6841a81b84e..0e0118f6e9c 100644
+--- a/qtbase/src/widgets/styles/qstyleoption.h
++++ b/qtbase/src/widgets/styles/qstyleoption.h
+@@ -244,7 +244,7 @@ public:
+     enum StyleOptionType { Type = SO_Tab };
+     enum StyleOptionVersion { Version = 1 };
+ 
+-    enum TabPosition { Beginning, Middle, End, OnlyOneTab };
++    enum TabPosition { Beginning, Middle, End, OnlyOneTab, Moving };
+     enum SelectedPosition { NotAdjacent, NextIsSelected, PreviousIsSelected };
+     enum CornerWidget { NoCornerWidgets = 0x00, LeftCornerWidget = 0x01,
+                         RightCornerWidget = 0x02 };
+diff --git a/qtbase/src/widgets/widgets/qtabbar.cpp b/qtbase/src/widgets/widgets/qtabbar.cpp
+index 1b64301fa68..74e94cac4ae 100644
+--- a/qtbase/src/widgets/widgets/qtabbar.cpp
++++ b/qtbase/src/widgets/widgets/qtabbar.cpp
+@@ -1873,21 +1873,30 @@ void QTabBar::paintEvent(QPaintEvent *)
+         QStyleOptionTab tabOption;
+         const auto tab = d->tabList.at(selected);
+         initStyleOption(&tabOption, selected);
++
+         if (d->paintWithOffsets && tab->dragOffset != 0) {
++            // if the drag offset is != 0, a move is in progress (drag or animation)
++            // => set the tab position to Moving to preserve the rect
++            tabOption.position = QStyleOptionTab::TabPosition::Moving;
++
+             if (vertical)
+                 tabOption.rect.moveTop(tabOption.rect.y() + tab->dragOffset);
+             else
+                 tabOption.rect.moveLeft(tabOption.rect.x() + tab->dragOffset);
+         }
+-        if (!d->dragInProgress)
+-            p.drawControl(QStyle::CE_TabBarTab, tabOption);
+-        else {
+-            int taboverlap = style()->pixelMetric(QStyle::PM_TabBarTabOverlap, nullptr, this);
+-            if (verticalTabs(d->shape))
+-                d->movingTab->setGeometry(tabOption.rect.adjusted(0, -taboverlap, 0, taboverlap));
+-            else
+-                d->movingTab->setGeometry(tabOption.rect.adjusted(-taboverlap, 0, taboverlap, 0));
+-        }
++
++        // Calculate the rect of a moving tab
++        const int taboverlap = style()->pixelMetric(QStyle::PM_TabBarTabOverlap, nullptr, this);
++        const QRect &movingRect = verticalTabs(d->shape)
++                ? tabOption.rect.adjusted(0, -taboverlap, 0, taboverlap)
++                : tabOption.rect.adjusted(-taboverlap, 0, taboverlap, 0);
++
++        // If a drag is in process, set the moving tab's geometry here
++        // (in an animation, it is already set)
++        if (d->dragInProgress)
++            d->movingTab->setGeometry(movingRect);
++
++        p.drawControl(QStyle::CE_TabBarTab, tabOption);
+     }
+ 
+     // Only draw the tear indicator if necessary. Most of the time we don't need too.
+-- 
+2.47.1
+

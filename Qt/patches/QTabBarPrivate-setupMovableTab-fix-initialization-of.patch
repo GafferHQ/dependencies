@@ -1,0 +1,33 @@
+From 4b43a329b799f2b5d0fb2f850f03773abc6aa21b Mon Sep 17 00:00:00 2001
+From: Axel Spoerl <axel.spoerl@qt.io>
+Date: Tue, 11 Jul 2023 07:58:42 +0200
+Subject: [PATCH 1/1] QTabBarPrivate::setupMovableTab() - fix initialization of
+ tab position
+
+The method initialized the tab position with the enum value OnlyOneTab.
+=> Change this to the correct initial enum value Moving.
+
+Fixes: QTBUG-115147
+Pick-to: 6.6
+Change-Id: I4ce04f0a41dac6e93affd300eb424f4087eb7867
+Reviewed-by: Volker Hilsheimer <volker.hilsheimer@qt.io>
+---
+ src/widgets/widgets/qtabbar.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/widgets/widgets/qtabbar.cpp b/src/widgets/widgets/qtabbar.cpp
+index da793126067..f6015f09d86 100644
+--- a/qtbase/src/widgets/widgets/qtabbar.cpp
++++ b/qtbase/src/widgets/widgets/qtabbar.cpp
+@@ -2243,7 +2243,7 @@ void QTabBarPrivate::setupMovableTab()
+ 
+     QStyleOptionTab tab;
+     q->initStyleOption(&tab, pressedIndex);
+-    tab.position = QStyleOptionTab::OnlyOneTab;
++    tab.position = QStyleOptionTab::Moving;
+     if (verticalTabs(shape))
+         tab.rect.moveTopLeft(QPoint(0, taboverlap));
+     else
+-- 
+2.47.1
+
