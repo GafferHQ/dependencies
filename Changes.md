@@ -1,7 +1,7 @@
 10.0.0 alpha x (relative to 10.0.0 alpha 4)
 --------------
 
-
+- Partio : Removed.
 
 10.0.0 alpha 4 (relative to 10.0.0 alpha 3)
 --------------
