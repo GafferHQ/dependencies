@@ -10,7 +10,7 @@
 
 	"license" : "LICENSE.md",
 
-	"dependencies" : [ "OpenImageIO", "LLVM", "PugiXML", "Python", "Partio" ],
+	"dependencies" : [ "OpenImageIO", "LLVM", "PugiXML", "Python" ],
 
 	"environment" : {
 
