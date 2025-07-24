@@ -1,6 +1,7 @@
 10.0.0 alpha x (relative to 10.0.0 alpha 4)
 --------------
 
+- Cortex : Updated to version 10.6.0.0a1.
 - Partio : Removed.
 
 10.0.0 alpha 4 (relative to 10.0.0 alpha 3)
