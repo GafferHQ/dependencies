@@ -38,6 +38,7 @@
 			" -D LLVM_STATIC=1"
 			" -D USE_BATCHED={useBatched}"
 			" -D OSL_SHADER_INSTALL_DIR={buildDir}/shaders"
+			" -D OSL_BUILD_PLUGINS=0"
 			" -D Python_ROOT_DIR={buildDir}"
 			" -D Python_FIND_STRATEGY=LOCATION"
 			" {extraArguments}"
@@ -63,7 +64,6 @@
 		"include/OSL",
 		"lib/libosl*",
 		"lib/lib*oslexec*",
-		"lib/osl.imageio.*",
 		"doc/osl*",
 		"shaders",
 
