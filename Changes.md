@@ -1,50 +1,26 @@
-10.0.0 alpha x (relative to 10.0.0 alpha 5)
---------------
+10.0.0 (relative to 9.1.0)
+------
 
+- Boost : Updated to version 1.82.0.
 - Cortex : Updated to version 10.6.0.0.
-- OpenShadingLanguage : Removed `osl.imageio` OpenImageIO format plugin.
-
-10.0.0 alpha 5 (relative to 10.0.0 alpha 4)
---------------
-
-- Cortex : Updated to version 10.6.0.0a1.
-- Partio : Removed.
-
-10.0.0 alpha 4 (relative to 10.0.0 alpha 3)
---------------
-
-- Cortex : Updated to version 10.5.15.0.
-
-10.0.0 alpha 3 (relative to 10.0.0 alpha 2)
---------------
-
-- PySide : Updated to version 6.5.6.
-- Qt : Updated to version 6.5.6.
-- Qt.py : Updated to version 1.4.6.
-
-10.0.0 alpha 2 (relative to 10.0.0 alpha 1)
---------------
-
 - Cycles : Updated to version 4.4.0.
 - FreeType : Updated to version 2.13.3.
 - LibRaw : Updated to version 0.21.4.
 - MaterialX : Updated to version 1.39.3.
-- OpenImageIO : Updated to version 3.0.6.1.
-- OpenShadingLanguage : Updated to version 1.14.5.1.
-
-10.0.0 alpha 1 (relative to 9.1.0)
---------------
-
-- Boost : Updated to version 1.82.0.
-- Cortex : Updated to version 10.5.14.1.
 - Minizip : Updated to version 3.0.10.
 - OpenColorIO : Updated to version 2.3.2.
+- OpenImageIO : Updated to version 3.0.6.1.
 - OpenEXR : Updated to version 3.2.4.
+- OpenShadingLanguage :
+  - Updated to version 1.14.5.1.
+  - Removed `osl.imageio` OpenImageIO format plugin.
 - OpenSubdiv : Updated to version 3.6.0.
 - OpenVDB : Updated to version 11.0.0.
+- Partio : Removed.
+- PySide : Updated to version 6.5.6.
 - Python : Updated to version 3.11.12.
-- PySide : Updated to version 5.15.16.
-- Qt : Updated to version 5.15.16.
+- Qt : Updated to version 6.5.6.
+- Qt.py : Updated to version 1.4.6.
 - USD : Updated to version 25.05.01.
 
 9.1.0 (relative to 9.0.0)
