@@ -1,6 +1,7 @@
 10.0.0 alpha x (relative to 10.0.0 alpha 5)
 --------------
 
+- Cortex : Updated to version 10.6.0.0.
 - OpenShadingLanguage : Removed `osl.imageio` OpenImageIO format plugin.
 
 10.0.0 alpha 5 (relative to 10.0.0 alpha 4)
