@@ -3,8 +3,7 @@ name: CI
 on:
   push:
     branches:
-      - main
-      - '*_maintenance'
+      - '*_vs2022'
   pull_request:
     branches:
       - '*'
@@ -28,23 +27,16 @@ jobs:
         # and then use `include` to define their settings.
 
         name: [
-          linux-gcc11,
-          macos-arm64,
+          windows
         ]
 
         include:
 
-          - name: linux-gcc11
-            os: ubuntu-24.04
-            publish: true
-            containerImage: ghcr.io/gafferhq/build/build:3.3.0
-            jobs: 4
-
-          - name: macos-arm64
-            os: macos-14
-            publish: true
+          - name: windows
+            os: windows-2022
+            publish: false
             containerImage:
-            jobs: 3
+            jobs: 4
 
     runs-on: ${{ matrix.os }}
 
@@ -92,6 +84,23 @@ jobs:
         brew uninstall --ignore-dependencies little-cms2
       shell: bash
       if: runner.os == 'macOS'
+
+    - name: Install toolchain (Windows)
+      run: |
+        # Cygwin packages. Also install gawk, grep, sed?
+        curl.exe -L --output cygwinSetup.exe --url https://www.cygwin.com/setup-x86_64.exe
+        Start-Process .\cygwinSetup.exe -ArgumentList "-q unattended --root C:\cygwin64 -P autoconf bison flex make nasm patch" -NoNewWindow -Wait
+  
+        # JOM, for Qt
+        curl.exe -L --output jom.zip --url http://download.qt.io/official_releases/jom/jom.zip
+        & "C:\Program Files\7-Zip\7z.exe" x jom.zip -oC:\jom
+
+        # Install Strawberry PERL?
+
+        # Setup PATH
+        echo "C:\jom;C:\cygwin64;$env:PATH" > $env:GITHUB_PATH
+      shell: pwsh
+      if: runner.os == 'Windows'
 
     - name: 'Install Python Modules'
       run: |
