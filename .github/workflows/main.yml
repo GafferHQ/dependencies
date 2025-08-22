@@ -100,7 +100,7 @@ jobs:
       run: |
         # Cygwin packages. Also install gawk, grep, sed?
         curl.exe -L --output cygwinSetup.exe --url https://www.cygwin.com/setup-x86_64.exe
-        Start-Process .\cygwinSetup.exe -ArgumentList "-q unattended --root C:\cygwin64 --site http://mirrors.kernel.org/sourceware/cygwin/ --packages autoconf bison flex make nasm patch" -NoNewWindow -Wait
+        Start-Process .\cygwinSetup.exe -ArgumentList "-q unattended --root C:\cygwin64 --site http://mirrors.kernel.org/sourceware/cygwin/ --packages autoconf,bison,flex,make,nasm,patch" -NoNewWindow -Wait
   
         # JOM, for Qt
         curl.exe -L --output jom.zip --url http://download.qt.io/official_releases/jom/jom.zip
