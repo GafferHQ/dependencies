@@ -99,7 +99,7 @@ jobs:
     - name: Install toolchain (Windows)
       run: |
         # Required msys2 packages.
-        pacman -S autoconf bison flex make nasm patch unzip --noconfirm
+        /c/msys64/usr/bin/pacman -S autoconf bison flex make nasm patch unzip --noconfirm
         echo "C:/msys64/usr/bin" >> $env:GITHUB_PATH
   
         # JOM, for Qt
