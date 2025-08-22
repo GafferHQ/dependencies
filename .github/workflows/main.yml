@@ -3,8 +3,7 @@ name: CI
 on:
   push:
     branches:
-      - main
-      - '*_maintenance'
+      - '*_vs2022'
   pull_request:
     branches:
       - '*'
@@ -28,23 +27,16 @@ jobs:
         # and then use `include` to define their settings.
 
         name: [
-          linux-gcc11,
-          macos-arm64,
+          windows
         ]
 
         include:
 
-          - name: linux-gcc11
-            os: ubuntu-24.04
-            publish: true
-            containerImage: ghcr.io/gafferhq/build/build:3.3.0
-            jobs: 4
-
-          - name: macos-arm64
-            os: macos-14
-            publish: true
+          - name: windows
+            os: windows-2022
+            publish: false
             containerImage:
-            jobs: 3
+            jobs: 4
 
     runs-on: ${{ matrix.os }}
 
@@ -55,6 +47,17 @@ jobs:
     steps:
 
     - uses: actions/checkout@v4
+
+    - name: Install Windows SDK
+      run: |
+        curl.exe -L --output winsdksetup.exe --url https://download.microsoft.com/download/9/7/9/97982c1d-d687-41be-9dd3-6d01e52ceb68/windowssdk/winsdksetup.exe
+        Start-Process ./winsdksetup.exe -ArgumentList "/Features OptionId.DesktopCPPx64 /Quiet /NoRestart" -NoNewWindow -Wait
+      shell: pwsh
+      if: runner.os == 'Windows'
+
+    - uses: ilammy/msvc-dev-cmd@0b201ec74fa43914dc39ae48a89fd1d8cb592756 # v1.13.0
+      with:
+        sdk: 10.0.20348.0
 
     - name: Install toolchain (Linux)
       run: |
@@ -108,7 +111,12 @@ jobs:
         /c/msys64/usr/bin/wget https://www.doxygen.nl/files/doxygen-1.14.0-setup.exe
         ./doxygen-1.14.0-setup.exe //VERYSILENT
 
-        # Install Strawberry PERL?
+        # The Windows build runner currently uses Python 3.9.13, which has an old version
+        # of `setuptools` which will fail to build PySide. Upgrade to get the latest as of
+        # the time of this commit.
+        pip install --upgrade setuptools==80.9.0
+
+        pip install scons==4.6.0
 
       shell: bash
       if: runner.os == 'Windows'
@@ -137,7 +145,7 @@ jobs:
 
     - name: Build Dependencies
       run: |
-        ./build.py --cleanup --jobs ${{ matrix.jobs }} --buildDir ${{ env.DEPENDENCIES_BUILD_DIR }}/${{ env.DEPENDENCIES_BUILD_NAME }} --package ${{ env.DEPENDENCIES_BUILD_NAME }}.${{ env.PACKAGE_EXTENSION }}
+        python build.py --jobs ${{ matrix.jobs }} --buildDir ${{ env.DEPENDENCIES_BUILD_DIR }}/${{ env.DEPENDENCIES_BUILD_NAME }} --package ${{ env.DEPENDENCIES_BUILD_NAME }}.${{ env.PACKAGE_EXTENSION }}
       env:
         PYTHONUTF8: 1
 
