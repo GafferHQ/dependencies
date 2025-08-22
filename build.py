@@ -261,7 +261,10 @@ def __preserveCurrentDirectory( f ) :
 		try :
 			return f( *args, **kw )
 		finally :
+			oldDir = os.getcwd()
 			os.chdir( d )
+			if args[3] :
+				shutil.rmtree( oldDir )
 
 	return decorated
 
@@ -349,9 +352,6 @@ def __buildProject( project, config, buildDir, cleanup ) :
 		if os.path.lexists( link[0] ) :
 			os.remove( link[0] )
 		os.symlink( link[1], link[0] )
-
-	if cleanup :
-		shutil.rmtree( fullWorkingDir )
 
 def __checkConfigs( projects, configs ) :
 
