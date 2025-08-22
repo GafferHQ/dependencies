@@ -98,19 +98,18 @@ jobs:
 
     - name: Install toolchain (Windows)
       run: |
-        # Cygwin packages. Also install gawk, grep, sed?
-        curl.exe -L --output cygwinSetup.exe --url https://www.cygwin.com/setup-x86_64.exe
-        Start-Process .\cygwinSetup.exe -ArgumentList "-q unattended --root C:\cygwin64 --site http://mirrors.kernel.org/sourceware/cygwin/ --packages autoconf,bison,flex,make,nasm,patch" -NoNewWindow -Wait
-        echo "C:\cygwin64\bin" >> $env:GITHUB_PATH
+        # Required msys2 packages.
+        pacman -S autoconf bison flex make nasm patch unzip --noconfirm
+        echo "C:/msys64/usr/bin" >> $env:GITHUB_PATH
   
         # JOM, for Qt
-        curl.exe -L --output jom.zip --url http://download.qt.io/official_releases/jom/jom.zip
-        & "C:\Program Files\7-Zip\7z.exe" x jom.zip -oC:\jom
-        echo "C:\jom" >> $env:GITHUB_PATH
+        wget http://download.qt.io/official_releases/jom/jom.zip
+        unzip jom.zip /c/jom
+        echo "C:/jom" >> $env:GITHUB_PATH
 
         # Install Strawberry PERL?
 
-      shell: pwsh
+      shell: bash
       if: runner.os == 'Windows'
 
     - name: 'Install Python Modules'
