@@ -103,8 +103,8 @@ jobs:
         echo "C:/msys64/usr/bin" >> $env:GITHUB_PATH
   
         # JOM, for Qt
-        wget http://download.qt.io/official_releases/jom/jom.zip
-        unzip jom.zip /c/jom
+        /c/msys64/usr/bin/wget http://download.qt.io/official_releases/jom/jom.zip
+        /c/msys64/usr/bin/unzip jom.zip /c/jom
         echo "C:/jom" >> $env:GITHUB_PATH
 
         # Install Strawberry PERL?
