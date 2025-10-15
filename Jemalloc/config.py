@@ -27,22 +27,12 @@
 	],
 
 	"platform:windows" : {
-
+		
 		"commands" : [
 
-			"sh -c \"CC=cl ./autogen.sh\" --prefix={buildDir}",
-			"msbuild msvc\jemalloc_vc2017.sln -target:jemalloc /property:Configuration=\"Release\" /property:WindowsTargetPlatformVersion=10.0.20348.0" ,
+			"echo Not Building jemalloc.",
 
-		],
-
-		"postMovePaths" : {
-
-			"msvc/x64/Release/jemalloc.dll" : "{buildDir}/bin",
-			"msvc/x64/Release/jemalloc.lib" : "{buildDir}/lib",
-			"include/jemalloc" : "{buildDir}/include",
-			"include/msvc_compat" : "{buildDir}/include",
-
-		}
+		]
 
 	},
 }
