@@ -53,8 +53,26 @@ jobs:
 
     - uses: actions/checkout@v4
 
-    - name: Install Windows SDK
+    - name: Install MSVC
       run: |
+        # MSVC versions later than 17.10 can't build PySide due to MSVC STL template handling changes.
+        # We install the version we want and let the following `msvc-dev-cmd` step setup the environment.
+
+        # First nuke the existing installation.
+        Start-Process -Wait -PassThru -WindowStyle Hidden -FilePath "C:\Program Files (x86)\Microsoft Visual Studio\Installer\InstallCleanup.exe" -ArgumentList "-f"
+
+        curl.exe -L --output vs_buildtools.exe --url https://aka.ms/vs/17/release.ltsc.17.10/vs_buildtools.exe
+
+        $componentsToInstall = @(
+            "Microsoft.VisualStudio.Component.VC.Tools.x86.x64"
+            "Microsoft.VisualStudio.Workload.VCTools"
+            "Microsoft.VisualStudio.Component.VC.CMake.Project"
+            "Microsoft.VisualStudio.Component.VC.ATL"
+        )
+        [string]$workloadArgs = $componentsToInstall | ForEach-Object {" --add " + $_}
+        $arguments = ("--quiet", "--wait", "--norestart", "--nocache", $workloadArgs)
+        Start-Process -Wait -FilePath vs_buildtools.exe -ArgumentList $arguments
+
         curl.exe -L --output winsdksetup.exe --url https://download.microsoft.com/download/9/7/9/97982c1d-d687-41be-9dd3-6d01e52ceb68/windowssdk/winsdksetup.exe
         Start-Process ./winsdksetup.exe -ArgumentList "/Features OptionId.DesktopCPPx64 /Quiet /NoRestart" -NoNewWindow -Wait
       shell: pwsh
@@ -63,6 +81,8 @@ jobs:
     - uses: ilammy/msvc-dev-cmd@0b201ec74fa43914dc39ae48a89fd1d8cb592756 # v1.13.0
       with:
         sdk: 10.0.20348.0
+        vsversion: '2022'
+        toolset: '14.40'  # Toolset corresponding to VS 17.10
 
     - name: Install toolchain (Linux)
       run: |
