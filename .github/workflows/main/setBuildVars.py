@@ -157,6 +157,7 @@ if tag and releaseId :
 	trigger = "release"
 
 buildName = nameFormats.get( trigger, nameFormats['default'] ).format( **formatVars )
+intermediateArtifactsName = "gafferDependencies-{shortCommit}-{variant}".format( **formatVars )
 
 ## Set vars in the downstream workflow environment
 
@@ -170,6 +171,9 @@ with open( os.environ["GITHUB_ENV"], "a" ) as f :
 
 	print( "Setting $DEPENDENCIES_GITHUB_RELEASEID to '%s'" % releaseId )
 	f.write( 'DEPENDENCIES_GITHUB_RELEASEID=%s\n' % releaseId )
+
+	print( "Setting $DEPENDENCIES_INTERMEDIATE_ARTIFACTS_NAME to '%s'" % intermediateArtifactsName )
+	f.write( 'DEPENDENCIES_INTERMEDIATE_ARTIFACTS_NAME=%s\n' % intermediateArtifactsName )
 
 	packageExtension = "zip" if os.name == "nt" else "tar.gz"
 	print( "Setting $PACKAGE_EXTENSION to '%s'" %packageExtension )
