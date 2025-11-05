@@ -161,7 +161,10 @@ def __substitute( config, variables, forDigest = False ) :
 	def substituteWalk( o ) :
 
 		if isinstance( o, dict ) :
-			return { substituteWalk( k ) : substituteWalk( v ) for k, v in o.items() }
+			result = { substituteWalk( k ) : substituteWalk( v ) for k, v in o.items() if k != "publicVariables" }
+			if "publicVariables" in o :
+				result["publicVariables"] = o["publicVariables"]
+			return result
 		elif isinstance( o, list ) :
 			return [ substituteWalk( x ) for x in o ]
 		elif isinstance( o, tuple ) :
