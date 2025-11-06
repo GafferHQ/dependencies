@@ -130,7 +130,8 @@ jobs:
 
         # Doxygen
         /c/msys64/usr/bin/wget https://www.doxygen.nl/files/doxygen-1.14.0-setup.exe
-        ./doxygen-1.14.0-setup.exe //VERYSILENT
+        ./doxygen-1.14.0-setup.exe //VERYSILENT //DIR="C:\doxygen"
+        echo "C:/doxygen/bin" >> $GITHUB_PATH
 
         # The Windows build runner currently uses Python 3.9.13, which has an old version
         # of `setuptools` which will fail to build PySide. Upgrade to get the latest as of
