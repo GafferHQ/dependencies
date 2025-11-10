@@ -1,3 +1,8 @@
+x.x.x (relative to 10.0.0)
+-----
+
+- Nvapi : Added project (Windows only)
+
 10.0.0 (relative to 9.1.0)
 ------
 
