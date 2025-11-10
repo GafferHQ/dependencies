@@ -23,6 +23,7 @@
 - Python : Updated to version 3.11.14.
 - Qt : Updated to version 6.5.8.
 - TBB : Updated to version 2021.13.0.
+- Nvapi : Added project (Windows only)
 
 10.0.0 (relative to 9.1.0)
 ------
