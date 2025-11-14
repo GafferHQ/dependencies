@@ -133,6 +133,11 @@ jobs:
         ./doxygen-1.14.0-setup.exe //VERYSILENT //DIR="C:\doxygen"
         echo "C:/doxygen/bin" >> $GITHUB_PATH
 
+        # CUDA SDK
+        /c/msys64/usr/bin/wget https://developer.download.nvidia.com/compute/cuda/12.8.1/network_installers/cuda_12.8.1_windows_network.exe
+        ./cuda_12.8.1_windows_network.exe -s -n
+        echo CUDA_TOOLKIT_ROOT_DIR=C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.8 >> $GITHUB_ENV
+
         # The Windows build runner currently uses Python 3.9.13, which has an old version
         # of `setuptools` which will fail to build PySide. Upgrade to get the latest as of
         # the time of this commit.
