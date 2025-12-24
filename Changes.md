@@ -6,7 +6,9 @@
 - Imath : Updated to version 3.1.12.
 - OpenEXR : Updated to version 3.3.6.
 - OpenShadingLanguage : Updated to version 1.14.8.0.
+- PySide : Updated to version 6.5.8.
 - Python : Updated to version 3.11.14.
+- Qt : Updated to version 6.5.8.
 
 10.0.0 (relative to 9.1.0)
 ------
