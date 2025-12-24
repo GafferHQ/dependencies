@@ -3,6 +3,7 @@
 
 - Boost : Updated to version 1.85.0.
 - Cortex : Updated to version 10.6.2.1.
+- Imath : Updated to version 3.1.12.
 - Python : Updated to version 3.11.14.
 
 10.0.0 (relative to 9.1.0)
