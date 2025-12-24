@@ -5,6 +5,7 @@
 - Cortex : Updated to version 10.6.2.1.
 - Imath : Updated to version 3.1.12.
 - OpenEXR : Updated to version 3.3.6.
+- OpenShadingLanguage : Updated to version 1.14.8.0.
 - Python : Updated to version 3.11.14.
 
 10.0.0 (relative to 9.1.0)
