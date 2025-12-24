@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/AcademySoftwareFoundation/OpenColorIO/archive/refs/tags/v2.3.2.tar.gz",
+		"https://github.com/AcademySoftwareFoundation/OpenColorIO/archive/refs/tags/v2.4.2.tar.gz",
 		"https://github.com/imageworks/OpenColorIO-Configs/archive/v1.0_r2.tar.gz",
 
 	],

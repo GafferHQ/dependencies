@@ -4,6 +4,7 @@
 - Boost : Updated to version 1.85.0.
 - Cortex : Updated to version 10.6.2.1.
 - Imath : Updated to version 3.1.12.
+- OpenColorIO : Updated to version 2.4.2.
 - OpenEXR : Updated to version 3.3.6.
 - OpenShadingLanguage : Updated to version 1.14.8.0.
 - PySide : Updated to version 6.5.8.
