@@ -1,3 +1,8 @@
+11.x.x (relative to 10.x.x)
+------
+
+- Boost : Updated to version 1.85.0.
+
 10.0.0 (relative to 9.1.0)
 ------
 
