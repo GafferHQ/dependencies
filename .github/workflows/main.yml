@@ -48,7 +48,12 @@ jobs:
 
     runs-on: ${{ matrix.os }}
 
-    container: ${{ matrix.containerImage }}
+    container:
+      image: ${{ matrix.containerImage }}
+      volumes:
+        # Mount the `/usr` directory from the host so we can clean it up
+        # in "Install toolchain (Linux)".
+        - /usr:/hostVolume/usr
 
     env:
       DEPENDENCIES_BUILD_DIR: "./build"
@@ -58,6 +63,8 @@ jobs:
 
     - name: Install toolchain (Linux)
       run: |
+        # Clear space on runner by deleting stuff we don't need from the host VM.
+        rm -rf /hostVolume/usr/lib/jvm /hostVolume/usr/local/lib/android
         # The Docker container configures bash shells such that they enable the
         # software collections we want. If we could set GitHub's
         # `defaults.run.shell` to `bash` then all our build steps would pick up
