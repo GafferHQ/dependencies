@@ -1,6 +1,6 @@
 {
 
-	"downloads" : [ "https://www.python.org/ftp/python/3.11.12/Python-3.11.12.tgz" ],
+	"downloads" : [ "https://www.python.org/ftp/python/3.11.14/Python-3.11.14.tgz" ],
 
 	"publicVariables" : {
 

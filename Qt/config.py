@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://download.qt.io/official_releases/qt/6.5/6.5.6/src/single/qt-everywhere-opensource-src-6.5.6.tar.xz"
+		"https://download.qt.io/official_releases/qt/6.5/6.5.8/src/single/qt-everywhere-opensource-src-6.5.8.tar.xz"
 
 	],
 
@@ -10,7 +10,7 @@
 
 	"url" : "https://www.qt.io",
 
-	"license" : "LICENSE.LGPL3",
+	"license" : "LICENSES/LGPL-3.0-only.txt",
 
 	"environment" : {
 

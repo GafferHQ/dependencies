@@ -1,3 +1,17 @@
+11.x.x (relative to 10.x.x)
+------
+
+- Boost : Updated to version 1.85.0.
+- Cortex : Updated to version 10.6.2.1.
+- Imath : Updated to version 3.1.12.
+- LLVM : Updated to version 17.0.6.
+- OpenColorIO : Updated to version 2.4.2.
+- OpenEXR : Updated to version 3.3.6.
+- OpenShadingLanguage : Updated to version 1.14.8.0.
+- PySide : Updated to version 6.5.8.
+- Python : Updated to version 3.11.14.
+- Qt : Updated to version 6.5.8.
+
 10.0.0 (relative to 9.1.0)
 ------
 
