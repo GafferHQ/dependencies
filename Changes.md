@@ -2,7 +2,7 @@
 ------
 
 - Boost : Updated to version 1.85.0.
-- Cortex : Updated to version 10.6.2.1.
+- Cortex : Updated to version 10.7.0.0a2.
 - Imath : Updated to version 3.1.12.
 - LLVM : Updated to version 17.0.6.
 - OpenColorIO : Updated to version 2.4.2.
