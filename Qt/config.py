@@ -119,4 +119,14 @@
 
 	},
 
+	"platform:windows" : {
+
+		"variables" : {
+
+			"extraArgs" : "",
+
+		}
+
+	},
+
 }
