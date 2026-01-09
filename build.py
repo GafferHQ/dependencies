@@ -84,7 +84,7 @@ permutations of the build.
 
 def __compilerRoot() :
 
-	compiler = shutil.which( "g++" )
+	compiler = shutil.which( "g++" if os.name != "nt" else "cl" )
 	binDir = os.path.dirname( compiler )
 	return os.path.dirname( binDir )
 
@@ -210,7 +210,7 @@ def __loadConfigs( variables, variants ) :
 			__applyConfigOverrides( config, "variant:{}".format( variants[project] ) )
 		for variantProject, variant in variants.items() :
 			__applyConfigOverrides( config, "variant:{}:{}".format( variantProject, variant ) )
-		__applyConfigOverrides( config, "platform:macos" if sys.platform == "darwin" else "platform:linux" )
+		__applyConfigOverrides( config, { "darwin": "platform:macos", "win32": "platform:windows" }.get( sys.platform, "platform:linux" ) )
 		if config.get( "enabled", True ) :
 			configs[project] = config
 
@@ -476,12 +476,12 @@ for key, value in vars( args ).items() :
 		variants[key[8:]] = value[0]
 
 variables = {
-	"buildDir" : os.path.abspath( args.buildDir ),
+	"buildDir" : os.path.abspath( args.buildDir ).replace("\\", "/"),
 	"jobs" : args.jobs,
 	"path" : os.environ["PATH"],
 	"version" : __version,
-	"platform" : "macos" if sys.platform == "darwin" else "linux",
-	"sharedLibraryExtension" : ".dylib" if sys.platform == "darwin" else ".so",
+	"platform" : { "darwin": "macos", "win32": "windows" }.get( sys.platform, "linux" ),
+	"sharedLibraryExtension" : { "darwin": ".dylib", "win32": ".dll" }.get( sys.platform, ".so" ),
 	"c++Standard" : "17",
 	"compilerRoot" : __compilerRoot(),
 	"variants" : "".join( "-{}{}".format( key, variants[key] ) for key in sorted( variants.keys() ) ),
