@@ -39,6 +39,7 @@
 			" -D USE_BATCHED={useBatched}"
 			" -D OSL_SHADER_INSTALL_DIR={buildDir}/shaders"
 			" -D OSL_BUILD_PLUGINS=0"
+			" -D PYTHON_VERSION={pythonVersion}"
 			" -D Python_ROOT_DIR={buildDir}"
 			" -D Python_FIND_STRATEGY=LOCATION"
 			" {extraArguments}"
