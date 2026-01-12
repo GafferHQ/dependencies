@@ -24,4 +24,10 @@
 		"lib/libjemalloc*{sharedLibraryExtension}*",
 
 	],
+
+	"platform:macos" : {
+
+		"enabled" : False,
+
+	},
 }
