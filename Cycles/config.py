@@ -26,7 +26,7 @@
 		# in lib matching the current platform and architecture causes
 		# the build to only look for dependencies within it, so we
 		# remove them to allow dependencies to be found in `{buildDir}`.
-		"rmdir --ignore-fail-on-non-empty ./lib/*",
+		"rm -r ./lib/*",
 
 		"mkdir build",
 		"cd build &&"
