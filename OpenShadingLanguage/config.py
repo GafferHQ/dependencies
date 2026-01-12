@@ -83,7 +83,7 @@
 
 		"variables" : {
 
-			"extraCommands" : "mv {buildDir}/lib/python{pythonVersion}/site-packages/oslquery.so {pythonLibDir}/python{pythonVersion}/site-packages/oslquery.so",
+			"extraCommands" : "mv {buildDir}/lib/python{pythonVersion}/site-packages/oslquery {pythonLibDir}/python{pythonVersion}/site-packages/oslquery",
 			"useBatched" : "0",
 
 		},
