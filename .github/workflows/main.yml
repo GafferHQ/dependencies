@@ -96,6 +96,13 @@ jobs:
         sudo rm -rf /Applications/Python\ 3.11
         # Remove little-cms2 to prevent our LibRaw builds from finding it.
         brew uninstall --ignore-dependencies little-cms2
+        # Pin CMake to 3.31.6
+        brew uninstall cmake
+        brew tap-new --no-git "local/pinned" >/dev/null
+        cmakeDir="$(brew --repo "local/pinned")/Formula"
+        mkdir -p "$cmakeDir"
+        curl -fsSL "https://raw.githubusercontent.com/Homebrew/homebrew-core/b4e46db74e74a8c1650b38b1da222284ce1ec5ce/Formula/c/cmake.rb" -o "$cmakeDir/cmake.rb"
+        brew install "local/pinned/cmake"
       shell: bash
       if: runner.os == 'macOS'
 
