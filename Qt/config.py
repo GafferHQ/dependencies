@@ -105,6 +105,12 @@
 
 	"platform:macos" : {
 
+		"environment" : {
+
+			"DYLD_FALLBACK_LIBRARY_PATH" : "{buildDir}/lib",
+
+		},
+
 		"variables" : {
 
 			"extraArgs" : "-no-freetype QMAKE_APPLE_DEVICE_ARCHS=arm64",

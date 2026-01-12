@@ -12,6 +12,13 @@
 
 	"dependencies" : [ "Boost", "OpenJPEG", "OpenImageIO", "TBB", "Alembic", "Embree", "OpenColorIO", "OpenVDB", "OpenShadingLanguage", "OpenSubdiv", "OpenPGL", "LibWebP", "Zstandard" ],
 
+	"environment" : {
+
+		# Needed because the build process runs oslc.
+		"DYLD_FALLBACK_LIBRARY_PATH" : "{buildDir}/lib",
+
+	},
+
 	"commands" : [
 
 		# The Cycles archive includes empty folders under `./lib`

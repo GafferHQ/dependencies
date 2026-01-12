@@ -40,6 +40,7 @@
 		"environment" : {
 
 			"DYLD_FRAMEWORK_PATH" : "{buildDir}/lib",
+			"DYLD_FALLBACK_LIBRARY_PATH" : "{buildDir}/lib",
 
 		},
 

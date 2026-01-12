@@ -15,6 +15,7 @@
 	"environment" : {
 
 		"LD_LIBRARY_PATH" : "{buildDir}/lib",
+		"DYLD_FALLBACK_LIBRARY_PATH" : "{buildDir}/lib",
 		"PYTHONPATH" : "{buildDir}/python",
 
 	},
