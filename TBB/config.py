@@ -2,61 +2,33 @@
 
 	"downloads" : [
 
-		"https://github.com/oneapi-src/oneTBB/archive/refs/tags/v2020.3.tar.gz"
+		"https://github.com/uxlfoundation/oneTBB/archive/refs/tags/v2021.13.0.tar.gz"
 
 	],
 
 	"url" : "http://threadingbuildingblocks.org/",
 
-	"license" : "LICENSE",
+	"license" : "LICENSE.txt",
 
 	"commands" : [
 
-		"make -j {jobs} stdver=c++{c++Standard}",
-		"mkdir -p {buildDir}/include",
-		"cp -r include/tbb {buildDir}/include",
-		"mkdir -p {buildDir}/lib",
-		"{installLibsCommand}",
-
+		"mkdir build",
+		"cd build &&"
+			" cmake"
+			" -D CMAKE_CXX_STANDARD={c++Standard}"
+			" -D CMAKE_INSTALL_PREFIX={buildDir}"
+			" -D CMAKE_INSTALL_LIBDIR={buildDir}/lib"
+			" -D CMAKE_PREFIX_PATH={buildDir}"
+			" ..",
+		"cd build && make install -j {jobs} VERBOSE=1",
 	],
 
 	"manifest" : [
 
 		"include/tbb",
+		"include/oneapi",
 		"lib/libtbb*{sharedLibraryExtension}*",
 
 	],
-
-	"platform:linux" : {
-
-		"environment" : {
-
-			"tbb_os" : "linux",
-
-		},
-
-		"variables" : {
-
-			"installLibsCommand" : "cp build/*_release/*.so* {buildDir}/lib",
-
-		},
-
-	},
-
-	"platform:macos" : {
-
-		"environment" : {
-
-			"tbb_os" : "macos",
-
-		},
-
-		"variables" : {
-
-			"installLibsCommand" : "cp build/macos_*_release/*.dylib {buildDir}/lib",
-
-		},
-
-	},
 
 }
