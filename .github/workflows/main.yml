@@ -80,11 +80,10 @@ jobs:
 
     - name: Install toolchain (macOS)
       run: |
-        # Choose the earliest Xcode version available on a macos-14 runner.
-        sudo xcode-select -s /Applications/Xcode_14.3.1.app/Contents/Developer
         # Install build requirements.
-        sudo pip3 install scons==4.6.0 --break-system-packages
+        pipx install scons==4.6.0
         brew install gpatch
+        echo "/opt/homebrew/opt/gpatch/libexec/gnubin" >> $GITHUB_PATH
         brew install bison
         # Make sure bison is discoverable.
         echo BISON_ROOT=/opt/homebrew/opt/bison >> $GITHUB_ENV
@@ -94,7 +93,7 @@ jobs:
         # Remove CommandLineTools so there is no potential for conflict with
         # our selected Xcode version.
         sudo rm -rf /Library/Developer/CommandLineTools
-        sudo rm -rf /Applications/Python\ 3.10
+        sudo rm -rf /Applications/Python\ 3.11
         # Remove little-cms2 to prevent our LibRaw builds from finding it.
         brew uninstall --ignore-dependencies little-cms2
       shell: bash
