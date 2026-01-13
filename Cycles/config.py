@@ -12,6 +12,13 @@
 
 	"dependencies" : [ "Boost", "OpenJPEG", "OpenImageIO", "TBB", "Alembic", "Embree", "OpenColorIO", "OpenVDB", "OpenShadingLanguage", "OpenSubdiv", "OpenPGL", "LibWebP", "Zstandard" ],
 
+	"environment" : {
+
+		# Needed because the build process runs oslc.
+		"DYLD_FALLBACK_LIBRARY_PATH" : "{buildDir}/lib",
+
+	},
+
 	"commands" : [
 
 		# The Cycles archive includes empty folders under `./lib`
@@ -19,7 +26,7 @@
 		# in lib matching the current platform and architecture causes
 		# the build to only look for dependencies within it, so we
 		# remove them to allow dependencies to be found in `{buildDir}`.
-		"rmdir --ignore-fail-on-non-empty ./lib/*",
+		"rm -r ./lib/*",
 
 		"mkdir build",
 		"cd build &&"

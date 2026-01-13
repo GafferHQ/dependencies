@@ -36,7 +36,7 @@
 			" -D BUILD_MISSING_FMT=NO"
 			" -D OIIO_BUILD_TESTS=NO"
 			" -D OIIO_DOWNLOAD_MISSING_TESTDATA=NO"
-			" -D PYTHON_VERSION={pythonMajorVersion}"
+			" -D PYTHON_VERSION={pythonVersion}"
 			" -D Python_ROOT_DIR={buildDir}"
 			" -D Python_FIND_STRATEGY=LOCATION"
 			# These next two disable `iv`. This fails to

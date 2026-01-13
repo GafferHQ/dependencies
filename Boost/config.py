@@ -18,7 +18,7 @@
 		# even though we tell it quite explicitly to use the one in {buildDir}.
 		"DYLD_FALLBACK_FRAMEWORK_PATH" : "{buildDir}/lib",
 		"LD_LIBRARY_PATH" : "{buildDir}/lib",
-		"MACOSX_DEPLOYMENT_TARGET" : "10.9",
+		"MACOSX_DEPLOYMENT_TARGET" : "12.0",
 		# Give a helping hand to find the python headers, since the bootstrap
 		# below doesn't always seem to get it right.
 		"CPLUS_INCLUDE_PATH" : "{pythonIncludeDir}",

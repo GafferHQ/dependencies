@@ -1,0 +1,19 @@
+--- a/pxr/external/boost/python/detail/dealloc.hpp
++++ b/pxr/external/boost/python/detail/dealloc.hpp
+@@ -15,12 +15,16 @@
+ #include "pxr/external/boost/python/common.hpp"
+
+ namespace PXR_BOOST_NAMESPACE { namespace python { namespace detail {
++#ifndef __clang__
+     extern "C"
+     {
++#endif
+         inline void dealloc(PyObject* self)
+         {
+           PyObject_Del(self);
+         }
++#ifndef __clang__
+     }
++#endif
+ }}} // namespace PXR_BOOST_NAMESPACE::python::detail
+ # endif    // PXR_EXTERNAL_BOOST_PYTHON_DETAIL_DEALLOC_HPP

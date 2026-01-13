@@ -70,7 +70,7 @@
 
 		"environment" : {
 
-			"MACOSX_DEPLOYMENT_TARGET" : "11.0",
+			"MACOSX_DEPLOYMENT_TARGET" : "12.0",
 
 		},
 

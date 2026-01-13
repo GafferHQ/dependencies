@@ -80,11 +80,10 @@ jobs:
 
     - name: Install toolchain (macOS)
       run: |
-        # Choose the earliest Xcode version available on a macos-14 runner.
-        sudo xcode-select -s /Applications/Xcode_14.3.1.app/Contents/Developer
         # Install build requirements.
-        sudo pip3 install scons==4.6.0 --break-system-packages
+        pipx install scons==4.6.0
         brew install gpatch
+        echo "/opt/homebrew/opt/gpatch/libexec/gnubin" >> $GITHUB_PATH
         brew install bison
         # Make sure bison is discoverable.
         echo BISON_ROOT=/opt/homebrew/opt/bison >> $GITHUB_ENV
@@ -94,9 +93,16 @@ jobs:
         # Remove CommandLineTools so there is no potential for conflict with
         # our selected Xcode version.
         sudo rm -rf /Library/Developer/CommandLineTools
-        sudo rm -rf /Applications/Python\ 3.10
+        sudo rm -rf /Applications/Python\ 3.11
         # Remove little-cms2 to prevent our LibRaw builds from finding it.
         brew uninstall --ignore-dependencies little-cms2
+        # Pin CMake to 3.31.6
+        brew uninstall cmake
+        brew tap-new --no-git "local/pinned" >/dev/null
+        cmakeDir="$(brew --repo "local/pinned")/Formula"
+        mkdir -p "$cmakeDir"
+        curl -fsSL "https://raw.githubusercontent.com/Homebrew/homebrew-core/b4e46db74e74a8c1650b38b1da222284ce1ec5ce/Formula/c/cmake.rb" -o "$cmakeDir/cmake.rb"
+        brew install "local/pinned/cmake"
       shell: bash
       if: runner.os == 'macOS'
 
