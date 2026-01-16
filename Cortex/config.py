@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/ImageEngine/cortex/archive/refs/tags/10.7.0.0a2.tar.gz"
+		"https://github.com/ImageEngine/cortex/archive/refs/tags/10.7.0.0a3.tar.gz"
 
 	],
 
