@@ -19,8 +19,8 @@ The 0xCC is an INT 3 instruction, so it's a free space to use.
 
 diff --git a/src/tbbmalloc_proxy/proxy.cpp b/src/tbbmalloc_proxy/proxy.cpp
 index a6d3dea06f..954583ba5f 100644
---- a/src/tbbmalloc/proxy.cpp
-+++ b/src/tbbmalloc/proxy.cpp
+--- a/src/tbbmalloc_proxy/proxy.cpp
++++ b/src/tbbmalloc_proxy/proxy.cpp
 @@ -431,14 +431,12 @@ void __TBB_malloc__free_base(void *ptr)
  const char* known_bytecodes[] = {
  #if _WIN64

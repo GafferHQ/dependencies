@@ -15,40 +15,32 @@
 		"mkdir build",
 		"cd build &&"
 			" cmake"
+			" -G {cmakeGenerator}"
+			" -D CMAKE_BUILD_TYPE={cmakeBuildType}"
 			" -D CMAKE_CXX_STANDARD={c++Standard}"
 			" -D CMAKE_INSTALL_PREFIX={buildDir}"
 			" -D CMAKE_INSTALL_LIBDIR={buildDir}/lib"
 			" -D CMAKE_PREFIX_PATH={buildDir}"
 			" ..",
-		"cd build && make install -j {jobs} VERBOSE=1",
+		"cd build && cmake --build . --config {cmakeBuildType} --target install -- -j {jobs}",
 	],
 
 	"manifest" : [
 
 		"include/tbb",
 		"include/oneapi",
-		"lib/libtbb*{sharedLibraryExtension}*",
+		"{sharedLibraryDir}/{libraryPrefix}tbb*{sharedLibraryExtension}*",
+		"lib/{libraryPrefix}tbb*.lib",
 
 	],
 
 	"platform:windows" : {
 
-		"commands" : [
+		"variables" : {
 
-			"mkdir gafferBuild",
-			"cd gafferBuild && "
-				" cmake"
-				" -G {cmakeGenerator}"
-				" -D CMAKE_CXX_STANDARD={c++Standard}"
-				" -D CMAKE_BUILD_TYPE={cmakeBuildType}"
-				" -D CMAKE_PREFIX_PATH={buildDir}"
-				" -D CMAKE_INSTALL_PREFIX={buildDir}"
-				" -D TBB_BUILD_TESTS=OFF"
-				" ..",
+			"installLibsCommand" : "",
 
-			"cd gafferBuild && cmake --build . --config {cmakeBuildType} --target install -- -j {jobs}",
-
-		],
+		},
 
 	},
 
