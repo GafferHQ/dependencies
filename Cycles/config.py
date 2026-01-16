@@ -98,6 +98,7 @@
 				" -D WITH_CYCLES_HYDRA_RENDER_DELEGATE=OFF"
 				" -D WITH_CYCLES_USD=OFF"
 				" -D PLATFORM_BUNDLED_LIBRARY_DIRS={buildDir}\\bin;{buildDir}\\lib;%PATH%"
+                " -D CMAKE_EXE_LINKER_FLAGS=\"/LIBPATH:{buildDir}/lib\""
 				" ..",
 			"cd build && cmake --build . --config {cmakeBuildType} --target install",
 			# Copy headers to their own location for `postMovePaths`. We don't copy to `buildDir`
