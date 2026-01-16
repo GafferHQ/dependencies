@@ -109,7 +109,7 @@
 				" -D JPEG_LIBRARY={buildDir}/lib/jpeg.lib"
 				" -D TIFF_INCLUDE_DIR={buildDir}/include"
 				" -D TIFF_LIBRARY={buildDir}/lib/tiff.lib"
-				" -D PYTHON_VERSION={pythonMajorVersion}"
+				" -D PYTHON_VERSION={pythonVersion}"
 				" -D Python_ROOT_DIR={buildDir}"
 				" -D Python_FIND_STRATEGY=LOCATION"
 				" -D OCIO_LIBRARY_PATH={buildDir}/lib/OpenColorIO.lib"
