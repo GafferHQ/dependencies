@@ -154,6 +154,7 @@
 				" -D CMAKE_CXX_FLAGS=\"-DBOOST_ALL_NO_LIB\""
 				" -D Python_ROOT_DIR={buildDir}"
 				" -D Python_FIND_STRATEGY=LOCATION"
+				" -D PYTHON_VERSION={pythonVersion}"
 				" ..",
 			"cd gafferBuild && cmake --build . --config {cmakeBuildType} --target install -- -j {jobs}",
 
