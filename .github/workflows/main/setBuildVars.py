@@ -135,7 +135,6 @@ if releaseId :
 
 formatVars = {
 	"variant" : os.environ["DEPENDENCIES_BUILD_VARIANT"],
-	"timestamp" : datetime.datetime.now().strftime( "%Y_%m_%d_%H%M" ),
 	"pullRequest" : pullRequest,
 	"shortCommit" : commit[:8],
 	"tag" : tag,
@@ -143,8 +142,8 @@ formatVars = {
 }
 
 nameFormats = {
-	"default" : "gafferDependencies-{timestamp}-{shortCommit}-{variant}",
-	"pull_request" : "gafferDependencies-pr{pullRequest}-{branch}-{timestamp}-{shortCommit}-{variant}",
+	"default" : "gafferDependencies-{shortCommit}-{variant}",
+	"pull_request" : "gafferDependencies-pr{pullRequest}-{branch}-{shortCommit}-{variant}",
 	"release" : "gafferDependencies-{tag}-{variant}"
 }
 
