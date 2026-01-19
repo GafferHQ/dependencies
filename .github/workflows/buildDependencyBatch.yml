@@ -116,7 +116,7 @@ jobs:
 
     - name: Build Dependencies
       run: |
-        ./build.py --cleanup --jobs ${{ inputs.jobs }} --buildDir ${{ env.DEPENDENCIES_BUILD_DIR }}/${{ env.DEPENDENCIES_BUILD_NAME }} --package ${{ env.DEPENDENCIES_BUILD_NAME }}.${{ env.PACKAGE_EXTENSION }} ${{ inputs.projectsString }}
+        python build.py --cleanup --jobs ${{ inputs.jobs }} --buildDir ${{ env.DEPENDENCIES_BUILD_DIR }}/${{ env.DEPENDENCIES_BUILD_NAME }} --package ${{ env.DEPENDENCIES_BUILD_NAME }}.${{ env.PACKAGE_EXTENSION }} ${{ inputs.projectsString }}
       env:
         PYTHONUTF8: 1
 
