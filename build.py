@@ -410,7 +410,9 @@ def __buildPackage( projects, configs, buildDir, package ) :
 		walk( project, configs, buildDir )
 
 	projectManifest.sort( key = operator.itemgetter( "name" ) )
-	with open( os.path.join( buildDir, "doc", "licenses", "manifest.json" ), "w" ) as file :
+	licenseDir = os.path.join( buildDir, "doc", "licenses" )
+	os.makedirs( licenseDir, exist_ok = True )
+	with open( os.path.join( licenseDir, "manifest.json" ), "w" ) as file :
 		json.dump( projectManifest, file, indent = 4 )
 
 	rootName = os.path.basename( package ).replace( ".tar.gz", "" )
@@ -497,6 +499,7 @@ if args.projects is None :
 __checkConfigs( args.projects, configs )
 
 buildDir = variables["buildDir"].format( **variables )
+os.makedirs( buildDir, exist_ok = True )
 __buildProjects( args.projects, configs, buildDir, args.cleanup )
 
 if args.package :
