@@ -37,7 +37,7 @@
 		
 		"postMovePaths" : {
 			"libraw/*.h" : "{buildDir}/include/libraw",
-			"buildfiles/release-x86_64/libraw.dll" : "{buildDir}/lib",
+			"buildfiles/release-x86_64/libraw.dll" : "{buildDir}/bin",
 			"buildfiles/release-x86_64/libraw.lib" : "{buildDir}/lib",
 		}
 
