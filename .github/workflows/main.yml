@@ -80,8 +80,13 @@ jobs:
 
     - name: Install toolchain (macOS)
       run: |
+        # Remove all pre-installed homebrew packages.
+        brew remove --force $(brew list --formula)
+        brew remove --cask --force $(brew list)
         # Install build requirements.
+        brew install pipx
         pipx install scons==4.6.0
+        brew install ninja
         brew install gpatch
         echo "/opt/homebrew/opt/gpatch/libexec/gnubin" >> $GITHUB_PATH
         brew install bison
@@ -94,10 +99,7 @@ jobs:
         # our selected Xcode version.
         sudo rm -rf /Library/Developer/CommandLineTools
         sudo rm -rf /Applications/Python\ 3.11
-        # Remove little-cms2 to prevent our LibRaw builds from finding it.
-        brew uninstall --ignore-dependencies little-cms2
         # Pin CMake to 3.31.6
-        brew uninstall cmake
         brew tap-new --no-git "local/pinned" >/dev/null
         cmakeDir="$(brew --repo "local/pinned")/Formula"
         mkdir -p "$cmakeDir"
