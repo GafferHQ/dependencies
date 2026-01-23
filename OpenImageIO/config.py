@@ -28,6 +28,7 @@
 			" -D CMAKE_INSTALL_PREFIX={buildDir}"
 			" -D CMAKE_INSTALL_LIBDIR={buildDir}/lib"
 			" -D CMAKE_PREFIX_PATH={buildDir}"
+			" -D CMAKE_FIND_FRAMEWORK=LAST"
 			" -D USE_FFMPEG=NO"
 			" -D USE_GIF=0"
 			" -D USE_OPENVDB=NO"
