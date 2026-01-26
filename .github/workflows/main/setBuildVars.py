@@ -135,7 +135,6 @@ if releaseId :
 
 formatVars = {
 	"variant" : os.environ["DEPENDENCIES_BUILD_VARIANT"],
-	"timestamp" : datetime.datetime.now().strftime( "%Y_%m_%d_%H%M" ),
 	"pullRequest" : pullRequest,
 	"shortCommit" : commit[:8],
 	"tag" : tag,
@@ -143,8 +142,8 @@ formatVars = {
 }
 
 nameFormats = {
-	"default" : "gafferDependencies-{timestamp}-{shortCommit}-{variant}",
-	"pull_request" : "gafferDependencies-pr{pullRequest}-{branch}-{timestamp}-{shortCommit}-{variant}",
+	"default" : "gafferDependencies-{shortCommit}-{variant}",
+	"pull_request" : "gafferDependencies-pr{pullRequest}-{branch}-{shortCommit}-{variant}",
 	"release" : "gafferDependencies-{tag}-{variant}"
 }
 
@@ -157,6 +156,7 @@ if tag and releaseId :
 	trigger = "release"
 
 buildName = nameFormats.get( trigger, nameFormats['default'] ).format( **formatVars )
+intermediateArtifactsBaseName = "gafferDependencies-{shortCommit}-{variant}".format( **formatVars )
 
 ## Set vars in the downstream workflow environment
 
@@ -170,6 +170,9 @@ with open( os.environ["GITHUB_ENV"], "a" ) as f :
 
 	print( "Setting $DEPENDENCIES_GITHUB_RELEASEID to '%s'" % releaseId )
 	f.write( 'DEPENDENCIES_GITHUB_RELEASEID=%s\n' % releaseId )
+
+	print( "Setting $DEPENDENCIES_INTERMEDIATE_ARTIFACTS_BASE_NAME to '%s'" % intermediateArtifactsBaseName )
+	f.write( 'DEPENDENCIES_INTERMEDIATE_ARTIFACTS_BASE_NAME=%s\n' % intermediateArtifactsBaseName )
 
 	packageExtension = "zip" if os.name == "nt" else "tar.gz"
 	print( "Setting $PACKAGE_EXTENSION to '%s'" %packageExtension )

@@ -13,7 +13,7 @@ on:
 
 jobs:
 
-  build:
+  buildPartOne:
 
     strategy:
 
@@ -30,6 +30,7 @@ jobs:
         name: [
           linux-gcc11,
           macos-arm64,
+          windows,
         ]
 
         include:
@@ -37,108 +38,60 @@ jobs:
           - name: linux-gcc11
             os: ubuntu-24.04
             publish: true
-            containerImage: ghcr.io/gafferhq/build/build:4.0.0a1
             jobs: 4
-
+            containerImage: ghcr.io/gafferhq/build/build:4.0.0a1
+            projectsString:  # Blank to build all projects.
+          
           - name: macos-arm64
             os: macos-14
             publish: true
-            containerImage:
             jobs: 3
+            containerImage:
+            projectsString:  # Blank to build all projects.
+          
+          - name: windows
+            os: windows-2022
+            publish: false
+            jobs: 4
+            containerImage:
+            # Something simple to start. When ready, the projects below should be included in the first job.
+            projectsString: --projects GafferResources  
+            # projectsString: --projects LibFFI TBB Python ZLib Boost Imath OpenEXR HDF5 Alembic BitstreamVera Blosc CMark PyBind11 LibJPEG-Turbo LibTIFF LibPNG OpenJPEG Expat YAML-CPP PyString Minizip OpenColorIO LibRaw PugiXML Fmt LibWebP FreeType OpenImageIO LLVM OpenShadingLanguage GLEW OpenVDB OpenSubdiv PyOpenGL Qt PySide
 
-    runs-on: ${{ matrix.os }}
+    uses: ./.github/workflows/buildDependencyBatch.yml
+    with:
+      name: ${{ matrix.name }}
+      os: ${{ matrix.os }}
+      publish: ${{ matrix.publish }}
+      jobs: ${{ matrix.jobs }}
+      containerImage: ${{ matrix.containerImage }}
+      projectsString: ${{ matrix.projectsString }}
+      intermediateArtifactOutputSuffix: ${{ matrix.projectsString && 'partOne' || '' }}
 
-    container:
-      image: ${{ matrix.containerImage }}
-      volumes:
-        # Mount the `/usr` directory from the host so we can clean it up
-        # in "Install toolchain (Linux)".
-        - /usr:/hostVolume/usr
+  buildPartTwo:
+    strategy:
+      matrix:
 
-    env:
-      DEPENDENCIES_BUILD_DIR: "./build"
-    steps:
+        name: [
+              windows,
+            ]
 
-    - uses: actions/checkout@v4
+        include:
+          - name: windows
+            os: windows-2022
+            publish: false
+            containerImage:
+            jobs: 4
+            projectsString: --projects GafferResources  # Just verify this second job works for now.
 
-    - name: Install toolchain (Linux)
-      run: |
-        # Clear space on runner by deleting stuff we don't need from the host VM.
-        rm -rf /hostVolume/usr/lib/jvm /hostVolume/usr/local/lib/android
-        # The Docker container configures bash shells such that they enable the
-        # software collections we want. If we could set GitHub's
-        # `defaults.run.shell` to `bash` then all our build steps would pick up
-        # this environment automatically. But we can't do that because it will
-        # break future Windows builds, and we can't configure a different shell
-        # per platform because GitHub won't allow it. But we can run _this_
-        # Linux-only step in bash, and transfer the environment out to be used
-        # in later steps.
-        echo $PATH > $GITHUB_PATH
-        echo LD_LIBRARY_PATH=$LD_LIBRARY_PATH >> $GITHUB_ENV
-      shell: bash
-      if: runner.os == 'Linux'
-
-    - name: Install toolchain (macOS)
-      run: |
-        # Remove all pre-installed homebrew packages.
-        brew remove --force $(brew list --formula)
-        brew remove --cask --force $(brew list)
-        # Install build requirements.
-        brew install pipx
-        pipx install scons==4.6.0
-        brew install ninja
-        brew install gpatch
-        echo "/opt/homebrew/opt/gpatch/libexec/gnubin" >> $GITHUB_PATH
-        brew install bison
-        # Make sure bison is discoverable.
-        echo BISON_ROOT=/opt/homebrew/opt/bison >> $GITHUB_ENV
-        # Make the location of the macOS platform SDK obvious to CMake.
-        # OpenShadingLanguage needs a little extra help finding `cstddef`.
-        echo SDKROOT=`xcrun --sdk macosx --show-sdk-path` >> $GITHUB_ENV
-        # Remove CommandLineTools so there is no potential for conflict with
-        # our selected Xcode version.
-        sudo rm -rf /Library/Developer/CommandLineTools
-        sudo rm -rf /Applications/Python\ 3.11
-        # Pin CMake to 3.31.6
-        brew tap-new --no-git "local/pinned" >/dev/null
-        cmakeDir="$(brew --repo "local/pinned")/Formula"
-        mkdir -p "$cmakeDir"
-        curl -fsSL "https://raw.githubusercontent.com/Homebrew/homebrew-core/b4e46db74e74a8c1650b38b1da222284ce1ec5ce/Formula/c/cmake.rb" -o "$cmakeDir/cmake.rb"
-        brew install "local/pinned/cmake"
-      shell: bash
-      if: runner.os == 'macOS'
-
-    - name: 'Install Python Modules'
-      run: |
-        python --version
-        pip install PyJWT==1.7.1 PyGitHub==1.45
-
-    - name: Set Custom Variables
-      run: |
-        .github/workflows/main/setBuildVars.py
-      env:
-        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        DEPENDENCIES_BUILD_VARIANT: ${{ matrix.name }}
-      shell: bash
-
-    - name: Build Dependencies
-      run: |
-        ./build.py --cleanup --jobs ${{ matrix.jobs }} --buildDir ${{ env.DEPENDENCIES_BUILD_DIR }}/${{ env.DEPENDENCIES_BUILD_NAME }} --package ${{ env.DEPENDENCIES_BUILD_NAME }}.${{ env.PACKAGE_EXTENSION }}
-      env:
-        PYTHONUTF8: 1
-
-    - uses: actions/upload-artifact@v4
-      with:
-        name: ${{ env.DEPENDENCIES_BUILD_NAME }}
-        path: ${{ env.DEPENDENCIES_BUILD_NAME }}.${{ env.PACKAGE_EXTENSION }}
-        # Using compression-level 0 avoids compressing our already compressed
-        # package and results in a significantly faster upload.
-        compression-level: 0
-      if: matrix.publish
-
-    - name: Publish Release
-      run: |
-        python ./.github/workflows/main/publishRelease.py --archive ${{ env.DEPENDENCIES_BUILD_NAME }}.${{ env.PACKAGE_EXTENSION }} --repo ${{ github.repository }} --releaseId ${{ env.DEPENDENCIES_GITHUB_RELEASEID }}
-      if: matrix.publish && env.DEPENDENCIES_GITHUB_RELEASEID != ''
-      env:
-        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    if: ${{ always() }}
+    needs: buildPartOne
+    uses: ./.github/workflows/buildDependencyBatch.yml
+    with:
+      name: ${{ matrix.name }}
+      os: ${{ matrix.os }}
+      publish: ${{ matrix.publish }}
+      jobs: ${{ matrix.jobs }}
+      containerImage: ${{ matrix.containerImage }}
+      projectsString: ${{ matrix.projectsString }}
+      intermediateArtifactInputSuffix: partOne
