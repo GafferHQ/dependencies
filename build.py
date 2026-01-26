@@ -268,6 +268,8 @@ def __buildProject( project, config, buildDir, cleanup ) :
 
 	sys.stderr.write( "Building project {}\n".format( project ) )
 
+	buildRootDirectory = os.getcwd()
+
 	archiveDir = project + "/archives"
 	if not os.path.exists( archiveDir ) :
 		os.makedirs( archiveDir )
@@ -325,6 +327,7 @@ def __buildProject( project, config, buildDir, cleanup ) :
 		os.symlink( link[1], link[0] )
 
 	if cleanup :
+		os.chdir( buildRootDirectory )
 		shutil.rmtree( fullWorkingDir )
 
 def __checkConfigs( projects, configs ) :
