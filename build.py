@@ -84,7 +84,7 @@ permutations of the build.
 
 def __compilerRoot() :
 
-	compiler = shutil.which( "g++" )
+	compiler = shutil.which( "g++" if os.name != "nt" else "cl" )
 	binDir = os.path.dirname( compiler )
 	return os.path.dirname( binDir )
 
@@ -210,7 +210,7 @@ def __loadConfigs( variables, variants ) :
 			__applyConfigOverrides( config, "variant:{}".format( variants[project] ) )
 		for variantProject, variant in variants.items() :
 			__applyConfigOverrides( config, "variant:{}:{}".format( variantProject, variant ) )
-		__applyConfigOverrides( config, "platform:macos" if sys.platform == "darwin" else "platform:linux" )
+		__applyConfigOverrides( config, { "darwin": "platform:macos", "win32": "platform:windows" }.get( sys.platform, "platform:linux" ) )
 		if config.get( "enabled", True ) :
 			configs[project] = config
 
@@ -267,6 +267,8 @@ def __preserveCurrentDirectory( f ) :
 def __buildProject( project, config, buildDir, cleanup ) :
 
 	sys.stderr.write( "Building project {}\n".format( project ) )
+
+	buildRootDirectory = os.getcwd()
 
 	archiveDir = project + "/archives"
 	if not os.path.exists( archiveDir ) :
@@ -325,6 +327,7 @@ def __buildProject( project, config, buildDir, cleanup ) :
 		os.symlink( link[1], link[0] )
 
 	if cleanup :
+		os.chdir( buildRootDirectory )
 		shutil.rmtree( fullWorkingDir )
 
 def __checkConfigs( projects, configs ) :
@@ -410,7 +413,9 @@ def __buildPackage( projects, configs, buildDir, package ) :
 		walk( project, configs, buildDir )
 
 	projectManifest.sort( key = operator.itemgetter( "name" ) )
-	with open( os.path.join( buildDir, "doc", "licenses", "manifest.json" ), "w" ) as file :
+	licenseDir = os.path.join( buildDir, "doc", "licenses" )
+	os.makedirs( licenseDir, exist_ok = True )
+	with open( os.path.join( licenseDir, "manifest.json" ), "w" ) as file :
 		json.dump( projectManifest, file, indent = 4 )
 
 	rootName = os.path.basename( package ).replace( ".tar.gz", "" )
@@ -476,12 +481,12 @@ for key, value in vars( args ).items() :
 		variants[key[8:]] = value[0]
 
 variables = {
-	"buildDir" : os.path.abspath( args.buildDir ),
+	"buildDir" : os.path.abspath( args.buildDir ).replace("\\", "/"),
 	"jobs" : args.jobs,
 	"path" : os.environ["PATH"],
 	"version" : __version,
-	"platform" : "macos" if sys.platform == "darwin" else "linux",
-	"sharedLibraryExtension" : ".dylib" if sys.platform == "darwin" else ".so",
+	"platform" : { "darwin": "macos", "win32": "windows" }.get( sys.platform, "linux" ),
+	"sharedLibraryExtension" : { "darwin": ".dylib", "win32": ".dll" }.get( sys.platform, ".so" ),
 	"c++Standard" : "17",
 	"compilerRoot" : __compilerRoot(),
 	"variants" : "".join( "-{}{}".format( key, variants[key] ) for key in sorted( variants.keys() ) ),
@@ -497,6 +502,7 @@ if args.projects is None :
 __checkConfigs( args.projects, configs )
 
 buildDir = variables["buildDir"].format( **variables )
+os.makedirs( buildDir, exist_ok = True )
 __buildProjects( args.projects, configs, buildDir, args.cleanup )
 
 if args.package :

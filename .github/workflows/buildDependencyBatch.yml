@@ -1,0 +1,148 @@
+name : BuildDependencyBatch
+
+on:
+  workflow_call:
+    inputs:
+      name:
+        required: true
+        type: string
+      os:
+        required: true
+        type: string
+      publish:
+        required: true
+        type: boolean
+      jobs:
+        required: true
+        type: string
+      containerImage:
+        required: false
+        type: string
+      projectsString:
+        required: false
+        type: string
+      intermediateArtifactInputSuffix:
+        required: false
+        type: string
+      intermediateArtifactOutputSuffix:
+        required: false
+        type: string
+
+jobs:
+
+  buildDependencyBatch:
+
+    runs-on: ${{ inputs.os }}
+
+    container:
+      image: ${{ inputs.containerImage }}
+      volumes:
+        # Mount the `/usr` directory from the host so we can clean it up
+        # in "Install toolchain (Linux)".
+        - /usr:/hostVolume/usr
+
+    env:
+      DEPENDENCIES_BUILD_DIR: "./build"
+    steps:
+
+    - uses: actions/checkout@v4
+
+    - uses: ilammy/msvc-dev-cmd@0b201ec74fa43914dc39ae48a89fd1d8cb592756 # v1.13.0
+
+    - name: Install toolchain (Linux)
+      run: |
+        # Clear space on runner by deleting stuff we don't need from the host VM.
+        rm -rf /hostVolume/usr/lib/jvm /hostVolume/usr/local/lib/android
+        # The Docker container configures bash shells such that they enable the
+        # software collections we want. If we could set GitHub's
+        # `defaults.run.shell` to `bash` then all our build steps would pick up
+        # this environment automatically. But we can't do that because it will
+        # break future Windows builds, and we can't configure a different shell
+        # per platform because GitHub won't allow it. But we can run _this_
+        # Linux-only step in bash, and transfer the environment out to be used
+        # in later steps.
+        echo $PATH > $GITHUB_PATH
+        echo LD_LIBRARY_PATH=$LD_LIBRARY_PATH >> $GITHUB_ENV
+      shell: bash
+      if: runner.os == 'Linux'
+
+    - name: Install toolchain (macOS)
+      run: |
+        # Remove all pre-installed homebrew packages.
+        brew remove --force $(brew list --formula)
+        brew remove --cask --force $(brew list)
+        # Install build requirements.
+        brew install pipx
+        pipx install scons==4.6.0
+        brew install ninja
+        brew install gpatch
+        echo "/opt/homebrew/opt/gpatch/libexec/gnubin" >> $GITHUB_PATH
+        brew install bison
+        # Make sure bison is discoverable.
+        echo BISON_ROOT=/opt/homebrew/opt/bison >> $GITHUB_ENV
+        # Make the location of the macOS platform SDK obvious to CMake.
+        # OpenShadingLanguage needs a little extra help finding `cstddef`.
+        echo SDKROOT=`xcrun --sdk macosx --show-sdk-path` >> $GITHUB_ENV
+        # Remove CommandLineTools so there is no potential for conflict with
+        # our selected Xcode version.
+        sudo rm -rf /Library/Developer/CommandLineTools
+        sudo rm -rf /Applications/Python\ 3.11
+        # Pin CMake to 3.31.6
+        brew tap-new --no-git "local/pinned" >/dev/null
+        cmakeDir="$(brew --repo "local/pinned")/Formula"
+        mkdir -p "$cmakeDir"
+        curl -fsSL "https://raw.githubusercontent.com/Homebrew/homebrew-core/b4e46db74e74a8c1650b38b1da222284ce1ec5ce/Formula/c/cmake.rb" -o "$cmakeDir/cmake.rb"
+        brew install "local/pinned/cmake"
+      shell: bash
+      if: runner.os == 'macOS'
+
+    - name: 'Install Python Modules'
+      run: |
+        python --version
+        pip install PyJWT==1.7.1 PyGitHub==1.45
+
+    - name: Set Custom Variables
+      run: |
+        .github/workflows/main/setBuildVars.py
+      env:
+        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        DEPENDENCIES_BUILD_VARIANT: ${{ inputs.name }}
+      shell: bash
+
+    - name: Download Intermediate Artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ env.DEPENDENCIES_INTERMEDIATE_ARTIFACTS_BASE_NAME }}_${{ inputs.intermediateArtifactInputSuffix }}
+        path: ${{ env.DEPENDENCIES_BUILD_DIR }}/${{ env.DEPENDENCIES_BUILD_NAME }}
+      if: inputs.intermediateArtifactInputSuffix != ''
+
+    - name: Build Dependencies
+      run: |
+        python build.py --cleanup --jobs ${{ inputs.jobs }} --buildDir ${{ env.DEPENDENCIES_BUILD_DIR }}/${{ env.DEPENDENCIES_BUILD_NAME }} --package ${{ env.DEPENDENCIES_BUILD_NAME }}.${{ env.PACKAGE_EXTENSION }} ${{ inputs.projectsString }}
+      env:
+        PYTHONUTF8: 1
+
+    - name: Upload Intermediate Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ env.DEPENDENCIES_INTERMEDIATE_ARTIFACTS_BASE_NAME }}_${{ inputs.intermediateArtifactOutputSuffix }}
+        path: ${{ env.DEPENDENCIES_BUILD_DIR }}/${{ env.DEPENDENCIES_BUILD_NAME }}
+        include-hidden-files: true  # Required to upload the `.digests` file.
+      if: inputs.intermediateArtifactOutputSuffix != ''
+
+    - name: Upload Final Package
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ env.DEPENDENCIES_BUILD_NAME }}
+        path: ${{ env.DEPENDENCIES_BUILD_NAME }}.${{ env.PACKAGE_EXTENSION }}
+        # Using compression-level 0 avoids compressing our already compressed
+        # package and results in a significantly faster upload.
+        compression-level: 0
+      if: inputs.publish && inputs.intermediateArtifactOutputSuffix == ''
+
+    - name: Publish Release
+      run: |
+        python ./.github/workflows/main/publishRelease.py --archive ${{ env.DEPENDENCIES_BUILD_NAME }}.${{ env.PACKAGE_EXTENSION }} --repo ${{ github.repository }} --releaseId ${{ env.DEPENDENCIES_GITHUB_RELEASEID }}
+      if: inputs.publish && env.DEPENDENCIES_GITHUB_RELEASEID != '' && inputs.intermediateArtifactOutputSuffix == ''
+      env:
+        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
