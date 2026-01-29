@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/PixarAnimationStudios/OpenSubdiv/archive/v3_6_0.tar.gz"
+		"https://github.com/PixarAnimationStudios/OpenSubdiv/archive/v3_6_1.tar.gz"
 
 	],
 
