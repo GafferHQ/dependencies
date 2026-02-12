@@ -1,6 +1,7 @@
 11.x.x (relative to 11.0.0a2)
 ------
 
+- Embree : Updated to version 4.4.0.
 - OpenSubdiv : Updated to version 3.6.1.
 
 11.0.0a2 (relative to 11.0.0a1)
