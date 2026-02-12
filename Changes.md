@@ -1,6 +1,8 @@
 11.x.x (relative to 11.0.0a2)
 ------
 
+- Cycles : Updated to version 5.0.0.
+- Embree : Updated to version 4.4.0.
 - OpenSubdiv : Updated to version 3.6.1.
 
 11.0.0a2 (relative to 11.0.0a1)
