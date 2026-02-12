@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/blender/cycles/archive/refs/tags/v4.4.0.tar.gz",
+		"https://github.com/blender/cycles/archive/refs/tags/v5.0.0.tar.gz",
 
 	],
 
@@ -21,19 +21,13 @@
 
 	"commands" : [
 
-		# The Cycles archive includes empty folders under `./lib`
-		# named `{platform}_{architecture}`. The existence of a folder
-		# in lib matching the current platform and architecture causes
-		# the build to only look for dependencies within it, so we
-		# remove them to allow dependencies to be found in `{buildDir}`.
-		"rm -r ./lib/*",
-
 		"mkdir build",
 		"cd build &&"
 			" cmake"
 			" -D CMAKE_INSTALL_PREFIX={buildDir}/cycles"
 			" -D CMAKE_PREFIX_PATH={buildDir}"
 			" -D CMAKE_BUILD_TYPE=Release"
+			" -D WITH_LIBS_PRECOMPILED=OFF"
 			" -D WITH_CYCLES_OPENIMAGEDENOISE=OFF"
 			" -D WITH_CYCLES_PATH_GUIDING=ON"
 			" -D WITH_CYCLES_CUDA_BINARIES=ON"
@@ -71,7 +65,6 @@
 
 		"commands" : [
 
-			"rmdir lib\\windows_x64",
 			"mkdir build",
 			"cd build &&"
 				" cmake"
@@ -81,6 +74,7 @@
 				" -D CMAKE_INSTALL_PREFIX={buildDir}/cycles"
 				" -D CMAKE_PREFIX_PATH={buildDir}"
 				" -D CMAKE_BUILD_TYPE={cmakeBuildType}"
+				" -D WITH_LIBS_PRECOMPILED=OFF"
 				" -D WITH_CYCLES_OPENIMAGEDENOISE=OFF"
 				" -D WITH_CYCLES_PATH_GUIDING=ON"
 				" -D WITH_CYCLES_CUDA_BINARIES=ON"
