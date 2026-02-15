@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/NVIDIA/optix-dev/archive/refs/tags/v7.3.0.zip",
+		"https://github.com/NVIDIA/optix-dev/archive/refs/tags/v8.0.0.zip",
 
 	],
 
