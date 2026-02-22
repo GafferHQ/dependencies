@@ -1,6 +1,7 @@
 11.x.x (relative to 11.0.0a2)
 ------
 
+- Cortex : Updated to version 10.7.0.0a6.
 - Cycles : Updated to version 5.0.0.
 - Embree : Updated to version 4.4.0.
 - OpenSubdiv : Updated to version 3.6.1.
