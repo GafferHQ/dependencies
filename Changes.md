@@ -1,6 +1,7 @@
 11.x.x (relative to 11.0.0a2)
 ------
 
+- CI : Build artifacts and releases now include a "-platform##" suffix denoting their target VFX Reference Platform year. This replaces the "gcc" version suffix on Linux builds and the "arm64" suffix on macOS. macOS releases remain arm64 only.
 - Cycles : Updated to version 5.0.0.
 - Embree : Updated to version 4.4.0.
 - OpenSubdiv : Updated to version 3.6.1.
