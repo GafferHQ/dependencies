@@ -18,7 +18,7 @@ import urllib.request
 import stat
 import pathlib
 
-__version = "11.0.0a2"
+__version = "11.0.0a3"
 
 """
 Config file format
