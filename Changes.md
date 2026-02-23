@@ -1,5 +1,10 @@
-11.x.x (relative to 11.0.0a2)
+11.x.x (relative to 11.0.0a3)
 ------
+
+
+
+11.0.0a3 (relative to 11.0.0a2)
+--------
 
 - CI : Build artifacts and releases now include a "-platform##" suffix denoting their target VFX Reference Platform year. This replaces the "gcc" version suffix on Linux builds and the "arm64" suffix on macOS. macOS releases remain arm64 only.
 - Cortex : Updated to version 10.7.0.0a6.
