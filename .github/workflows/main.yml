@@ -41,21 +41,21 @@ jobs:
             jobs: 4
             containerImage: ghcr.io/gafferhq/build/build:4.0.0a1
             projectsString:  # Blank to build all projects.
-          
+
           - name: macos-arm64
             os: macos-14
             publish: true
             jobs: 3
             containerImage:
             projectsString:  # Blank to build all projects.
-          
+
           - name: windows
             os: windows-2022
             publish: false
             jobs: 4
             containerImage:
             # Something simple to start. When ready, the projects below should be included in the first job.
-            projectsString: --projects GafferResources  
+            projectsString: --projects GafferResources
             # projectsString: --projects LibFFI TBB Python ZLib Boost Imath OpenEXR HDF5 Alembic BitstreamVera Blosc CMark PyBind11 LibJPEG-Turbo LibTIFF LibPNG OpenJPEG Expat YAML-CPP PyString Minizip OpenColorIO LibRaw PugiXML Fmt LibWebP FreeType OpenImageIO LLVM OpenShadingLanguage GLEW OpenVDB OpenSubdiv PyOpenGL Qt PySide
 
     uses: ./.github/workflows/buildDependencyBatch.yml
