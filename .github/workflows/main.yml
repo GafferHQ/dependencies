@@ -39,7 +39,7 @@ jobs:
             os: ubuntu-24.04
             publish: true
             jobs: 4
-            containerImage: ghcr.io/gafferhq/build/build:4.0.0a1
+            containerImage: ghcr.io/gafferhq/build/build:4.0.0a2
             projectsString:  # Blank to build all projects.
 
           - name: macos-arm64
