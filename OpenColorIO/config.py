@@ -3,7 +3,8 @@
 	"downloads" : [
 
 		"https://github.com/AcademySoftwareFoundation/OpenColorIO/archive/refs/tags/v2.4.2.tar.gz",
-		"https://github.com/imageworks/OpenColorIO-Configs/archive/v1.0_r2.tar.gz",
+		"https://github.com/AcademySoftwareFoundation/OpenColorIO-Config-ACES/releases/download/v3.0.0/studio-config-v3.0.0_aces-v2.0_ocio-v2.4.ocio",
+		"https://github.com/AcademySoftwareFoundation/OpenColorIO-Config-ACES/releases/download/v3.0.0/cg-config-v3.0.0_aces-v2.0_ocio-v2.4.ocio",
 
 	],
 
@@ -46,8 +47,8 @@
 		"mv {buildDir}/lib*/python*/site-packages/PyOpenColorIO* {buildDir}/python",
 
 		"mkdir -p {buildDir}/openColorIO",
-		"cp ../OpenColorIO-Configs-1.0_r2/nuke-default/config.ocio {buildDir}/openColorIO",
-		"cp -r ../OpenColorIO-Configs-1.0_r2/nuke-default/luts {buildDir}/openColorIO",
+		"cp ../studio-config-v3.0.0_aces-v2.0_ocio-v2.4.ocio {buildDir}/openColorIO",
+		"cp ../cg-config-v3.0.0_aces-v2.0_ocio-v2.4.ocio {buildDir}/openColorIO",
 
 	],
 

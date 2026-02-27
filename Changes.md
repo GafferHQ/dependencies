@@ -1,7 +1,7 @@
 11.x.x (relative to 11.0.0a3)
 ------
 
-
+- OpenColorIO : Added ACES 2.0 configs.
 
 11.0.0a3 (relative to 11.0.0a2)
 --------
