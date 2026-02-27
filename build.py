@@ -101,18 +101,14 @@ def __decompress( archive, cleanup = False ) :
 				extracted = f.extract( info.filename )
 				os.chmod( extracted, info.external_attr >> 16 )
 			files = f.namelist()
-	elif archive.endswith( ".tar.xz" ) :
-		## \todo When we eventually move to Python 3, we can use
-		# the `tarfile` module for this too.
-		command = "tar -xvf {archive}".format( archive=archive )
-		sys.stderr.write( command + "\n" )
-		files = subprocess.check_output( command, stderr=subprocess.STDOUT, shell = True, universal_newlines = True )
-		files = [ f for f in files.split( "\n" ) if f ]
-		files = [ f[2:] if f.startswith( "x " ) else f for f in files ]
-	else :
+	elif archive.endswith( ".tar.bz2" ) or archive.endswith( "tar.gz" ) or archive.endswith( ".tgz" ) or archive.endswith( ".tar.xz" ) :
 		with tarfile.open( archive, "r:*" ) as f :
 			f.extractall()
 			files = f.getnames()
+	else :
+		# Plain file. Just copy over.
+		shutil.copy( archive, "./" )
+		files = [ os.path.basename( archive ) ]
 
 	if cleanup :
 		os.unlink( archive )
