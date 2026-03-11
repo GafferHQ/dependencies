@@ -55,7 +55,7 @@ jobs:
             jobs: 4
             containerImage:
             # Something simple to start. When ready, the projects below should be included in the first job.
-            projectsString: --projects GafferResources
+            projectsString: --projects GafferResources BitstreamVera
             # projectsString: --projects LibFFI TBB Python ZLib Boost Imath OpenEXR HDF5 Alembic BitstreamVera Blosc CMark PyBind11 LibJPEG-Turbo LibTIFF LibPNG OpenJPEG Expat YAML-CPP PyString Minizip OpenColorIO LibRaw PugiXML Fmt LibWebP FreeType OpenImageIO LLVM OpenShadingLanguage GLEW OpenVDB OpenSubdiv PyOpenGL Qt PySide
 
     uses: ./.github/workflows/buildDependencyBatch.yml
