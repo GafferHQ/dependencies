@@ -62,9 +62,13 @@
 
 		"cmake --build . --parallel {jobs} && cmake --install .",
 
-		"cp {buildDir}/libexec/moc {buildDir}/bin",
-		"cp {buildDir}/libexec/rcc {buildDir}/bin",
-		"cp {buildDir}/libexec/uic {buildDir}/bin",
+	],
+
+	"postBuildCopy" : [
+
+		( "{buildDir}/libexec", "moc", "{buildDir}/bin" ),
+		( "{buildDir}/libexec", "rcc", "{buildDir}/bin" ),
+		( "{buildDir}/libexec", "uic", "{buildDir}/bin" ),
 
 	],
 
