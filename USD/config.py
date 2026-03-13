@@ -20,12 +20,6 @@
 
 	},
 
-	"variables" : {
-
-		"extraArguments" : "",
-
-	},
-
 	"commands" : [
 
 		"cmake"
@@ -50,7 +44,6 @@
 			" -D OPENEXR_LOCATION={buildDir}/lib"
 			# Needed to prevent CMake picking up system python libraries on Mac.
 			" -D CMAKE_FRAMEWORK_PATH={pythonLibDir}"
-			" {extraArguments}"
 			" ."
 		,
 
@@ -104,15 +97,5 @@
 		"share/usd",
 
 	],
-
-	"variant:Python:3" : {
-
-		"variables" : {
-
-			"extraArguments" : "-D PXR_USE_PYTHON_3=TRUE",
-
-		},
-
-	},
 
 }
