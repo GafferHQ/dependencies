@@ -6,7 +6,7 @@
 
 	],
 
-	"url" : "https://graphics.pixar.com/usd",
+	"url" : "https://openusd.org",
 
 	"license" : "LICENSE.txt",
 
