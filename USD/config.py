@@ -2,11 +2,11 @@
 
 	"downloads" : [
 
-		"https://github.com/PixarAnimationStudios/USD/archive/refs/tags/v25.05.01.tar.gz"
+		"https://github.com/PixarAnimationStudios/OpenUSD/archive/refs/tags/v26.03.tar.gz"
 
 	],
 
-	"url" : "https://graphics.pixar.com/usd",
+	"url" : "https://openusd.org",
 
 	"license" : "LICENSE.txt",
 
@@ -17,12 +17,6 @@
 		"LD_LIBRARY_PATH" : "{buildDir}/lib",
 		"DYLD_FALLBACK_LIBRARY_PATH" : "{buildDir}/lib",
 		"PYTHONPATH" : "{buildDir}/python",
-
-	},
-
-	"variables" : {
-
-		"extraArguments" : "",
 
 	},
 
@@ -50,7 +44,6 @@
 			" -D OPENEXR_LOCATION={buildDir}/lib"
 			# Needed to prevent CMake picking up system python libraries on Mac.
 			" -D CMAKE_FRAMEWORK_PATH={pythonLibDir}"
-			" {extraArguments}"
 			" ."
 		,
 
@@ -104,15 +97,5 @@
 		"share/usd",
 
 	],
-
-	"variant:Python:3" : {
-
-		"variables" : {
-
-			"extraArguments" : "-D PXR_USE_PYTHON_3=TRUE",
-
-		},
-
-	},
 
 }
