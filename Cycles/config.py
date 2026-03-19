@@ -40,13 +40,20 @@
 			" ..",
 		"cd build && make install -j {jobs} VERBOSE=1",
 
-		"mkdir -p {buildDir}/cycles/include",
-		"cd src && find . -name '*.h' | cpio -pdm {buildDir}/cycles/include",
-		"cp -r third_party/atomic/* {buildDir}/cycles/include",
-		"mkdir -p {buildDir}/cycles/bin",
-		"mv {buildDir}/cycles/cycles {buildDir}/cycles/bin/cycles",
-		"cp -r build/lib {buildDir}/cycles",
+	],
 
+	"postBuildCopy" : [
+
+		( "src", "**/*.h", "{buildDir}/cycles/include" ),
+		( "third_party/atomic", "**/*.h", "{buildDir}/cycles/include" ),
+		( "build/lib", "**/*", "{buildDir}/cycles/lib" ),
+
+	],
+    
+	"postBuildMove" : [
+        
+		( "{buildDir}/cycles", "cycles", "{buildDir}/cycles/bin" ),
+        
 	],
 
 	"manifest" : [

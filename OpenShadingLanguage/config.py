@@ -45,14 +45,12 @@
 			" {extraArguments}"
 			" ..",
 		"cd gafferBuild && make install -j {jobs} VERBOSE=1",
-		"{extraCommands}",
 
 	],
 
 	"variables" : {
 
 		"extraArguments" : "",
-		"extraCommands" : "",
 		"useBatched" : "b8_AVX,b8_AVX2,b8_AVX2_noFMA,b8_AVX512,b8_AVX512_noFMA,b16_AVX512,b16_AVX512_noFMA",
 
 	},
@@ -81,9 +79,14 @@
 
 	"platform:macos" : {
 
+		"postBuildMove" : [
+
+			( "{buildDir}/lib/python{pythonVersion}/site-packages", "oslquery", "{pythonLibDir}/python{pythonVersion}/site-packages" ),
+
+		],
+
 		"variables" : {
 
-			"extraCommands" : "mv {buildDir}/lib/python{pythonVersion}/site-packages/oslquery {pythonLibDir}/python{pythonVersion}/site-packages/oslquery",
 			"useBatched" : "0",
 
 		},

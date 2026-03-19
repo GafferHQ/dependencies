@@ -51,7 +51,12 @@
 		"make install",
 
 		"rm -rf {buildDir}/python/pxr",
-		"mv {buildDir}/lib/python/pxr {buildDir}/python",
+
+	],
+
+	"postBuildMove" : [
+
+		( "{buildDir}/lib/python", "pxr/**/*", "{buildDir}/python" ),
 
 	],
 

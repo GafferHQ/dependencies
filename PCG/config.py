@@ -10,10 +10,11 @@
 
 	"license" : "LICENSE-MIT.txt",
 
+	"commands" : [],
 
-	"commands" : [
-		"mkdir -p {buildDir}/include/pcg",
-		"cp include/*.hpp {buildDir}/include/pcg",
+	"postBuildCopy" : [
+
+		( "include", "*.hpp", "{buildDir}/include/pcg" ),
 
 	],
 

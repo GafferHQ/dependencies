@@ -8,8 +8,10 @@ import json
 import os
 import operator
 import multiprocessing
+import pathlib
 import subprocess
 import shutil
+import stat
 import sys
 import tarfile
 import zipfile
@@ -39,6 +41,13 @@ Dictionary fields
 - enabled : May be set to `False` to disable a project entirely. This is
   only expected to be useful in conjunction with platform overrides or
   variants.
+- postBuildCopy / postBuildMove : List of copy / move directives, each
+  of the form ( sourceRoot, globPattern, destinationRoot ) 
+  specifying paths that should be copied / moved after all `commands`
+  have run. Files in `sourceRoot` that match `globPattern` (including
+  the recursive `**` pattern) are copied / moved, with their path relative
+  to `sourceRoot`, to `destinationRoot`. Destination directories will be
+  created if necessary.
 
 ### Packaging
 
@@ -188,6 +197,8 @@ def __updateDigest( project, config ) :
 	__appendHash( config["digest"], config.get( "environment" ) )
 	__appendHash( config["digest"], config.get( "commands" ) )
 	__appendHash( config["digest"], config.get( "symbolicLinks" ) )
+	__appendHash( config["digest"], config.get( "postBuildCopy" ) )
+	__appendHash( config["digest"], config.get( "postBuildMove" ) )
 	for e in config.get( "requiredEnvironment", [] ) :
 		__appendHash( config["digest"], os.environ.get( e, "" ) )
 
@@ -316,6 +327,19 @@ def __buildProject( project, config, buildDir, cleanup ) :
 		sys.stderr.write( command + "\n" )
 		subprocess.check_call( command, shell = True, env = environment )
 
+	for operation in [ "postBuildCopy", "postBuildMove" ] :
+		for sourceRoot, pattern, destinationRoot in config.get( operation, () ) :
+			sourceRoot = pathlib.Path( sourceRoot or "." )
+			destinationRoot = pathlib.Path( destinationRoot )
+
+			for p in sourceRoot.glob( pattern ) :
+				destinationPath = destinationRoot / p.relative_to( sourceRoot )
+				destinationPath.parent.mkdir( parents = True, exist_ok = True )
+				if operation == "postBuildCopy" :
+					shutil.copy( p, destinationPath )
+				else :
+					p.replace( destinationPath )
+
 	for link in config.get( "symbolicLinks", [] ) :
 		sys.stderr.write( "Linking {} to {}\n".format( link[0], link[1] ) )
 		if os.path.lexists( link[0] ) :
@@ -323,8 +347,12 @@ def __buildProject( project, config, buildDir, cleanup ) :
 		os.symlink( link[1], link[0] )
 
 	if cleanup :
+		def removeReadonly( func, path, *unused ) :
+			os.chmod( path, stat.S_IWRITE )
+			func( path )
+
 		os.chdir( buildRootDirectory )
-		shutil.rmtree( fullWorkingDir )
+		shutil.rmtree( fullWorkingDir, onexc = removeReadonly )
 
 def __checkConfigs( projects, configs ) :
 

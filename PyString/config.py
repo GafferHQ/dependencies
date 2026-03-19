@@ -20,7 +20,12 @@
 			" -D BUILD_SHARED_LIBS=ON"
 			" ..",
 		"cd build && make -j {jobs} && make install",
-		"mkdir -p {buildDir}/include/pystring && cp pystring.h {buildDir}/include/pystring",
+
+	],
+
+	"postBuildCopy" : [
+
+		( None, "pystring.h", "{buildDir}/include/pystring" ),
 
 	],
 

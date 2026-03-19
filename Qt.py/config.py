@@ -11,9 +11,11 @@
 
 	"dependencies" : [ "Python" ],
 
-	"commands" : [
+	"commands" : [],
 
-		"cp Qt.py {buildDir}/python",
+	"postBuildCopy" : [
+
+		( None, "Qt.py", "{buildDir}/python" )
 
 	],
 

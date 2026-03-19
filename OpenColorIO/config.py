@@ -43,12 +43,19 @@
 
 		"cd build && make clean && make VERBOSE=1 -j {jobs} && make install",
 
-		"mkdir -p {buildDir}/python",
-		"mv {buildDir}/lib*/python*/site-packages/PyOpenColorIO* {buildDir}/python",
+	],
 
-		"mkdir -p {buildDir}/openColorIO",
-		"cp ../studio-config-v3.0.0_aces-v2.0_ocio-v2.4.ocio {buildDir}/openColorIO",
-		"cp ../cg-config-v3.0.0_aces-v2.0_ocio-v2.4.ocio {buildDir}/openColorIO",
+	"postBuildCopy" : [
+
+
+		( "..", "studio-config-v3.0.0_aces-v2.0_ocio-v2.4.ocio", "{buildDir}/openColorIO" ),
+		( "..", "cg-config-v3.0.0_aces-v2.0_ocio-v2.4.ocio", "{buildDir}/openColorIO" ),
+
+	],
+
+	"postBuildMove" : [
+
+        ( "{buildDir}/lib/python{pythonVersion}/site-packages", "PyOpenColorIO*/**/*", "{buildDir}/python" ),
 
 	],
 

@@ -1,6 +1,7 @@
 11.x.x (relative to 11.0.0a4)
 ------
 
+- build.py : Added `postBuildCopy` and `postBuildMove` configuration steps.
 
 
 11.0.0a4 (relative to 11.0.0a3)
