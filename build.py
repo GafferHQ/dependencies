@@ -11,6 +11,7 @@ import multiprocessing
 import pathlib
 import subprocess
 import shutil
+import stat
 import sys
 import tarfile
 import zipfile
@@ -346,8 +347,12 @@ def __buildProject( project, config, buildDir, cleanup ) :
 		os.symlink( link[1], link[0] )
 
 	if cleanup :
+		def removeReadonly( func, path, *unused ) :
+			os.chmod( path, stat.S_IWRITE )
+			func( path )
+
 		os.chdir( buildRootDirectory )
-		shutil.rmtree( fullWorkingDir )
+		shutil.rmtree( fullWorkingDir, onexc = removeReadonly )
 
 def __checkConfigs( projects, configs ) :
 
