@@ -1,7 +1,10 @@
 11.x.x (relative to 11.0.0a4)
 ------
 
-
+- Cycles :
+  - Updated to version 5.1.0.
+  - Applied patch to support geometry motion blur with an even number of steps (from Blender upstream).
+- SSE2NEON : Added version 1.9.1 when building on macOS.
 
 11.0.0a4 (relative to 11.0.0a3)
 --------

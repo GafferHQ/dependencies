@@ -1,0 +1,180 @@
+From 677bae0b9376e7963d1c37bbf92b0db14ecfc0d8 Mon Sep 17 00:00:00 2001
+From: Brecht Van Lommel <brecht@blender.org>
+Date: Wed, 1 Apr 2026 19:55:32 +0200
+Subject: [PATCH] Add nodetype::get_type_names() for iterating all node
+ types
+
+Node types are registered lazily to ensure base types are registered
+before derived types, which is tricky to ensure with static
+initialization. This meant there was no more global list of types.
+
+Preserve that behavior, and instead gather init functions on static
+initialization.
+
+Ref #155818
+
+Pull Request: https://projects.blender.org/blender/blender/pulls/156326
+---
+ intern/cycles/graph/node_type.cpp    | 68 ++++++++++++++++++++++++++--
+ intern/cycles/graph/node_type.h      |  7 +--
+ intern/cycles/scene/shader_nodes.cpp |  5 ++
+ intern/cycles/scene/shader_nodes.h   |  1 +
+ 4 files changed, 73 insertions(+), 8 deletions(-)
+
+diff --git a/src/graph/node_type.cpp b/src/graph/node_type.cpp
+index 16553582d2a..1cf5c5d31e1 100644
+--- a/src/graph/node_type.cpp
++++ b/src/graph/node_type.cpp
+@@ -205,22 +205,65 @@ const SocketType *NodeType::find_output(ustring name) const
+   return nullptr;
+ }
+ 
+-/* Node Type Registry */
++/* Node Type Registry
++ *
++ * We want to be able to find and enumerate types without the need for a centralized
++ * function for all node types. Due to static initialization order issues and guarded
++ * allocators, there are some subtle implementation choices.
++ *
++ * Only the init functions are gathered on static initialization, as registering the
++ * node type itself could otherwise happen in the wrong order for base and derived
++ * types, and Blender's guarded allocator may not have been initialized yet.
++ *
++ * The initialization functions are stored in std::vector without guarded allocation
++ * as that may not been properly initialized yet. */
+ 
+-thread_mutex NodeType::types_mutex_;
++static thread_mutex &types_mutex()
++{
++  static thread_mutex types_mutex_;
++  return types_mutex_;
++}
+ 
+-unordered_map<ustring, NodeType> &NodeType::types()
++static unordered_map<ustring, NodeType> &types()
+ {
+   static unordered_map<ustring, NodeType> _types;
+   return _types;
+ }
+ 
++static thread_mutex &types_on_init_mutex()
++{
++  static thread_mutex types_on_init_mutex_;
++  return types_on_init_mutex_;
++}
++
++static std::vector<const NodeType *(*)()> &types_on_init()
++{
++  static std::vector<const NodeType *(*)()> _types_on_init;
++  return _types_on_init;
++}
++
++static void ensure_types_initialized()
++{
++  thread_scoped_lock lock(types_on_init_mutex());
++  for (const auto &init_func : types_on_init()) {
++    init_func();
++  }
++  types_on_init().clear();
++}
++
++bool NodeType::register_on_init(const NodeType *(*init_func)())
++{
++  thread_scoped_lock lock(types_on_init_mutex());
++  types_on_init().push_back(init_func);
++  return true;
++}
++
+ NodeType *NodeType::add(const char *name_, CreateFunc create_, Type type_, const NodeType *base_)
+ {
+   const ustring name(name_);
+ 
+   /* Types can be lazily registered from multiple threads. */
+-  thread_scoped_lock lock(types_mutex_);
++  thread_scoped_lock lock(types_mutex());
+ 
+   if (types().find(name) != types().end()) {
+     LOG_ERROR << "Node type " << name_ << " registered twice";
+@@ -238,9 +281,24 @@ NodeType *NodeType::add(const char *name_, CreateFunc create_, Type type_, const
+ 
+ const NodeType *NodeType::find(ustring name)
+ {
+-  thread_scoped_lock lock(types_mutex_);
++  ensure_types_initialized();
++
++  thread_scoped_lock lock(types_mutex());
+   const unordered_map<ustring, NodeType>::iterator it = types().find(name);
+   return (it == types().end()) ? nullptr : &it->second;
+ }
+ 
++vector<ustring> NodeType::type_names()
++{
++  ensure_types_initialized();
++
++  thread_scoped_lock lock(types_mutex());
++  vector<ustring> names;
++  for (const auto &pair : types()) {
++    names.push_back(pair.first);
++  }
++
++  return names;
++}
++
+ CCL_NAMESPACE_END
+diff --git a/src/graph/node_type.h b/src/graph/node_type.h
+index 572a3ab6d88..69515033b3d 100644
+--- a/src/graph/node_type.h
++++ b/src/graph/node_type.h
+@@ -134,10 +134,9 @@ struct NodeType {
+                        Type type = NONE,
+                        const NodeType *base = nullptr);
+   static const NodeType *find(ustring name);
++  static vector<ustring> type_names();
+ 
+- private:
+-  static unordered_map<ustring, NodeType> &types();
+-  static thread_mutex types_mutex_;
++  static bool register_on_init(const NodeType *(*init_func)());
+ };
+ 
+ /* Node Definition Macros
+@@ -155,6 +154,8 @@ struct NodeType {
+ #define NODE_DEFINE(structname) \
+   const NodeType *structname::node_type_ = nullptr; \
+   thread_mutex structname::node_type_mutex_; \
++  static bool structname##_register_on_init = NodeType::register_on_init( \
++      structname::get_node_type); \
+   unique_ptr<Node> structname::create(const NodeType *) \
+   { \
+     return make_unique<structname>(); \
+diff --git a/src/scene/shader_nodes.cpp b/src/scene/shader_nodes.cpp
+index f6935675f5e..9a5fb808a6c 100644
+--- a/src/scene/shader_nodes.cpp
++++ b/src/scene/shader_nodes.cpp
+@@ -2070,6 +2070,11 @@ const NodeType *(&ConvertNode::get_node_types())[ConvertNode::MAX_TYPE][ConvertN
+   return node_types;
+ }
+ 
++bool ConvertNode::register_on_init = NodeType::register_on_init([] {
++  ConvertNode::get_node_types();
++  return static_cast<const NodeType *>(nullptr);
++});
++
+ unique_ptr<Node> ConvertNode::create(const NodeType *type)
+ {
+   return make_unique<ConvertNode>(type->inputs[0].type, type->outputs[0].type);
+diff --git a/src/scene/shader_nodes.h b/src/scene/shader_nodes.h
+index c7a6fbd4837..37300fbf033 100644
+--- a/src/scene/shader_nodes.h
++++ b/src/scene/shader_nodes.h
+@@ -468,6 +468,7 @@ class ConvertNode : public ShaderNode {
+   static const int MAX_TYPE = 13;
+   static unique_ptr<Node> create(const NodeType *type);
+   static const NodeType *(&get_node_types())[MAX_TYPE][MAX_TYPE];
++  static bool register_on_init;
+ };
+ 
+ class BsdfBaseNode : public ShaderNode {
+-- 
+2.47.1.windows.2
+

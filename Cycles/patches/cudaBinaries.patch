@@ -1,6 +1,6 @@
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -141,7 +141,7 @@
+@@ -144,7 +144,7 @@
 
    option(WITH_CYCLES_CUDA_BINARIES "Build Cycles NVIDIA CUDA binaries" OFF)
    set(CYCLES_CUDA_BINARIES_ARCH
