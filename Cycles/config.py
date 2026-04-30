@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/blender/cycles/archive/refs/tags/v5.0.0.tar.gz",
+		"https://github.com/blender/cycles/archive/refs/tags/v5.1.0.tar.gz",
 
 	],
 
@@ -11,6 +11,12 @@
 	"license" : "LICENSE",
 
 	"dependencies" : [ "Boost", "OpenJPEG", "OpenImageIO", "TBB", "Alembic", "Embree", "OpenColorIO", "OpenVDB", "OpenShadingLanguage", "OpenSubdiv", "OpenPGL", "LibWebP", "Zstandard" ],
+
+	"platform:macos" : {
+
+		"extraDependencies" : [ "SSE2NEON" ],
+
+	},
 
 	"environment" : {
 

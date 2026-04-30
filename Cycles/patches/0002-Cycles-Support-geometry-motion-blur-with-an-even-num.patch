@@ -1,0 +1,172 @@
+From 500936c42f6421a47ae61f102557da9f33cbb272 Mon Sep 17 00:00:00 2001
+From: Brecht Van Lommel <brecht@blender.org>
+Date: Wed, 8 Apr 2026 15:33:16 +0200
+Subject: [PATCH] Support geometry motion blur with an even number of
+ steps
+
+Some of the math assume and uneven number of steps with one center step,
+particularly for BVH2 while OptiX and Embree mostly worked. Tweak the
+formulas so any number of steps works, even though we still have some
+assumption of a "center" step used for things like adaptive subdivision.
+---
+ intern/cycles/kernel/geom/motion_curve.h    | 14 ++++++++------
+ intern/cycles/kernel/geom/motion_point.h    |  7 ++++---
+ intern/cycles/kernel/geom/motion_triangle.h | 14 ++++++++------
+ intern/cycles/scene/object.cpp              |  2 +-
+ 4 files changed, 21 insertions(+), 16 deletions(-)
+
+diff --git a/src/kernel/geom/motion_curve.h b/src/kernel/geom/motion_curve.h
+index f6c0f2427c4..9236bd5ff19 100644
+--- a/src/kernel/geom/motion_curve.h
++++ b/src/kernel/geom/motion_curve.h
+@@ -30,14 +30,15 @@ ccl_device_inline void motion_curve_keys_for_step_linear(KernelGlobals kg,
+                                                          const int k1,
+                                                          float4 keys[2])
+ {
+-  if (step == numsteps) {
++  const int center_step = (numsteps - 1) / 2;
++  if (step == center_step) {
+     /* center step: regular key location */
+     keys[0] = kernel_data_fetch(curve_keys, k0);
+     keys[1] = kernel_data_fetch(curve_keys, k1);
+   }
+   else {
+     /* center step is not stored in this array */
+-    if (step > numsteps) {
++    if (step > center_step) {
+       step--;
+     }
+ 
+@@ -61,7 +62,7 @@ ccl_device_inline void motion_curve_keys_linear(KernelGlobals kg,
+   const int numverts = kernel_data_fetch(objects, object).numverts;
+ 
+   /* figure out which steps we need to fetch and their interpolation factor */
+-  const int maxstep = numsteps * 2;
++  const int maxstep = numsteps - 1;
+   const int step = min((int)(time * maxstep), maxstep - 1);
+   const float t = time * maxstep - step;
+ 
+@@ -91,7 +92,8 @@ ccl_device_inline void motion_curve_keys_for_step(KernelGlobals kg,
+                                                   const int k3,
+                                                   float4 keys[4])
+ {
+-  if (step == numsteps) {
++  const int center_step = (numsteps - 1) / 2;
++  if (step == center_step) {
+     /* center step: regular key location */
+     keys[0] = kernel_data_fetch(curve_keys, k0);
+     keys[1] = kernel_data_fetch(curve_keys, k1);
+@@ -100,7 +102,7 @@ ccl_device_inline void motion_curve_keys_for_step(KernelGlobals kg,
+   }
+   else {
+     /* center step is not stored in this array */
+-    if (step > numsteps) {
++    if (step > center_step) {
+       step--;
+     }
+ 
+@@ -128,7 +130,7 @@ ccl_device_inline void motion_curve_keys(KernelGlobals kg,
+   const int numverts = kernel_data_fetch(objects, object).numverts;
+ 
+   /* figure out which steps we need to fetch and their interpolation factor */
+-  const int maxstep = numsteps * 2;
++  const int maxstep = numsteps - 1;
+   const int step = min((int)(time * maxstep), maxstep - 1);
+   const float t = time * maxstep - step;
+ 
+diff --git a/src/kernel/geom/motion_point.h b/src/kernel/geom/motion_point.h
+index ccde301c200..4e2ad0ad93f 100644
+--- a/src/kernel/geom/motion_point.h
++++ b/src/kernel/geom/motion_point.h
+@@ -24,12 +24,13 @@ CCL_NAMESPACE_BEGIN
+ ccl_device_inline float4 motion_point_for_step(
+     KernelGlobals kg, int offset, const int numverts, const int numsteps, int step, const int prim)
+ {
+-  if (step == numsteps) {
++  const int center_step = (numsteps - 1) / 2;
++  if (step == center_step) {
+     /* center step: regular key location */
+     return kernel_data_fetch(points, prim);
+   }
+   /* center step is not stored in this array */
+-  if (step > numsteps) {
++  if (step > center_step) {
+     step--;
+   }
+ 
+@@ -49,7 +50,7 @@ ccl_device_inline float4 motion_point(KernelGlobals kg,
+   const int numverts = kernel_data_fetch(objects, object).numverts;
+ 
+   /* figure out which steps we need to fetch and their interpolation factor */
+-  const int maxstep = numsteps * 2;
++  const int maxstep = numsteps - 1;
+   const int step = min((int)(time * maxstep), maxstep - 1);
+   const float t = time * maxstep - step;
+ 
+diff --git a/src/kernel/geom/motion_triangle.h b/src/kernel/geom/motion_triangle.h
+index dff17f5d38a..8159a840314 100644
+--- a/src/kernel/geom/motion_triangle.h
++++ b/src/kernel/geom/motion_triangle.h
+@@ -32,15 +32,16 @@ ccl_device_inline void motion_triangle_verts_for_step(KernelGlobals kg,
+                                                       int step,
+                                                       float3 verts[3])
+ {
+-  if (step == numsteps) {
++  const int center_step = (numsteps - 1) / 2;
++  if (step == center_step) {
+     /* center step: regular vertex location */
+     verts[0] = kernel_data_fetch(tri_verts, tri_vindex.x);
+     verts[1] = kernel_data_fetch(tri_verts, tri_vindex.y);
+     verts[2] = kernel_data_fetch(tri_verts, tri_vindex.z);
+   }
+   else {
+-    /* center step not store in this array */
+-    if (step > numsteps) {
++    /* center step not stored in this array */
++    if (step > center_step) {
+       step--;
+     }
+ 
+@@ -62,14 +63,15 @@ ccl_device_inline void motion_triangle_normals_for_step(KernelGlobals kg,
+                                                         int step,
+                                                         float3 normals[3])
+ {
+-  const bool is_center_step = step == numsteps;
++  const int center_step = (numsteps - 1) / 2;
++  const bool is_center_step = step == center_step;
+   if (is_center_step) {
+     /* Center step in the regular attribute. */
+     offset = kernel_data_fetch(objects, object).normal_attr_offset;
+   }
+   else {
+     /* Other steps in the motion attribute, compensate for missing center step. */
+-    if (step > numsteps) {
++    if (step > center_step) {
+       step--;
+     }
+   }
+@@ -111,7 +113,7 @@ ccl_device_inline void motion_triangle_compute_info(KernelGlobals kg,
+   *numsteps = kernel_data_fetch(objects, object).num_geom_steps;
+ 
+   /* Figure out which steps we need to fetch and their interpolation factor. */
+-  const int maxstep = *numsteps * 2;
++  const int maxstep = *numsteps - 1;
+   *step = min((int)(time * maxstep), maxstep - 1);
+   *t = time * maxstep - *step;
+ 
+diff --git a/src/scene/object.cpp b/src/scene/object.cpp
+index f7034dc0167..94ccdb14523 100644
+--- a/src/scene/object.cpp
++++ b/src/scene/object.cpp
+@@ -645,7 +645,7 @@ void ObjectManager::device_update_object_transform(UpdateObjectTransformState *s
+   kobject.dupli_generated[2] = ob->dupli_generated[2];
+   kobject.dupli_uv[0] = ob->dupli_uv[0];
+   kobject.dupli_uv[1] = ob->dupli_uv[1];
+-  kobject.num_geom_steps = (geom->get_motion_steps() - 1) / 2;
++  kobject.num_geom_steps = geom->get_motion_steps();
+   kobject.num_tfm_steps = ob->motion.size();
+   kobject.numverts = object_num_motion_verts(geom);
+   kobject.numprims = (geom->is_mesh() || geom->is_volume()) ?
+-- 
+2.47.1.windows.2
+
