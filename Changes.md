@@ -1,7 +1,9 @@
 11.x.x (relative to 11.0.0a5)
 ------
 
-
+- MaterialX : Updated to version 1.39.4.
+- PyBind11 : Updated to version 2.13.6.
+- USD : Updated to version 26.05.
 
 11.0.0a5 (relative to 11.0.0a4)
 --------
