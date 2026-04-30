@@ -1,6 +1,7 @@
 11.x.x (relative to 11.0.0a4)
 ------
 
+- Cortex : Updated to version 10.7.0.0a9.
 - Cycles :
   - Updated to version 5.1.0.
   - Applied patch to support geometry motion blur with an even number of steps (from Blender upstream).
