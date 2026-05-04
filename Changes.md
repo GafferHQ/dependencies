@@ -1,7 +1,7 @@
 11.x.x (relative to 11.0.0a5)
 ------
 
-- Cycles : Patch to avoid a crash when generating tangents.
+- Cycles : Applied patch to avoid a crash when generating tangents for subdivision meshes.
 
 11.0.0a5 (relative to 11.0.0a4)
 --------
