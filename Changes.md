@@ -1,7 +1,7 @@
 11.x.x (relative to 11.0.0a5)
 ------
 
-
+- Cycles : Patch to avoid a crash when generating tangents.
 
 11.0.0a5 (relative to 11.0.0a4)
 --------
