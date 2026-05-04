@@ -1,5 +1,10 @@
-11.x.x (relative to 11.0.0a5)
+11.x.x (relative to 11.0.0a6)
 ------
+
+
+
+11.0.0a6 (relative to 11.0.0a5)
+--------
 
 - Cycles : Applied patch to avoid a crash when generating tangents for subdivision meshes.
 
