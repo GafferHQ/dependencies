@@ -1,5 +1,10 @@
-11.x.x (relative to 11.0.0a6)
+11.x.x (relative to 11.0.0a7)
 ------
+
+
+
+11.0.0a7 (relative to 11.0.0a6)
+--------
 
 - MaterialX : Updated to version 1.39.4.
 - PyBind11 : Updated to version 2.13.6.
