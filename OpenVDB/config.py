@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/AcademySoftwareFoundation/openvdb/archive/refs/tags/v11.0.0.tar.gz"
+		"https://github.com/AcademySoftwareFoundation/openvdb/archive/refs/tags/v12.1.1.tar.gz"
 
 	],
 
@@ -10,7 +10,7 @@
 
 	"license" : "LICENSE",
 
-	"dependencies" : [ "Blosc", "TBB", "OpenEXR", "Python", "Boost", "PyBind11" ],
+	"dependencies" : [ "Blosc", "TBB", "OpenEXR", "Python", "Boost", "Nanobind" ],
 
 	"environment" : {
 
@@ -31,7 +31,7 @@
 			" -D OPENVDB_BUILD_NANOVDB=ON"
 			" -D OPENVDB_ENABLE_RPATH=OFF"
 			" -D CONCURRENT_MALLOC=None"
-			" -D PYOPENVDB_INSTALL_DIRECTORY={buildDir}/python"
+			" -D VDB_PYTHON_INSTALL_DIRECTORY={buildDir}/python"
 			" -D Python_ROOT_DIR={buildDir}"
 			" -D Python_FIND_STRATEGY=LOCATION"
 			" -D Python_FIND_VERSION={pythonVersion}"
@@ -43,15 +43,20 @@
 
 		"cd build && make VERBOSE=1 -j {jobs} && make install",
 
+		# Cortex builds made with OpenVDB 12 and above require nanobind-static.
+		# If/when more projects require Nanobind, we may want to consider building
+		# it independently.
+		"cp build/openvdb/openvdb/python/libnanobind-static.a {buildDir}/lib",
+
 	],
 
 	"manifest" : [
 
 		"include/openvdb",
-		"include/pyopenvdb.h",
 		"include/nanovdb",
 		"lib/libopenvdb*{sharedLibraryExtension}*",
-		"python/pyopenvdb*",
+		"python/openvdb*",
+		"lib/libnanobind-static.a",
 
 	],
 

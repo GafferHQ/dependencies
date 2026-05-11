@@ -1,7 +1,9 @@
 11.x.x (relative to 11.0.0a7)
 ------
 
-
+- Nanobind : Added version 2.12.0.
+- OpenVDB : Updated to version 12.1.1.
+- Robin-map : Added version 1.4.1.
 
 11.0.0a7 (relative to 11.0.0a6)
 --------
