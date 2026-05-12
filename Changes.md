@@ -1,6 +1,7 @@
 11.x.x (relative to 11.0.0a7)
 ------
 
+- Cortex : Updated to version 10.7.0.0a10.
 - Nanobind : Added version 2.12.0.
 - OpenVDB : Updated to version 12.1.1.
 - PyBind11 : Reverted to version 2.10.4 [^1].
