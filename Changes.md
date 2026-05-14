@@ -1,7 +1,13 @@
 11.x.x (relative to 11.0.0a7)
 ------
 
+- Cortex : Updated to version 10.7.0.0a10.
+- Nanobind : Added version 2.12.0.
+- OpenVDB : Updated to version 12.1.1.
+- PyBind11 : Reverted to version 2.10.4 [^1].
+- Robin-map : Added version 1.4.1.
 
+[^1]: To be omitted from the notes for the final 11.0.0 release.
 
 11.0.0a7 (relative to 11.0.0a6)
 --------
