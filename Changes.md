@@ -7,6 +7,7 @@
 - Fmt : Updated to version 12.1.0.
 - LLVM : Updated to version 20.1.8.
 - macOS : Updated minimum deployment target to 14.0.
+- OpenSubdiv : Updated to version 3.7.0.
 - PySide : Updated to version 6.8.5.
 - Python : Updated to version 3.13.16.
 - Qt : Updated to version 6.8.5.
