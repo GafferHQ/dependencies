@@ -1,3 +1,8 @@
+12.x.x (relative to 11.x.x)
+------
+
+- C++ : Updated to c++20.
+
 11.x.x (relative to 11.0.0)
 ------
 

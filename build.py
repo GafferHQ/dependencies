@@ -489,7 +489,7 @@ variables = {
 	"version" : __version,
 	"platform" : { "darwin": "macos", "win32": "windows" }.get( sys.platform, "linux" ),
 	"sharedLibraryExtension" : { "darwin": ".dylib", "win32": ".dll" }.get( sys.platform, ".so" ),
-	"c++Standard" : "17",
+	"c++Standard" : "20",
 	"compilerRoot" : __compilerRoot(),
 	"variants" : "".join( "-{}{}".format( key, variants[key] ) for key in sorted( variants.keys() ) ),
 }
