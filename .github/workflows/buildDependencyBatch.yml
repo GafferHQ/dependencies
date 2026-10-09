@@ -77,6 +77,8 @@ jobs:
         brew install ninja
         brew install gpatch
         echo "/opt/homebrew/opt/gpatch/libexec/gnubin" >> $GITHUB_PATH
+        brew install openssl@3 pkgconf
+        brew link openssl@3
         brew install bison
         # Make sure bison is discoverable.
         echo BISON_ROOT=/opt/homebrew/opt/bison >> $GITHUB_ENV
@@ -86,7 +88,7 @@ jobs:
         # Remove CommandLineTools so there is no potential for conflict with
         # our selected Xcode version.
         sudo rm -rf /Library/Developer/CommandLineTools
-        sudo rm -rf /Applications/Python\ 3.11
+        sudo rm -rf /Applications/Python\ 3.13
         # Pin CMake to 3.31.6
         brew tap-new --no-git "local/pinned" >/dev/null
         cmakeDir="$(brew --repo "local/pinned")/Formula"
