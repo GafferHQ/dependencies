@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/libffi/libffi/releases/download/v3.4.2/libffi-3.4.2.tar.gz"
+		"https://github.com/libffi/libffi/releases/download/v3.8.0/libffi-3.8.0.tar.gz"
 
 	],
 
