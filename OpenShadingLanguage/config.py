@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/AcademySoftwareFoundation/OpenShadingLanguage/archive/refs/tags/v1.14.8.0.tar.gz"
+		"https://github.com/AcademySoftwareFoundation/OpenShadingLanguage/archive/refs/tags/v1.14.11.0.tar.gz"
 
 	],
 
@@ -34,14 +34,15 @@
 			" -D CMAKE_INSTALL_PREFIX={buildDir}"
 			" -D CMAKE_INSTALL_LIBDIR={buildDir}/lib"
 			" -D CMAKE_PREFIX_PATH={buildDir}"
+			" -D CMAKE_FIND_FRAMEWORK=LAST"
 			" -D STOP_ON_WARNING=0"
 			" -D LLVM_STATIC=1"
 			" -D USE_BATCHED={useBatched}"
 			" -D OSL_SHADER_INSTALL_DIR={buildDir}/shaders"
 			" -D OSL_BUILD_PLUGINS=0"
 			" -D PYTHON_VERSION={pythonVersion}"
-			" -D Python_ROOT_DIR={buildDir}"
-			" -D Python_FIND_STRATEGY=LOCATION"
+			" -D Python3_ROOT_DIR={buildDir}"
+			" -D Python3_FIND_STRATEGY=LOCATION"
 			" {extraArguments}"
 			" ..",
 		"cd gafferBuild && make install -j {jobs} VERBOSE=1",
