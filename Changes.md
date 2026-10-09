@@ -2,6 +2,7 @@
 ------
 
 - C++ : Updated to c++20.
+- Cortex : Updated to version 10.7.4.0.
 - macOS : Updated minimum deployment target to 14.0.
 - PySide : Updated to version 6.8.5.
 - Qt : Updated to version 6.8.5.
