@@ -10,7 +10,7 @@
 
 	"license" : "LICENSE.rst",
 
-	"dependencies" : [ "Python", "MarkupSafe" ],
+	"dependencies" : [ "Python", "Setuptools", "MarkupSafe" ],
 
 	"environment" : {
 

@@ -10,7 +10,7 @@
 
 	"license" : "LICENSE.rst",
 
-	"dependencies" : [ "Python" ],
+	"dependencies" : [ "Python", "Setuptools" ],
 
 	"environment" : {
 

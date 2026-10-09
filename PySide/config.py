@@ -11,11 +11,12 @@
 	"license" : "LICENSES/LGPL-3.0-only.txt",
 
 	# PySide uses clang for parsing headers, hence the LLVM dependency.
-	"dependencies" : [ "Python", "Qt", "LLVM" ],
+	"dependencies" : [ "Python", "Setuptools", "Qt", "LLVM" ],
 
 	"environment" : {
 
 		"PATH" : "{buildDir}/bin:$PATH",
+		"PYTHONPATH" : "{buildDir}/python",
 
 	},
 
