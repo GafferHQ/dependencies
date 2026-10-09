@@ -5,6 +5,7 @@
 - Boost : Updated to version 1.88.0.
 - Cortex : Updated to version 10.7.4.0.
 - Fmt : Updated to version 12.1.0.
+- FreeType : Updated to version 2.14.3.
 - LLVM : Updated to version 20.1.8.
 - macOS : Updated minimum deployment target to 14.0.
 - OpenShadingLanguage : Updated to version 1.14.11.0.
