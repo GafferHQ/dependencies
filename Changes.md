@@ -4,6 +4,7 @@
 - C++ : Updated to c++20.
 - Boost : Updated to version 1.88.0.
 - Cortex : Updated to version 10.7.4.0.
+- Fmt : Updated to version 12.1.0.
 - macOS : Updated minimum deployment target to 14.0.
 - PySide : Updated to version 6.8.5.
 - Qt : Updated to version 6.8.5.
