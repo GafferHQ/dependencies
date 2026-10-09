@@ -43,7 +43,7 @@ jobs:
             projectsString:  # Blank to build all projects.
 
           - name: macos-platform26
-            os: macos-14
+            os: macos-15
             publish: true
             jobs: 3
             containerImage:
