@@ -7,6 +7,7 @@
 - Fmt : Updated to version 12.1.0.
 - FreeType : Updated to version 2.14.3.
 - LibFFI : Updated to version 3.8.0.
+- LibPNG : Updated to version 1.6.59.
 - LLVM : Updated to version 20.1.8.
 - macOS : Updated minimum deployment target to 14.0.
 - OpenShadingLanguage : Updated to version 1.14.11.0.

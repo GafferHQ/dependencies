@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://download.sourceforge.net/libpng/libpng-1.6.37.tar.gz"
+		"https://github.com/pnggroup/libpng/archive/refs/tags/v1.6.59.tar.gz"
 
 	],
 
