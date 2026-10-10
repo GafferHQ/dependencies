@@ -10,9 +10,11 @@
 
 	"license" : "LICENSES",
 
+	"dependencies" : [ "ZLib" ],
+
 	"commands" : [
 
-		"cmake -DCMAKE_INSTALL_PREFIX={buildDir} .",
+		"cmake -DCMAKE_INSTALL_PREFIX={buildDir} -DPREFER_EXTERNAL_ZLIB=ON -DCMAKE_PREFIX_PATH={buildDir} .",
 		# Note : Blosc does not declare its build dependencies
 		# correctly, so we cannot do a parallel build with `-j`.
 		"make install VERBOSE=1",
