@@ -1,0 +1,31 @@
+--- a/src/python/CMakeLists.txt	2026-10-26 10:57:13.380085853 -0700
++++ b/src/python/CMakeLists.txt	2026-10-26 10:58:57.969107816 -0700
+@@ -7,7 +7,7 @@
+ # Python and Boost
+ #
+ 
+-find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
++find_package(Python3 REQUIRED COMPONENTS Interpreter Development OPTIONAL_COMPONENTS NumPy)
+ 
+ if(NOT Python3_FOUND)
+     message(FATAL_ERROR "Could not find Python")
+@@ -63,7 +63,9 @@
+ #
+ 
+ add_subdirectory( PyImath )
+-add_subdirectory( PyImathNumpy )
++if(Python3_NumPy_FOUND)
++  add_subdirectory( PyImathNumpy )
++endif()
+ 
+ #
+ # Tests
+@@ -80,5 +82,7 @@
+   enable_testing()
+   add_subdirectory( PyImathTest )
+   add_subdirectory( PyImathPythonTest )
+-  add_subdirectory( PyImathNumpyTest )
++  if(Python3_NumPy_FOUND)
++    add_subdirectory( PyImathNumpyTest )
++  endif()
+ endif()

@@ -6,6 +6,7 @@
 - Cortex : Updated to version 10.7.4.0.
 - Fmt : Updated to version 12.1.0.
 - FreeType : Updated to version 2.14.3.
+- Imath : Updated to version 3.2.3.
 - LibFFI : Updated to version 3.8.0.
 - LibPNG :
   - Updated to version 1.6.59.

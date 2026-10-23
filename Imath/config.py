@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/AcademySoftwareFoundation/Imath/archive/refs/tags/v3.1.12.tar.gz"
+		"https://github.com/AcademySoftwareFoundation/Imath/archive/refs/tags/v3.2.3.tar.gz"
 
 	],
 
@@ -34,7 +34,8 @@
 			" -D Python_ROOT_DIR={buildDir}"
 			" -D Python3_ROOT_DIR={buildDir}"
 			" -D Python3_FIND_STRATEGY=LOCATION"
-			" -D PYIMATH_OVERRIDE_PYTHON_INSTALL_DIR={buildDir}/python"
+			" -D PYTHON_INSTALL_DIR=python"
+			" -D BUILD_TESTING=OFF"
 			" ."
 		,
 
