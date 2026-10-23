@@ -14,6 +14,7 @@
   - Removed from the manifest.
 - LLVM : Updated to version 20.1.8.
 - macOS : Updated minimum deployment target to 14.0.
+- OpenEXR : Updated to version 3.4.16.
 - OpenShadingLanguage : Updated to version 1.14.11.0.
 - OpenSubdiv : Updated to version 3.7.0.
 - PySide : Updated to version 6.8.5.
