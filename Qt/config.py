@@ -62,6 +62,7 @@
 			" --"
 			" -DCMAKE_OSX_DEPLOYMENT_TARGET={macosDeploymentTarget}"
 			" -DFREETYPE_LIBRARY_RELEASE={buildDir}/lib/libfreetype{sharedLibraryExtension}"
+			" -DPNG_LIBRARY={buildDir}/lib/libpng.a"
 		,
 
 		"cmake --build . --parallel {jobs} && cmake --install .",

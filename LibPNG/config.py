@@ -9,19 +9,24 @@
 	"url" : "http://www.libpng.org",
 	"license" : "LICENSE",
 
+	"dependencies" : [ "ZLib" ],
+
 	"commands" : [
 
-		"./configure --prefix={buildDir}",
-		"make -j {jobs}",
-		"make install",
-
-	],
-
-	"manifest" : [
-
-		"include/png*",
-		"include/libpng*",
-		"lib/libpng*{sharedLibraryExtension}*",
+		"mkdir build",
+		"cd build && "
+			" cmake"
+			" -D CMAKE_INSTALL_PREFIX={buildDir}"
+			" -D CMAKE_INSTALL_LIBDIR={buildDir}/lib"
+			" -D CMAKE_PREFIX_PATH={buildDir}"
+			" -D PNG_SHARED=OFF"
+			" -D PNG_STATIC=ON"
+			" -D PNG_TESTS=OFF"
+			" -D PNG_TOOLS=OFF"
+			" -D PNG_FRAMEWORK=OFF"
+			" -D CMAKE_POSITION_INDEPENDENT_CODE=ON"
+			" ..",
+		"cd build && make -j {jobs} && make install",
 
 	],
 
