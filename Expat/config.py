@@ -20,8 +20,8 @@
 			" -D CMAKE_BUILD_TYPE=Release"
 			" -D EXPAT_BUILD_TOOLS=OFF"
 			" -D EXPAT_BUILD_EXAMPLES=OFF"
-			" -D DEXPAT_BUILD_TESTS=OFF"
-			" -D DEXPAT_BUILD_DOCS=OFF"
+			" -D EXPAT_BUILD_TESTS=OFF"
+			" -D EXPAT_BUILD_DOCS=OFF"
 			" ../expat",
 		"cd build && make -j {jobs} && make install",
 
