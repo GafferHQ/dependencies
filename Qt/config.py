@@ -58,6 +58,8 @@
 			" {extraArgs}"
 			" -I {buildDir}/include -I {buildDir}/include/freetype2"
 			" -L {buildDir}/lib"
+			" --"
+			" -DCMAKE_OSX_DEPLOYMENT_TARGET={macosDeploymentTarget}"
 		,
 
 		"cmake --build . --parallel {jobs} && cmake --install .",

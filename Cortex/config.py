@@ -58,7 +58,7 @@
 			" GLEW_INCLUDE_PATH={buildDir}/include/GL"
 			" NUKE_ROOT="
 			" USD_LIB_PREFIX=usd_"
-			" ENV_VARS_TO_IMPORT='LD_LIBRARY_PATH TERM'"
+			" ENV_VARS_TO_IMPORT='LD_LIBRARY_PATH TERM MACOSX_DEPLOYMENT_TARGET'"
 			" OPTIONS=''"
 			" {extraArgs}"
 			" SAVE_OPTIONS=gaffer.options",

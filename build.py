@@ -212,6 +212,8 @@ def __loadConfigs( variables, variants ) :
 		__applyConfigOverrides( config, { "darwin": "platform:macos", "win32": "platform:windows" }.get( sys.platform, "platform:linux" ) )
 		if "extraDependencies" in config :
 			config.setdefault( "dependencies", [] ).extend( config["extraDependencies"] )
+		if sys.platform == "darwin" :
+			config.setdefault( "environment", {} ).setdefault( "MACOSX_DEPLOYMENT_TARGET", "{macosDeploymentTarget}" )
 
 		if config.get( "enabled", True ) :
 			configs[project] = config
@@ -490,6 +492,7 @@ variables = {
 	"platform" : { "darwin": "macos", "win32": "windows" }.get( sys.platform, "linux" ),
 	"sharedLibraryExtension" : { "darwin": ".dylib", "win32": ".dll" }.get( sys.platform, ".so" ),
 	"c++Standard" : "20",
+	"macosDeploymentTarget" : "14.0",
 	"compilerRoot" : __compilerRoot(),
 	"variants" : "".join( "-{}{}".format( key, variants[key] ) for key in sorted( variants.keys() ) ),
 }

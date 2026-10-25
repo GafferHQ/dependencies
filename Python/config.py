@@ -68,12 +68,6 @@
 
 		},
 
-		"environment" : {
-
-			"MACOSX_DEPLOYMENT_TARGET" : "12.0",
-
-		},
-
 		"publicVariables" : {
 
 

@@ -2,6 +2,7 @@
 ------
 
 - C++ : Updated to c++20.
+- macOS : Updated minimum deployment target to 14.0.
 
 11.x.x (relative to 11.0.0)
 ------
