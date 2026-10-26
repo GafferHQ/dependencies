@@ -111,12 +111,27 @@ jobs:
         DEPENDENCIES_BUILD_VARIANT: ${{ inputs.name }}
       shell: bash
 
-    - name: Download Intermediate Artifacts
+    - name: Download Intermediate Artifacts (Windows)
       uses: actions/download-artifact@v4
       with:
         name: ${{ env.DEPENDENCIES_INTERMEDIATE_ARTIFACTS_BASE_NAME }}_${{ inputs.intermediateArtifactInputSuffix }}
         path: ${{ env.DEPENDENCIES_BUILD_DIR }}/${{ env.DEPENDENCIES_BUILD_NAME }}
-      if: inputs.intermediateArtifactInputSuffix != ''
+      if: inputs.intermediateArtifactInputSuffix != '' && runner.os == 'Windows'
+
+    - name: Download Intermediate Artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ env.DEPENDENCIES_INTERMEDIATE_ARTIFACTS_BASE_NAME }}_${{ inputs.intermediateArtifactInputSuffix }}
+        path: ./intermediateArtifacts
+      if: inputs.intermediateArtifactInputSuffix != '' && runner.os != 'Windows'
+
+    - name: Extract Intermediate Artifacts
+      run: |
+        mkdir -p ${{ env.DEPENDENCIES_BUILD_DIR }}
+        tar -xf ./intermediateArtifacts/intermediateArtifacts.tar -C ${{ env.DEPENDENCIES_BUILD_DIR }}
+        rm -rf ./intermediateArtifacts
+      shell: bash
+      if: inputs.intermediateArtifactInputSuffix != '' && runner.os != 'Windows'
 
     - name: Build Dependencies
       run: |
@@ -124,13 +139,26 @@ jobs:
       env:
         PYTHONUTF8: 1
 
-    - name: Upload Intermediate Artifacts
+    - name: Upload Intermediate Artifacts (Windows)
       uses: actions/upload-artifact@v4
       with:
         name: ${{ env.DEPENDENCIES_INTERMEDIATE_ARTIFACTS_BASE_NAME }}_${{ inputs.intermediateArtifactOutputSuffix }}
         path: ${{ env.DEPENDENCIES_BUILD_DIR }}/${{ env.DEPENDENCIES_BUILD_NAME }}
         include-hidden-files: true  # Required to upload the `.digests` file.
-      if: inputs.intermediateArtifactOutputSuffix != ''
+      if: inputs.intermediateArtifactOutputSuffix != '' && runner.os == 'Windows'
+
+    - name: Archive Intermediate Artifacts
+      run: |
+        tar -cf intermediateArtifacts.tar -C ${{ env.DEPENDENCIES_BUILD_DIR }} ${{ env.DEPENDENCIES_BUILD_NAME }}
+      shell: bash
+      if: inputs.intermediateArtifactOutputSuffix != '' && runner.os != 'Windows'
+
+    - name: Upload Intermediate Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ env.DEPENDENCIES_INTERMEDIATE_ARTIFACTS_BASE_NAME }}_${{ inputs.intermediateArtifactOutputSuffix }}
+        path: intermediateArtifacts.tar
+      if: inputs.intermediateArtifactOutputSuffix != '' && runner.os != 'Windows'
 
     - name: Upload Final Package
       uses: actions/upload-artifact@v4

@@ -40,7 +40,7 @@ jobs:
             publish: true
             jobs: 4
             containerImage: ghcr.io/gafferhq/build/build:5.0.0a1
-            projectsString:  # Blank to build all projects.
+            projectsString: --projects LibFFI Python Boost Imath OpenEXR HDF5 Alembic BitstreamVera ZLib Blosc CMark PyBind11 LibJPEG-Turbo LibTIFF LibPNG OpenJPEG Expat YAML-CPP PyString Minizip OpenColorIO LibRaw PugiXML Fmt LibWebP TBB FreeType Robin-map OpenImageIO LLVM OpenShadingLanguage GLEW Nanobind OpenVDB
 
           - name: macos-platform26
             os: macos-15
@@ -73,10 +73,18 @@ jobs:
       matrix:
 
         name: [
+              linux-platform26,
               windows-platform26,
             ]
 
         include:
+          - name: linux-platform26
+            os: ubuntu-24.04
+            publish: true
+            containerImage: ghcr.io/gafferhq/build/build:5.0.0a1
+            jobs: 4
+            projectsString:  # Blank to build all remaining projects.
+
           - name: windows-platform26
             os: windows-2022
             publish: false
