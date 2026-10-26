@@ -17,6 +17,7 @@
 - OpenEXR : Updated to version 3.4.16.
 - OpenShadingLanguage : Updated to version 1.14.11.0.
 - OpenSubdiv : Updated to version 3.7.0.
+- OpenVDB : Updated to version 13.1.0.
 - PySide : Updated to version 6.8.5.
 - Python : Updated to version 3.13.16.
 - Qt : Updated to version 6.8.5.
