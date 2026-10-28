@@ -2,13 +2,13 @@
 
 	"downloads" : [
 
-		"https://files.pythonhosted.org/packages/87/5b/aae44c6655f3801e81aa3eef09dbbf012431987ba564d7231722f68df02d/MarkupSafe-2.1.5.tar.gz"
+		"https://files.pythonhosted.org/packages/38/9b/e422a865e1d5d57d0e509b4e0bf1c1a70a7f6382c29a5aa428df994c8bc8/markupsafe-3.0.4.tar.gz"
 
 	],
 
 	"url" : "https://palletsprojects.com/p/markupsafe/",
 
-	"license" : "LICENSE.rst",
+	"license" : "LICENSE.txt",
 
 	"dependencies" : [ "Python", "Setuptools" ],
 
