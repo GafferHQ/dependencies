@@ -1,5 +1,10 @@
-12.x.x (relative to 11.x.x)
+12.x.x (relative to 12.0.0a1)
 ------
+
+
+
+12.0.0a1 (relative to 11.0.0)
+--------
 
 - C++ : Updated to c++20.
 - Boost : Updated to version 1.88.0.
