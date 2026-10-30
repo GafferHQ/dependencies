@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://archives.boost.io/release/1.85.0/source/boost_1_85_0.tar.gz"
+		"https://archives.boost.io/release/1.88.0/source/boost_1_88_0.tar.gz"
 
 	],
 
@@ -18,7 +18,6 @@
 		# even though we tell it quite explicitly to use the one in {buildDir}.
 		"DYLD_FALLBACK_FRAMEWORK_PATH" : "{buildDir}/lib",
 		"LD_LIBRARY_PATH" : "{buildDir}/lib",
-		"MACOSX_DEPLOYMENT_TARGET" : "12.0",
 		# Give a helping hand to find the python headers, since the bootstrap
 		# below doesn't always seem to get it right.
 		"CPLUS_INCLUDE_PATH" : "{pythonIncludeDir}",

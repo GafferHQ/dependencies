@@ -69,14 +69,16 @@ jobs:
     - name: Install toolchain (macOS)
       run: |
         # Remove all pre-installed homebrew packages.
+        brew remove --cask --force $(brew list --cask)
         brew remove --force $(brew list --formula)
-        brew remove --cask --force $(brew list)
         # Install build requirements.
         brew install pipx
         pipx install scons==4.6.0
         brew install ninja
         brew install gpatch
         echo "/opt/homebrew/opt/gpatch/libexec/gnubin" >> $GITHUB_PATH
+        brew install openssl@3 pkgconf
+        brew link openssl@3
         brew install bison
         # Make sure bison is discoverable.
         echo BISON_ROOT=/opt/homebrew/opt/bison >> $GITHUB_ENV
@@ -86,7 +88,7 @@ jobs:
         # Remove CommandLineTools so there is no potential for conflict with
         # our selected Xcode version.
         sudo rm -rf /Library/Developer/CommandLineTools
-        sudo rm -rf /Applications/Python\ 3.11
+        sudo rm -rf /Applications/Python\ 3.13
         # Pin CMake to 3.31.6
         brew tap-new --no-git "local/pinned" >/dev/null
         cmakeDir="$(brew --repo "local/pinned")/Formula"
@@ -109,12 +111,27 @@ jobs:
         DEPENDENCIES_BUILD_VARIANT: ${{ inputs.name }}
       shell: bash
 
-    - name: Download Intermediate Artifacts
+    - name: Download Intermediate Artifacts (Windows)
       uses: actions/download-artifact@v4
       with:
         name: ${{ env.DEPENDENCIES_INTERMEDIATE_ARTIFACTS_BASE_NAME }}_${{ inputs.intermediateArtifactInputSuffix }}
         path: ${{ env.DEPENDENCIES_BUILD_DIR }}/${{ env.DEPENDENCIES_BUILD_NAME }}
-      if: inputs.intermediateArtifactInputSuffix != ''
+      if: inputs.intermediateArtifactInputSuffix != '' && runner.os == 'Windows'
+
+    - name: Download Intermediate Artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ env.DEPENDENCIES_INTERMEDIATE_ARTIFACTS_BASE_NAME }}_${{ inputs.intermediateArtifactInputSuffix }}
+        path: ./intermediateArtifacts
+      if: inputs.intermediateArtifactInputSuffix != '' && runner.os != 'Windows'
+
+    - name: Extract Intermediate Artifacts
+      run: |
+        mkdir -p ${{ env.DEPENDENCIES_BUILD_DIR }}
+        tar -xf ./intermediateArtifacts/intermediateArtifacts.tar -C ${{ env.DEPENDENCIES_BUILD_DIR }}
+        rm -rf ./intermediateArtifacts
+      shell: bash
+      if: inputs.intermediateArtifactInputSuffix != '' && runner.os != 'Windows'
 
     - name: Build Dependencies
       run: |
@@ -122,13 +139,26 @@ jobs:
       env:
         PYTHONUTF8: 1
 
-    - name: Upload Intermediate Artifacts
+    - name: Upload Intermediate Artifacts (Windows)
       uses: actions/upload-artifact@v4
       with:
         name: ${{ env.DEPENDENCIES_INTERMEDIATE_ARTIFACTS_BASE_NAME }}_${{ inputs.intermediateArtifactOutputSuffix }}
         path: ${{ env.DEPENDENCIES_BUILD_DIR }}/${{ env.DEPENDENCIES_BUILD_NAME }}
         include-hidden-files: true  # Required to upload the `.digests` file.
-      if: inputs.intermediateArtifactOutputSuffix != ''
+      if: inputs.intermediateArtifactOutputSuffix != '' && runner.os == 'Windows'
+
+    - name: Archive Intermediate Artifacts
+      run: |
+        tar -cf intermediateArtifacts.tar -C ${{ env.DEPENDENCIES_BUILD_DIR }} ${{ env.DEPENDENCIES_BUILD_NAME }}
+      shell: bash
+      if: inputs.intermediateArtifactOutputSuffix != '' && runner.os != 'Windows'
+
+    - name: Upload Intermediate Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ env.DEPENDENCIES_INTERMEDIATE_ARTIFACTS_BASE_NAME }}_${{ inputs.intermediateArtifactOutputSuffix }}
+        path: intermediateArtifacts.tar
+      if: inputs.intermediateArtifactOutputSuffix != '' && runner.os != 'Windows'
 
     - name: Upload Final Package
       uses: actions/upload-artifact@v4

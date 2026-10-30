@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/uxlfoundation/oneTBB/archive/refs/tags/v2021.13.0.tar.gz"
+		"https://github.com/uxlfoundation/oneTBB/archive/refs/tags/v2022.3.0.tar.gz"
 
 	],
 
@@ -19,6 +19,7 @@
 			" -D CMAKE_INSTALL_PREFIX={buildDir}"
 			" -D CMAKE_INSTALL_LIBDIR={buildDir}/lib"
 			" -D CMAKE_PREFIX_PATH={buildDir}"
+			" -D TBB_TEST=OFF"
 			" ..",
 		"cd build && make install -j {jobs} VERBOSE=1",
 	],

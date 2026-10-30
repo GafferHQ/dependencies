@@ -1,12 +1,12 @@
 {
 
-	"downloads" : [ "https://www.python.org/ftp/python/3.11.14/Python-3.11.14.tgz" ],
+	"downloads" : [ "https://www.python.org/ftp/python/3.13.16/Python-3.13.16.tgz" ],
 
 	"publicVariables" : {
 
-		"pythonVersion" : "3.11",
+		"pythonVersion" : "3.13",
 		"pythonMajorVersion" : "3",
-		"pythonMinorVersion" : "11",
+		"pythonMinorVersion" : "13",
 		"pythonIncludeDir" : "{buildDir}/include/python{pythonVersion}",
 		"pythonLibDir" : "{buildDir}/lib",
 
@@ -65,12 +65,6 @@
 		"variables" : {
 
 			"libraryType" : "--enable-framework={buildDir}/lib",
-
-		},
-
-		"environment" : {
-
-			"MACOSX_DEPLOYMENT_TARGET" : "12.0",
 
 		},
 

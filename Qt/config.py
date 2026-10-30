@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://download.qt.io/official_releases/qt/6.5/6.5.8/src/single/qt-everywhere-opensource-src-6.5.8.tar.xz"
+		"https://download.qt.io/archive/qt/6.8/6.8.5/single/qt-everywhere-opensource-src-6.8.5.tar.xz"
 
 	],
 
@@ -21,7 +21,7 @@
 	"commands" : [
 
 		"./configure"
-			" -prefix {buildDir} "
+			" -prefix {buildDir}"
 			" -plugindir {buildDir}/qt/plugins"
 			" -release"
 			" -opensource -confirm-license"
@@ -33,6 +33,7 @@
 			" -skip qtwebengine"
 			" -skip qt3d"
 			" -skip qtdeclarative"
+			" -skip qtgraphs"
 			" -skip qtwebchannel"
 			" -skip qtnetworkauth"
 			" -skip qtwayland"
@@ -58,6 +59,10 @@
 			" {extraArgs}"
 			" -I {buildDir}/include -I {buildDir}/include/freetype2"
 			" -L {buildDir}/lib"
+			" --"
+			" -DCMAKE_OSX_DEPLOYMENT_TARGET={macosDeploymentTarget}"
+			" -DFREETYPE_LIBRARY_RELEASE={buildDir}/lib/libfreetype{sharedLibraryExtension}"
+			" -DPNG_LIBRARY={buildDir}/lib/libpng.a"
 		,
 
 		"cmake --build . --parallel {jobs} && cmake --install .",

@@ -1,3 +1,30 @@
+12.x.x (relative to 11.x.x)
+------
+
+- C++ : Updated to c++20.
+- Boost : Updated to version 1.88.0.
+- Cortex : Updated to version 10.7.4.0.
+- Fmt : Updated to version 12.1.0.
+- FreeType : Updated to version 2.14.3.
+- Imath : Updated to version 3.2.3.
+- LibFFI : Updated to version 3.8.0.
+- LibPNG :
+  - Updated to version 1.6.59.
+  - Changed to build as a static library on Linux and macOS.
+  - Removed from the manifest.
+- LLVM : Updated to version 20.1.8.
+- macOS : Updated minimum deployment target to 14.0.
+- MarkupSafe : Updated to version 3.0.4.
+- OpenEXR : Updated to version 3.4.16.
+- OpenShadingLanguage : Updated to version 1.14.11.0.
+- OpenSubdiv : Updated to version 3.7.0.
+- OpenVDB : Updated to version 13.1.0.
+- PySide : Updated to version 6.8.5.
+- Python : Updated to version 3.13.16.
+- Qt : Updated to version 6.8.5.
+- TBB : Updated to version 2022.3.0.
+- ZLib : Updated to version 1.3.1.
+
 11.x.x (relative to 11.0.0)
 ------
 

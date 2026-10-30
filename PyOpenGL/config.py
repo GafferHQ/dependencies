@@ -10,7 +10,7 @@
 
 	"license" : "license.txt",
 
-	"dependencies" : [ "Python" ],
+	"dependencies" : [ "Python", "Setuptools" ],
 
 	"environment" : {
 
