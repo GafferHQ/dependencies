@@ -1,7 +1,7 @@
 12.x.x (relative to 12.0.0a4)
 ------
 
-
+- Cycles : Updated to version 5.3.0.
 
 12.0.0a4 (relative to 12.0.0a3)
 --------
