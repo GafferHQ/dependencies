@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/blender/cycles/archive/refs/tags/v5.1.0.tar.gz",
+		"https://github.com/blender/cycles/archive/refs/tags/v5.3.0.tar.gz",
 
 	],
 
@@ -11,12 +11,6 @@
 	"license" : "LICENSE",
 
 	"dependencies" : [ "Boost", "OpenJPEG", "OpenImageIO", "TBB", "Alembic", "Embree", "OpenColorIO", "OpenVDB", "OpenShadingLanguage", "OpenSubdiv", "OpenPGL", "LibWebP", "Zstandard" ],
-
-	"platform:macos" : {
-
-		"extraDependencies" : [ "SSE2NEON" ],
-
-	},
 
 	"environment" : {
 
@@ -39,7 +33,7 @@
 			" -D WITH_CYCLES_CUDA_BINARIES=ON"
 			" -D WITH_CYCLES_DEVICE_CUDA=ON"
 			" -D WITH_CYCLES_DEVICE_HIP=OFF"
-			" -D WITH_CYCLES_DEVICE_OPTIX=ON"
+			" -D WITH_CYCLES_DEVICE_OPTIX={withOptix}"
 			" -D WITH_CYCLES_HYDRA_RENDER_DELEGATE=OFF"
 			" -D CMAKE_POSITION_INDEPENDENT_CODE=ON"
 			" -D WITH_CYCLES_USD=OFF"
@@ -55,10 +49,28 @@
 
 	],
 
+	"variables" : {
+
+		"withOptix" : "ON",
+
+	},
+
 	"manifest" : [
 
 		"cycles",
 
 	],
+
+	"platform:macos" : {
+
+		"extraDependencies" : [ "SSE2NEON" ],
+
+		"variables" : {
+
+			"withOptix" : "OFF",
+
+		},
+
+	},
 
 }
