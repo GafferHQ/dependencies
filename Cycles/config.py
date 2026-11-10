@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/blender/cycles/archive/refs/tags/v5.1.0.tar.gz",
+		"https://github.com/blender/cycles/archive/refs/tags/v5.3.0.tar.gz",
 
 	],
 
