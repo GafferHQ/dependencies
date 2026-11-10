@@ -2,6 +2,7 @@
 ------
 
 - Cycles : Updated to version 5.3.0.
+- OpenShadingLanguage : Applied patch to raise minimum CUDA PTX version to 6.0 for Cycles.
 
 12.0.0a1 (relative to 11.0.0)
 --------
