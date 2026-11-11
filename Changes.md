@@ -1,7 +1,10 @@
 12.x.x (relative to 12.0.0a1)
 ------
 
-
+- Cycles : Updated to version 5.3.0.
+- Embree : Updated to version 4.4.1.
+- OpenPGL : Updated to version 0.7.1.
+- OpenShadingLanguage : Applied patch to raise minimum CUDA PTX version to 6.0 for Cycles.
 
 12.0.0a1 (relative to 11.0.0)
 --------
