@@ -3,6 +3,7 @@
 
 - Expat : Updated to version 2.10.0.
 - LibRaw : Updated to version 0.22.3.
+- LibTIFF : Updated to version 4.7.2.
 - Minizip : Updated to version 4.2.2.
 - OpenColorIO : Updated to version 2.5.2.
 - PyString : Updated to version 1.2.0.
