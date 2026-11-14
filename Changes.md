@@ -6,6 +6,7 @@
 - LibTIFF : Updated to version 4.7.2.
 - Minizip : Updated to version 4.2.2.
 - OpenColorIO : Updated to version 2.5.2.
+- OpenJPEG : Updated to version 2.5.4.
 - PyString : Updated to version 1.2.0.
 - YAML-CPP : Updated to version 0.9.0.
 
