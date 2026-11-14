@@ -2,6 +2,7 @@
 ------
 
 - Expat : Updated to version 2.10.0.
+- LibJPEG-Turbo : Updated to version 3.2.1.
 - LibRaw : Updated to version 0.22.3.
 - LibTIFF : Updated to version 4.7.2.
 - Minizip : Updated to version 4.2.2.
