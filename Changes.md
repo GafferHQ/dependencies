@@ -3,6 +3,7 @@
 
 - Expat : Updated to version 2.10.0.
 - Minizip : Updated to version 4.2.2.
+- OpenColorIO : Updated to version 2.5.2.
 - PyString : Updated to version 1.2.0.
 - YAML-CPP : Updated to version 0.9.0.
 
