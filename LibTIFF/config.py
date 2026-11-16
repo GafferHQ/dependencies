@@ -2,13 +2,13 @@
 
 	"downloads" : [
 
-		"https://download.osgeo.org/libtiff/tiff-4.1.0.zip",
+		"https://download.osgeo.org/libtiff/tiff-4.7.2.zip",
 
 	],
 
 	"url" : "http://www.libtiff.org",
 
-	"license" : "COPYRIGHT",
+	"license" : "LICENSE.md",
 
 	"dependencies" : [ "LibJPEG-Turbo" ],
 

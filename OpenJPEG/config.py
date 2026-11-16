@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/uclouvain/openjpeg/archive/refs/tags/v2.4.0.tar.gz"
+		"https://github.com/uclouvain/openjpeg/archive/refs/tags/v2.5.4.tar.gz"
 
 	],
 

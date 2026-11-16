@@ -1,7 +1,16 @@
 12.x.x (relative to 12.0.0a1)
 ------
 
-
+- Expat : Updated to version 2.10.0.
+- LibJPEG-Turbo : Updated to version 3.2.1.
+- LibRaw : Updated to version 0.22.3.
+- LibTIFF : Updated to version 4.7.2.
+- Minizip : Updated to version 4.2.2.
+- OpenColorIO : Updated to version 2.5.2.
+- OpenImageIO : Updated to version 3.2.2.0.
+- OpenJPEG : Updated to version 2.5.4.
+- PyString : Updated to version 1.2.0.
+- YAML-CPP : Updated to version 0.9.0.
 
 12.0.0a1 (relative to 11.0.0)
 --------

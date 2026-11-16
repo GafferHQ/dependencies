@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/AcademySoftwareFoundation/OpenImageIO/releases/download/v3.0.6.1/OpenImageIO-3.0.6.1.tar.gz",
+		"https://github.com/AcademySoftwareFoundation/OpenImageIO/releases/download/v3.2.2.0/OpenImageIO-3.2.2.0.tar.gz",
 
 	],
 
@@ -10,7 +10,7 @@
 
 	"license" : "LICENSE.md",
 
-	"dependencies" : [ "Boost", "Python", "PyBind11", "OpenEXR", "LibTIFF", "LibPNG", "OpenJPEG", "LibJPEG-Turbo", "OpenColorIO", "LibRaw", "PugiXML", "Fmt", "LibWebP", "TBB", "FreeType", "Robin-map" ],
+	"dependencies" : [ "Boost", "Python", "Nanobind", "OpenEXR", "LibTIFF", "LibPNG", "OpenJPEG", "LibJPEG-Turbo", "OpenColorIO", "LibRaw", "PugiXML", "Fmt", "LibWebP", "TBB", "FreeType", "Robin-map" ],
 
 	"environment" : {
 
@@ -34,16 +34,14 @@
 			" -D USE_OPENVDB=NO"
 			" -D USE_PYTHON=YES"
 			" -D USE_EXTERNAL_PUGIXML=YES"
-			" -D BUILD_MISSING_FMT=NO"
 			" -D OIIO_BUILD_TESTS=NO"
 			" -D OIIO_DOWNLOAD_MISSING_TESTDATA=NO"
 			" -D PYTHON_VERSION={pythonVersion}"
 			" -D Python_ROOT_DIR={buildDir}"
 			" -D Python_FIND_STRATEGY=LOCATION"
-			# These next two disable `iv`. This fails to
-			# build on Mac due to OpenGL deprecations, and
+			# This disables `iv`. It fails to build
+			# on Mac due to OpenGL deprecations, and
 			# we've never packaged it anyway.
-			" -D USE_OPENGL=NO"
 			" -D USE_QT=NO"
 			" ..",
 		"cd gafferBuild && make install -j {jobs} VERBOSE=1",

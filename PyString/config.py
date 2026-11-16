@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/imageworks/pystring/archive/refs/tags/v1.1.4.tar.gz",
+		"https://github.com/imageworks/pystring/archive/refs/tags/v1.2.0.tar.gz",
 
 	],
 

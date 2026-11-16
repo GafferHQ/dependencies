@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/libexpat/libexpat/archive/refs/tags/R_2_5_0.tar.gz",
+		"https://github.com/libexpat/libexpat/archive/refs/tags/R_2_10_0.tar.gz",
 
 	],
 

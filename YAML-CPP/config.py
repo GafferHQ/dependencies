@@ -2,7 +2,7 @@
 
 	"downloads" : [
 
-		"https://github.com/jbeder/yaml-cpp/archive/refs/tags/yaml-cpp-0.7.0.tar.gz",
+		"https://github.com/jbeder/yaml-cpp/archive/refs/tags/yaml-cpp-0.9.0.tar.gz",
 
 	],
 
