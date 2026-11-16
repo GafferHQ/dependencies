@@ -1,5 +1,10 @@
-12.x.x (relative to 12.0.0a1)
+12.x.x (relative to 12.0.0a2)
 ------
+
+
+
+12.0.0a2 (relative to 12.0.0a1)
+--------
 
 - Expat : Updated to version 2.10.0.
 - LibJPEG-Turbo : Updated to version 3.2.1.
