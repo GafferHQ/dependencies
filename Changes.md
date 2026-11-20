@@ -1,5 +1,10 @@
-12.x.x (relative to 12.0.0a2)
+12.x.x (relative to 12.0.0a3)
 ------
+
+
+
+12.0.0a3 (relative to 12.0.0a2)
+--------
 
 - OpenJPEG : Fixed manifest and library install path [^1].
 
