@@ -1,7 +1,9 @@
 12.x.x (relative to 12.0.0a2)
 ------
 
+- OpenJPEG : Fixed manifest and library install path [^1].
 
+[^1]: To be omitted from the notes for the final 12.0.0 release.
 
 12.0.0a2 (relative to 12.0.0a1)
 --------
