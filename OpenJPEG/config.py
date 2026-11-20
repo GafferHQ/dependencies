@@ -17,6 +17,9 @@
 			" cmake"
 			" -D CMAKE_INSTALL_PREFIX={buildDir}"
 			" -D CMAKE_PREFIX_PATH={buildDir}"
+			# OpenJPEG's CMake setup uses GNUInstallDirs, which unhelpfully
+			# puts the libraries in `lib64`. Coax them back.
+			" -D CMAKE_INSTALL_LIBDIR={buildDir}/lib"
 			" ..",
 		"cd build && make install -j {jobs} VERBOSE=1",
 
@@ -24,7 +27,7 @@
 
 	"manifest" : [
 
-		"include/openjpeg-2.4",
+		"include/openjpeg-2.5",
 		"lib/libopenjp2*{sharedLibraryExtension}*",
 
 	],
