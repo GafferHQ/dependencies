@@ -1,0 +1,58 @@
+name : Build
+
+on:
+  workflow_call:
+    inputs:
+      name:
+        required: true
+        type: string
+      os:
+        required: true
+        type: string
+      publish:
+        required: true
+        type: boolean
+      jobs:
+        required: true
+        type: string
+      containerImage:
+        required: false
+        type: string
+      # Projects to build in the first job. If blank, all projects are
+      # built in a single job.
+      partOneProjects:
+        required: false
+        type: string
+      # Projects to build in the second job. If blank, all remaining
+      # projects are built.
+      partTwoProjects:
+        required: false
+        type: string
+
+jobs:
+
+  partOne:
+
+    uses: ./.github/workflows/buildDependencyBatch.yml
+    with:
+      name: ${{ inputs.name }}
+      os: ${{ inputs.os }}
+      publish: ${{ inputs.publish }}
+      jobs: ${{ inputs.jobs }}
+      containerImage: ${{ inputs.containerImage }}
+      projectsString: ${{ inputs.partOneProjects }}
+      intermediateArtifactOutputSuffix: ${{ inputs.partOneProjects && 'partOne' || '' }}
+
+  partTwo:
+
+    needs: partOne
+    if: ${{ inputs.partOneProjects != '' }}
+    uses: ./.github/workflows/buildDependencyBatch.yml
+    with:
+      name: ${{ inputs.name }}
+      os: ${{ inputs.os }}
+      publish: ${{ inputs.publish }}
+      jobs: ${{ inputs.jobs }}
+      containerImage: ${{ inputs.containerImage }}
+      projectsString: ${{ inputs.partTwoProjects }}
+      intermediateArtifactInputSuffix: partOne
