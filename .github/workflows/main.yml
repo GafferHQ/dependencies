@@ -13,7 +13,7 @@ on:
 
 jobs:
 
-  buildPartOne:
+  build:
 
     strategy:
 
@@ -40,14 +40,13 @@ jobs:
             publish: true
             jobs: 4
             containerImage: ghcr.io/gafferhq/build/build:5.0.0a1
-            projectsString: --projects LibFFI Python Boost Imath OpenEXR HDF5 Alembic BitstreamVera ZLib Blosc CMark PyBind11 LibJPEG-Turbo LibTIFF LibPNG OpenJPEG Expat YAML-CPP PyString Minizip OpenColorIO LibRaw PugiXML Fmt LibWebP TBB FreeType Robin-map OpenImageIO LLVM OpenShadingLanguage GLEW Nanobind OpenVDB
+            partOneProjects: --projects LibFFI Python Boost Imath OpenEXR HDF5 Alembic BitstreamVera ZLib Blosc CMark PyBind11 LibJPEG-Turbo LibTIFF LibPNG OpenJPEG Expat YAML-CPP PyString Minizip OpenColorIO LibRaw PugiXML Fmt LibWebP TBB FreeType Robin-map OpenImageIO LLVM OpenShadingLanguage GLEW Nanobind OpenVDB
 
           - name: macos-platform26
             os: macos-15
             publish: true
             jobs: 3
             containerImage:
-            projectsString:  # Blank to build all projects.
 
           - name: windows-platform26
             os: windows-2022
@@ -55,51 +54,16 @@ jobs:
             jobs: 4
             containerImage:
             # Something simple to start. When ready, the projects below should be included in the first job.
-            projectsString: --projects GafferResources
-            # projectsString: --projects LibFFI TBB Python ZLib Boost Imath OpenEXR HDF5 Alembic BitstreamVera Blosc CMark PyBind11 LibJPEG-Turbo LibTIFF LibPNG OpenJPEG Expat YAML-CPP PyString Minizip OpenColorIO LibRaw PugiXML Fmt LibWebP FreeType OpenImageIO LLVM OpenShadingLanguage GLEW OpenVDB OpenSubdiv PyOpenGL Qt PySide
+            partOneProjects: --projects GafferResources
+            # partOneProjects: --projects LibFFI TBB Python ZLib Boost Imath OpenEXR HDF5 Alembic BitstreamVera Blosc CMark PyBind11 LibJPEG-Turbo LibTIFF LibPNG OpenJPEG Expat YAML-CPP PyString Minizip OpenColorIO LibRaw PugiXML Fmt LibWebP FreeType OpenImageIO LLVM OpenShadingLanguage GLEW OpenVDB OpenSubdiv PyOpenGL Qt PySide
+            partTwoProjects: --projects GafferResources  # Just verify this second job works for now.
 
-    uses: ./.github/workflows/buildDependencyBatch.yml
+    uses: ./.github/workflows/build.yml
     with:
       name: ${{ matrix.name }}
       os: ${{ matrix.os }}
       publish: ${{ matrix.publish }}
       jobs: ${{ matrix.jobs }}
       containerImage: ${{ matrix.containerImage }}
-      projectsString: ${{ matrix.projectsString }}
-      intermediateArtifactOutputSuffix: ${{ matrix.projectsString && 'partOne' || '' }}
-
-  buildPartTwo:
-    strategy:
-      matrix:
-
-        name: [
-              linux-platform26,
-              windows-platform26,
-            ]
-
-        include:
-          - name: linux-platform26
-            os: ubuntu-24.04
-            publish: true
-            containerImage: ghcr.io/gafferhq/build/build:5.0.0a1
-            jobs: 4
-            projectsString:  # Blank to build all remaining projects.
-
-          - name: windows-platform26
-            os: windows-2022
-            publish: false
-            containerImage:
-            jobs: 4
-            projectsString: --projects GafferResources  # Just verify this second job works for now.
-
-    if: ${{ always() }}
-    needs: buildPartOne
-    uses: ./.github/workflows/buildDependencyBatch.yml
-    with:
-      name: ${{ matrix.name }}
-      os: ${{ matrix.os }}
-      publish: ${{ matrix.publish }}
-      jobs: ${{ matrix.jobs }}
-      containerImage: ${{ matrix.containerImage }}
-      projectsString: ${{ matrix.projectsString }}
-      intermediateArtifactInputSuffix: partOne
+      partOneProjects: ${{ matrix.partOneProjects }}
+      partTwoProjects: ${{ matrix.partTwoProjects }}
