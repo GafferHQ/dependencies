@@ -1,5 +1,10 @@
-12.x.x (relative to 12.0.0a3)
+12.x.x (relative to 12.0.0a4)
 ------
+
+
+
+12.0.0a4 (relative to 12.0.0a3)
+--------
 
 - MaterialX : Updated to version 1.39.5.
 - USD : Updated to version 26.11.1.
